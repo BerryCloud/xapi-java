@@ -85,6 +85,7 @@
 
   <modules>
     <module>xapi-model</module>
+    <module>xapi-client</module>
   </modules>
 
   <build>
