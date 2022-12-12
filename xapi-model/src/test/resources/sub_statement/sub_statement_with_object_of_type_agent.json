@@ -1,0 +1,18 @@
+{
+   "objectType":"SubStatement",
+   "actor":{
+      "objectType":"Agent",
+      "mbox":"mailto:test@example.com"
+   },
+   "verb":{
+      "id":"http://example.com/visited",
+      "display":{
+         "en-US":"will visit"
+      }
+   },
+   "object":{
+      "objectType":"Agent",
+      "name":"A N Other",
+      "mbox":"mailto:other@example.com"
+   }
+}

@@ -1,0 +1,83 @@
+{
+	"id": "4b9175ba-367d-4b93-990b-34d4180039f1",
+	"actor": {
+		"name": "A N Other",
+		"objectType": "Agent"
+	},
+	"verb": {
+		"id": "http://example.com/xapi/verbs#sent-a-statement",
+		"display": {
+			"en-US": "attended"
+		}
+	},
+	"result": {
+		"success": true,
+		"completion": true,
+		"response": "Response",
+		"duration": "P1D"
+	},
+	"context": {
+		"registration": "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
+		"instructor": {
+			"name": "A N Other",
+			"account": {
+				"homePage": "https://example.com",
+				"name": "13936749"
+			},
+			"objectType": "Agent"
+		},
+		"team": {
+			"name": "Team",
+			"mbox": "mailto:team@example.com",
+			"objectType": "Group"
+		},
+		"platform": "Example virtual meeting software",
+		"language": "en",
+		"statement": {
+			"objectType": "StatementRef",
+			"id": "6690e6c9-3ef0-4ed3-8b37-7f3964730bee"
+		}
+	},
+	"timestamp": "2013-05-18T05:32:34.804+00:00",
+	"stored": "2013-05-18T05:32:34.804+00:00",
+	"authority": {
+		"account": {
+			"homePage": "https://example.com",
+			"name": "13936749"
+		},
+		"objectType": "Agent"
+	},
+	"version": "1.0.0",
+	"object": {
+		"id": "http://www.example.com/meetings/occurances/34534",
+		"definition": {
+			"extensions": {
+				"http://name": "Kilby"
+			},
+			"name": {
+				"en-GB": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
+			},
+			"description": {
+				"en-GB": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
+			},
+			"type": "http://adlnet.gov/expapi/activities/meeting",
+			"moreInfo": "http://virtualmeeting.example.com/345256"
+		},
+		"objectType": "Activity"
+	},
+	"attachments": [
+		{
+			"usageType": "http://example.com",
+			"display": {
+				"en": "value"
+			},
+			"description": {
+				"en": "value"
+			},
+			"contentType": "file",
+			"length": 123,
+			"sha2": "123",
+			"fileUrl": "http://example.com"
+		}
+	]
+}

@@ -1,0 +1,9 @@
+{
+	"description": {
+		"en": "Does the xAPI include the concept of statements?"
+	},
+	"interactionType": "fill-in",
+	"correctResponsesPattern": [
+		"likert_0"
+	]
+}

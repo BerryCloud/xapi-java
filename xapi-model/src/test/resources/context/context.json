@@ -1,0 +1,48 @@
+{
+	"registration": "1d527164-ed0d-4b1d-9f9b-39aab0e4a089",
+	"revision": "revision",
+	"platform": "platform",
+	"language": "en",
+	"instructor": {
+		"name": "Andrew Downes",
+		"mbox": "mailto:andrew@example.co.uk",
+		"objectType": "Agent"
+	},
+	"team": {
+		"name": "Example Group",
+		"objectType": "Group"
+	},
+	"statement": {
+		"id": "e9b6b9ed-ef48-4986-9b86-2ef697578bf7",
+		"objectType": "StatementRef"
+	},
+	"contextActivities": {
+		"parent": [
+			{
+				"id": "https://example.com/activity/1",
+				"objectType": "Activity"
+			}
+		],
+		"grouping": [
+			{
+				"id": "https://example.com/activity/2",
+				"objectType": "Activity"
+			}
+		],
+		"category": [
+			{
+				"id": "https://example.com/activity/3",
+				"objectType": "Activity"
+			}
+		],
+		"other": [
+			{
+				"id": "https://example.com/activity/4",
+				"objectType": "Activity"
+			}
+		]
+	},
+	"extensions": {
+		"http://url": "www.example.com"
+	}
+}

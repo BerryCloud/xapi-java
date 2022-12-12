@@ -1,0 +1,12 @@
+{
+	"score": {
+		"scaled": 1.0,
+		"raw": 1.0,
+		"min": 0.0,
+		"max": 5.0
+	},
+	"success": true,
+	"completion": true,
+	"response": "test",
+	"duration": "P1D"
+}

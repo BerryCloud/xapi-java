@@ -1,0 +1,13 @@
+{
+   "name":{
+      "en":"True false question"
+   },
+   "description":{
+      "en":"Does the xAPI include the concept of statements?"
+   },
+   "type":"http://adlnet.gov/expapi/activities/cmi.interaction",
+   "interactionType":"true-false",
+   "correctResponsesPattern":[
+      "true"
+   ]
+}

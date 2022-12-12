@@ -1,0 +1,33 @@
+{
+   "objectType":"SubStatement",
+   "actor":{
+      "objectType":"Agent",
+      "mbox":"mailto:test@example.com"
+   },
+   "verb":{
+      "id":"http://example.com/visited",
+      "display":{
+         "en-US":"will visit"
+      }
+   },
+   "object":{
+	"name": "Example Group",
+	"account": {
+		"homePage": "http://example.com/homePage",
+		"name": "GroupAccount"
+	},
+	"objectType": "Group",
+	"member": [
+		{
+			"name": "Member 1",
+			"mbox": "mailto:member1@example.com",
+			"objectType": "Agent"
+		},
+		{
+			"name": "Member 2",
+			"openid": "https://example.com/openId",
+			"objectType": "Agent"
+		}
+	]
+   }
+}
