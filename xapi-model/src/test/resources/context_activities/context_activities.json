@@ -1,0 +1,26 @@
+{
+	"parent": [
+		{
+			"id": "https://example.com/activity/1",
+			"objectType": "Activity"
+		}
+	],
+	"grouping": [
+		{
+			"id": "https://example.com/activity/2",
+			"objectType": "Activity"
+		}
+	],
+	"category": [
+		{
+			"id": "https://example.com/activity/3",
+			"objectType": "Activity"
+		}
+	],
+	"other": [
+		{
+			"id": "https://example.com/activity/4",
+			"objectType": "Activity"
+		}
+	]
+}

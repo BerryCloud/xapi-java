@@ -1,0 +1,45 @@
+{
+  "moreInfo" : "http://example.com/more",
+  "interactionType" : "true-false",
+  "correctResponsesPattern" : [ "{case_matters=false}{lang=en}To store and provide access to learning experiences." ],
+  "extensions" : {
+    "http://url" : "www.example.com"
+  },
+  "name" : {
+    "en" : "Does the xAPI include the concept of statements?"
+  },
+  "description" : {
+    "en" : "pong[.]1:[,]dg[.]:10[,]lunch[.]"
+  },
+  "type" : "http://adlnet.gov/expapi/activities/cmi.interaction",
+  "choices" : [ {
+    "id" : "1",
+    "description" : {
+      "en" : "Does the xAPI include the concept of statements?"
+    }
+  } ],
+  "scale" : [ {
+    "id" : "1",
+    "description" : {
+      "en" : "Does the xAPI include the concept of statements?"
+    }
+  } ],
+  "source" : [ {
+    "id" : "1",
+    "description" : {
+      "en" : "Does the xAPI include the concept of statements?"
+    }
+  } ],
+  "target" : [ {
+    "id" : "1",
+    "description" : {
+      "en" : "Does the xAPI include the concept of statements?"
+    }
+  } ],
+  "steps" : [ {
+    "id" : "1",
+    "description" : {
+      "en" : "Does the xAPI include the concept of statements?"
+    }
+  } ]
+}

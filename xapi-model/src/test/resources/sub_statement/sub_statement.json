@@ -1,0 +1,82 @@
+{
+  "objectType" : "SubStatement",
+  "timestamp" : "2015-11-18T12:17:00+01:00",
+  "verb" : {
+    "id" : "http://example.com/confirmed",
+    "display" : {
+      "en" : "confirmed"
+    }
+  },
+  "actor" : {
+    "objectType" : "Agent",
+    "mbox" : "mailto:agent@example.com"
+  },
+  "object" : {
+    "objectType" : "StatementRef",
+    "id" : "9e13cefd-53d3-4eac-b5ed-2cf6693903bb"
+  },
+  "result" : {
+    "score" : {
+      "scaled" : 1.0,
+      "raw" : 1.0,
+      "min" : 0.0,
+      "max" : 5.0
+    },
+    "success" : true,
+    "completion" : true,
+    "response" : "test",
+    "duration" : "P1D"
+  },
+  "context" : {
+    "registration" : "6d969975-8d7e-4506-ac19-877c57f2921a",
+    "revision" : "revision",
+    "platform" : "platform",
+    "language" : "en",
+    "instructor" : {
+      "objectType" : "Agent",
+      "mbox" : "mailto:agent@example.com"
+    },
+    "team" : {
+      "objectType" : "Group",
+      "name" : "Example Group"
+    },
+    "statement" : {
+      "objectType" : "StatementRef",
+      "id" : "9e13cefd-53d3-4eac-b5ed-2cf6693903bb"
+    },
+    "contextActivities" : {
+      "parent" : [ {
+        "objectType" : "Activity",
+        "id" : "http://www.example.co.uk/exampleactivity"
+      } ],
+      "grouping" : [ {
+        "objectType" : "Activity",
+        "id" : "http://www.example.co.uk/exampleactivity"
+      } ],
+      "category" : [ {
+        "objectType" : "Activity",
+        "id" : "http://www.example.co.uk/exampleactivity"
+      } ],
+      "other" : [ {
+        "objectType" : "Activity",
+        "id" : "http://www.example.co.uk/exampleactivity"
+      } ]
+    },
+    "extensions" : {
+      "http://url" : "www.example.com"
+    }
+  },
+  "attachments" : [ {
+    "usageType" : "http://example.com",
+    "display" : {
+      "en" : "value"
+    },
+    "description" : {
+      "en" : "value"
+    },
+    "contentType" : "file",
+    "length" : 123,
+    "sha2" : "123",
+    "fileUrl" : "http://example.com"
+  } ]
+}

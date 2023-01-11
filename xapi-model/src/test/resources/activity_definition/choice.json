@@ -1,0 +1,39 @@
+{
+	"name": {
+		"en": "Choice"
+	},
+	"description": {
+		"en": "Which of these prototypes are available at the beta site?"
+	},
+	"type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+	"interactionType": "choice",
+	"correctResponsesPattern": [
+		"golf[,]tetris"
+	],
+	"choices": [
+		{
+			"id": "golf", 
+			"description": {
+				"en": "Golf Example"
+			}
+		},
+		{
+			"id": "facebook", 
+			"description": {
+				"en": "Facebook App"
+			}
+		},
+		{
+			"id": "tetris", 
+			"description": {
+				"en": "Tetris Example"
+			}
+		},
+		{
+			"id": "scrabble", 
+			"description": {
+				"en": "Scrabble Example"
+			}
+		}
+	]
+}

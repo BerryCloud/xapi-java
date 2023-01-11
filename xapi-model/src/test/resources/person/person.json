@@ -1,0 +1,26 @@
+{
+	"objectType": "Person",
+	"name": [
+		"Normal Person"
+	],
+	"mbox": [
+		"normal.person@normal.mail"
+	],
+	"mbox_sha1sum": [
+		"123"
+	],
+	"openid": [
+		"https://example.com"
+	],
+	"account": [
+		{
+			"name": "example1",
+			"homePage": "https://example.com"
+		},
+		{
+			"name": "example2",
+			"homePage": "https://example.com"
+		}
+		
+	]
+}
