@@ -8,6 +8,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -19,13 +24,6 @@ import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 
 /**
  * Statement Tests.
@@ -378,67 +376,5 @@ class StatementTests {
 
   }
 
-  @Test
-  public void blar() throws JsonProcessingException {
-
-
-    /*
-     * { "id":"fd41c918-b88b-4b20-a0a5-a4c32391aaa0", "timestamp": "2015-11-18T12:17:00+00:00",
-     * "actor":{ "objectType": "Agent", "name":"Project Tin Can API",
-     * "mbox":"mailto:user@example.com" }, "verb":{
-     * "id":"http://example.com/xapi/verbs#sent-a-statement", "display":{ "en-US":"sent" } },
-     * "object":{ "id":"http://example.com/xapi/activity/simplestatement", "definition":{ "name":{
-     * "en-US":"simple statement" }, "description":{ "en-US":"A simple Experience API statement.
-     * Note that the LRS does not need to have any prior information about the Actor (learner), the
-     * verb, or the Activity/object." } } } }
-     * 
-     */
-
-    final Statement statement = Statement.builder()
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
-        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-            .definition(d -> d.singleName(Locale.ENGLISH, "Simple Statement")))
-        .build();
-
-
-    System.out.println(objectMapper.writeValueAsString(statement));
-
-  }
-
-
-
-  @Test
-  public void blar2() throws JsonMappingException, JsonProcessingException {
-
-
-    String json = """
-        {
-           "actor":{
-              "objectType":"Agent",
-              "name":"A N Other",
-              "mbox":"mailto:another@example.com"
-           },
-           "verb":{
-              "id":"http://adlnet.gov/expapi/verbs/attempted",
-              "display":{
-                 "und":"attempted"
-              }
-           },
-           "object":{
-              "objectType":"Activity",
-              "id":"https://example.com/activity/simplestatement",
-              "definition":{
-                 "name":{
-                    "en":"Simple Statement"
-                 }
-              }
-           }
-        }""";
-
-    Statement statement = objectMapper.readValue(json, Statement.class);
-
-    assertThat(statement, instanceOf(Statement.class));
-
-  }
 
 }
