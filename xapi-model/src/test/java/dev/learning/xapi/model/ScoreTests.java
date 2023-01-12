@@ -29,7 +29,7 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenResultIsInstanceOfScore() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:Score/Score.json");
+    final File file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
     final Score result = objectMapper.readValue(file, Score.class);
@@ -42,7 +42,7 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenScaledIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:Score/Score.json");
+    final File file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
     final Score result = objectMapper.readValue(file, Score.class);
@@ -55,7 +55,7 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenRawIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:Score/Score.json");
+    final File file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
     final Score result = objectMapper.readValue(file, Score.class);
@@ -68,7 +68,7 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenMinIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:Score/Score.json");
+    final File file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
     final Score result = objectMapper.readValue(file, Score.class);
@@ -81,7 +81,7 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenMaxIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:Score/Score.json");
+    final File file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
     final Score result = objectMapper.readValue(file, Score.class);
@@ -119,7 +119,7 @@ class ScoreTests {
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
     final Score score =
-        objectMapper.readValue(ResourceUtils.getFile("classpath:Score/Score.json"), Score.class);
+        objectMapper.readValue(ResourceUtils.getFile("classpath:score/score.json"), Score.class);
 
     // When Calling ToString
     final String result = score.toString();
