@@ -92,9 +92,9 @@ class ActivityTests {
 
         .definition(d -> d
 
-            .singleName(Locale.ENGLISH, "simple statement")
+            .addName(Locale.ENGLISH, "simple statement")
 
-            .singleDescription(Locale.ENGLISH,
+            .addDescription(Locale.ENGLISH,
                 "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
 
         .build();
@@ -117,7 +117,7 @@ class ActivityTests {
 
         .id(URI.create("http://www.example.co.uk/exampleactivity"))
 
-        .definition(d -> d.singleDescription(Locale.US,
+        .definition(d -> d.addDescription(Locale.US,
             "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
 
         .build();

@@ -213,9 +213,9 @@ class StatementTests {
     final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
-        .singleDisplay(Locale.ENGLISH, "value")
+        .addDisplay(Locale.ENGLISH, "value")
 
-        .singleDescription(Locale.ENGLISH, "value")
+        .addDescription(Locale.ENGLISH, "value")
 
         .length(123)
 
@@ -241,7 +241,7 @@ class StatementTests {
         .actor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
-            .singleDisplay(Locale.US, "attended"))
+            .addDisplay(Locale.US, "attended"))
 
         .result(r -> r.success(true).completion(true).response("Response").duration("P1D"))
 
@@ -269,10 +269,10 @@ class StatementTests {
 
         .activityObject(a -> a.id("http://www.example.com/meetings/occurances/34534")
 
-            .definition(d -> d.singleName(Locale.UK,
+            .definition(d -> d.addName(Locale.UK,
                 "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
 
-                .singleDescription(Locale.UK,
+                .addDescription(Locale.UK,
                     "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
 
                 .type(URI.create("http://adlnet.gov/expapi/activities/meeting"))

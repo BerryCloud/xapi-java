@@ -118,9 +118,9 @@ class PersonTests {
 
         .openid(new URI[] {URI.create("https://example.com")})
 
-        .singleAccount(a -> a.name("example1").homePage(URI.create("https://example.com")))
+        .addAccount(a -> a.name("example1").homePage(URI.create("https://example.com")))
 
-        .singleAccount(a -> a.name("example2").homePage(URI.create("https://example.com")))
+        .addAccount(a -> a.name("example2").homePage(URI.create("https://example.com")))
 
         .build();
 

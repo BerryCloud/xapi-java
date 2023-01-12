@@ -78,7 +78,7 @@ class VerbTests {
 
         .id(URI.create("http://adlnet.gov/expapi/verbs/answered"))
 
-        .singleDisplay(Locale.ENGLISH, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .build();
 
@@ -187,9 +187,9 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .singleDisplay(Locale.ENGLISH, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
-        .singleDisplay(Locale.GERMAN, "antwortete")
+        .addDisplay(Locale.GERMAN, "antwortete")
 
         .build();
 
@@ -217,7 +217,7 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .singleDisplay(Locale.ENGLISH, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .build());
 
@@ -234,7 +234,7 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .singleDisplay(Locale.GERMAN, "antwortete")
+        .addDisplay(Locale.GERMAN, "antwortete")
 
         .build();
 
@@ -243,7 +243,7 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .singleDisplay(Locale.ENGLISH, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .build());
 
@@ -318,7 +318,7 @@ class VerbTests {
   public void whenValidatingVerbWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final Verb verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/answered")
-        .singleDisplay(Locale.ENGLISH, "answered").build();
+        .addDisplay(Locale.ENGLISH, "answered").build();
 
     // When Validating Interaction Component With All Required Properties
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);
@@ -331,7 +331,7 @@ class VerbTests {
   @Test
   public void whenValidatingVerbWithoutIdThenConstraintViolationsSizeIsOne() {
 
-    final Verb verb = Verb.builder().singleDisplay(Locale.ENGLISH, "answered").build();
+    final Verb verb = Verb.builder().addDisplay(Locale.ENGLISH, "answered").build();
 
     // When Validating Interaction Component Without Id
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);

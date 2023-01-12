@@ -77,7 +77,7 @@ class StatementResultTest {
 
     final StatementResult statementResult = StatementResult.builder()
 
-        .singleStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
+        .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
 
         .more(URI.create("123"))
 
@@ -96,7 +96,7 @@ class StatementResultTest {
 
     final StatementResult statementResult = StatementResult.builder()
 
-        .singleStatement(s -> s
+        .addStatement(s -> s
 
             .id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0"))
 
@@ -122,9 +122,9 @@ class StatementResultTest {
     // When Building StatementResult With Two Statements
     final StatementResult statementResult = StatementResult.builder()
 
-        .singleStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
+        .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
 
-        .singleStatement(s -> s.id(UUID.fromString("0b05db78-5554-4cde-8673-56ca15580d1b")))
+        .addStatement(s -> s.id(UUID.fromString("0b05db78-5554-4cde-8673-56ca15580d1b")))
 
         .more(URI.create("123"))
 

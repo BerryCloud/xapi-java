@@ -99,13 +99,13 @@ class ContextActivitiesTests {
 
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .singleParent(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
-        .singleGrouping(g -> g.id(URI.create("https://example.com/activity/2")))
+        .addGrouping(g -> g.id(URI.create("https://example.com/activity/2")))
 
-        .singleCategory(c -> c.id(URI.create("https://example.com/activity/3")))
+        .addCategory(c -> c.id(URI.create("https://example.com/activity/3")))
 
-        .singleOther(o -> o.id(URI.create("https://example.com/activity/4")))
+        .addOther(o -> o.id(URI.create("https://example.com/activity/4")))
 
         .build();
 
@@ -142,9 +142,9 @@ class ContextActivitiesTests {
     // When Building ContextActivities With Two Parents
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .singleParent(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
-        .singleParent(p -> p.id(URI.create("https://example.com/activity/2")))
+        .addParent(p -> p.id(URI.create("https://example.com/activity/2")))
 
         .build();
 
@@ -160,9 +160,9 @@ class ContextActivitiesTests {
     // When Building ContextActivities With Two Groupings
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .singleGrouping(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addGrouping(p -> p.id(URI.create("https://example.com/activity/1")))
 
-        .singleGrouping(p -> p.id(URI.create("https://example.com/activity/2")))
+        .addGrouping(p -> p.id(URI.create("https://example.com/activity/2")))
 
         .build();
 
@@ -177,9 +177,9 @@ class ContextActivitiesTests {
     // When Building ContextActivities With Two Others
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .singleOther(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addOther(p -> p.id(URI.create("https://example.com/activity/1")))
 
-        .singleOther(p -> p.id(URI.create("https://example.com/activity/2")))
+        .addOther(p -> p.id(URI.create("https://example.com/activity/2")))
 
         .build();
 
@@ -195,9 +195,9 @@ class ContextActivitiesTests {
     // When Building ContextActivities With Two Categories
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .singleCategory(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addCategory(p -> p.id(URI.create("https://example.com/activity/1")))
 
-        .singleCategory(p -> p.id(URI.create("https://example.com/activity/2")))
+        .addCategory(p -> p.id(URI.create("https://example.com/activity/2")))
 
         .build();
 
@@ -213,9 +213,9 @@ class ContextActivitiesTests {
     // When Building ContextActivities With Two Parents With Same Id
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .singleParent(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
-        .singleParent(p -> p.id(URI.create("https://example.com/activity/1")))
+        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
         .build();
 

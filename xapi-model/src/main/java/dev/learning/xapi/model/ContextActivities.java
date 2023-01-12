@@ -75,13 +75,13 @@ public class ContextActivities {
      *
      * @see ContextActivities#parent
      */
-    public Builder singleParent(Consumer<Activity.Builder> activity) {
+    public Builder addParent(Consumer<Activity.Builder> activity) {
 
       final Activity.Builder builder = Activity.builder();
 
       activity.accept(builder);
 
-      return singleParent(builder.build());
+      return addParent(builder.build());
     }
 
     /**
@@ -93,7 +93,7 @@ public class ContextActivities {
      *
      * @see ContextActivities#parent
      */
-    public Builder singleParent(Activity activity) {
+    public Builder addParent(Activity activity) {
 
       if (parent == null) {
         parent = new Activity[] {activity};
@@ -118,13 +118,13 @@ public class ContextActivities {
      *
      * @see ContextActivities#grouping
      */
-    public Builder singleGrouping(Consumer<Activity.Builder> activity) {
+    public Builder addGrouping(Consumer<Activity.Builder> activity) {
 
       final Activity.Builder builder = Activity.builder();
 
       activity.accept(builder);
 
-      return singleGrouping(builder.build());
+      return addGrouping(builder.build());
     }
 
     /**
@@ -136,7 +136,7 @@ public class ContextActivities {
      *
      * @see ContextActivities#grouping
      */
-    public Builder singleGrouping(Activity activity) {
+    public Builder addGrouping(Activity activity) {
 
       if (grouping == null) {
         grouping = new Activity[] {activity};
@@ -161,13 +161,13 @@ public class ContextActivities {
      *
      * @see ContextActivities#category
      */
-    public Builder singleCategory(Consumer<Activity.Builder> activity) {
+    public Builder addCategory(Consumer<Activity.Builder> activity) {
 
       final Activity.Builder builder = Activity.builder();
 
       activity.accept(builder);
 
-      return singleCategory(builder.build());
+      return addCategory(builder.build());
     }
 
     /**
@@ -179,7 +179,7 @@ public class ContextActivities {
      *
      * @see ContextActivities#category
      */
-    public Builder singleCategory(Activity activity) {
+    public Builder addCategory(Activity activity) {
 
       if (category == null) {
         category = new Activity[] {activity};
@@ -204,13 +204,13 @@ public class ContextActivities {
      *
      * @see ContextActivities#other
      */
-    public Builder singleOther(Consumer<Activity.Builder> activity) {
+    public Builder addOther(Consumer<Activity.Builder> activity) {
 
       final Activity.Builder builder = Activity.builder();
 
       activity.accept(builder);
 
-      return singleOther(builder.build());
+      return addOther(builder.build());
     }
 
     /**
@@ -222,7 +222,7 @@ public class ContextActivities {
      *
      * @see ContextActivities#other
      */
-    public Builder singleOther(Activity activity) {
+    public Builder addOther(Activity activity) {
 
       if (other == null) {
         other = new Activity[] {activity};
