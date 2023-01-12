@@ -62,14 +62,14 @@ public class Group extends Actor {
      *
      * @see Group#member
      */
-    public Builder<C, B> singleMember(
+    public Builder<C, B> addMember(
         @SuppressWarnings("rawtypes") Consumer<Agent.Builder> member) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
       member.accept(builder);
 
-      return singleMember(builder.build());
+      return addMember(builder.build());
     }
 
     /**
@@ -81,7 +81,7 @@ public class Group extends Actor {
      *
      * @see Group#member
      */
-    public Builder<C, B> singleMember(Agent agent) {
+    public Builder<C, B> addMember(Agent agent) {
 
       if (member == null) {
         member = new Agent[] {agent};

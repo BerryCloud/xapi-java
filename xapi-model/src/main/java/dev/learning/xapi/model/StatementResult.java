@@ -57,13 +57,13 @@ public class StatementResult {
      *
      * @see StatementResult#statements
      */
-    public Builder singleStatement(Consumer<Statement.Builder> statement) {
+    public Builder addStatement(Consumer<Statement.Builder> statement) {
 
       final Statement.Builder builder = Statement.builder();
 
       statement.accept(builder);
 
-      return singleStatement(builder.build());
+      return addStatement(builder.build());
     }
 
     /**
@@ -75,7 +75,7 @@ public class StatementResult {
      *
      * @see StatementResult#statements
      */
-    public Builder singleStatement(Statement statement) {
+    public Builder addStatement(Statement statement) {
 
       if (statements == null) {
         statements = new Statement[] {statement};

@@ -148,9 +148,9 @@ class AttachmentTests {
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-        .singleDisplay(Locale.US, "Signature")
+        .addDisplay(Locale.US, "Signature")
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .contentType("application/octet-stream")
 
@@ -195,9 +195,9 @@ class AttachmentTests {
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-        .singleDisplay(Locale.US, "Signature")
+        .addDisplay(Locale.US, "Signature")
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .contentType("application/octet-stream")
 
@@ -223,9 +223,9 @@ class AttachmentTests {
 
     final Attachment attachment = Attachment.builder()
 
-        .singleDisplay(Locale.US, "Signature")
+        .addDisplay(Locale.US, "Signature")
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .contentType("application/octet-stream")
 
@@ -254,7 +254,7 @@ class AttachmentTests {
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .contentType("application/octet-stream")
 
@@ -282,9 +282,9 @@ class AttachmentTests {
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-        .singleDisplay(Locale.US, "Signature")
+        .addDisplay(Locale.US, "Signature")
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .length(4235)
 
@@ -310,9 +310,9 @@ class AttachmentTests {
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-        .singleDisplay(Locale.US, "Signature")
+        .addDisplay(Locale.US, "Signature")
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .contentType("application/octet-stream")
 
@@ -338,9 +338,9 @@ class AttachmentTests {
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-        .singleDisplay(Locale.US, "Signature")
+        .addDisplay(Locale.US, "Signature")
 
-        .singleDescription(Locale.US, "A test signature")
+        .addDescription(Locale.US, "A test signature")
 
         .contentType("application/octet-stream")
 

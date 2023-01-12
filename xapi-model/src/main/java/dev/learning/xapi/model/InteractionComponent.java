@@ -57,7 +57,7 @@ public class InteractionComponent {
      *
      * @see InteractionComponent#description
      */
-    public Builder singleDescription(Locale key, String value) {
+    public Builder addDescription(Locale key, String value) {
       if (this.description == null) {
         this.description = new LanguageMap();
       }

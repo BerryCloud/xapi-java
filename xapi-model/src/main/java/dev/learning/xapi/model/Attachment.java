@@ -88,7 +88,7 @@ public class Attachment {
      *
      * @see ActivityDefinition#description
      */
-    public Builder singleDisplay(Locale key, String value) {
+    public Builder addDisplay(Locale key, String value) {
 
       if (this.display == null) {
         this.display = new LanguageMap();
@@ -108,7 +108,7 @@ public class Attachment {
      *
      * @see ActivityDefinition#description
      */
-    public Builder singleDescription(Locale key, String value) {
+    public Builder addDescription(Locale key, String value) {
       if (this.description == null) {
         this.description = new LanguageMap();
       }

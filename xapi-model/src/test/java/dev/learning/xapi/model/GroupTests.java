@@ -59,9 +59,9 @@ class GroupTests {
 
         .name("Example Group")
 
-        .singleMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
 
-        .singleMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
 
         .account(a -> a.homePage(URI.create("http://example.com/homePage")).name("GroupAccount"))
 

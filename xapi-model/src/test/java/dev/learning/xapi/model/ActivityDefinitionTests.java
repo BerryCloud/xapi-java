@@ -317,9 +317,9 @@ class ActivityDefinitionTests {
 
     final ActivityDefinition activityDefinition = ActivityDefinition.builder()
 
-        .singleName(Locale.ENGLISH, "True false question")
+        .addName(Locale.ENGLISH, "True false question")
 
-        .singleDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
+        .addDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
 
         .interactionType(InteractionType.TRUE_FALSE)
 
@@ -345,22 +345,22 @@ class ActivityDefinitionTests {
 
     final ActivityDefinition activityDefinition = ActivityDefinition.builder()
 
-        .singleName(Locale.ENGLISH, "Choice")
+        .addName(Locale.ENGLISH, "Choice")
 
-        .singleDescription(Locale.ENGLISH,
+        .addDescription(Locale.ENGLISH,
             "Which of these prototypes are available at the beta site?")
 
         .interactionType(InteractionType.CHOICE)
 
         .correctResponsesPattern(new String[] {"golf[,]tetris"})
 
-        .singleChoice(c -> c.id("golf").singleDescription(Locale.ENGLISH, "Golf Example"))
+        .addChoice(c -> c.id("golf").addDescription(Locale.ENGLISH, "Golf Example"))
 
-        .singleChoice(c -> c.id("facebook").singleDescription(Locale.ENGLISH, "Facebook App"))
+        .addChoice(c -> c.id("facebook").addDescription(Locale.ENGLISH, "Facebook App"))
 
-        .singleChoice(c -> c.id("tetris").singleDescription(Locale.ENGLISH, "Tetris Example"))
+        .addChoice(c -> c.id("tetris").addDescription(Locale.ENGLISH, "Tetris Example"))
 
-        .singleChoice(c -> c.id("scrabble").singleDescription(Locale.ENGLISH, "Scrabble Example"))
+        .addChoice(c -> c.id("scrabble").addDescription(Locale.ENGLISH, "Scrabble Example"))
 
         .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 

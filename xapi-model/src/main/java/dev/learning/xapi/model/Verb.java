@@ -432,7 +432,7 @@ public class Verb {
      *
      * @see Verb#display
      */
-    public Builder singleDisplay(Locale key, String value) {
+    public Builder addDisplay(Locale key, String value) {
       if (this.display == null) {
         this.display = new LanguageMap();
       }

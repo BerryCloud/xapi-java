@@ -296,9 +296,9 @@ class SubStatementTests {
     final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
-        .singleDisplay(Locale.ENGLISH, "value")
+        .addDisplay(Locale.ENGLISH, "value")
 
-        .singleDescription(Locale.ENGLISH, "value")
+        .addDescription(Locale.ENGLISH, "value")
 
         .length(123)
 
@@ -314,7 +314,7 @@ class SubStatementTests {
 
         .actor(agent)
 
-        .verb(v -> v.id(URI.create("http://example.com/confirmed")).singleDisplay(Locale.ENGLISH,
+        .verb(v -> v.id(URI.create("http://example.com/confirmed")).addDisplay(Locale.ENGLISH,
             "confirmed"))
 
         .object(statementRef)

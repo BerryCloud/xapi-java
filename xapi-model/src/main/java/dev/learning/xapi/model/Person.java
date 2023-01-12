@@ -81,13 +81,13 @@ public class Person {
      *
      * @see Person#account
      */
-    public Builder singleAccount(Consumer<Account.Builder> account) {
+    public Builder addAccount(Consumer<Account.Builder> account) {
 
       final Account.Builder builder = Account.builder();
 
       account.accept(builder);
 
-      return singleAccount(builder.build());
+      return addAccount(builder.build());
     }
 
     /**
@@ -99,7 +99,7 @@ public class Person {
      *
      * @see Person#account
      */
-    public Builder singleAccount(Account account) {
+    public Builder addAccount(Account account) {
       if (this.account == null) {
         this.account = new Account[] {account};
 

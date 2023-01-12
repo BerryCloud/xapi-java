@@ -85,7 +85,7 @@ class InteractionComponentTests {
 
         .id("1")
 
-        .singleDescription(Locale.ENGLISH, "value")
+        .addDescription(Locale.ENGLISH, "value")
 
         .build();
 
@@ -118,7 +118,7 @@ class InteractionComponentTests {
   public void whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final InteractionComponent interactionComponent =
-        InteractionComponent.builder().id("1").singleDescription(Locale.ENGLISH, "value").build();
+        InteractionComponent.builder().id("1").addDescription(Locale.ENGLISH, "value").build();
 
     // When Validating Interaction Component With All Required Properties
     final Set<ConstraintViolation<InteractionComponent>> constraintViolations =
@@ -133,7 +133,7 @@ class InteractionComponentTests {
   public void whenValidatingInteractionComponentWithoutIdThenConstraintViolationsSizeIsOne() {
 
     final InteractionComponent interactionComponent =
-        InteractionComponent.builder().singleDescription(Locale.ENGLISH, "value").build();
+        InteractionComponent.builder().addDescription(Locale.ENGLISH, "value").build();
 
     // When Validating Interaction Component Without Id
     final Set<ConstraintViolation<InteractionComponent>> constraintViolations =

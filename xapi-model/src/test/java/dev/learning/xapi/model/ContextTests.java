@@ -199,7 +199,7 @@ class ContextTests {
 
     final Context context = Context.builder()
 
-        .groupInstructor(g -> g.singleMember(leader1).singleMember(leader2))
+        .groupInstructor(g -> g.addMember(leader1).addMember(leader2))
 
         .build();
 
@@ -236,13 +236,13 @@ class ContextTests {
 
         .contextActivities(ca -> ca
 
-            .singleParent(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
-            .singleGrouping(g -> g.id(URI.create("https://example.com/activity/2")))
+            .addGrouping(g -> g.id(URI.create("https://example.com/activity/2")))
 
-            .singleCategory(c -> c.id(URI.create("https://example.com/activity/3")))
+            .addCategory(c -> c.id(URI.create("https://example.com/activity/3")))
 
-            .singleOther(o -> o.id(URI.create("https://example.com/activity/4"))))
+            .addOther(o -> o.id(URI.create("https://example.com/activity/4"))))
 
         .extensions(extensions)
 

@@ -111,7 +111,7 @@ public class ActivityDefinition {
      *
      * @see ActivityDefinition#name
      */
-    public Builder singleName(Locale key, String value) {
+    public Builder addName(Locale key, String value) {
 
       if (this.name == null) {
         this.name = new LanguageMap();
@@ -131,7 +131,7 @@ public class ActivityDefinition {
      *
      * @see ActivityDefinition#description
      */
-    public Builder singleDescription(Locale key, String value) {
+    public Builder addDescription(Locale key, String value) {
       if (this.description == null) {
         this.description = new LanguageMap();
       }
@@ -150,13 +150,13 @@ public class ActivityDefinition {
      *
      * @see ActivityDefinition#choices
      */
-    public Builder singleChoice(Consumer<InteractionComponent.Builder> interactionComponent) {
+    public Builder addChoice(Consumer<InteractionComponent.Builder> interactionComponent) {
 
       final InteractionComponent.Builder builder = InteractionComponent.builder();
 
       interactionComponent.accept(builder);
 
-      return singleChoice(builder.build());
+      return addChoice(builder.build());
     }
 
     /**
@@ -168,7 +168,7 @@ public class ActivityDefinition {
      *
      * @see ActivityDefinition#choices
      */
-    public Builder singleChoice(InteractionComponent interactionComponent) {
+    public Builder addChoice(InteractionComponent interactionComponent) {
 
       if (choices == null) {
         choices = new InteractionComponent[] {interactionComponent};
