@@ -1,18 +1,31 @@
 # xAPI Java [![CodeQL](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml/badge.svg)](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml)
 
-xAPI Java helps you to create applications that send or receive xAPI Statements or documents. Spring-powered, production-grade applications and services with absolute minimum fuss. It takes an opinionated view of the Spring platform so that new and existing users can quickly get to the bits they need.
-
-Immutable
-
-Fluent
-
-Java xAPI model, client and tools
+xAPI Java helps you to create applications that send or receive xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements) or [Documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#10-documents).
 
 ## xAPI Model
 
-### Creating a statement
+The xAPI Model has a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
 
-A statement object can be created using the
+### Getting started
+
+To use the xAPI Model include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
+
+```xml
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>getting-started</artifactId>
+    <!-- ... -->
+    <dependencies>
+        <dependency>
+            <groupId>dev.learning.xapi</groupId>
+            <artifactId>xapi-model</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+### Creating a statement
 
 Example:
 
@@ -36,7 +49,7 @@ The Jackson ObjectMapper can be used to deserialize statements into Java objects
 Example:
 
 ```java
-String json = """
+final String json = """
     {
         "actor":{
             "objectType":"Agent",
@@ -60,7 +73,7 @@ String json = """
         }
     }""";
 
-Statement statement = objectMapper.readValue(json, Statement.class);
+final Statement statement = objectMapper.readValue(json, Statement.class);
 ```
 
 ### Serializing Statements
@@ -77,6 +90,6 @@ final Statement statement = Statement.builder()
         .definition(d -> d.singleName(Locale.ENGLISH, "Simple Statement")))
     .build();
 
-String json = objectMapper.writeValueAsString(statement);
+final String json = objectMapper.writeValueAsString(statement);
 
 ```
