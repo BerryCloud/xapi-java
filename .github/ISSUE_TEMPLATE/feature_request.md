@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest a new feature for Lift
+about: Suggest a new feature for xAPI-Java
 title: ''
 labels: enhancement
 assignees: ''
