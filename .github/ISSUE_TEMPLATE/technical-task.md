@@ -1,6 +1,6 @@
 ---
 name: Technical task
-about: Suggest a new technical task for Lift
+about: Suggest a new technical task for xAPI-Java
 title: ''
 labels: ''
 assignees: ''
