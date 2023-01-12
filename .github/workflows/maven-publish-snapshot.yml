@@ -1,16 +1,14 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Publish snapshot to the Sonatype OSSRH
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    branches: [release-*]
 
 jobs:
-  build:
+  publish-snapshot:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +19,12 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Publish snapshot package
+        run: mvn -B deploy --file pom.xml
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
