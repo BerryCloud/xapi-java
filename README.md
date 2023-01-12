@@ -16,6 +16,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
     <artifactId>getting-started</artifactId>
     <!-- ... -->
     <dependencies>
+        <!-- ... -->
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
