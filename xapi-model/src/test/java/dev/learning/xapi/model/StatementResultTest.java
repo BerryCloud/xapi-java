@@ -2,17 +2,12 @@
  * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
-package dev.learning.xapi.model.resources;
+package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.learning.xapi.model.Statement;
-import dev.learning.xapi.model.StatementResult;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -20,6 +15,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * StatementResult Tests.
