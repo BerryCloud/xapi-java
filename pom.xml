@@ -9,7 +9,7 @@
   </parent>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-build</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>xAPI Build</name>
   <description>learning.dev xAPI Build</description>
@@ -71,6 +71,7 @@
     <url>https://github.com/BerryCloud/xapi-java</url>
     <connection>scm:git:https://github.com/BerryCloud/xapi-java.git</connection>
     <developerConnection>scm:git:https://github.com/BerryCloud/xapi-java.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
@@ -277,7 +278,7 @@
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-model</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
