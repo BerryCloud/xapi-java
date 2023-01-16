@@ -36,7 +36,7 @@ public class XapiClient {
 
             .queryParam("stateId", params.getStateId())
 
-            .queryParamIfPresent("deliveryDate", params.getRegistration())
+            .queryParamIfPresent("registration", params.getRegistration())
 
             .build())
 
