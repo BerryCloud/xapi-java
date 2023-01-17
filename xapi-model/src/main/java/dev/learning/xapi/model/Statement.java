@@ -114,6 +114,8 @@ public class Statement {
      */
     public Builder actor(@SuppressWarnings("rawtypes") Consumer<Agent.Builder> agent) {
 
+      // TODO Handle a Group Builder
+
       final Agent.Builder<?, ?> builder = Agent.builder();
 
       agent.accept(builder);
@@ -124,15 +126,15 @@ public class Statement {
     /**
      * Sets the agent.
      *
-     * @param agent The agent of the Statement
+     * @param actor The actor of the Statement
      *
      * @return This builder
      *
      * @see Statement#actor
      */
-    public Builder actor(Agent agent) {
+    public Builder actor(Actor actor) {
 
-      this.actor = agent;
+      this.actor = actor;
 
       return this;
     }
