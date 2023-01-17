@@ -422,6 +422,4 @@ class AttachmentTests {
 
   }
 
-
-
 }
