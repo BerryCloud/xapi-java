@@ -5,6 +5,7 @@
 package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -111,6 +112,18 @@ class InteractionComponentTests {
 
     // Then Result Is Expected
     assertThat(result, is("InteractionComponent(id=1, description={en=value})"));
+
+  }
+
+  @Test
+  void whenBuildingInteractionComponentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
+
+    // When Building InteractionComponent With Two Description Values
+    final InteractionComponent attachment = InteractionComponent.builder().id("1")
+        .addDescription(Locale.ENGLISH, "value").addDescription(Locale.GERMAN, "Wert").build();
+
+    // Then Description Language Map Has Two Entries
+    assertThat(attachment.getDescription(), aMapWithSize(2));
 
   }
 
