@@ -62,8 +62,7 @@ public class Group extends Actor {
      *
      * @see Group#member
      */
-    public Builder<C, B> addMember(
-        @SuppressWarnings("rawtypes") Consumer<Agent.Builder> member) {
+    public Builder<C, B> addMember(@SuppressWarnings("rawtypes") Consumer<Agent.Builder> member) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 

@@ -116,7 +116,7 @@ public class Context {
      * @see Context#instructor
      */
     public Builder agentInstructor(
-        @SuppressWarnings("rawtypes") Consumer<Actor.Builder> instructor) {
+        @SuppressWarnings("rawtypes") Consumer<Agent.Builder> instructor) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
