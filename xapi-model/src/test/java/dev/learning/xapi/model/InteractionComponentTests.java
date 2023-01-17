@@ -119,11 +119,11 @@ class InteractionComponentTests {
   void whenBuildingInteractionComponentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
 
     // When Building InteractionComponent With Two Description Values
-    final InteractionComponent attachment = InteractionComponent.builder().id("1")
+    final InteractionComponent interactionComponent = InteractionComponent.builder().id("1")
         .addDescription(Locale.ENGLISH, "value").addDescription(Locale.GERMAN, "Wert").build();
 
     // Then Description Language Map Has Two Entries
-    assertThat(attachment.getDescription(), aMapWithSize(2));
+    assertThat(interactionComponent.getDescription(), aMapWithSize(2));
 
   }
 
