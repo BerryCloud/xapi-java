@@ -22,7 +22,7 @@ import lombok.Value;
  * This class represents the xAPI Person object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#person-properties">xAPI
  *      Person</a>
@@ -34,7 +34,7 @@ import lombok.Value;
 public class Person {
 
   @Default
-  private ObjectType objectType = ObjectType.PERSON;
+  private final ObjectType objectType = ObjectType.PERSON;
 
   /**
    * List of names.

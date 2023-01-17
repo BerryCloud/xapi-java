@@ -26,7 +26,7 @@ import lombok.Value;
 public class StatementReference implements StatementObject, SubStatementObject {
 
   @Default
-  private ObjectType objectType = ObjectType.STATEMENTREF;
+  private final ObjectType objectType = ObjectType.STATEMENTREF;
 
   /**
    * The UUID of a Statement.
