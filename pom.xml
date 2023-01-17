@@ -9,7 +9,7 @@
   </parent>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-build</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>xAPI Build</name>
   <description>learning.dev xAPI Build</description>
@@ -71,6 +71,7 @@
     <url>https://github.com/BerryCloud/xapi-java</url>
     <connection>scm:git:https://github.com/BerryCloud/xapi-java.git</connection>
     <developerConnection>scm:git:https://github.com/BerryCloud/xapi-java.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
@@ -146,6 +147,13 @@
               <goals>
                 <goal>sign</goal>
               </goals>
+              <configuration>
+                <!-- Prevent gpg from using pinentry programs. Fixes: gpg: signing failed: Inappropriate ioctl for device -->
+                <gpgArguments>
+                  <arg>--pinentry-mode</arg>
+                  <arg>loopback</arg>
+                </gpgArguments>
+              </configuration>
             </execution>
           </executions>
         </plugin>
@@ -255,6 +263,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <useReleaseProfile>false</useReleaseProfile>
           <releaseProfiles>release</releaseProfiles>
@@ -269,7 +278,7 @@
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-model</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
