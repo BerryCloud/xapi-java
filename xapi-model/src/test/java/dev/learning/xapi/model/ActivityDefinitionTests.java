@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -347,8 +348,7 @@ class ActivityDefinitionTests {
 
         .addName(Locale.ENGLISH, "Choice")
 
-        .addDescription(Locale.ENGLISH,
-            "Which of these prototypes are available at the beta site?")
+        .addDescription(Locale.ENGLISH, "Which of these prototypes are available at the beta site?")
 
         .interactionType(InteractionType.CHOICE)
 
@@ -391,7 +391,54 @@ class ActivityDefinitionTests {
         "ActivityDefinition(name={en=Does the xAPI include the concept of statements?}, description={en=pong[.]1:[,]dg[.]:10[,]lunch[.]}, type=http://adlnet.gov/expapi/activities/cmi.interaction, moreInfo=http://example.com/more, interactionType=TRUE_FALSE, correctResponsesPattern=[{case_matters=false}{lang=en}To store and provide access to learning experiences.], choices=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], scale=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], source=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], target=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], steps=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], extensions={http://url=www.example.com})"));
   }
 
-  // Then Null Pointer Is Thrown
+  @Test
+  void whenBuildingActivityDefinitionWithTwoNameValuesThenNameLanguageMapHasTwoEntries() {
 
+    // When Building ActivityDefinition With Two Name Values
+    final ActivityDefinition activityDefinition = ActivityDefinition.builder()
+
+        .addName(Locale.ENGLISH, "True false question")
+
+        .addName(Locale.GERMAN, "Richtig / Falsch-Frage")
+
+        .addDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
+
+        .interactionType(InteractionType.TRUE_FALSE)
+
+        .correctResponsesPattern(new String[] {"true"})
+
+        .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
+
+        .build();
+
+    // Then Name Language Map Has Two Entries
+    assertThat(activityDefinition.getName(), aMapWithSize(2));
+
+  }
+
+  @Test
+  void whenBuildingActivityDefinitionWithTwoDescriptionValuesThenDescriptionLanguageMapHasTwoEntries() {
+
+    // When Building ActivityDefinition With Two Description Values
+    final ActivityDefinition activityDefinition = ActivityDefinition.builder()
+
+        .addName(Locale.ENGLISH, "True false question")
+
+        .addDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
+
+        .addDescription(Locale.GERMAN, "Enthält die xAPI das Konzept von Anweisungen?")
+
+        .interactionType(InteractionType.TRUE_FALSE)
+
+        .correctResponsesPattern(new String[] {"true"})
+
+        .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
+
+        .build();
+
+    // Then Description Language Map Has Two Entries
+    assertThat(activityDefinition.getDescription(), aMapWithSize(2));
+
+  }
 
 }
