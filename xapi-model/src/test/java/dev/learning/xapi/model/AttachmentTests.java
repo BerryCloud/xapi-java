@@ -188,7 +188,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenValidatingAttachmentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
 
     final Attachment attachment = Attachment.builder()
@@ -219,7 +219,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutUsageTypeThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutUsageTypeThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 
@@ -247,7 +247,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutDisplayThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutDisplayThenConstraintViolationsSizeIsOne() {
 
 
     final Attachment attachment = Attachment.builder()
@@ -276,7 +276,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutContentTypeThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutContentTypeThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 
@@ -304,7 +304,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutSha2ThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutSha2ThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 
@@ -332,7 +332,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutLengthThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutLengthThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 

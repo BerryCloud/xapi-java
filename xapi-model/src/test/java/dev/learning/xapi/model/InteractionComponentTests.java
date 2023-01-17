@@ -115,7 +115,7 @@ class InteractionComponentTests {
   }
 
   @Test
-  public void whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final InteractionComponent interactionComponent =
         InteractionComponent.builder().id("1").addDescription(Locale.ENGLISH, "value").build();
@@ -130,7 +130,7 @@ class InteractionComponentTests {
   }
 
   @Test
-  public void whenValidatingInteractionComponentWithoutIdThenConstraintViolationsSizeIsOne() {
+  void whenValidatingInteractionComponentWithoutIdThenConstraintViolationsSizeIsOne() {
 
     final InteractionComponent interactionComponent =
         InteractionComponent.builder().addDescription(Locale.ENGLISH, "value").build();
