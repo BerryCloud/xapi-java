@@ -315,7 +315,7 @@ class VerbTests {
   }
 
   @Test
-  public void whenValidatingVerbWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenValidatingVerbWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final Verb verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/answered")
         .addDisplay(Locale.ENGLISH, "answered").build();
@@ -329,7 +329,7 @@ class VerbTests {
   }
 
   @Test
-  public void whenValidatingVerbWithoutIdThenConstraintViolationsSizeIsOne() {
+  void whenValidatingVerbWithoutIdThenConstraintViolationsSizeIsOne() {
 
     final Verb verb = Verb.builder().addDisplay(Locale.ENGLISH, "answered").build();
 
