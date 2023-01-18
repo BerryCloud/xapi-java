@@ -1,4 +1,4 @@
-# xAPI Java [![CodeQL](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml/badge.svg)](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=BerryCloud_xapi-java&metric=coverage)](https://sonarcloud.io/summary/new_code?id=BerryCloud_xapi-java) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=BerryCloud_xapi-java&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=BerryCloud_xapi-java)
+# xAPI Java [![CodeQL](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml/badge.svg)](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BerryCloud_xapi-java&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=BerryCloud_xapi-java)
 
 xAPI Java helps you to create applications that send or receive xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements) or [Documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#10-documents).
 
