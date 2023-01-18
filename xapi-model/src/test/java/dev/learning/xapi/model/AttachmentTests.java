@@ -5,6 +5,7 @@
 package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -187,8 +188,70 @@ class AttachmentTests {
 
   }
 
+  /*
+   * Builder Tests
+   */
+
   @Test
-  public void whenValidatingAttachmentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenBuildingAttachmentWithTwoDisplayValuesThenDisplayLanguageMapHasTwoEntries() {
+
+    // When Building Attachment With Two Display Values
+    final Attachment attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
+
+        .addDisplay(Locale.US, "Signature")
+
+        .addDisplay(Locale.GERMAN, "Unterschrift")
+
+        .addDescription(Locale.US, "A test signature")
+
+        .contentType("application/octet-stream")
+
+        .length(4235)
+
+        .sha2("672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634")
+
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Display Language Map Has Two Entries
+    assertThat(attachment.getDisplay(), aMapWithSize(2));
+
+  }
+
+  @Test
+  void whenBuildingAttachmentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
+
+    // When Building Attachment With Two Description Values
+    final Attachment attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
+
+        .addDisplay(Locale.US, "Signature")
+
+        .addDescription(Locale.US, "A test signature")
+
+        .addDescription(Locale.GERMAN, "Eine Testsignatur")
+
+        .contentType("application/octet-stream")
+
+        .length(4235)
+
+        .sha2("672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634")
+
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Description Language Map Has Two Entries
+    assertThat(attachment.getDescription(), aMapWithSize(2));
+
+  }
+
+  @Test
+  void whenValidatingAttachmentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
 
     final Attachment attachment = Attachment.builder()
@@ -219,7 +282,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutUsageTypeThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutUsageTypeThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 
@@ -247,7 +310,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutDisplayThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutDisplayThenConstraintViolationsSizeIsOne() {
 
 
     final Attachment attachment = Attachment.builder()
@@ -276,7 +339,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutContentTypeThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutContentTypeThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 
@@ -304,7 +367,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutSha2ThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutSha2ThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 
@@ -332,7 +395,7 @@ class AttachmentTests {
   }
 
   @Test
-  public void whenValidatingAttachmentWithoutLengthThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAttachmentWithoutLengthThenConstraintViolationsSizeIsOne() {
 
     final Attachment attachment = Attachment.builder()
 

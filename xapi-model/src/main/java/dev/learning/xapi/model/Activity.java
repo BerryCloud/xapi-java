@@ -30,7 +30,7 @@ import lombok.Value;
 public class Activity implements StatementObject, SubStatementObject {
 
   @Default
-  private ObjectType objectType = ObjectType.ACTIVITY;
+  private final ObjectType objectType = ObjectType.ACTIVITY;
 
   /**
    * An identifier for a single unique Activity.

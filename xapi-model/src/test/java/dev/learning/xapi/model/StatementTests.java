@@ -298,7 +298,7 @@ class StatementTests {
   }
 
   @Test
-  public void whenValidatingStatementWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenValidatingStatementWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final Statement statement = Statement.builder()
 
@@ -320,7 +320,7 @@ class StatementTests {
 
 
   @Test
-  public void whenValidatingStatementWithoutActorThenConstraintViolationsSizeIsOne() {
+  void whenValidatingStatementWithoutActorThenConstraintViolationsSizeIsOne() {
 
     final Statement statement = Statement.builder()
 
@@ -339,7 +339,7 @@ class StatementTests {
   }
 
   @Test
-  public void whenValidatingStatementWithoutAVerbThenConstraintViolationsSizeIsOne() {
+  void whenValidatingStatementWithoutAVerbThenConstraintViolationsSizeIsOne() {
 
     final Statement statement = Statement.builder()
 
@@ -358,7 +358,7 @@ class StatementTests {
   }
 
   @Test
-  public void whenValidatingStatementWithoutAnActivityThenConstraintViolationsSizeIsOne() {
+  void whenValidatingStatementWithoutAnActivityThenConstraintViolationsSizeIsOne() {
 
     final Statement statement = Statement.builder()
 
