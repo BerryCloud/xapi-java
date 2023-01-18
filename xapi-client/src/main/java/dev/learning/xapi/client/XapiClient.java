@@ -1,7 +1,13 @@
 package dev.learning.xapi.client;
 
-import dev.learning.xapi.model.ActivityState;
+import reactor.core.publisher.Mono;
+
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Client for communicating with LRS or service which implements some of the xAPI communication
@@ -12,42 +18,32 @@ import org.springframework.web.reactive.function.client.WebClient;
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *      communication resources</a>
  */
+@Slf4j
 public class XapiClient {
 
   private final WebClient client;
 
   public XapiClient(WebClient.Builder builder) {
-    this.client = builder.baseUrl(" http://example.com/xAPI/").build();
+    this.client = builder
+        
+        .defaultHeader("X-Experience-API-Version", "1.0.3")
+        
+        .build();
   }
 
-  /**
-   * Gets a state document.
-   */
-  public ActivityState getState(StateParms params) {
-
-    // TODO Auto-generated method stub
-
-    final ActivityState activityState = client.get()
-        .uri(uriBuilder -> uriBuilder.path("activities/state")
-
-            .queryParam("activityId", params.getActivityId())
-
-            .queryParam("agent", params.getAgent())
-
-            .queryParam("stateId", params.getStateId())
-
-            .queryParamIfPresent("registration", params.getRegistration())
-
-            .build())
-
-        .retrieve()
-
-        .bodyToMono(ActivityState.class)
-
-        .block();
-
-    return activityState;
-
+  public <T> ResponseEntity<T> send(XapiRequest<T> request) {
+    return request.execute(client)
+        
+        .onErrorResume(WebClientResponseException.class,
+            ex -> {
+              if(ex.getStatusCode().value() == 404) {
+                return Mono.just( new ResponseEntity<T>(HttpStatusCode.valueOf(404)));
+              }
+              log.warn("Unsuccessful request: ", ex);
+              log.debug(ex.getResponseBodyAsString());
+              return Mono.error(ex);
+            })
+        
+    .block();
   }
-
 }
