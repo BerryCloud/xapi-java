@@ -96,7 +96,7 @@ class StatementReferenceTest {
   }
 
   @Test
-  public void whenValidatingStatementReferenceWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenValidatingStatementReferenceWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final StatementReference statementReference = StatementReference.builder()
         .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")).build();
@@ -111,7 +111,7 @@ class StatementReferenceTest {
   }
 
   @Test
-  public void whenStatementReferenceIsBuiltWithoutIdThenNullPointerIsThrown() {
+  void whenStatementReferenceIsBuiltWithoutIdThenNullPointerIsThrown() {
 
     final StatementReference statementReference = StatementReference.builder().build();
 

@@ -1,4 +1,4 @@
-# xAPI Java [![CodeQL](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml/badge.svg)](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml)
+# xAPI Java [![CodeQL](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml/badge.svg)](https://github.com/BerryCloud/xapi-java/actions/workflows/codeql.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BerryCloud_xapi-java&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=BerryCloud_xapi-java)
 
 xAPI Java helps you to create applications that send or receive xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements) or [Documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#10-documents).
 
@@ -38,7 +38,7 @@ final Statement statement = Statement.builder()
     .verb(Verb.ATTEMPTED)
 
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-        .definition(d -> d.singleName(Locale.ENGLISH, "Simple Statement")))
+        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
 
     .build();
 ```
@@ -88,7 +88,7 @@ Example:
 final Statement statement = Statement.builder()
     .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-        .definition(d -> d.singleName(Locale.ENGLISH, "Simple Statement")))
+        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
     .build();
 
 final String json = objectMapper.writeValueAsString(statement);

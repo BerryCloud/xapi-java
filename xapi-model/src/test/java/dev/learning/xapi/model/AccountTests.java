@@ -114,7 +114,7 @@ class AccountTests {
   }
 
   @Test
-  public void whenValidatingAccountWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void whenValidatingAccountWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
 
     final Account account = Account.builder()
@@ -134,7 +134,7 @@ class AccountTests {
   }
 
   @Test
-  public void whenValidatingAccountWithoutNameThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAccountWithoutNameThenConstraintViolationsSizeIsOne() {
 
     final Account account = Account.builder()
 
@@ -151,7 +151,7 @@ class AccountTests {
   }
 
   @Test
-  public void whenValidatingAccountWithoutHomepageThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAccountWithoutHomepageThenConstraintViolationsSizeIsOne() {
 
     final Account account = Account.builder()
 
@@ -168,7 +168,7 @@ class AccountTests {
   }
 
   @Test
-  public void whenValidatingAccountWithEmptyNameThenConstraintViolationsSizeIsOne() {
+  void whenValidatingAccountWithEmptyNameThenConstraintViolationsSizeIsOne() {
 
     final Account account = Account.builder()
 
