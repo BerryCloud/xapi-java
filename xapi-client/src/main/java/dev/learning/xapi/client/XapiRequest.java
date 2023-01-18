@@ -11,7 +11,7 @@ import org.springframework.web.util.UriBuilder;
  * Base class for xAPI request.
  *
  * @author István Rátkai (Selindek)
- * @param <T> The response type of the request
+ * @param <T> The type of the response body. Can be {@link Void} for responses without body.
  */
 @SuperBuilder()
 @RequiredArgsConstructor

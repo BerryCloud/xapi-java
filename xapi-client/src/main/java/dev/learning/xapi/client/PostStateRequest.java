@@ -31,7 +31,7 @@ public class PostStateRequest extends DeleteStateRequest {
    */
   @NonNull
   @Default
-  private String contentType = MediaType.APPLICATION_JSON_VALUE;
+  private MediaType contentType = MediaType.APPLICATION_JSON;
 
   /**
    * The body of the request.
@@ -42,7 +42,7 @@ public class PostStateRequest extends DeleteStateRequest {
   @Override
   protected void headers(HttpHeaders headers) {
     super.headers(headers);
-    headers.set(HttpHeaders.CONTENT_TYPE, contentType);
+    headers.setContentType(contentType);
   }
 
   @Override

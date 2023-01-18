@@ -48,13 +48,50 @@ public class XapiClient {
   /**
    * Sends an xAPI request.
    *
-   * @param <T>     The response type is defined by the request parameter.
+   * @param <T>     The response type is defined by the <i>request</i> parameter.
    * @param request an {@link XapiRequest} object describing the xAPI request.
    * @return a {@link ResponseEntity} containing the response object defined by the <i>request</i>
    *         parameter.
    */
   @SuppressWarnings("unchecked")
   public <T> ResponseEntity<T> send(XapiRequest<T> request) {
+    return _send(request,
+        (Class<T>) GenericTypeResolver.resolveTypeArgument(request.getClass(), XapiRequest.class));
+  }
+
+  /**
+   * <p>
+   * Convenient type-safe method for sending a {@link GetStateRequest} which expects an instance of
+   * a given JAVA class as a response.
+   * </p>
+   * <p>
+   * The {@link GetStateRequest} is the only xAPI request where the type of the response is not
+   * defined. Learning Record Providers can store ANY kind of data here. The type conversion of the
+   * returned state object happens based on the <strong>Content-Type</strong> header provided when
+   * the state was stored. If the stored state is incompatible with the
+   * <strong>Content-Type</strong> header or it cannot be converted to the expected response type
+   * then a {@link RuntimeException} is thrown.
+   * </p>
+   * <p>
+   * If the generic {@link XapiClient#send(XapiRequest)} method is used with {@link GetStateRequest}
+   * request then the state is returned a String.
+   * </p>
+   *
+   * @param <T>          The response type is defined by the <i>responseType</i> parameter.
+   * @param request      an {@link GetStateRequest} object.
+   * @param responseType a {@link Class} object defining the response type of the returning state.
+   * @return a {@link ResponseEntity} containing the response object .
+   * @see <a href=
+   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#description-4">State
+   *      Resources Description</a>
+   * @throws RuntimeException when the returned state cannot be converted to the expected JAVA
+   *                          class.
+   */
+  public <T> ResponseEntity<T> send(GetStateRequest request, Class<T> responseType) {
+    return _send(request, responseType);
+  }
+
+  private <T> ResponseEntity<T> _send(XapiRequest<?> request, Class<T> responseType) {
 
     final RequestBodySpec r = client
 
@@ -77,8 +114,7 @@ public class XapiClient {
       r.bodyValue(body);
     }
 
-    return r.retrieve().toEntity(
-        (Class<T>) GenericTypeResolver.resolveTypeArgument(request.getClass(), XapiRequest.class))
+    return r.retrieve().toEntity(responseType)
 
         .onErrorResume(WebClientResponseException.class, ex -> {
           if (ex.getStatusCode().value() == 404) {
