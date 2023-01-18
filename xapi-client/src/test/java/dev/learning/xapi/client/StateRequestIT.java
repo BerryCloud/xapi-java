@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
+import dev.learning.xapi.model.Agent;
+
 
 @SpringBootTest(classes = TestApp.class)
 public class StateRequestIT {
@@ -22,7 +24,8 @@ public class StateRequestIT {
   public void t1 () {
     
     var activityId= URI.create("http://example.com");
-    var agent ="{\"name\":\"q&qq\",\"mbox\":\"mailto:admin@launchlearning.io\"}";
+    //var agent ="{\"name\":\"q&qq\",\"mbox\":\"mailto:admin@launchlearning.io\"}";
+    var agent = Agent.builder().name("qqq&www").mbox("mailto:admin@launchlearning.io").build();
     var stateId = UUID.randomUUID().toString();
     
     var getRequest = GetStateRequest.builder()
@@ -36,7 +39,8 @@ public class StateRequestIT {
   public void t2 () {
     
     var activityId= URI.create("http://example.com");
-    var agent ="{\"name\":\"qqq\",\"mbox\":\"mailto:admin@launchlearning.io\"}";
+//    var agent ="{\"name\":\"qqq\",\"mbox\":\"mailto:admin@launchlearning.io\"}";
+    var agent = Agent.builder().name("qqq&www").mbox("mailto:admin@launchlearning.io").build();
     var stateId = UUID.randomUUID().toString();
 
     var body = "qqq";
@@ -58,7 +62,9 @@ public class StateRequestIT {
   public void t3 () {
     
     var activityId= URI.create("http://example.com/"+UUID.randomUUID());
-    var agent ="{\"name\":\"qqq\",\"mbox\":\"mailto:admin@launchlearning.io\"}";
+//    var agent ="{\"name\":\"qqq\",\"mbox\":\"mailto:admin@launchlearning.io\"}";
+    var agent = Agent.builder().name("qqq&www").mbox("mailto:admin@launchlearning.io").build();
+    
     var stateId1 = UUID.randomUUID().toString();
     var stateId2 = UUID.randomUUID().toString();
 

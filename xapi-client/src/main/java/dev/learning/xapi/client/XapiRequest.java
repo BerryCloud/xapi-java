@@ -1,59 +1,59 @@
 package dev.learning.xapi.client;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.core.GenericTypeResolver;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
-import org.springframework.web.util.UriBuilder;
-
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import reactor.core.publisher.Mono;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.util.UriBuilder;
 
+/**
+ * Base class for xAPI request.
+ *
+ * @author István Rátkai (Selindek)
+ * @param <T> The response type of the request
+ */
 @SuperBuilder()
 @RequiredArgsConstructor
 abstract class XapiRequest<T> {
-  
-  @SuppressWarnings("unchecked")
-  Mono<ResponseEntity<T>> execute(WebClient client) {
-    
-    RequestBodySpec r = client
-     
-      .method(method())
-      
-      .uri(uriBuilder-> {
-        var variableMap = new HashMap<String, Object>();
-        query(uriBuilder, variableMap);
-        return uriBuilder.path(path()).build(variableMap); 
-      })
-      
-      .headers(headers -> headers(headers))
-      
-      ;
 
-    var body = getBody();
-    
-    if(body!=null) {
-      r.bodyValue(body);
-    }
-    
-    return r.retrieve().toEntity((Class<T>) (GenericTypeResolver.resolveTypeArgument(getClass(), XapiRequest.class)));
-
+  /**
+   * Callback method which sets the query parameters for the xAPI request.
+   *
+   * @param uribuilder  an {@link UriBuilder} object. The methods add query templates to the
+   *                    builder.
+   * @param variableMap a {@link Map} containing the actual values for the query templates.
+   */
+  protected void query(UriBuilder uribuilder, Map<String, Object> variableMap) {
   }
 
-  protected void query(UriBuilder uribuilder, Map<String, Object> variableMap) {}
-  
-  protected void headers(HttpHeaders headers) {}
-  
-  protected abstract HttpMethod method();
-  
-  protected abstract String path();
-  
+  /**
+   * Callback method which sets the headers for the xAPI request.
+   *
+   * @param headers a {@link HttpHeaders} object.
+   */
+  protected void headers(HttpHeaders headers) {
+  }
+
+  /**
+   * The request method.
+   *
+   * @return the request method as a {@link HttpMethod} object.
+   */
+  protected abstract HttpMethod getMethod();
+
+  /**
+   * The path of the request endpoint.
+   *
+   * @return the path of the request endpoint as a String.
+   */
+  protected abstract String getPath();
+
+  /**
+   * The request body. Default is <code>null</code>
+   *
+   * @return the request body.
+   */
   protected Object getBody() {
     return null;
   }

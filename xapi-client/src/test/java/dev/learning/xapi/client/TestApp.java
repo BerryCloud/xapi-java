@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @SpringBootConfiguration
 @EnableAutoConfiguration
 public class TestApp {
@@ -22,10 +24,10 @@ public class TestApp {
   String url;
   
   @Bean
-  public XapiClient xapiClient(WebClient.Builder webClientBuilder) {
+  public XapiClient xapiClient(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
     return new XapiClient(webClientBuilder.baseUrl(url)
         .defaultHeader(HttpHeaders.AUTHORIZATION, "basic "+ Base64Utils.encodeToString((username+":"+password)
-            .getBytes())));
+            .getBytes())), objectMapper);
   }
 
 }
