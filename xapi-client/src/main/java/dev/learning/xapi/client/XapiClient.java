@@ -3,9 +3,9 @@ package dev.learning.xapi.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Actor;
+import jakarta.validation.constraints.NotNull;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -53,10 +53,8 @@ public class XapiClient {
    * @return a {@link ResponseEntity} containing the response object defined by the <i>request</i>
    *         parameter.
    */
-  @SuppressWarnings("unchecked")
   public <T> ResponseEntity<T> send(XapiRequest<T> request) {
-    return sendRequest(request,
-        (Class<T>) GenericTypeResolver.resolveTypeArgument(request.getClass(), XapiRequest.class));
+    return sendRequest(request, request.getResponseType());
   }
 
   /**
@@ -87,11 +85,12 @@ public class XapiClient {
    * @throws RuntimeException when the returned state cannot be converted to the expected JAVA
    *                          class.
    */
-  public <T> ResponseEntity<T> send(GetStateRequest request, Class<T> responseType) {
+  public <T> ResponseEntity<T> send(GetStateRequest request, @NotNull Class<T> responseType) {
     return sendRequest(request, responseType);
   }
 
-  private <T> ResponseEntity<T> sendRequest(XapiRequest<?> request, Class<T> responseType) {
+  private <T> ResponseEntity<T> sendRequest(XapiRequest<?> request,
+      @NotNull Class<T> responseType) {
 
     final RequestBodySpec r = client
 
@@ -104,7 +103,7 @@ public class XapiClient {
           return uriBuilder.path(request.getPath()).build(variableMap);
         })
 
-        .headers(headers -> request.headers(headers))
+        .headers(request::headers)
 
     ;
 

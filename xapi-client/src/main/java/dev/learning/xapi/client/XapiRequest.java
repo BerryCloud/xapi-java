@@ -1,10 +1,13 @@
 package dev.learning.xapi.client;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.Assert;
 import org.springframework.web.util.UriBuilder;
 
 /**
@@ -16,6 +19,15 @@ import org.springframework.web.util.UriBuilder;
 @SuperBuilder()
 @RequiredArgsConstructor
 abstract class XapiRequest<T> {
+
+  @NotNull
+  @SuppressWarnings("unchecked")
+  public Class<T> getResponseType() {
+    final var responseType = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(),
+        XapiRequest.class);
+    Assert.notNull(responseType, "XapiRequest resolved generic type must not be null");
+    return responseType;
+  }
 
   /**
    * Callback method which sets the query parameters for the xAPI request.

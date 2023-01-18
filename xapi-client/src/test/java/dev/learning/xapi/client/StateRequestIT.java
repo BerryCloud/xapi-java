@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SpringBootTest(classes = TestApp.class)
-public class StateRequestIT {
+class StateRequestIT {
 
   @Autowired
   private XapiClient client;
@@ -40,7 +40,7 @@ public class StateRequestIT {
   }
 
   @Test
-  public void testGivenStateDoesNotExistWhenSendingGetStateRequestThenResponseStatusIsNotFound() {
+  void testGivenStateDoesNotExistWhenSendingGetStateRequestThenResponseStatusIsNotFound() {
 
     // Given State Does Not Exist
 
@@ -56,7 +56,7 @@ public class StateRequestIT {
   }
 
   @Test
-  public void testGivenStateExistsWhenSendingGetStateRequestThenResponseBodyIsExpected() {
+  void testGivenStateExistsWhenSendingGetStateRequestThenResponseBodyIsExpected() {
 
     // Given State Exists
     body = "text body";
@@ -79,7 +79,7 @@ public class StateRequestIT {
   }
 
   @Test
-  public void testGivenStateExistsWhenSendingTypedGetStateRequestThenResponseBodyIsExpected() {
+  void testGivenStateExistsWhenSendingTypedGetStateRequestThenResponseBodyIsExpected() {
 
     // Given State Exists
 
@@ -100,7 +100,7 @@ public class StateRequestIT {
   }
 
   @Test
-  public void testGivenMultipleStatesExistsWhenSendingGetStatesRequestThenResponseBodyIsExpected() {
+  void testGivenMultipleStatesExistsWhenSendingGetStatesRequestThenResponseBodyIsExpected() {
 
     // Given Multiple States Exists
 
