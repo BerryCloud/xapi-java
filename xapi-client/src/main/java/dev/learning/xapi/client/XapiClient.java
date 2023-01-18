@@ -55,7 +55,7 @@ public class XapiClient {
    */
   @SuppressWarnings("unchecked")
   public <T> ResponseEntity<T> send(XapiRequest<T> request) {
-    return _send(request,
+    return sendRequest(request,
         (Class<T>) GenericTypeResolver.resolveTypeArgument(request.getClass(), XapiRequest.class));
   }
 
@@ -88,10 +88,10 @@ public class XapiClient {
    *                          class.
    */
   public <T> ResponseEntity<T> send(GetStateRequest request, Class<T> responseType) {
-    return _send(request, responseType);
+    return sendRequest(request, responseType);
   }
 
-  private <T> ResponseEntity<T> _send(XapiRequest<?> request, Class<T> responseType) {
+  private <T> ResponseEntity<T> sendRequest(XapiRequest<?> request, Class<T> responseType) {
 
     final RequestBodySpec r = client
 
