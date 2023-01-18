@@ -74,7 +74,7 @@ public class XapiClient {
    * </p>
    * <p>
    * If the generic {@link XapiClient#send(XapiRequest)} method is used with {@link GetStateRequest}
-   * request then the state is returned a String.
+   * request then the state is returned as a String.
    * </p>
    *
    * @param <T>          The response type is defined by the <i>responseType</i> parameter.
