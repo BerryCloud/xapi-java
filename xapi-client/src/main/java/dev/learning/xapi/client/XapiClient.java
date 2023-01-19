@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
  * Client for communicating with LRS or service which implements some of the xAPI communication
  * resources.
  *
- * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *      communication resources</a>
