@@ -15,7 +15,7 @@ import org.springframework.http.HttpMethod;
  *      State Document DELETE</a>
  * @author István Rátkai (Selindek)
  */
-@SuperBuilder()
+@SuperBuilder
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class DeleteStateRequest extends StateRequest<Void> {

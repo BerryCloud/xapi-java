@@ -16,7 +16,7 @@ import org.springframework.web.util.UriBuilder;
  * @author István Rátkai (Selindek)
  * @param <T> The type of the response body. Can be {@link Void} for responses without body.
  */
-@SuperBuilder()
+@SuperBuilder
 @RequiredArgsConstructor
 abstract class XapiRequest<T> {
 

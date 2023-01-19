@@ -11,7 +11,7 @@ import org.springframework.http.HttpMethod;
  *      State Document PUT</a>
  * @author István Rátkai (Selindek)
  */
-@SuperBuilder()
+@SuperBuilder
 public class PutStateRequest extends PostStateRequest {
 
   @Override

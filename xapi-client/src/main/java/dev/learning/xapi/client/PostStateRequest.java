@@ -20,7 +20,7 @@ import org.springframework.http.MediaType;
  *      Procedure with Requirements</a>
  * @author István Rátkai (Selindek)
  */
-@SuperBuilder()
+@SuperBuilder
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class PostStateRequest extends DeleteStateRequest {
