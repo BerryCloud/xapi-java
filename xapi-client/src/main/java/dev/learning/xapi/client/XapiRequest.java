@@ -1,7 +1,8 @@
 package dev.learning.xapi.client;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.Map;
+
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.core.GenericTypeResolver;
@@ -20,7 +21,7 @@ import org.springframework.web.util.UriBuilder;
 @RequiredArgsConstructor
 abstract class XapiRequest<T> {
 
-  @NotNull
+  @NonNull
   @SuppressWarnings("unchecked")
   public Class<T> getResponseType() {
     final var responseType = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(),
