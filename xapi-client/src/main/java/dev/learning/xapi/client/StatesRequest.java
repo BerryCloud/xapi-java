@@ -1,8 +1,5 @@
 package dev.learning.xapi.client;
 
-import dev.learning.xapi.model.Account;
-import dev.learning.xapi.model.Actor;
-import dev.learning.xapi.model.Actor.Builder;
 import dev.learning.xapi.model.Agent;
 import java.net.URI;
 import java.util.Map;
@@ -103,7 +100,41 @@ abstract class StatesRequest<T> extends XapiRequest<T> {
 	      return self();
 
 	    }
-	  
+
+	    /**
+	     * Sets the activityId.
+	     *
+	     * @param activityId The activityId of the StatesRequest.
+	     *
+	     * @return This builder
+	     *
+	     * @see StatesRequest#activityId
+	     */
+	    public B activityId(String activityId) {
+
+	      this.activityId = URI.create(activityId);
+
+	      return self();
+
+	    }
+
+	    /**
+	     * Sets the activityId.
+	     *
+	     * @param activityId The activityId of the StatesRequest.
+	     *
+	     * @return This builder
+	     *
+	     * @see StatesRequest#activityId
+	     */
+	    public B activityId(URI activityId) {
+
+	      this.activityId = activityId;
+
+	      return self();
+
+	    }	    
+
   }
 
   
