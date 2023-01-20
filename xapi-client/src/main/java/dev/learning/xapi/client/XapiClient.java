@@ -2,9 +2,13 @@ package dev.learning.xapi.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dev.learning.xapi.client.PutStateRequest.Builder;
 import dev.learning.xapi.model.Actor;
-import jakarta.validation.constraints.NotNull;
 import java.util.HashMap;
+import java.util.function.Consumer;
+
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +60,46 @@ public class XapiClient {
   public <T> ResponseEntity<T> send(XapiRequest<T> request) {
     return sendRequest(request, request.getResponseType());
   }
+  
+  
+  //  public static abstract class Builder<T, C extends StatesRequest<T>, B extends StatesRequest.Builder<T, C, B>> extends XapiRequest.Builder<T, C, B> {
 
+
+  
+  public <C extends PutStateRequest, B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(PutStateRequest.Builder<C,B> putStateRequest) {
+
+	  var request = putStateRequest.build();
+
+	  return sendRequest(request, request.getResponseType());
+  
+	}
+
+
+  
+  public  <C extends PutStateRequest, B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(Consumer<PutStateRequest.Builder<?,?>> putStateRequest) {
+  
+      final PutStateRequest.Builder<?, ?> builder = PutStateRequest.builder();
+
+      putStateRequest.accept(builder);
+      
+      return putState(builder);
+
+  }
+
+  
+/*  
+  public Builder<C, B> account(Consumer<Account.Builder> account) {
+
+      final Account.Builder builder = Account.builder();
+
+      account.accept(builder);
+
+      return account(builder.build());
+    }
+*/  
+  
+  
+  
   /**
    * <p>
    * Convenient type-safe method for sending a {@link GetStateRequest} which expects an instance of
@@ -85,27 +128,25 @@ public class XapiClient {
    * @throws RuntimeException when the returned state cannot be converted to the expected JAVA
    *                          class.
    */
-  public <T> ResponseEntity<T> send(GetStateRequest request, @NotNull Class<T> responseType) {
+  public <T> ResponseEntity<T> send(GetStateRequest request, @NonNull Class<T> responseType) {
     return sendRequest(request, responseType);
   }
 
   private <T> ResponseEntity<T> sendRequest(XapiRequest<?> request,
-      @NotNull Class<T> responseType) {
+      @NonNull Class<T> responseType) {
 
     final RequestBodySpec r = client
 
         .method(request.getMethod())
 
         .uri(uriBuilder -> {
-          final var variableMap = new HashMap<String, Object>();
+          final var<String, Object> variableMap = new HashMap<String, Object>();
           request.query(uriBuilder, variableMap);
           convertActors(variableMap);
           return uriBuilder.path(request.getPath()).build(variableMap);
         })
 
-        .headers(request::headers)
-
-    ;
+        .headers(request::headers);
 
     final var body = request.getBody();
 
@@ -137,4 +178,6 @@ public class XapiClient {
     });
 
   }
+
+
 }

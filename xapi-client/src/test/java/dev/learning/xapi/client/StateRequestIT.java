@@ -7,9 +7,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import dev.learning.xapi.model.Actor;
 import dev.learning.xapi.model.Agent;
+import software.amazon.awssdk.services.ses.SesClient;
+import software.amazon.awssdk.services.ses.model.Body;
+import software.amazon.awssdk.services.ses.model.Content;
+import software.amazon.awssdk.services.ses.model.Destination;
+import software.amazon.awssdk.services.ses.model.Message;
+import software.amazon.awssdk.services.ses.model.SendEmailRequest;
+
 import java.awt.Point;
 import java.net.URI;
 import java.util.UUID;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +33,7 @@ class StateRequestIT {
   private XapiClient client;
 
   private URI activityId;
-  private Actor agent;
+  private Agent agent;
   private String stateId;
   private Object body;
   private MediaType contentType;
@@ -126,5 +135,82 @@ class StateRequestIT {
 
     assertThat(response.getBody(), allOf(hasItem(stateId1), hasItem(stateId2)));
   }
+  
+  
+  
+  
+  
+  @Test
+  void test1() {
 
+    // Given Multiple States Exists
+
+	    Agent agent = Agent.builder().name("admin").mbox("mailto:admin@learning.dev").build();
+
+	    /*
+
+    client.putStateRequest(PutStateRequest.builder()
+    		
+    		.activityId(URI.create("https://example.com/"))
+    		
+    		.agent(agent)
+    		
+    		.stateId("resume")
+    		
+    		.body(body));
+    		*/
+    
+  }
+  
+  
+  @Test
+  void test2() {
+	  
+    // Given Multiple States Exists
+
+    client.putState(PutStateRequest.builder()
+    		
+    		.activityId(URI.create("https://example.com/"))
+    		
+    		.agent(agent)
+    		
+    		.stateId("resume")
+    		
+    		.body(body)
+    		
+    		.contentType(MediaType.APPLICATION_JSON));
+    
+  }
+  
+  @Test
+  void test3() {
+    
+    client.putState(r -> r
+    		
+    		.activityId("https://example.com/")
+    		
+    		.agent(a -> a.mbox("hello").name("world"))
+    		
+    		.stateId("resume")
+    		
+    		.body(body)
+    		
+    		.contentType(MediaType.APPLICATION_JSON));
+ 
+  }  
+  
+  public void test4() {
+	  
+	  PutStateRequest.builder()
+		
+		.activityId("https://example.com/")
+		
+		.agent(a -> a.mbox("hello").name("world"))
+		
+		.stateId("resume")
+		
+		.body(body);
+
+  }
+  
 }
