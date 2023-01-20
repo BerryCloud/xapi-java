@@ -2,6 +2,20 @@
 
 xAPI Java helps you to create applications that send or receive xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements) or [Documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#10-documents).
 
+## xAPI Java Client
+
+```java
+client.putStateRequest(r -> r.activityId(activityId)
+
+    .agent(agent)
+
+    .stateId("resume")
+
+    .body(body)
+
+    .contentType(contentType));
+```
+
 ## xAPI Java Model
 
 The xAPI Model has a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
@@ -41,6 +55,21 @@ final Statement statement = Statement.builder()
         .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
 
     .build();
+```
+
+```java
+Agent agent = new Agent();
+agent.setMbox("mailto:info@tincanapi.com");
+
+Verb verb = new Verb("http://adlnet.gov/expapi/verbs/attempted");
+
+Activity activity = new Activity("http://rusticisoftware.github.com/TinCanJava");
+
+Statement st = new Statement();
+st.setActor(agent);
+st.setVerb(verb);
+st.setObject(activity);
+
 ```
 
 ### Deserializing Statements
