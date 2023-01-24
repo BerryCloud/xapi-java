@@ -28,7 +28,7 @@ class PutStateRequestTests {
 
     // When Building PutStateRequest With All Parameters
     assertDoesNotThrow(() -> {
-      var x = PutStateRequest.builder()
+      PutStateRequest.builder()
 
           // Parameters
 
