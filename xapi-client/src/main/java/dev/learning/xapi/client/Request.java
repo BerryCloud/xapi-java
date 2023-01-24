@@ -44,20 +44,6 @@ abstract class Request<T> {
    */
   protected void query(UriBuilder uribuilder, Map<String, Object> variableMap) {}
 
-
-
-  /**
-   * Callback method which sets the headers for the xAPI request.
-   *
-   * @param headers a {@link HttpHeaders} object.
-   */
-  /*
-   * 
-   * protected void headers(HttpHeaders httpHeaders) { httpHeaders.addAll(this.httpHeaders);
-   * 
-   * }
-   */
-
   /**
    * The request method.
    *
@@ -83,7 +69,8 @@ abstract class Request<T> {
 
 
 
-  public static abstract class Builder<T, C extends Request<T>, B extends Request.Builder<T, C, B>> {
+  public abstract static class Builder<T, C extends Request<T>,
+      B extends Request.Builder<T, C, B>> {
 
   }
 

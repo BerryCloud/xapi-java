@@ -61,23 +61,23 @@ abstract class StatesRequest<T> extends Request<T> {
     variableMap.put("agent", agent);
   }
 
-  public static abstract class Builder<T, C extends StatesRequest<T>, B extends StatesRequest.Builder<T, C, B>>
-      extends Request.Builder<T, C, B> {
+  public abstract static class Builder<T, C extends StatesRequest<T>,
+      B extends StatesRequest.Builder<T, C, B>> extends Request.Builder<T, C, B> {
 
     /**
      * Consumer Builder for agent.
      *
-     * @param account The Consumer Builder for agent.
+     * @param agent The Consumer Builder for agent.
      *
      * @return This builder
      *
      * @see StatesRequest#agent
      */
-    public B agent(Consumer<Agent.Builder<?, ?>> account) {
+    public B agent(Consumer<Agent.Builder<?, ?>> agent) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
-      account.accept(builder);
+      agent.accept(builder);
 
       return agent(builder.build());
 
@@ -86,7 +86,7 @@ abstract class StatesRequest<T> extends Request<T> {
     /**
      * Sets the agent.
      *
-     * @param account The Agent of the StatesRequest.
+     * @param agent The Agent of the StatesRequest.
      *
      * @return This builder
      *
