@@ -134,8 +134,6 @@ abstract class StatesRequest<T> extends Request<T> {
 
     }
 
-
-
     /**
      * Sets the registration.
      *
