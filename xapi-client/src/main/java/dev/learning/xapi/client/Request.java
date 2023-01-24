@@ -69,10 +69,4 @@ abstract class Request<T> {
 
 
 
-  public abstract static class Builder<T, C extends Request<T>,
-      B extends Request.Builder<T, C, B>> {
-
-  }
-
-
 }
