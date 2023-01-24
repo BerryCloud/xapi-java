@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
@@ -37,12 +36,11 @@ abstract class StatesRequest<T> extends XapiRequest<T> {
   @NonNull
   private final Agent agent;
 
-  // TODO should not have a default
+  // TODO why not final? Because it is Optional?
   /**
    * The optional <strong>registration</strong> query parameter.
    */
-  @Default
-  private Optional<UUID> registration = Optional.empty();
+  private UUID registration;
 
   @Override
   protected String getPath() {
@@ -57,85 +55,124 @@ abstract class StatesRequest<T> extends XapiRequest<T> {
 
         .queryParam("agent", "{agent}")
 
-        .queryParamIfPresent("registration", registration);
+        .queryParamIfPresent("registration", Optional.ofNullable(registration));
 
     variableMap.put("activityId", activityId);
     variableMap.put("agent", agent);
   }
-  
-  public static abstract class Builder<T, C extends StatesRequest<T>, B extends StatesRequest.Builder<T, C, B>> extends XapiRequest.Builder<T, C, B> {
- 
-	   /**
-	     * Consumer Builder for agent.
-	     *
-	     * @param account The Consumer Builder for agent.
-	     *
-	     * @return This builder
-	     *
-	     * @see StatesRequest#agent
-	     */
-	    public B agent(Consumer<Agent.Builder<?,?>> account) {
 
-	      final Agent.Builder<?, ?> builder = Agent.builder();
+  public static abstract class Builder<T, C extends StatesRequest<T>, B extends StatesRequest.Builder<T, C, B>>
+      extends XapiRequest.Builder<T, C, B> {
 
-	      account.accept(builder);
+    /**
+     * Consumer Builder for agent.
+     *
+     * @param account The Consumer Builder for agent.
+     *
+     * @return This builder
+     *
+     * @see StatesRequest#agent
+     */
+    public B agent(Consumer<Agent.Builder<?, ?>> account) {
 
-	      return agent(builder.build());
+      final Agent.Builder<?, ?> builder = Agent.builder();
 
-	    }
+      account.accept(builder);
 
-	    /**
-	     * Sets the agent.
-	     *
-	     * @param account The Agent of the StatesRequest.
-	     *
-	     * @return This builder
-	     *
-	     * @see StatesRequest#agent
-	     */
-	    public B agent(Agent agent) {
-	
-	      this.agent = agent;
+      return agent(builder.build());
 
-	      return self();
+    }
 
-	    }
+    /**
+     * Sets the agent.
+     *
+     * @param account The Agent of the StatesRequest.
+     *
+     * @return This builder
+     *
+     * @see StatesRequest#agent
+     */
+    public B agent(Agent agent) {
 
-	    /**
-	     * Sets the activityId.
-	     *
-	     * @param activityId The activityId of the StatesRequest.
-	     *
-	     * @return This builder
-	     *
-	     * @see StatesRequest#activityId
-	     */
-	    public B activityId(String activityId) {
+      this.agent = agent;
 
-	      this.activityId = URI.create(activityId);
+      return self();
 
-	      return self();
+    }
 
-	    }
+    /**
+     * Sets the activityId.
+     *
+     * @param activityId The activityId of the StatesRequest.
+     *
+     * @return This builder
+     *
+     * @see StatesRequest#activityId
+     */
+    public B activityId(String activityId) {
 
-	    /**
-	     * Sets the activityId.
-	     *
-	     * @param activityId The activityId of the StatesRequest.
-	     *
-	     * @return This builder
-	     *
-	     * @see StatesRequest#activityId
-	     */
-	    public B activityId(URI activityId) {
+      this.activityId = URI.create(activityId);
 
-	      this.activityId = activityId;
+      return self();
 
-	      return self();
+    }
 
-	    }	    
+    /**
+     * Sets the activityId.
+     *
+     * @param activityId The activityId of the StatesRequest.
+     *
+     * @return This builder
+     *
+     * @see StatesRequest#activityId
+     */
+    public B activityId(URI activityId) {
+
+      this.activityId = activityId;
+
+      return self();
+
+    }
+
+
+
+    /**
+     * Sets the registration.
+     *
+     * @param registration The registration of the StatesRequest.
+     *
+     * @return This builder
+     *
+     * @see StatesRequest#registration
+     */
+    public B registration(String registration) {
+
+      this.registration = UUID.fromString(registration);
+
+      return self();
+
+    }
+
+    /**
+     * Sets the registration.
+     *
+     * @param registration The registration of the StatesRequest.
+     *
+     * @return This builder
+     *
+     * @see StatesRequest#registration
+     */
+    public B registration(UUID registration) {
+
+      this.registration = registration;
+
+      return self();
+
+    }
+
+
 
   }
 
-  
+
 }

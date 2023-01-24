@@ -1,6 +1,5 @@
 package dev.learning.xapi.client;
 
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,31 +22,42 @@ import org.springframework.http.MediaType;
 @SuperBuilder
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class PostStateRequest extends DeleteStateRequest {
+public class PostStateRequest extends StateRequest<Void> {
 
   /**
    * The <strong>Content-Type</strong> header of the request. Default is
    * <code>application/json</code>.
    */
   @NonNull
-  @Default
-  private MediaType contentType = MediaType.APPLICATION_JSON;
+  private MediaType contentType;
 
   /**
-   * The body of the request.
+   * The state object to store.
    */
   @NonNull
-  private final Object body;
+  private final Object state;
 
   @Override
   protected void headers(HttpHeaders headers) {
     super.headers(headers);
-    headers.setContentType(contentType);
+
+    if (contentType != null) {
+      headers.setContentType(contentType);
+    } else if (headers.getContentType() == null) {
+      headers.setContentType(MediaType.APPLICATION_JSON);
+    }
+
   }
 
   @Override
   protected HttpMethod getMethod() {
     return HttpMethod.POST;
+  }
+
+  @Override
+  protected Object getBody() {
+
+    return state;
   }
 
 }

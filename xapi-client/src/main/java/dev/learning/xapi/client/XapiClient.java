@@ -2,12 +2,9 @@ package dev.learning.xapi.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import dev.learning.xapi.client.PutStateRequest.Builder;
 import dev.learning.xapi.model.Actor;
 import java.util.HashMap;
 import java.util.function.Consumer;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
@@ -35,10 +32,10 @@ public class XapiClient {
   /**
    * Default constructor for XapiClient.
    *
-   * @param builder      a {@link WebClient.Builder} object. The caller must set the baseUrl and the
-   *                     authorization header.
+   * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
+   *        authorization header.
    * @param objectMapper an {@link ObjectMapper}. It is used for converting {@link Actor} query
-   *                     parameters to JSON string during xAPI requests.
+   *        parameters to JSON string during xAPI requests.
    */
   public XapiClient(WebClient.Builder builder, ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
@@ -52,7 +49,7 @@ public class XapiClient {
   /**
    * Sends an xAPI request.
    *
-   * @param <T>     The response type is defined by the <i>request</i> parameter.
+   * @param <T> The response type is defined by the <i>request</i> parameter.
    * @param request an {@link XapiRequest} object describing the xAPI request.
    * @return a {@link ResponseEntity} containing the response object defined by the <i>request</i>
    *         parameter.
@@ -60,46 +57,29 @@ public class XapiClient {
   public <T> ResponseEntity<T> send(XapiRequest<T> request) {
     return sendRequest(request, request.getResponseType());
   }
-  
-  
-  //  public static abstract class Builder<T, C extends StatesRequest<T>, B extends StatesRequest.Builder<T, C, B>> extends XapiRequest.Builder<T, C, B> {
 
 
-  
-  public <C extends PutStateRequest, B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(PutStateRequest.Builder<C,B> putStateRequest) {
+  public <T, C extends XapiRequest<T>, B extends XapiRequest.Builder<T, C, B>> ResponseEntity<T> send(
+      XapiRequest.Builder<T, C, B> xapiRequest) {
 
-	  var request = putStateRequest.build();
+    var request = xapiRequest.build();
 
-	  return sendRequest(request, request.getResponseType());
-  
-	}
-
-
-  
-  public  <C extends PutStateRequest, B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(Consumer<PutStateRequest.Builder<?,?>> putStateRequest) {
-  
-      final PutStateRequest.Builder<?, ?> builder = PutStateRequest.builder();
-
-      putStateRequest.accept(builder);
-      
-      return putState(builder);
+    return sendRequest(request, request.getResponseType());
 
   }
 
-  
-/*  
-  public Builder<C, B> account(Consumer<Account.Builder> account) {
+  public <C extends PutStateRequest, B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(
+      Consumer<PutStateRequest.Builder<?, ?>> putStateRequest) {
 
-      final Account.Builder builder = Account.builder();
+    final PutStateRequest.Builder<?, ?> builder = PutStateRequest.builder();
 
-      account.accept(builder);
+    putStateRequest.accept(builder);
 
-      return account(builder.build());
-    }
-*/  
-  
-  
-  
+    return send(builder);
+
+  }
+
+
   /**
    * <p>
    * Convenient type-safe method for sending a {@link GetStateRequest} which expects an instance of
@@ -118,15 +98,15 @@ public class XapiClient {
    * request then the state is returned as a String.
    * </p>
    *
-   * @param <T>          The response type is defined by the <i>responseType</i> parameter.
-   * @param request      an {@link GetStateRequest} object.
+   * @param <T> The response type is defined by the <i>responseType</i> parameter.
+   * @param request an {@link GetStateRequest} object.
    * @param responseType a {@link Class} object defining the response type of the returning state.
    * @return a {@link ResponseEntity} containing the response object .
    * @see <a href=
    *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#description-4">State
    *      Resources Description</a>
    * @throws RuntimeException when the returned state cannot be converted to the expected JAVA
-   *                          class.
+   *         class.
    */
   public <T> ResponseEntity<T> send(GetStateRequest request, @NonNull Class<T> responseType) {
     return sendRequest(request, responseType);
