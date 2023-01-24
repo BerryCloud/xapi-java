@@ -50,17 +50,17 @@ public class XapiClient {
    * Sends an xAPI request.
    *
    * @param <T> The response type is defined by the <i>request</i> parameter.
-   * @param request an {@link XapiRequest} object describing the xAPI request.
+   * @param request an {@link Request} object describing the xAPI request.
    * @return a {@link ResponseEntity} containing the response object defined by the <i>request</i>
    *         parameter.
    */
-  public <T> ResponseEntity<T> send(XapiRequest<T> request) {
+  public <T> ResponseEntity<T> send(Request<T> request) {
     return sendRequest(request, request.getResponseType());
   }
 
 
-  public <T, C extends XapiRequest<T>, B extends XapiRequest.Builder<T, C, B>> ResponseEntity<T> send(
-      XapiRequest.Builder<T, C, B> xapiRequest) {
+  public <T, C extends Request<T>, B extends Request.Builder<T, C, B>> ResponseEntity<T> send(
+      Request.Builder<T, C, B> xapiRequest) {
 
     var request = xapiRequest.build();
 
@@ -94,7 +94,7 @@ public class XapiClient {
    * then a {@link RuntimeException} is thrown.
    * </p>
    * <p>
-   * If the generic {@link XapiClient#send(XapiRequest)} method is used with {@link GetStateRequest}
+   * If the generic {@link XapiClient#send(Request)} method is used with {@link GetStateRequest}
    * request then the state is returned as a String.
    * </p>
    *
@@ -112,7 +112,7 @@ public class XapiClient {
     return sendRequest(request, responseType);
   }
 
-  private <T> ResponseEntity<T> sendRequest(XapiRequest<?> request,
+  private <T> ResponseEntity<T> sendRequest(Request<?> request,
       @NonNull Class<T> responseType) {
 
     final RequestBodySpec r = client
@@ -126,7 +126,8 @@ public class XapiClient {
           return uriBuilder.path(request.getPath()).build(variableMap);
         })
 
-        .headers(request::headers);
+        //.headers(h -> request.getHttpHeaders())
+        ;
 
     final var body = request.getBody();
 

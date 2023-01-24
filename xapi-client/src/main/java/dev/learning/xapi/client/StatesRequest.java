@@ -22,7 +22,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @SuperBuilder
 @Getter
-abstract class StatesRequest<T> extends XapiRequest<T> {
+abstract class StatesRequest<T> extends Request<T> {
 
   /**
    * The <strong>activityId</strong> query parameter.
@@ -62,7 +62,7 @@ abstract class StatesRequest<T> extends XapiRequest<T> {
   }
 
   public static abstract class Builder<T, C extends StatesRequest<T>, B extends StatesRequest.Builder<T, C, B>>
-      extends XapiRequest.Builder<T, C, B> {
+      extends Request.Builder<T, C, B> {
 
     /**
      * Consumer Builder for agent.

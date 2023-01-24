@@ -21,7 +21,7 @@ import org.springframework.web.util.UriBuilder;
 @SuperBuilder
 @Getter
 @RequiredArgsConstructor
-abstract class XapiRequest<T> {
+abstract class Request<T> {
 
   @NonNull
   @Default
@@ -31,7 +31,7 @@ abstract class XapiRequest<T> {
   @SuppressWarnings("unchecked")
   public Class<T> getResponseType() {
     final var responseType =
-        (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), XapiRequest.class);
+        (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), Request.class);
     Assert.notNull(responseType, "XapiRequest resolved generic type must not be null");
     return responseType;
   }
@@ -44,15 +44,19 @@ abstract class XapiRequest<T> {
    */
   protected void query(UriBuilder uribuilder, Map<String, Object> variableMap) {}
 
+
+
   /**
    * Callback method which sets the headers for the xAPI request.
    *
    * @param headers a {@link HttpHeaders} object.
    */
-  protected void headers(HttpHeaders httpHeaders) {
-    httpHeaders.addAll(this.httpHeaders);
-
-  }
+  /*
+   * 
+   * protected void headers(HttpHeaders httpHeaders) { httpHeaders.addAll(this.httpHeaders);
+   * 
+   * }
+   */
 
   /**
    * The request method.
@@ -76,5 +80,12 @@ abstract class XapiRequest<T> {
   protected Object getBody() {
     return null;
   }
+
+
+
+  public static abstract class Builder<T, C extends Request<T>, B extends Request.Builder<T, C, B>> {
+
+  }
+
 
 }

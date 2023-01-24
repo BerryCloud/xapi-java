@@ -1,7 +1,5 @@
 package dev.learning.xapi.client;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 
@@ -14,8 +12,6 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-@Getter
-@EqualsAndHashCode(callSuper = true)
 public class DeleteStateRequest extends StateRequest<Void> {
 
   @Override

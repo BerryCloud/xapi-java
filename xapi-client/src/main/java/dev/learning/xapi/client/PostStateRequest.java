@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
@@ -29,7 +28,7 @@ public class PostStateRequest extends StateRequest<Void> {
    * <code>application/json</code>.
    */
   @NonNull
-  private MediaType contentType;
+  private final MediaType contentType;
 
   /**
    * The state object to store.
@@ -37,17 +36,15 @@ public class PostStateRequest extends StateRequest<Void> {
   @NonNull
   private final Object state;
 
-  @Override
-  protected void headers(HttpHeaders headers) {
-    super.headers(headers);
 
-    if (contentType != null) {
-      headers.setContentType(contentType);
-    } else if (headers.getContentType() == null) {
-      headers.setContentType(MediaType.APPLICATION_JSON);
-    }
-
-  }
+  /*
+   * @Override protected void headers(HttpHeaders headers) { super.headers(headers);
+   * 
+   * if (contentType != null) { headers.setContentType(contentType); } else if
+   * (headers.getContentType() == null) { headers.setContentType(MediaType.APPLICATION_JSON); }
+   * 
+   * }
+   */
 
   @Override
   protected HttpMethod getMethod() {
@@ -59,5 +56,7 @@ public class PostStateRequest extends StateRequest<Void> {
 
     return state;
   }
+
+
 
 }

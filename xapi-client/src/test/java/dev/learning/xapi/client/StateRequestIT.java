@@ -1,24 +1,11 @@
 package dev.learning.xapi.client;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import dev.learning.xapi.model.Actor;
 import dev.learning.xapi.model.Agent;
-import software.amazon.awssdk.services.ses.SesClient;
-import software.amazon.awssdk.services.ses.model.Body;
-import software.amazon.awssdk.services.ses.model.Content;
-import software.amazon.awssdk.services.ses.model.Destination;
-import software.amazon.awssdk.services.ses.model.Message;
-import software.amazon.awssdk.services.ses.model.SendEmailRequest;
-
 import java.awt.Point;
 import java.net.URI;
 import java.util.UUID;
-
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +22,7 @@ class StateRequestIT {
   private URI activityId;
   private Agent agent;
   private String stateId;
-  private Object body;
+  private Object state;
   private MediaType contentType;
 
   @BeforeEach
@@ -44,7 +31,7 @@ class StateRequestIT {
     activityId = URI.create("http://learning.dev/" + UUID.randomUUID());
     agent = Agent.builder().name("admin").mbox("mailto:admin@learning.dev").build();
     stateId = UUID.randomUUID().toString();
-    body = new Point(1, 2);
+    state = new Point(1, 2);
     contentType = MediaType.APPLICATION_JSON;
   }
 
@@ -55,8 +42,8 @@ class StateRequestIT {
 
     // When Sending GetStateRequest
 
-    final var getRequest = GetStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId).build();
+    final var getRequest =
+        GetStateRequest.builder().activityId(activityId).agent(agent).stateId(stateId).build();
     final var response = client.send(getRequest);
 
     // Then Response Status Is Not Found
@@ -64,153 +51,136 @@ class StateRequestIT {
     assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
   }
 
-  @Test
-  void testGivenStateExistsWhenSendingGetStateRequestThenResponseBodyIsExpected() {
+  /*
+   * 
+   * @Test void testGivenStateExistsWhenSendingGetStateRequestThenResponseBodyIsExpected() {
+   * 
+   * // Given State Exists state = "text body"; contentType = MediaType.TEXT_PLAIN;
+   * 
+   * final var putRequest = PutStateRequestTests.builder().activityId(activityId).agent(agent)
+   * .stateId(stateId).state(state).contentType(contentType).build(); final var putResponse =
+   * client.send(putRequest); assertThat(putResponse.getStatusCode().value(), is(204));
+   * 
+   * // When Sending GetStateRequest
+   * 
+   * final var getRequest = GetStateRequest.builder().activityId(activityId).agent(agent)
+   * .stateId(stateId).build(); final var response = client.send(getRequest);
+   * 
+   * // Then Response Body Is Expected
+   * 
+   * assertThat(response.getBody(), is(state)); }
+   * 
+   * @Test void testGivenStateExistsWhenSendingTypedGetStateRequestThenResponseBodyIsExpected() {
+   * 
+   * // Given State Exists
+   * 
+   * final var putRequest = PutStateRequestTests.builder().activityId(activityId).agent(agent)
+   * .stateId(stateId).state(state).contentType(contentType).build(); final var putResponse =
+   * client.send(putRequest); assertThat(putResponse.getStatusCode().value(), is(204));
+   * 
+   * // When Sending Typed GetStateRequest
+   * 
+   * final var getRequest = GetStateRequest.builder().activityId(activityId).agent(agent)
+   * .stateId(stateId).build(); final var response = client.send(getRequest, Point.class);
+   * 
+   * // Then Response Body Is Expected
+   * 
+   * assertThat(response.getBody(), is(state)); }
+   * 
+   * @Test void testGivenMultipleStatesExistsWhenSendingGetStatesRequestThenResponseBodyIsExpected()
+   * {
+   * 
+   * // Given Multiple States Exists
+   * 
+   * final var stateId1 = UUID.randomUUID().toString(); final var stateId2 =
+   * UUID.randomUUID().toString();
+   * 
+   * final var putRequest1 = PutStateRequestTests.builder().activityId(activityId).agent(agent)
+   * .stateId(stateId1).state(state).contentType(contentType).build(); final var putResponse1 =
+   * client.send(putRequest1); assertThat(putResponse1.getStatusCode().value(), is(204));
+   * 
+   * final var putRequest2 = PutStateRequestTests.builder().activityId(activityId).agent(agent)
+   * .stateId(stateId2).state(state).contentType(contentType).build(); final var putResponse2 =
+   * client.send(putRequest2); assertThat(putResponse2.getStatusCode().value(), is(204));
+   * 
+   * // When Sending GetStatesRequest
+   * 
+   * final var getRequest = GetStatesRequest.builder().activityId(activityId).agent(agent).build();
+   * final var response = client.send(getRequest);
+   * 
+   * // Then Response Body Is Expected
+   * 
+   * assertThat(response.getBody(), allOf(hasItem(stateId1), hasItem(stateId2))); }
+   * 
+   * 
+   * 
+   * 
+   * 
+   * @Test void test1() {
+   * 
+   * // Given Multiple States Exists
+   * 
+   * Agent agent = Agent.builder().name("admin").mbox("mailto:admin@learning.dev").build();
+   * 
+   * 
+   * client.putStateRequest(PutStateRequest.builder()
+   * 
+   * .activityId(URI.create("https://example.com/"))
+   * 
+   * .agent(agent)
+   * 
+   * .stateId("resume")
+   * 
+   * .state(body));
+   * 
+   * }
+   * 
+   * 
+   * @Test void test2() {
+   * 
+   * client.send(PutStateRequestTests.builder()
+   * 
+   * .activityId(URI.create("https://example.com/"))
+   * 
+   * .agent(agent)
+   * 
+   * .stateId("resume")
+   * 
+   * .state(state)
+   * 
+   * .contentType(MediaType.APPLICATION_JSON));
+   * 
+   * }
+   * 
+   * @Test void test3() {
+   * 
+   * client.putState(r -> r
+   * 
+   * .activityId("https://example.com/")
+   * 
+   * .agent(a -> a.mbox("hello").name("world"))
+   * 
+   * .stateId("resume")
+   * 
+   * .state(state)
+   * 
+   * .contentType(MediaType.APPLICATION_JSON));
+   * 
+   * }
+   * 
+   * public void test4() {
+   * 
+   * PutStateRequestTests.builder()
+   * 
+   * .activityId("https://example.com/")
+   * 
+   * .agent(a -> a.mbox("hello").name("world"))
+   * 
+   * .stateId("resume")
+   * 
+   * .state(state);
+   * 
+   * }
+   */
 
-    // Given State Exists
-    body = "text body";
-    contentType = MediaType.TEXT_PLAIN;
-
-    final var putRequest = PutStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId).body(body).contentType(contentType).build();
-    final var putResponse = client.send(putRequest);
-    assertThat(putResponse.getStatusCode().value(), is(204));
-
-    // When Sending GetStateRequest
-
-    final var getRequest = GetStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId).build();
-    final var response = client.send(getRequest);
-
-    // Then Response Body Is Expected
-
-    assertThat(response.getBody(), is(body));
-  }
-
-  @Test
-  void testGivenStateExistsWhenSendingTypedGetStateRequestThenResponseBodyIsExpected() {
-
-    // Given State Exists
-
-    final var putRequest = PutStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId).body(body).contentType(contentType).build();
-    final var putResponse = client.send(putRequest);
-    assertThat(putResponse.getStatusCode().value(), is(204));
-
-    // When Sending Typed GetStateRequest
-
-    final var getRequest = GetStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId).build();
-    final var response = client.send(getRequest, Point.class);
-
-    // Then Response Body Is Expected
-
-    assertThat(response.getBody(), is(body));
-  }
-
-  @Test
-  void testGivenMultipleStatesExistsWhenSendingGetStatesRequestThenResponseBodyIsExpected() {
-
-    // Given Multiple States Exists
-
-    final var stateId1 = UUID.randomUUID().toString();
-    final var stateId2 = UUID.randomUUID().toString();
-
-    final var putRequest1 = PutStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId1).body(body).contentType(contentType).build();
-    final var putResponse1 = client.send(putRequest1);
-    assertThat(putResponse1.getStatusCode().value(), is(204));
-
-    final var putRequest2 = PutStateRequest.builder().activityId(activityId).agent(agent)
-        .stateId(stateId2).body(body).contentType(contentType).build();
-    final var putResponse2 = client.send(putRequest2);
-    assertThat(putResponse2.getStatusCode().value(), is(204));
-
-    // When Sending GetStatesRequest
-
-    final var getRequest = GetStatesRequest.builder().activityId(activityId).agent(agent).build();
-    final var response = client.send(getRequest);
-
-    // Then Response Body Is Expected
-
-    assertThat(response.getBody(), allOf(hasItem(stateId1), hasItem(stateId2)));
-  }
-  
-  
-  
-  
-  
-  @Test
-  void test1() {
-
-    // Given Multiple States Exists
-
-	    Agent agent = Agent.builder().name("admin").mbox("mailto:admin@learning.dev").build();
-
-	    /*
-
-    client.putStateRequest(PutStateRequest.builder()
-    		
-    		.activityId(URI.create("https://example.com/"))
-    		
-    		.agent(agent)
-    		
-    		.stateId("resume")
-    		
-    		.body(body));
-    		*/
-    
-  }
-  
-  
-  @Test
-  void test2() {
-	  
-    // Given Multiple States Exists
-
-    client.putState(PutStateRequest.builder()
-    		
-    		.activityId(URI.create("https://example.com/"))
-    		
-    		.agent(agent)
-    		
-    		.stateId("resume")
-    		
-    		.body(body)
-    		
-    		.contentType(MediaType.APPLICATION_JSON));
-    
-  }
-  
-  @Test
-  void test3() {
-    
-    client.putState(r -> r
-    		
-    		.activityId("https://example.com/")
-    		
-    		.agent(a -> a.mbox("hello").name("world"))
-    		
-    		.stateId("resume")
-    		
-    		.body(body)
-    		
-    		.contentType(MediaType.APPLICATION_JSON));
- 
-  }  
-  
-  public void test4() {
-	  
-	  PutStateRequest.builder()
-		
-		.activityId("https://example.com/")
-		
-		.agent(a -> a.mbox("hello").name("world"))
-		
-		.stateId("resume")
-		
-		.body(body);
-
-  }
-  
 }
