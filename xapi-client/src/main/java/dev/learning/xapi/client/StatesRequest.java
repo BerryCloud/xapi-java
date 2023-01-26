@@ -36,11 +36,10 @@ abstract class StatesRequest<T> extends Request<T> {
   @NonNull
   private final Agent agent;
 
-  // TODO why not final? Because it is Optional?
   /**
    * The optional <strong>registration</strong> query parameter.
    */
-  private UUID registration;
+  protected final UUID registration;
 
   @Override
   protected String getPath() {
@@ -48,17 +47,20 @@ abstract class StatesRequest<T> extends Request<T> {
   }
 
   @Override
-  protected void query(UriBuilder uriBuilder, Map<String, Object> variableMap) {
-    uriBuilder
+  protected URI query(UriBuilder uriBuilder, Map<String, ?> uriVaribles) {
+
+    // Map<String, Object> variableMap
+
+    return uriBuilder
 
         .queryParam("activityId", "{activityId}")
 
         .queryParam("agent", "{agent}")
 
-        .queryParamIfPresent("registration", Optional.ofNullable(registration));
+        .queryParamIfPresent("registration", Optional.ofNullable(registration)).build(uriVaribles);
 
-    variableMap.put("activityId", activityId);
-    variableMap.put("agent", agent);
+    // variableMap.put("activityId", activityId);
+    // variableMap.put("agent", agent);
   }
 
   public abstract static class Builder<T, C extends StatesRequest<T>,

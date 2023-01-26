@@ -1,5 +1,6 @@
 package dev.learning.xapi.client;
 
+import java.net.URI;
 import java.util.Map;
 import lombok.Builder.Default;
 import lombok.Getter;
@@ -42,7 +43,7 @@ abstract class Request<T> {
    * @param uribuilder an {@link UriBuilder} object. The methods add query templates to the builder.
    * @param variableMap a {@link Map} containing the actual values for the query templates.
    */
-  protected void query(UriBuilder uribuilder, Map<String, Object> variableMap) {}
+  protected abstract URI query(UriBuilder uribuilder, Map<String, ?> variableMap);
 
   /**
    * The request method.
@@ -66,6 +67,8 @@ abstract class Request<T> {
   protected Object getBody() {
     return null;
   }
+
+  // protected abstract URI query(UriBuilder uriBuilder);
 
 
 

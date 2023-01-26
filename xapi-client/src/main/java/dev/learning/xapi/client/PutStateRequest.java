@@ -1,5 +1,6 @@
 package dev.learning.xapi.client;
 
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 
@@ -12,10 +13,23 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-public class PutStateRequest extends PostStateRequest {
+public class PutStateRequest extends StateRequest<Void> {
+
+  /**
+   * The state object to store.
+   */
+  @NonNull
+  private final Object state;
 
   @Override
   protected HttpMethod getMethod() {
     return HttpMethod.PUT;
   }
+
+  @Override
+  protected Object getBody() {
+
+    return state;
+  }
+
 }
