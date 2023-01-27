@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -90,17 +91,6 @@ public class XapiClient {
   }
 
 
-  /*
-   * public Builder<C, B> account(Consumer<Account.Builder> account) {
-   * 
-   * final Account.Builder builder = Account.builder();
-   * 
-   * account.accept(builder);
-   * 
-   * return account(builder.build()); }
-   */
-
-
 
   /**
    * <p>
@@ -138,21 +128,22 @@ public class XapiClient {
 
     UriSpec<RequestBodySpec> uriSpec = client.method(request.getMethod());
 
-    RequestBodySpec bodySpec =
-        uriSpec.uri(uriBuilder -> request.query(uriBuilder, new HashMap<String, Object>()));
+    RequestBodySpec bodySpec = uriSpec.uri(uriBuilder -> request.url(uriBuilder).build());
+
+
+
+    // RequestHeadersSpec<?> headersSpec = bodySpec.h
+
+    // ResponseSpec responseSpec = headersSpec.header
+
 
     final RequestBodySpec r = client
 
         .method(request.getMethod())
 
-        .uri(uriBuilder -> {
-          // final var<String, Object> variableMap = new HashMap<String, Object>();
-          // request.query(uriBuilder, variableMap);
-          // convertActors(variableMap);
-          return uriBuilder.path(request.getPath()).build(variableMap);
-        })
+        .uri(uriBuilder -> request.url(uriBuilder).build())
 
-        .headers(request::headers);
+        .headers(headers -> new HttpHeaders());
 
     final var body = request.getBody();
 

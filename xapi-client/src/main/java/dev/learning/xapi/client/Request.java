@@ -1,14 +1,10 @@
 package dev.learning.xapi.client;
 
-import java.net.URI;
-import java.util.Map;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriBuilder;
@@ -25,25 +21,16 @@ import org.springframework.web.util.UriBuilder;
 abstract class Request<T> {
 
   @NonNull
-  @Default
-  private final HttpHeaders httpHeaders = new HttpHeaders();
-
-  @NonNull
   @SuppressWarnings("unchecked")
   public Class<T> getResponseType() {
+
     final var responseType =
         (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), Request.class);
     Assert.notNull(responseType, "XapiRequest resolved generic type must not be null");
     return responseType;
   }
 
-  /**
-   * Callback method which sets the query parameters for the xAPI request.
-   *
-   * @param uribuilder an {@link UriBuilder} object. The methods add query templates to the builder.
-   * @param variableMap a {@link Map} containing the actual values for the query templates.
-   */
-  protected abstract URI query(UriBuilder uribuilder, Map<String, ?> variableMap);
+  protected abstract UriBuilder url(UriBuilder uriBuilder);
 
   /**
    * The request method.
@@ -53,13 +40,6 @@ abstract class Request<T> {
   protected abstract HttpMethod getMethod();
 
   /**
-   * The path of the request endpoint.
-   *
-   * @return the path of the request endpoint as a String.
-   */
-  protected abstract String getPath();
-
-  /**
    * The request body. Default is <code>null</code>
    *
    * @return the request body.
@@ -67,9 +47,5 @@ abstract class Request<T> {
   protected Object getBody() {
     return null;
   }
-
-  // protected abstract URI query(UriBuilder uriBuilder);
-
-
 
 }

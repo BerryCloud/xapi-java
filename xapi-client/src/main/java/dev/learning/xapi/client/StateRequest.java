@@ -1,8 +1,5 @@
 package dev.learning.xapi.client;
 
-import java.net.URI;
-import java.util.Map;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
@@ -24,26 +21,11 @@ abstract class StateRequest<T> extends StatesRequest<T> {
   @NonNull
   private final String stateId;
 
-
   @Override
-  protected URI query(UriBuilder uriBuilder, Map<String, ?> uriVaribles) {
+  protected UriBuilder url(UriBuilder uriBuilder) {
 
-    // Map<String, Object> variableMap
+    return super.url(uriBuilder).queryParam("stateId", stateId);
 
-    return uriBuilder
-
-        .queryParam("activityId", "{activityId}")
-
-        .queryParam("agent", "{agent}")
-
-        .queryParamIfPresent("registration", Optional.ofNullable(registration))
-
-        .queryParam("stateId", "{stateId}")
-
-        .build(uriVaribles);
-
-    // variableMap.put("activityId", activityId);
-    // variableMap.put("agent", agent);
   }
 
 }

@@ -1,8 +1,9 @@
 package dev.learning.xapi.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.net.URI;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Abstract superclass of xAPI state resource request.
@@ -23,6 +25,8 @@ import org.springframework.web.util.UriBuilder;
 @SuperBuilder
 @Getter
 abstract class StatesRequest<T> extends Request<T> {
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   /**
    * The <strong>activityId</strong> query parameter.
@@ -39,29 +43,66 @@ abstract class StatesRequest<T> extends Request<T> {
   /**
    * The optional <strong>registration</strong> query parameter.
    */
-  protected final UUID registration;
+  private final UUID registration;
+
+  /*
+   * @Override protected UriBuilder url(UriBuilder uriBuilder) {
+   * 
+   * HashMap<String, Object> map = new HashMap<>(); map.put("activityId", activityId);
+   * map.put("agent", agentToJsonString());
+   * 
+   * URI uri = uriBuilder.path("activities/state")
+   * 
+   * .queryParam("activityId", "{activityId}")
+   * 
+   * .queryParam("agent", "{agent}")
+   * 
+   * .queryParamIfPresent("registration", Optional.ofNullable(registration)).build(map);
+   * 
+   * return UriComponentsBuilder.fromUri(uri);
+   * 
+   * }
+   */
+
+
 
   @Override
-  protected String getPath() {
-    return "activities/state";
+  protected UriBuilder url(UriBuilder uriBuilder) {
+
+    // map.put("agent", agentToJsonString());
+
+    // encodingMode
+
+    System.out.println("Hello class " + uriBuilder.getClass());
+
+    UriComponentsBuilder bob = (UriComponentsBuilder) uriBuilder;
+
+
+    return bob.path("activities/state")
+
+        .queryParam("activityId", activityId)
+
+        .queryParam("agent",
+            "{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"another@example.com\"}")
+
+        .queryParamIfPresent("registration", Optional.ofNullable(registration));
   }
 
-  @Override
-  protected URI query(UriBuilder uriBuilder, Map<String, ?> uriVaribles) {
 
-    // Map<String, Object> variableMap
+  public String agentToJsonString() {
 
-    return uriBuilder
+    try {
 
-        .queryParam("activityId", "{activityId}")
+      System.out.println("agent to json " + objectMapper.writeValueAsString(agent));
 
-        .queryParam("agent", "{agent}")
+      return objectMapper.writeValueAsString(agent);
+    } catch (JsonProcessingException e) {
+      // Should not happen
+    }
 
-        .queryParamIfPresent("registration", Optional.ofNullable(registration)).build(uriVaribles);
-
-    // variableMap.put("activityId", activityId);
-    // variableMap.put("agent", agent);
+    return null;
   }
+
 
   public abstract static class Builder<T, C extends StatesRequest<T>,
       B extends StatesRequest.Builder<T, C, B>> extends Request.Builder<T, C, B> {
@@ -170,9 +211,6 @@ abstract class StatesRequest<T> extends Request<T> {
 
     }
 
-
-
   }
-
 
 }
