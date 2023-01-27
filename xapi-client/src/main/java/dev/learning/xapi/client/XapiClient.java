@@ -1,9 +1,9 @@
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Actor;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
-import org.springframework.web.reactive.function.client.WebClient.UriSpec;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
@@ -126,22 +125,21 @@ public class XapiClient {
 
   private <T> ResponseEntity<T> sendRequest(Request<?> request, @NonNull Class<T> responseType) {
 
-    UriSpec<RequestBodySpec> uriSpec = client.method(request.getMethod());
+    // UriSpec<RequestBodySpec> uriSpec = client.method(request.getMethod());
 
-    RequestBodySpec bodySpec = uriSpec.uri(uriBuilder -> request.url(uriBuilder).build());
-
-
+    // RequestBodySpec bodySpec = uriSpec.uri(uriBuilder -> request.url(uriBuilder).build());
 
     // RequestHeadersSpec<?> headersSpec = bodySpec.h
 
     // ResponseSpec responseSpec = headersSpec.header
 
+    Map<String, Object> queryParams = new HashMap<>();
 
     final RequestBodySpec r = client
 
         .method(request.getMethod())
 
-        .uri(uriBuilder -> request.url(uriBuilder).build())
+        .uri(uriBuilder -> request.url(uriBuilder, queryParams).build(queryParams))
 
         .headers(headers -> new HttpHeaders());
 
@@ -165,16 +163,6 @@ public class XapiClient {
         .block();
   }
 
-  private void convertActors(HashMap<String, Object> variableMap) {
-    variableMap.entrySet().stream().filter(s -> s.getValue() instanceof Actor).forEach(s -> {
-      try {
-        s.setValue(objectMapper.writeValueAsString(s.getValue()));
-      } catch (final JsonProcessingException e) {
-        // Should not happen
-      }
-    });
-
-  }
 
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.net.URI;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -11,7 +12,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Abstract superclass of xAPI state resource request.
@@ -67,23 +67,16 @@ abstract class StatesRequest<T> extends Request<T> {
 
 
   @Override
-  protected UriBuilder url(UriBuilder uriBuilder) {
+  protected UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    // map.put("agent", agentToJsonString());
+    queryParams.put("activityId", activityId);
+    queryParams.put("agent", agentToJsonString());
 
-    // encodingMode
+    return uriBuilder.path("activities/state")
 
-    System.out.println("Hello class " + uriBuilder.getClass());
+        .queryParam("activityId", "{activityId}")
 
-    UriComponentsBuilder bob = (UriComponentsBuilder) uriBuilder;
-
-
-    return bob.path("activities/state")
-
-        .queryParam("activityId", activityId)
-
-        .queryParam("agent",
-            "{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"another@example.com\"}")
+        .queryParam("agent", "{agent}")
 
         .queryParamIfPresent("registration", Optional.ofNullable(registration));
   }

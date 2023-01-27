@@ -1,5 +1,6 @@
 package dev.learning.xapi.client;
 
+import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ abstract class Request<T> {
     return responseType;
   }
 
-  protected abstract UriBuilder url(UriBuilder uriBuilder);
+  protected abstract UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams);
 
   /**
    * The request method.
