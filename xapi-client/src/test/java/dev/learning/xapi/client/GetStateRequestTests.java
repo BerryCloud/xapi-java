@@ -21,7 +21,7 @@ class GetStateRequestTests {
   void whenBuildingGetStateRequestWithAllParametersThenNoExceptionIsThrown() {
 
     // When Building GetStateRequest With All Parameters
-    Builder<?, ?> builder = GetStateRequest.builder()
+    Builder<?, ?, ?> builder = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 

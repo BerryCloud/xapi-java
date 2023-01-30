@@ -10,9 +10,10 @@ import org.springframework.http.HttpMethod;
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#single-document-put--post--get--delete">Single
  *      State Document GET</a>
  * @author István Rátkai (Selindek)
+ * @param <T>
  */
 @SuperBuilder
-public class GetStateRequest extends StateRequest<String> {
+public class GetStateRequest<T> extends StateRequest<T> {
 
   @Override
   protected HttpMethod getMethod() {

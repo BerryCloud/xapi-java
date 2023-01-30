@@ -45,6 +45,8 @@ public class XapiClient {
         .build();
   }
 
+
+
   /**
    * Sends an xAPI request.
    *
@@ -53,25 +55,11 @@ public class XapiClient {
    * @return a {@link ResponseEntity} containing the response object defined by the <i>request</i>
    *         parameter.
    */
-  public <T> ResponseEntity<T> send(Request<T> request) {
-    return sendRequest(request, request.getResponseType());
-  }
-
-
-  // public static abstract class Builder<T, C extends StatesRequest<T>, B extends
-  // StatesRequest.Builder<T, C, B>> extends XapiRequest.Builder<T, C, B> {
-
-
-
-  public <C extends PutStateRequest,
-      B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(
-          PutStateRequest.Builder<C, B> putStateRequest) {
-
-    var request = putStateRequest.build();
-
-    return sendRequest(request, request.getResponseType());
-
-  }
+  /*
+   * public <T> ResponseEntity<T> send(Request<T> request) {
+   * 
+   * return sendRequest(request, request.getResponseType()); }
+   */
 
   public <C extends PutStateRequest,
       B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(
@@ -81,10 +69,60 @@ public class XapiClient {
 
     putStateRequest.accept(builder);
 
-    return putState(builder);
+    return send(builder);
+  }
+
+
+
+  public <C extends PostStateRequest,
+      B extends PostStateRequest.Builder<C, B>> ResponseEntity<Void> postState(
+          Consumer<PostStateRequest.Builder<?, ?>> postStateRequest) {
+
+    final PostStateRequest.Builder<?, ?> builder = PostStateRequest.builder();
+
+    postStateRequest.accept(builder);
+
+    return send(builder);
 
   }
 
+
+
+  public <C extends DeleteStateRequest,
+      B extends DeleteStateRequest.Builder<C, B>> ResponseEntity<Void> deleteState(
+          Consumer<DeleteStateRequest.Builder<?, ?>> deleteStateRequest) {
+
+    final DeleteStateRequest.Builder<?, ?> builder = DeleteStateRequest.builder();
+
+    deleteStateRequest.accept(builder);
+
+    return send(builder);
+
+  }
+
+
+  public <C extends DeleteStatesRequest,
+      B extends DeleteStatesRequest.Builder<C, B>> ResponseEntity<Void> deleteStates(
+          Consumer<DeleteStatesRequest.Builder<?, ?>> deleteStatesRequest) {
+
+    final DeleteStatesRequest.Builder<?, ?> builder = DeleteStatesRequest.builder();
+
+    deleteStatesRequest.accept(builder);
+
+    return send(builder);
+
+  }
+
+
+
+  private <C extends Request<T>, B extends Request.Builder<T, C, B>,
+      T> ResponseEntity<T> send(Request.Builder<T, C, B> builder) {
+
+    var request = builder.build();
+
+    return sendRequest(request, request.getResponseType());
+
+  }
 
 
   /**
