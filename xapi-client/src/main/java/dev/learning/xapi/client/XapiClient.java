@@ -3,6 +3,7 @@ package dev.learning.xapi.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Actor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import lombok.NonNull;
@@ -115,6 +116,31 @@ public class XapiClient {
 
 
 
+  public <C extends GetStateRequest<T>, B extends GetStateRequest.Builder<T, C, B>,
+      T> ResponseEntity<?> getState(Consumer<GetStateRequest.Builder<T, ?, ?>> getStateRequest) {
+
+    final GetStateRequest.Builder<T, ?, ?> builder = GetStateRequest.builder();
+
+    getStateRequest.accept(builder);
+
+    return send(builder);
+
+  }
+
+  public <C extends GetStatesRequest<List<T>>, B extends GetStatesRequest.Builder<List<T>, C, B>,
+      T> ResponseEntity<?> getStates(
+          Consumer<GetStatesRequest.Builder<List<T>, ?, ?>> getStatesRequest) {
+
+    final GetStatesRequest.Builder<List<T>, ?, ?> builder = GetStatesRequest.builder();
+
+    getStatesRequest.accept(builder);
+
+    return send(builder);
+
+  }
+
+
+
   private <C extends Request<T>, B extends Request.Builder<T, C, B>,
       T> ResponseEntity<T> send(Request.Builder<T, C, B> builder) {
 
@@ -153,7 +179,7 @@ public class XapiClient {
    * @throws RuntimeException when the returned state cannot be converted to the expected JAVA
    *         class.
    */
-  public <T> ResponseEntity<T> send(GetStateRequest request, @NonNull Class<T> responseType) {
+  public <T> ResponseEntity<T> send(GetStateRequest<?> request, @NonNull Class<T> responseType) {
     return sendRequest(request, responseType);
   }
 

@@ -5,6 +5,7 @@
 package dev.learning.xapi.client;
 
 
+import java.time.Instant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -101,7 +102,7 @@ class XapiClientTests {
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-        .since(null)
+        .since(Instant.parse("2023-01-30T22:27:09Z"))
 
     );
 
