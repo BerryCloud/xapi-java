@@ -16,13 +16,6 @@ import org.junit.jupiter.api.Test;
 @DisplayName("PostStateRequest Tests")
 class PostStateRequestTests {
 
-
-  // activityId | Required
-  // agent | Required
-  // registration | Optional
-  // stateId | Required
-
-
   @Test
   void whenBuildingPutStateRequestWithAllParametersThenNoExceptionIsThrown() {
 

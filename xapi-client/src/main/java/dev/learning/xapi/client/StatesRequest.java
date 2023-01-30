@@ -45,27 +45,6 @@ abstract class StatesRequest<T> extends Request<T> {
    */
   private final UUID registration;
 
-  /*
-   * @Override protected UriBuilder url(UriBuilder uriBuilder) {
-   * 
-   * HashMap<String, Object> map = new HashMap<>(); map.put("activityId", activityId);
-   * map.put("agent", agentToJsonString());
-   * 
-   * URI uri = uriBuilder.path("activities/state")
-   * 
-   * .queryParam("activityId", "{activityId}")
-   * 
-   * .queryParam("agent", "{agent}")
-   * 
-   * .queryParamIfPresent("registration", Optional.ofNullable(registration)).build(map);
-   * 
-   * return UriComponentsBuilder.fromUri(uri);
-   * 
-   * }
-   */
-
-
-
   @Override
   protected UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
@@ -85,15 +64,12 @@ abstract class StatesRequest<T> extends Request<T> {
   public String agentToJsonString() {
 
     try {
-
-      System.out.println("agent to json " + objectMapper.writeValueAsString(agent));
-
       return objectMapper.writeValueAsString(agent);
     } catch (JsonProcessingException e) {
       // Should not happen
+      return null;
     }
 
-    return null;
   }
 
 

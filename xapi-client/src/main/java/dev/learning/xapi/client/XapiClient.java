@@ -28,7 +28,6 @@ import reactor.core.publisher.Mono;
 public class XapiClient {
 
   private final WebClient client;
-  private final ObjectMapper objectMapper;
 
   /**
    * Default constructor for XapiClient.
@@ -38,8 +37,7 @@ public class XapiClient {
    * @param objectMapper an {@link ObjectMapper}. It is used for converting {@link Actor} query
    *        parameters to JSON string during xAPI requests.
    */
-  public XapiClient(WebClient.Builder builder, ObjectMapper objectMapper) {
-    this.objectMapper = objectMapper;
+  public XapiClient(WebClient.Builder builder) {
     this.client = builder
 
         .defaultHeader("X-Experience-API-Version", "1.0.3")
@@ -74,8 +72,6 @@ public class XapiClient {
     return sendRequest(request, request.getResponseType());
 
   }
-
-
 
   public <C extends PutStateRequest,
       B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(
