@@ -204,8 +204,6 @@ class StatementTests {
   @Test
   void whenSerializingStatementThenResultIsEqualToExpectedJson() throws IOException {
 
-
-
     final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
     extensions.put(URI.create("http://name"), "Kilby");
 
@@ -294,6 +292,33 @@ class StatementTests {
     assertThat(result,
         is(objectMapper.readTree(objectMapper.writeValueAsString(objectMapper.readValue(
             ResourceUtils.getFile("classpath:statement/statement.json"), Statement.class)))));
+
+  }
+
+  @Test
+  void givenStatementWithPassedVerbWhenCallingToBuilderAndSettingVerbToCompletedThenResultVerbIsCompleted() {
+
+    // Given Statement With Passed Verb
+    final Statement passed = Statement.builder()
+
+        .actor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .activityObject(a -> a.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
+
+    // When Calling ToBuilder And Setting Verb To Completed
+    Statement result = passed.toBuilder()
+
+        .verb(Verb.COMPLETED)
+
+        .build();
+
+    // Then Result Verb Is Completed
+    assertThat(result.getVerb(), is(Verb.COMPLETED));
 
   }
 
