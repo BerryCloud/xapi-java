@@ -20,7 +20,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 </project>
@@ -94,3 +94,22 @@ final Statement statement = Statement.builder()
 final String json = objectMapper.writeValueAsString(statement);
 
 ```
+
+### Creating a new statment using an existing statement as template
+
+Example:
+
+```java
+
+final Statement passed = Statement.builder()
+    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.PASSED)
+    .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+    .build();
+
+final Statement completed = passed.toBuilder().verb(Verb.COMPLETED).build();
+
+```
+
+    
+    
