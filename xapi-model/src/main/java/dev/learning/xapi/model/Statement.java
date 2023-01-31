@@ -112,7 +112,7 @@ public class Statement {
      *
      * @see Statement#actor
      */
-    public Builder actor( Consumer<Agent.Builder<?, ?>> agent) {
+    public Builder actor(Consumer<Agent.Builder<?, ?>> agent) {
 
       // TODO Handle a Group Builder
 
