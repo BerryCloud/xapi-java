@@ -327,7 +327,7 @@ class StatementTests {
 
     final Statement statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .actor(a -> a.name("A N Other").account(acc->acc.name("other").homePage(URI.create("https://example.com"))))
 
         .verb(Verb.EXPERIENCED)
 

@@ -96,8 +96,7 @@ public class Context {
      *
      * @see Context#instructor
      */
-    public Builder groupInstructor(
-        @SuppressWarnings("rawtypes") Consumer<Group.Builder> instructor) {
+    public Builder groupInstructor(Consumer<Group.Builder<?, ?>> instructor) {
 
       final Group.Builder<?, ?> builder = Group.builder();
 
@@ -115,8 +114,7 @@ public class Context {
      *
      * @see Context#instructor
      */
-    public Builder agentInstructor(
-        @SuppressWarnings("rawtypes") Consumer<Agent.Builder> instructor) {
+    public Builder agentInstructor(Consumer<Agent.Builder<?, ?>> instructor) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
@@ -134,7 +132,7 @@ public class Context {
      *
      * @see Context#team
      */
-    public Builder team(@SuppressWarnings("rawtypes") Consumer<Group.Builder> team) {
+    public Builder team(Consumer<Group.Builder<?, ?>> team) {
 
       final Group.Builder<?, ?> builder = Group.builder();
 
