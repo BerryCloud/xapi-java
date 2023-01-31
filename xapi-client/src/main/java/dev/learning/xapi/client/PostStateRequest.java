@@ -1,6 +1,5 @@
 package dev.learning.xapi.client;
 
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-@Getter
 public class PostStateRequest extends StateRequest<Void> {
 
   /**
