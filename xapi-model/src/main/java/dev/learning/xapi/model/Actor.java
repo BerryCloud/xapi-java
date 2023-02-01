@@ -105,7 +105,7 @@ public abstract class Actor implements StatementObject, SubStatementObject {
 
       this.account = account;
 
-      return this;
+      return self();
     }
 
   }
