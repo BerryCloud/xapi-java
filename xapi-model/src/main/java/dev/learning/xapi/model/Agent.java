@@ -36,9 +36,13 @@ public class Agent extends Actor {
   // **Warning** do not add fields that are not required by the xAPI specification.
 
 
+  /**
+   * Builder for Agent.
+   */
   public abstract static class Builder<C extends Agent, B extends Builder<C, B>>
       extends Actor.Builder<C, B> {
 
+    // This static class extends the lombok builder.
 
   }
 
