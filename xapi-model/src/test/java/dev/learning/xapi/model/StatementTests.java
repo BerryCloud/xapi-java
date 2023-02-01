@@ -201,6 +201,33 @@ class StatementTests {
 
   }
 
+
+  @Test
+  void whenSerializingStatementWithAgentWithAccountThenResultIsEqualToExpectedJson()
+      throws IOException {
+
+    final Statement statement = Statement.builder()
+
+        .actor(a -> a.account(
+            acc -> acc.name("A N Other").homePage(URI.create("https://example.com/account/1234"))))
+
+        .verb(Verb.EXPERIENCED)
+
+        .activityObject(o -> o.id("https://example.com/xapi/activity/simplestatement"))
+
+        .build();
+
+    // when Serializing Statement With Agent With Account
+    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+
+    // Then Result Is Equal To Expected Json
+    assertThat(result,
+        is(objectMapper.readTree(objectMapper.writeValueAsString(objectMapper.readValue(
+            ResourceUtils.getFile("classpath:statement/statement_with_agent_with_account.json"),
+            Statement.class)))));
+
+  }
+
   @Test
   void whenSerializingStatementThenResultIsEqualToExpectedJson() throws IOException {
 
@@ -327,7 +354,7 @@ class StatementTests {
 
     final Statement statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").account(acc->acc.name("other").homePage(URI.create("https://example.com"))))
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.EXPERIENCED)
 
@@ -342,7 +369,6 @@ class StatementTests {
     assertThat(constraintViolations, hasSize(0));
 
   }
-
 
   @Test
   void whenValidatingStatementWithoutActorThenConstraintViolationsSizeIsOne() {
