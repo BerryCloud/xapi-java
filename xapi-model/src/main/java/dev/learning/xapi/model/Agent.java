@@ -34,4 +34,13 @@ public class Agent extends Actor {
   private final ObjectType objectType = ObjectType.AGENT;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
+
+
+  public abstract static class Builder<C extends Agent, B extends Builder<C, B>>
+      extends Actor.Builder<C, B> {
+
+
+  }
+
+
 }
