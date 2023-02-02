@@ -28,7 +28,7 @@ import lombok.Value;
  *      Statement</a>
  */
 @Value
-@Builder
+@Builder(toBuilder = true)
 @JsonIgnoreProperties("inProgress")
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
@@ -112,7 +112,7 @@ public class Statement {
      *
      * @see Statement#actor
      */
-    public Builder actor(@SuppressWarnings("rawtypes") Consumer<Agent.Builder> agent) {
+    public Builder actor(Consumer<Agent.Builder<?, ?>> agent) {
 
       // TODO Handle a Group Builder
 

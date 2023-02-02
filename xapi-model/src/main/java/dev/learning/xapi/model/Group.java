@@ -62,7 +62,7 @@ public class Group extends Actor {
      *
      * @see Group#member
      */
-    public Builder<C, B> addMember(@SuppressWarnings("rawtypes") Consumer<Agent.Builder> member) {
+    public Builder<C, B> addMember(Consumer<Agent.Builder<?, ?>> member) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
@@ -85,14 +85,14 @@ public class Group extends Actor {
       if (member == null) {
         member = new Agent[] {agent};
 
-        return this;
+        return self();
       }
 
       final List<Agent> list = new ArrayList<>(Arrays.asList(member));
       list.add(agent);
       member = list.toArray(member);
 
-      return this;
+      return self();
 
     }
 

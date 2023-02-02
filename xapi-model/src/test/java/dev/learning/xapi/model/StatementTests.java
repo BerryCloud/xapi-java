@@ -201,10 +201,35 @@ class StatementTests {
 
   }
 
+
+  @Test
+  void whenSerializingStatementWithAgentWithAccountThenResultIsEqualToExpectedJson()
+      throws IOException {
+
+    final Statement statement = Statement.builder()
+
+        .actor(a -> a.account(
+            acc -> acc.name("A N Other").homePage(URI.create("https://example.com/account/1234"))))
+
+        .verb(Verb.EXPERIENCED)
+
+        .activityObject(o -> o.id("https://example.com/xapi/activity/simplestatement"))
+
+        .build();
+
+    // when Serializing Statement With Agent With Account
+    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+
+    // Then Result Is Equal To Expected Json
+    assertThat(result,
+        is(objectMapper.readTree(objectMapper.writeValueAsString(objectMapper.readValue(
+            ResourceUtils.getFile("classpath:statement/statement_with_agent_with_account.json"),
+            Statement.class)))));
+
+  }
+
   @Test
   void whenSerializingStatementThenResultIsEqualToExpectedJson() throws IOException {
-
-
 
     final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
     extensions.put(URI.create("http://name"), "Kilby");
@@ -298,6 +323,33 @@ class StatementTests {
   }
 
   @Test
+  void givenStatementWithPassedVerbWhenCallingToBuilderAndSettingVerbToCompletedThenResultVerbIsCompleted() {
+
+    // Given Statement With Passed Verb
+    final Statement passed = Statement.builder()
+
+        .actor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .activityObject(a -> a.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
+
+    // When Calling ToBuilder And Setting Verb To Completed
+    Statement result = passed.toBuilder()
+
+        .verb(Verb.COMPLETED)
+
+        .build();
+
+    // Then Result Verb Is Completed
+    assertThat(result.getVerb(), is(Verb.COMPLETED));
+
+  }
+
+  @Test
   void whenValidatingStatementWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final Statement statement = Statement.builder()
@@ -317,7 +369,6 @@ class StatementTests {
     assertThat(constraintViolations, hasSize(0));
 
   }
-
 
   @Test
   void whenValidatingStatementWithoutActorThenConstraintViolationsSizeIsOne() {
