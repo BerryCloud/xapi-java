@@ -8,6 +8,7 @@ package dev.learning.xapi.client;
 import java.time.Instant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
 
 /**
  * DeleteStateRequest Tests.
@@ -23,13 +24,15 @@ class XapiClientTests {
   @Test
   void deleteState() {
 
-    client.deleteState(r -> r.activityId("https://example.com/activity/1")
+    ResponseEntity<Void> t = client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
         .stateId("bookmark"));
+
+
 
   }
 

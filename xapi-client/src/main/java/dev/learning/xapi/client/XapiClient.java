@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class XapiClient {
 
-  private final WebClient client;
+  private final WebClient webClient;
 
   /**
    * Default constructor for XapiClient.
@@ -39,7 +39,7 @@ public class XapiClient {
    *        parameters to JSON string during xAPI requests.
    */
   public XapiClient(WebClient.Builder builder) {
-    this.client = builder
+    this.webClient = builder
 
         .defaultHeader("X-Experience-API-Version", "1.0.3")
 
@@ -183,7 +183,14 @@ public class XapiClient {
     return sendRequest(request, responseType);
   }
 
+
+  public Mono<Details> someRestCall(String name) {
+    return this.webClient.get().uri("/{name}/details", name).retrieve().bodyToMono(Details.class);
+  }
+
   private <T> ResponseEntity<T> sendRequest(Request<?> request, @NonNull Class<T> responseType) {
+
+
 
     // UriSpec<RequestBodySpec> uriSpec = client.method(request.getMethod());
 
@@ -195,7 +202,7 @@ public class XapiClient {
 
     Map<String, Object> queryParams = new HashMap<>();
 
-    final RequestBodySpec r = client
+    final RequestBodySpec r = webClient
 
         .method(request.getMethod())
 
