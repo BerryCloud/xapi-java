@@ -9,7 +9,7 @@
   </parent>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-build</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>xAPI Build</name>
   <description>learning.dev xAPI Build</description>
@@ -278,7 +278,7 @@
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-model</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
