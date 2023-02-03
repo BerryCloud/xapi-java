@@ -29,7 +29,7 @@ public class Score {
    */
   @DecimalMax(value = "1.0")
   @DecimalMin(value = "-1.0")
-  private float scaled;
+  private Float scaled;
 
   /**
    * The score achieved by the Actor in the experience described by the Statement.

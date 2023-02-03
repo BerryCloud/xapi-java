@@ -6,12 +6,9 @@
     <artifactId>xapi-build</artifactId>
     <version>1.0.1-SNAPSHOT</version>
   </parent>
-
   <artifactId>xapi-client</artifactId>
-
   <name>xAPI Client</name>
   <description>learning.dev xAPI Client</description>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -32,12 +29,26 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+  <groupId>io.netty</groupId>
+  <artifactId>netty-resolver-dns-native-macos</artifactId>
+  <classifier>osx-aarch_64</classifier>
+</dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -46,5 +57,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

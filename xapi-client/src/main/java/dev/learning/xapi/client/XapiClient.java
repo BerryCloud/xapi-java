@@ -3,17 +3,10 @@ package dev.learning.xapi.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Actor;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -25,7 +18,6 @@ import reactor.core.publisher.Mono;
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *      communication resources</a>
  */
-@Slf4j
 public class XapiClient {
 
   private final WebClient webClient;
@@ -46,188 +38,96 @@ public class XapiClient {
         .build();
   }
 
+  /**
+   * Deletes a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers.
+   *
+   * @param request The parameters of the delete state request
+   * 
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteState(DeleteStateRequest request) {
 
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .delete()
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
 
   /**
-   * Sends an xAPI request.
+   * Deletes a single document specified by the given stateId activity, agent, and optional
+   * registration.
    *
-   * @param <T> The response type is defined by the <i>request</i> parameter.
-   * @param request an {@link XapiRequest} object describing the xAPI request.
-   * @return a {@link ResponseEntity} containing the response object defined by the <i>request</i>
-   *         parameter.
-   */
-  /*
-   * public <T> ResponseEntity<T> send(Request<T> request) {
+   * The returned ResponseEntity contains the response headers.
    * 
-   * return sendRequest(request, request.getResponseType()); }
+   * @param request The Consumer Builder for the delete state request
+   *
+   * @return the ResponseEntity
    */
-
-  public <C extends PutStateRequest,
-      B extends PutStateRequest.Builder<C, B>> ResponseEntity<Void> putState(
-          Consumer<PutStateRequest.Builder<?, ?>> putStateRequest) {
-
-    final PutStateRequest.Builder<?, ?> builder = PutStateRequest.builder();
-
-    putStateRequest.accept(builder);
-
-    return send(builder);
-  }
-
-
-
-  public <C extends PostStateRequest,
-      B extends PostStateRequest.Builder<C, B>> ResponseEntity<Void> postState(
-          Consumer<PostStateRequest.Builder<?, ?>> postStateRequest) {
-
-    final PostStateRequest.Builder<?, ?> builder = PostStateRequest.builder();
-
-    postStateRequest.accept(builder);
-
-    return send(builder);
-
-  }
-
-
-
-  public <C extends DeleteStateRequest,
-      B extends DeleteStateRequest.Builder<C, B>> ResponseEntity<Void> deleteState(
-          Consumer<DeleteStateRequest.Builder<?, ?>> deleteStateRequest) {
+  public Mono<ResponseEntity<Void>> deleteState(
+      Consumer<DeleteStateRequest.Builder<?, ?>> request) {
 
     final DeleteStateRequest.Builder<?, ?> builder = DeleteStateRequest.builder();
 
-    deleteStateRequest.accept(builder);
+    request.accept(builder);
 
-    return send(builder);
+    return deleteState(builder.build());
 
   }
 
+  /**
+   * Deletes all documents specified by the given activityId, agent and optional registration.
+   * 
+   * The returned ResponseEntity contains the response headers.
+   * 
+   * @param request The parameters of the delete states request
+   * 
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteStates(DeleteStatesRequest request) {
 
-  public <C extends DeleteStatesRequest,
-      B extends DeleteStatesRequest.Builder<C, B>> ResponseEntity<Void> deleteStates(
-          Consumer<DeleteStatesRequest.Builder<?, ?>> deleteStatesRequest) {
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .delete()
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Deletes all documents specified by the given activityId, agent and optional registration.
+   * 
+   * The returned ResponseEntity contains the response headers.
+   * 
+   * @param request The Consumer Builder for the delete state request
+   * 
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteStates(
+      Consumer<DeleteStatesRequest.Builder<?, ?>> deleteStatesRequest) {
 
     final DeleteStatesRequest.Builder<?, ?> builder = DeleteStatesRequest.builder();
 
     deleteStatesRequest.accept(builder);
 
-    return send(builder);
+    return deleteStates(builder.build());
 
-  }
-
-
-
-  public <C extends GetStateRequest<T>, B extends GetStateRequest.Builder<T, C, B>,
-      T> ResponseEntity<?> getState(Consumer<GetStateRequest.Builder<T, ?, ?>> getStateRequest) {
-
-    final GetStateRequest.Builder<T, ?, ?> builder = GetStateRequest.builder();
-
-    getStateRequest.accept(builder);
-
-    return send(builder);
-
-  }
-
-  public <C extends GetStatesRequest<List<T>>, B extends GetStatesRequest.Builder<List<T>, C, B>,
-      T> ResponseEntity<?> getStates(
-          Consumer<GetStatesRequest.Builder<List<T>, ?, ?>> getStatesRequest) {
-
-    final GetStatesRequest.Builder<List<T>, ?, ?> builder = GetStatesRequest.builder();
-
-    getStatesRequest.accept(builder);
-
-    return send(builder);
-
-  }
-
-
-
-  private <C extends Request<T>, B extends Request.Builder<T, C, B>,
-      T> ResponseEntity<T> send(Request.Builder<T, C, B> builder) {
-
-    var request = builder.build();
-
-    return sendRequest(request, request.getResponseType());
-
-  }
-
-
-  /**
-   * <p>
-   * Convenient type-safe method for sending a {@link GetStateRequest} which expects an instance of
-   * a given JAVA class as a response.
-   * </p>
-   * <p>
-   * The {@link GetStateRequest} is the only xAPI request where the type of the response is not
-   * defined. Learning Record Providers can store ANY kind of data here. The type conversion of the
-   * returned state object happens based on the <strong>Content-Type</strong> header provided when
-   * the state was stored. If the stored state is incompatible with the
-   * <strong>Content-Type</strong> header or it cannot be converted to the expected response type
-   * then a {@link RuntimeException} is thrown.
-   * </p>
-   * <p>
-   * If the generic {@link XapiClient#send(XapiRequest)} method is used with {@link GetStateRequest}
-   * request then the state is returned as a String.
-   * </p>
-   *
-   * @param <T> The response type is defined by the <i>responseType</i> parameter.
-   * @param request an {@link GetStateRequest} object.
-   * @param responseType a {@link Class} object defining the response type of the returning state.
-   * @return a {@link ResponseEntity} containing the response object .
-   * @see <a href=
-   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#description-4">State
-   *      Resources Description</a>
-   * @throws RuntimeException when the returned state cannot be converted to the expected JAVA
-   *         class.
-   */
-  public <T> ResponseEntity<T> send(GetStateRequest<?> request, @NonNull Class<T> responseType) {
-    return sendRequest(request, responseType);
-  }
-
-
-  public Mono<Details> someRestCall(String name) {
-    return this.webClient.get().uri("/{name}/details", name).retrieve().bodyToMono(Details.class);
-  }
-
-  private <T> ResponseEntity<T> sendRequest(Request<?> request, @NonNull Class<T> responseType) {
-
-
-
-    // UriSpec<RequestBodySpec> uriSpec = client.method(request.getMethod());
-
-    // RequestBodySpec bodySpec = uriSpec.uri(uriBuilder -> request.url(uriBuilder).build());
-
-    // RequestHeadersSpec<?> headersSpec = bodySpec.h
-
-    // ResponseSpec responseSpec = headersSpec.header
-
-    Map<String, Object> queryParams = new HashMap<>();
-
-    final RequestBodySpec r = webClient
-
-        .method(request.getMethod())
-
-        .uri(uriBuilder -> request.url(uriBuilder, queryParams).build(queryParams))
-
-        .headers(headers -> new HttpHeaders());
-
-    final var body = request.getBody();
-
-    if (body != null) {
-      r.bodyValue(body);
-    }
-
-    return r.retrieve().toEntity(responseType)
-
-        .onErrorResume(WebClientResponseException.class, ex -> {
-          if (ex.getStatusCode().value() == 404) {
-            return Mono.just(new ResponseEntity<T>(HttpStatusCode.valueOf(404)));
-          }
-          log.warn("Unsuccessful request: ", ex);
-          log.debug(ex.getResponseBodyAsString());
-          return Mono.error(ex);
-        })
-
-        .block();
   }
 
 

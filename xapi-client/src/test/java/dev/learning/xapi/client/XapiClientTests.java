@@ -4,110 +4,227 @@
 
 package dev.learning.xapi.client;
 
-
-import java.time.Instant;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import java.io.IOException;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * DeleteStateRequest Tests.
+ * XapiClient Tests.
  *
  * @author Thomas Turrell-Croft
  */
-@DisplayName("DeleteStateRequest Tests")
+@DisplayName("XapiClient Tests")
+@SpringBootTest
 class XapiClientTests {
 
+  @Autowired
+  private WebClient.Builder webClientBuilder;
 
-  XapiClient client = new XapiClient(null);
+  private static MockWebServer mockWebServer;
+  private XapiClient client;
+
+  @BeforeAll
+  static void setUp() throws IOException {
+    mockWebServer = new MockWebServer();
+    mockWebServer.start();
+  }
+
+  @AfterAll
+  static void tearDown() throws IOException {
+    mockWebServer.shutdown();
+  }
+
+  @BeforeEach
+  void initialize() {
+    String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
+
+    webClientBuilder.baseUrl(baseUrl);
+    client = new XapiClient(webClientBuilder);
+
+  }
 
   @Test
-  void deleteState() {
+  void whenDeletingASingleStateThenMethodIsDelete() throws InterruptedException {
 
-    ResponseEntity<Void> t = client.deleteState(r -> r.activityId("https://example.com/activity/1")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting A Single State
+    client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-        .stateId("bookmark"));
+        .stateId("bookmark")).block();
 
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
-
+    // Then Method Is Delete
+    assertThat(recordedRequest.getMethod(), is("DELETE"));
   }
 
   @Test
-  void deleteStates() {
+  void whenDeletingASingleStateThenPathIsExpected() throws InterruptedException {
 
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting A Single State
+    client.deleteState(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+        .stateId("bookmark")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+  }
+
+  @Test
+  void whenDeletingASingleStateWithoutRegistrationThenMethodIsDelete() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting A Single State Without Registration
+    client.deleteState(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .stateId("bookmark")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Delete
+    assertThat(recordedRequest.getMethod(), is("DELETE"));
+  }
+
+  @Test
+  void whenDeletingASingleStateWithoutRegistrationThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting A Single State Without Registration
+    client.deleteState(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+        .stateId("bookmark")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+  }
+
+  @Test
+  void whenDeletingMultipleStatesThenMethodIsDelete() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting Multiple States
     client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-    );
+    ).block();
 
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Delete
+    assertThat(recordedRequest.getMethod(), is("DELETE"));
   }
 
   @Test
-  void putState() {
+  void whenDeletingMultipleStatesThenPathIsExpected() throws InterruptedException {
 
-    client.putState(r -> r.activityId("https://example.com/activity/1")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting Multiple States
+    client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-        .stateId("bookmark")
+    ).block();
 
-        .state("Hello")
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
-    );
-
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6"));
   }
 
   @Test
-  void postState() {
+  void whenDeletingMultipleStatesWithoutRegistrationThenMethodIsDelete()
+      throws InterruptedException {
 
-    client.putState(r -> r.activityId("https://example.com/activity/1")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting Multiple States Without Registration
+    client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
-        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+    ).block();
 
-        .stateId("bookmark")
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
-        .state("Hello")
-
-    );
-
+    // Then Method Is Delete
+    assertThat(recordedRequest.getMethod(), is("DELETE"));
   }
 
   @Test
-  void getState() {
+  void whenDeletingMultipleStatesWithoutRegistrationThenPathIsExpected()
+      throws InterruptedException {
 
-    client.getState(r -> r.activityId("https://example.com/activity/1")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting Multiple States Without Registration
+    client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
-        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+    ).block();
 
-        .stateId("bookmark"));
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D"));
   }
 
-  @Test
-  void getStates() {
 
-    client.getStates(r -> r.activityId("https://example.com/activity/1")
+  // Test utility
+  private MultiValueMap<String, String> getQueryParams(RecordedRequest recordedRequest) {
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+    UriComponents uriComponents =
+        UriComponentsBuilder.fromHttpUrl(recordedRequest.getRequestUrl().toString()).build();
 
-        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
-
-        .since(Instant.parse("2023-01-30T22:27:09Z"))
-
-    );
+    return uriComponents.getQueryParams();
 
   }
 
