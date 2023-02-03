@@ -13,14 +13,13 @@ import org.springframework.http.HttpMethod;
  *      State Document GET</a>
  * @author István Rátkai (Selindek)
  * @param <T>
- * @param <T>
  */
 @SuperBuilder
 @Getter
 public class GetStateRequest<T> extends StateRequest {
 
   @NonNull
-  private final Class<?> type;
+  private final Class<T> type;
 
   @Override
   protected HttpMethod getMethod() {

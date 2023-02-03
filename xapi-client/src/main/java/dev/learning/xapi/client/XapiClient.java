@@ -46,13 +46,13 @@ public class XapiClient {
    * 
    * @param <T>
    * 
-   * @param <T> the body type
-   *
+   * @param <T>
+   * 
    * @param request The parameters of the get state request
    * 
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getState(GetStateRequest<T> request, Class<T> body) {
+  public <T> Mono<ResponseEntity<T>> getState(GetStateRequest<T> request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -64,7 +64,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(body);
+        .toEntity(request.getType());
 
   }
 
@@ -78,17 +78,15 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<T, ?, ?>> request,
-      Class<T> body) {
+  public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<T, ?, ?>> request) {
 
     final GetStateRequest.Builder<T, ?, ?> builder = GetStateRequest.builder();
 
     request.accept(builder);
 
-    return getState(builder.build(), body);
+    return getState(builder.build());
 
   }
-
 
 
   /**

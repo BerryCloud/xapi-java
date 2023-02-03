@@ -66,7 +66,7 @@ class XapiClientTests {
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-        .stateId("bookmark"), String.class).block();
+        .stateId("bookmark")).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
@@ -86,7 +86,7 @@ class XapiClientTests {
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-        .stateId("bookmark"), String.class).block();
+        .stateId("bookmark")).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
@@ -111,7 +111,9 @@ class XapiClientTests {
 
             .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-            .stateId("bookmark"), String.class)
+            .stateId("bookmark")
+
+            .type(String.class))
 
         .block();
 
