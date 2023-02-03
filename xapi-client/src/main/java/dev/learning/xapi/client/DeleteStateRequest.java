@@ -12,7 +12,7 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-public class DeleteStateRequest extends StateRequest<Void> {
+public class DeleteStateRequest extends StateRequest {
 
   @Override
   protected HttpMethod getMethod() {

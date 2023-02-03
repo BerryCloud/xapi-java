@@ -13,7 +13,7 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-public class PutStateRequest extends StateRequest<Void> {
+public class PutStateRequest extends StateRequest {
 
   /**
    * The state object to store.
@@ -24,12 +24,6 @@ public class PutStateRequest extends StateRequest<Void> {
   @Override
   protected HttpMethod getMethod() {
     return HttpMethod.PUT;
-  }
-
-  @Override
-  protected Object getBody() {
-
-    return state;
   }
 
 }

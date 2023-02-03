@@ -39,6 +39,59 @@ public class XapiClient {
   }
 
   /**
+   * Gets a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers and body.
+   * 
+   * @param <T>
+   * 
+   * @param <T> the body type
+   *
+   * @param request The parameters of the get state request
+   * 
+   * @return the ResponseEntity
+   */
+  public <T> Mono<ResponseEntity<T>> getState(GetStateRequest<T> request, Class<T> body) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .get()
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(body);
+
+  }
+
+  /**
+   * Gets a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers and body.
+   * 
+   * @param request The Consumer Builder for the get state request
+   *
+   * @return the ResponseEntity
+   */
+  public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<T, ?, ?>> request,
+      Class<T> body) {
+
+    final GetStateRequest.Builder<T, ?, ?> builder = GetStateRequest.builder();
+
+    request.accept(builder);
+
+    return getState(builder.build(), body);
+
+  }
+
+
+
+  /**
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
    *

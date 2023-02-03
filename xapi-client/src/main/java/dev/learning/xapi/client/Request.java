@@ -16,7 +16,7 @@ import org.springframework.web.util.UriBuilder;
 @SuperBuilder
 @Getter
 @RequiredArgsConstructor
-abstract class Request<T> {
+abstract class Request {
 
   protected abstract UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams);
 

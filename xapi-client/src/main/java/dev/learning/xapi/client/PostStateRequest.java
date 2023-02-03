@@ -16,7 +16,7 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-public class PostStateRequest extends StateRequest<Void> {
+public class PostStateRequest extends StateRequest {
 
   /**
    * The state object to store.
@@ -28,13 +28,5 @@ public class PostStateRequest extends StateRequest<Void> {
   protected HttpMethod getMethod() {
     return HttpMethod.POST;
   }
-
-  @Override
-  protected Object getBody() {
-
-    return state;
-  }
-
-
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @SuperBuilder
 @Getter
-abstract class StateRequest<T> extends StatesRequest<T> {
+abstract class StateRequest extends StatesRequest {
 
   /**
    * The <strong>stateId</strong> query parameter.

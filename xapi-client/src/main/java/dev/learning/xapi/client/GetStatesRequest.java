@@ -1,7 +1,6 @@
 package dev.learning.xapi.client;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
@@ -20,7 +19,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @SuperBuilder
 @Getter
-public class GetStatesRequest<T> extends StatesRequest<List<T>> {
+public class GetStatesRequest<T> extends StatesRequest {
 
   private final Instant since;
 

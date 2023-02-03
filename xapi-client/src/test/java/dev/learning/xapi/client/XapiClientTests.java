@@ -6,17 +6,17 @@ package dev.learning.xapi.client;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import java.io.IOException;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
@@ -34,27 +34,89 @@ class XapiClientTests {
   @Autowired
   private WebClient.Builder webClientBuilder;
 
-  private static MockWebServer mockWebServer;
+  private MockWebServer mockWebServer;
   private XapiClient client;
 
-  @BeforeAll
-  static void setUp() throws IOException {
+  @BeforeEach
+  void setUp() throws Exception {
     mockWebServer = new MockWebServer();
     mockWebServer.start();
-  }
 
-  @AfterAll
-  static void tearDown() throws IOException {
-    mockWebServer.shutdown();
-  }
-
-  @BeforeEach
-  void initialize() {
     String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
 
     webClientBuilder.baseUrl(baseUrl);
     client = new XapiClient(webClientBuilder);
 
+  }
+
+  @AfterEach
+  void tearDown() throws Exception {
+    mockWebServer.shutdown();
+  }
+
+  @Test
+  void whenGettingASingleStateThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting A Single State
+    client.getState(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+        .stateId("bookmark"), String.class).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingASingleStateThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting A Single State
+    client.getState(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+        .stateId("bookmark"), String.class).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+  }
+
+
+
+  @Test
+  void test() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+        .setBody("Hello World!").addHeader("Content-Type", "text/plain; charset=utf-8"));
+
+    // When Getting A Single State
+    ResponseEntity<String> response = client
+        .getState(r -> r.activityId("https://example.com/activity/1")
+
+            .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+            .stateId("bookmark"), String.class)
+
+        .block();
+
+    // Then Path Is Expected
+    assertThat(response.getBody(), instanceOf(String.class));
   }
 
   @Test

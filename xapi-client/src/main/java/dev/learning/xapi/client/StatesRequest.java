@@ -24,7 +24,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @SuperBuilder
 @Getter
-abstract class StatesRequest<T> extends Request<T> {
+abstract class StatesRequest extends Request {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -72,9 +72,12 @@ abstract class StatesRequest<T> extends Request<T> {
 
   }
 
+  // public abstract static class Builder<C extends Agent, B extends Builder<C, B>> extends
+  // Actor.Builder<C, B> {
 
-  public abstract static class Builder<T, C extends StatesRequest<T>,
-      B extends StatesRequest.Builder<T, C, B>> extends Request.Builder<T, C, B> {
+
+  public abstract static class Builder<C extends StatesRequest, B extends Builder<C, B>>
+      extends Request.Builder<C, B> {
 
     /**
      * Consumer Builder for agent.
