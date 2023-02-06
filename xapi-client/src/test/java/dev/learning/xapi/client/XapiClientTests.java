@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * XapiClient Tests.
@@ -780,16 +777,6 @@ class XapiClientTests {
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
         "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D"));
-  }
-
-  // Test utility
-  private MultiValueMap<String, String> getQueryParams(RecordedRequest recordedRequest) {
-
-    UriComponents uriComponents =
-        UriComponentsBuilder.fromHttpUrl(recordedRequest.getRequestUrl().toString()).build();
-
-    return uriComponents.getQueryParams();
-
   }
 
 }
