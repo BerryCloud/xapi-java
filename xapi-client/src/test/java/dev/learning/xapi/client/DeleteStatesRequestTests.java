@@ -11,6 +11,7 @@ import dev.learning.xapi.client.DeleteStatesRequest.Builder;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.util.UriBuilder;
@@ -35,6 +36,40 @@ class DeleteStatesRequestTests {
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
+
+    // Then No Exception Is Thrown
+    assertDoesNotThrow(() -> builder.build());
+
+  }
+
+  @Test
+  void whenBuildingDeleteStatesRequestWithRegistrationAsUUIDTypeThenNoExceptionIsThrown() {
+
+    // When Building Delete States Request With Registration As UUID Type
+    Builder<?, ?> builder = DeleteStatesRequest.builder()
+
+        .activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration(UUID.fromString("67828e3a-d116-4e18-8af3-2d2c59e27be6"));
+
+    // Then No Exception Is Thrown
+    assertDoesNotThrow(() -> builder.build());
+
+  }
+
+  @Test
+  void whenBuildingDeleteStatesRequestWithActivityIdAsURITypeThenNoExceptionIsThrown() {
+
+    // When Building Delete States Request With ActivityId As URI Type
+    Builder<?, ?> builder = DeleteStatesRequest.builder()
+
+        .activityId(URI.create("https://example.com/activity/1"))
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration(("67828e3a-d116-4e18-8af3-2d2c59e27be6"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());

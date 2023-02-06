@@ -61,7 +61,7 @@ abstract class StatesRequest extends Request {
   }
 
 
-  public String agentToJsonString() {
+  private String agentToJsonString() {
 
     try {
       return objectMapper.writeValueAsString(agent);
@@ -71,10 +71,6 @@ abstract class StatesRequest extends Request {
     }
 
   }
-
-  // public abstract static class Builder<C extends Agent, B extends Builder<C, B>> extends
-  // Actor.Builder<C, B> {
-
 
   public abstract static class Builder<C extends StatesRequest, B extends Builder<C, B>>
       extends Request.Builder<C, B> {

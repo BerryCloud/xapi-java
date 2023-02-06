@@ -1,8 +1,11 @@
 package dev.learning.xapi.client;
 
+import lombok.Builder.Default;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 
 /**
  * Request for putting a single State document.
@@ -13,7 +16,11 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
+@Getter
 public class PutStateRequest extends StateRequest {
+
+  @Default
+  private MediaType contentType = MediaType.APPLICATION_JSON;
 
   /**
    * The state object to store.

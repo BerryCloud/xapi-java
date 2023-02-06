@@ -52,19 +52,19 @@ public class XapiClient {
    * 
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getState(GetStateRequest<T> request) {
+  public <T> Mono<ResponseEntity<T>> getState(GetStateRequest request, Class<T> bodyType) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
-        .get()
+        .method(request.getMethod())
 
         .uri(u -> request.url(u, queryParams).build(queryParams))
 
         .retrieve()
 
-        .toEntity(request.getType());
+        .toEntity(bodyType);
 
   }
 
@@ -78,16 +78,147 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<T, ?, ?>> request) {
+  public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<?, ?>> request,
+      Class<T> bodyType) {
 
-    final GetStateRequest.Builder<T, ?, ?> builder = GetStateRequest.builder();
+    final GetStateRequest.Builder<?, ?> builder = GetStateRequest.builder();
 
     request.accept(builder);
 
-    return getState(builder.build());
+    return getState(builder.build(), bodyType);
 
   }
 
+  public <T> Mono<ResponseEntity<String[]>> getStates(GetStatesRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(String[].class);
+
+  }
+
+  public <T> Mono<ResponseEntity<String[]>> getStates(
+      Consumer<GetStatesRequest.Builder<?, ?>> request) {
+
+    final GetStatesRequest.Builder<?, ?> builder = GetStatesRequest.builder();
+
+    request.accept(builder);
+
+    return getStates(builder.build());
+
+  }
+
+  /**
+   * Posts a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers and body.
+   * 
+   * @param request The parameters of the post state request
+   * 
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> postState(PostStateRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getState())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Gets a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers and body.
+   * 
+   * @param request The Consumer Builder for the get state request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> postState(Consumer<PostStateRequest.Builder<?, ?>> request) {
+
+    final PostStateRequest.Builder<?, ?> builder = PostStateRequest.builder();
+
+    request.accept(builder);
+
+    return postState(builder.build());
+
+  }
+
+  /**
+   * Gets a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers and body.
+   * 
+   * @param <T>
+   * 
+   * @param <T>
+   * 
+   * @param request The parameters of the get state request
+   * 
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> putState(PutStateRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getState())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Gets a single document specified by the given stateId activity, agent, and optional
+   * registration.
+   *
+   * The returned ResponseEntity contains the response headers and body.
+   * 
+   * @param request The Consumer Builder for the get state request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> putState(Consumer<PutStateRequest.Builder<?, ?>> request) {
+
+    final PutStateRequest.Builder<?, ?> builder = PutStateRequest.builder();
+
+    request.accept(builder);
+
+    return putState(builder.build());
+
+  }
 
   /**
    * Deletes a single document specified by the given stateId activity, agent, and optional
@@ -105,7 +236,7 @@ public class XapiClient {
 
     return this.webClient
 
-        .delete()
+        .method(request.getMethod())
 
         .uri(u -> request.url(u, queryParams).build(queryParams))
 
@@ -151,7 +282,7 @@ public class XapiClient {
 
     return this.webClient
 
-        .delete()
+        .method(request.getMethod())
 
         .uri(u -> request.url(u, queryParams).build(queryParams))
 
@@ -180,7 +311,5 @@ public class XapiClient {
     return deleteStates(builder.build());
 
   }
-
-
 
 }

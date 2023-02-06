@@ -1,6 +1,5 @@
 package dev.learning.xapi.client;
 
-import io.micrometer.common.lang.NonNull;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
@@ -16,10 +15,7 @@ import org.springframework.http.HttpMethod;
  */
 @SuperBuilder
 @Getter
-public class GetStateRequest<T> extends StateRequest {
-
-  @NonNull
-  private final Class<T> type;
+public class GetStateRequest extends StateRequest {
 
   @Override
   protected HttpMethod getMethod() {

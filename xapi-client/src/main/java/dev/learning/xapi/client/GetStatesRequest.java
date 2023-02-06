@@ -19,7 +19,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @SuperBuilder
 @Getter
-public class GetStatesRequest<T> extends StatesRequest {
+public class GetStatesRequest extends StatesRequest {
 
   private final Instant since;
 
