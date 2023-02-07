@@ -38,10 +38,12 @@ public class XapiClient {
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers and body.
-   * 
+   * </p>
+   *
    * @param request The parameters of the get state request
-   * 
+   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getState(GetStateRequest request, Class<T> bodyType) {
@@ -64,8 +66,10 @@ public class XapiClient {
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers and body.
-   * 
+   * </p>
+   *
    * @param request The Consumer Builder for the get state request
    *
    * @return the ResponseEntity
@@ -85,10 +89,12 @@ public class XapiClient {
    * Posts a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers and body.
-   * 
+   * </p>
+   *
    * @param request The parameters of the post state request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postState(PostStateRequest request) {
@@ -115,8 +121,10 @@ public class XapiClient {
    * Posts a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers and body.
-   * 
+   * </p>
+   *
    * @param request The Consumer Builder for the post state request
    *
    * @return the ResponseEntity
@@ -135,10 +143,12 @@ public class XapiClient {
    * Puts a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers and body.
-   * 
+   * </p>
+   *
    * @param request The parameters of the put state request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putState(PutStateRequest request) {
@@ -165,8 +175,10 @@ public class XapiClient {
    * Puts a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers and body.
-   * 
+   * </p>
+   *
    * @param request The Consumer Builder for the put state request
    *
    * @return the ResponseEntity
@@ -185,10 +197,12 @@ public class XapiClient {
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers.
+   * </p>
    *
    * @param request The parameters of the delete state request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteState(DeleteStateRequest request) {
@@ -211,8 +225,10 @@ public class XapiClient {
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
    *
+   * <p>
    * The returned ResponseEntity contains the response headers.
-   * 
+   * </p>
+   *
    * @param request The Consumer Builder for the delete state request
    *
    * @return the ResponseEntity
@@ -231,9 +247,9 @@ public class XapiClient {
   /**
    * Gets all stateId's specified by the given activityId, agent and optional registration and since
    * parameters.
-   * 
+   *
    * @param request The parameters of the get states request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<String[]>> getStates(GetStatesRequest request) {
@@ -255,11 +271,13 @@ public class XapiClient {
   /**
    * Gets all stateId's specified by the given activityId, agent and optional registration and since
    * parameters.
-   * 
+   *
+   * <p>
    * The returned ResponseEntity contains the response headers.
-   * 
+   * </p>
+   *
    * @param request The Consumer Builder for the get states request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<String[]>> getStates(
@@ -275,11 +293,13 @@ public class XapiClient {
 
   /**
    * Deletes all documents specified by the given activityId, agent and optional registration.
-   * 
+   *
+   * <p>
    * The returned ResponseEntity contains the response headers.
-   * 
+   * </p>
+   *
    * @param request The parameters of the delete states request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteStates(DeleteStatesRequest request) {
@@ -300,19 +320,21 @@ public class XapiClient {
 
   /**
    * Deletes all documents specified by the given activityId, agent and optional registration.
-   * 
+   *
+   * <p>
    * The returned ResponseEntity contains the response headers.
-   * 
+   * </p>
+   *
    * @param request The Consumer Builder for the delete states request
-   * 
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteStates(
-      Consumer<DeleteStatesRequest.Builder<?, ?>> deleteStatesRequest) {
+      Consumer<DeleteStatesRequest.Builder<?, ?>> request) {
 
     final DeleteStatesRequest.Builder<?, ?> builder = DeleteStatesRequest.builder();
 
-    deleteStatesRequest.accept(builder);
+    request.accept(builder);
 
     return deleteStates(builder.build());
 

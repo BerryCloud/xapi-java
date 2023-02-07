@@ -14,13 +14,16 @@ import org.springframework.web.util.UriBuilder;
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get">Multiple
  *      State Document GET</a>
+ *
  * @author István Rátkai (Selindek)
- * @param <T>
  */
 @SuperBuilder
 @Getter
 public class GetStatesRequest extends StatesRequest {
 
+  /**
+   * Only ids of states stored since the specified instant (exclusive) are returned.
+   */
   private final Instant since;
 
   @Override

@@ -10,8 +10,8 @@ import org.springframework.http.HttpMethod;
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#single-document-put--post--get--delete">Single
  *      State Document GET</a>
+ *
  * @author István Rátkai (Selindek)
- * @param <T>
  */
 @SuperBuilder
 @Getter
