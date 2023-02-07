@@ -24,6 +24,7 @@ import lombok.Value;
 @JsonInclude(Include.NON_EMPTY)
 public class Score {
 
+  // TODO check that @DecimalMax and @DecimalMin apply to float
   /**
    * The score related to the experience as modified by scaling and/or normalization.
    */
