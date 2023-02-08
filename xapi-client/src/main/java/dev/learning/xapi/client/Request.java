@@ -1,7 +1,6 @@
 package dev.learning.xapi.client;
 
 import java.util.Map;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
@@ -13,7 +12,6 @@ import org.springframework.web.util.UriBuilder;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-@Getter
 @RequiredArgsConstructor
 abstract class Request {
 
