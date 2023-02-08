@@ -1,7 +1,6 @@
 package dev.learning.xapi.client;
 
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
@@ -12,7 +11,6 @@ import org.springframework.web.util.UriBuilder;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-@RequiredArgsConstructor
 abstract class Request {
 
   protected abstract UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams);
