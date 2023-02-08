@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *      communication resources</a>

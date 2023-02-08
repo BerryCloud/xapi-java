@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#json-procedure-with-requirements">JSON
  *      Procedure with Requirements</a>
+ *
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder

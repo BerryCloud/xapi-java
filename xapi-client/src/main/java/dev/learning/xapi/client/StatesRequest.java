@@ -19,8 +19,8 @@ import org.springframework.web.util.UriBuilder;
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">State
  *      Resource</a>
+ *
  * @author István Rátkai (Selindek)
- * @param <T> The response type of the request
  */
 @SuperBuilder
 @Getter

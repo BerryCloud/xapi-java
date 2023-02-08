@@ -10,7 +10,6 @@ import org.springframework.web.util.UriBuilder;
  * Abstract superclass for state requests manipulating a single state document.
  *
  * @author István Rátkai (Selindek)
- * @param <T> The response type of the request
  */
 @SuperBuilder
 @Getter
