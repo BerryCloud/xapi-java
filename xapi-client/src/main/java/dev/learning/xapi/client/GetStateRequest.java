@@ -1,6 +1,5 @@
 package dev.learning.xapi.client;
 
-import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 
@@ -14,13 +13,11 @@ import org.springframework.http.HttpMethod;
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
-@Getter
 public class GetStateRequest extends StateRequest {
 
   @Override
   protected HttpMethod getMethod() {
     return HttpMethod.GET;
   }
-
 
 }
