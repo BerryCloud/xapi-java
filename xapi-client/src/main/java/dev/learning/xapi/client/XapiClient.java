@@ -1,5 +1,6 @@
 package dev.learning.xapi.client;
 
+import dev.learning.xapi.model.Agent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -78,6 +79,9 @@ public class XapiClient {
    */
   public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<?, ?>> request,
       Class<T> bodyType) {
+
+
+    final Agent.Builder<?, ?> builder2 = Agent.builder();
 
     final GetStateRequest.Builder<?, ?> builder = GetStateRequest.builder();
 
