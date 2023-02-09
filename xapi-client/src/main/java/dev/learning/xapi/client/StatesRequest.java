@@ -1,6 +1,7 @@
 /*
  * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
+
 package dev.learning.xapi.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +30,7 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 abstract class StatesRequest extends Request {
 
-  private final static ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper = new ObjectMapper();
 
   /**
    * The <strong>activityId</strong> query parameter.

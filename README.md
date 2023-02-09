@@ -4,16 +4,21 @@ xAPI Java helps you to create applications that send or receive xAPI [Statements
 
 ## xAPI Java Client
 
+### Getting a state
+
+
+
+
 ```java
-client.putStateRequest(r -> r.activityId(activityId)
+client.getState(r -> r.activityId("https://example.com/activity/1")
 
-    .agent(agent)
+    .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
-    .stateId("resume")
+    .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-    .body(body)
-
-    .contentType(contentType));
+    .stateId("bookmark"), String.class)
+    
+    .block();
 ```
 
 ## xAPI Java Model
