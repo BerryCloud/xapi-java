@@ -55,6 +55,19 @@ class AgentTests {
   }
 
   @Test
+  void whenDeserializingAgentWithObjectTypeThenResultIsInstanceOfAgent() throws IOException {
+
+    final File file = ResourceUtils.getFile("classpath:agent/agent_with_object_type.json");
+
+    // When Deserializing Agent Without Object Type
+    final Agent result = objectMapper.readValue(file, Agent.class);
+
+    // Then Result Is Instance Of Agent
+    assertThat(result, instanceOf(Agent.class));
+
+  }
+
+  @Test
   void whenDeserializingAgentWithNameThenNameIsExpected() throws IOException {
 
     final File file = ResourceUtils.getFile("classpath:agent/agent_with_name.json");

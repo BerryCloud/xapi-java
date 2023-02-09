@@ -5,8 +5,7 @@
 	"language": "en",
 	"instructor": {
 		"name": "Andrew Downes",
-		"mbox": "mailto:andrew@example.co.uk",
-		"objectType": "Agent"
+		"mbox": "mailto:andrew@example.co.uk"
 	},
 	"team": {
 		"name": "Example Group",
