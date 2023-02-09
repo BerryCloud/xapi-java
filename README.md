@@ -2,7 +2,7 @@
 
 xAPI Java helps you to create applications that send or receive xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements) or [Documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#10-documents).
 
-There are two projects in this [Monorepo](https://en.wikipedia.org/wiki/Monorepo), The xAPI Java Client and the xAPI Java Model.
+There are two projects in this [Monorepo](https://en.wikipedia.org/wiki/Monorepo), The xAPI Client and the xAPI Model.
 
 Both the xAPI client and xAPI Model use a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
 
@@ -12,7 +12,7 @@ The xAPI Java Client can be used by learning record providers (LRP) to communica
 
 ### Getting started
 
-To use the xAPI Model include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
+To use the xAPI Client include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
 
 ```xml
 <project>
