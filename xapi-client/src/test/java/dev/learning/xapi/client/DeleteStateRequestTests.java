@@ -1,9 +1,7 @@
 /*
  * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
-
 package dev.learning.xapi.client;
-
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
