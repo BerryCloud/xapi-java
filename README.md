@@ -8,7 +8,7 @@ Both the xAPI client and xAPI Model use a [fluent interface](https://en.wikipedi
 
 ## xAPI Java Client
 
-The xAPI Java Client can be used by learning record providers (LRP) to communicate with learning record stores (LRS) or a systems which follows the LRS requirements of one or more of the xAPI resources.
+The xAPI Java Client can be used by learning record providers (LRP) to communicate with learning record stores (LRS) or a system which follows the LRS requirements of one or more of the xAPI resources.
 
 ### Getting started
 
