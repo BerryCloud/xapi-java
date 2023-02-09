@@ -29,7 +29,7 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 abstract class StatesRequest extends Request {
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final static ObjectMapper objectMapper = new ObjectMapper();
 
   /**
    * The <strong>activityId</strong> query parameter.
