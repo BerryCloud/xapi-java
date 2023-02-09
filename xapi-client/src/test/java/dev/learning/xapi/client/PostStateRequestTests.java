@@ -4,12 +4,19 @@
 
 package dev.learning.xapi.client;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import dev.learning.xapi.client.PostStateRequest.Builder;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * PutStateRequest Tests.
+ * PostStateRequest Tests.
  *
  * @author Thomas Turrell-Croft
  */
@@ -17,34 +24,85 @@ import org.junit.jupiter.api.Test;
 class PostStateRequestTests {
 
   @Test
-  void whenBuildingPutStateRequestWithAllParametersThenNoExceptionIsThrown() {
+  void whenBuildingPostStateRequestWithAllParametersThenNoExceptionIsThrown() {
 
-    // When Building PutStateRequest With All Parameters
-    assertDoesNotThrow(() -> {
-      PutStateRequest.builder()
+    // When Building PostStateRequest With All Parameters
+    Builder<?, ?> builder = PostStateRequest.builder()
 
-          // Parameters
+        .activityId("https://example.com/activity/1")
 
-          .activityId("https://example.com/activity/1")
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
-          .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-          .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+        .stateId("bookmark")
 
-          .stateId("bookmark")
-
-          // Body
-
-          .state("Hello World!")
-
-          // Headers
-
-          .build();
-
-    });
+        .state("Hello World!");
 
     // Then No Exception Is Thrown
+    assertDoesNotThrow(() -> builder.build());
 
   }
+
+  @Test
+  void givenPostStateRequestWithAllParametersWhenGettingURLThenResultIsExpected() {
+
+    // Given PostStateRequest With All Parameters
+    PostStateRequest request = PostStateRequest.builder()
+
+        .activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+        .stateId("bookmark")
+
+        .state("Hello World!")
+
+        .build();
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    // When Getting URL
+    URI result =
+        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+            .build(queryParams);
+
+    // Then Result Is Expected
+    assertThat(result, is(URI.create(
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
+
+  }
+
+  @Test
+  void givenPostStateRequestWithoutRegistrationWhenGettingURLThenResultIsExpected() {
+
+    // Given PostStateRequest Without Registration
+    PostStateRequest request = PostStateRequest.builder()
+
+        .activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .stateId("bookmark")
+
+        .state("Hello World!")
+
+        .build();
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    // When Getting URL
+    URI result =
+        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+            .build(queryParams);
+
+    // Then Result Is Expected
+    assertThat(result, is(URI.create(
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&stateId=bookmark")));
+
+  }
+
 
 }

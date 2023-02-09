@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -122,11 +121,9 @@ class DeleteStatesRequestTests {
   }
 
   @Test
-  void when() {
+  void givenDeleteStatesRequestWithAllParametersWhenGettingURLThenResultIsExpected() {
 
-    UriBuilder builder = UriComponentsBuilder.fromUriString("https://example.com/xapi/");
-
-    // When
+    // Given DeleteStatesRequest With All Parameters
     DeleteStatesRequest request = DeleteStatesRequest.builder()
 
         .activityId("https://example.com/activity/1")
@@ -139,11 +136,40 @@ class DeleteStatesRequestTests {
 
     Map<String, Object> queryParams = new HashMap<>();
 
-    URI url = request.url(builder, queryParams).build(queryParams);
+    // When Getting URL
+    URI url =
+        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+            .build(queryParams);
 
-    // Then
+    // Then Result Is Expected
     assertThat(url, is(URI.create(
         "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6")));
+
+  }
+
+
+  @Test
+  void givenDeleteStatesRequestWithoutRegistrationWhenGettingURLThenResultIsExpected() {
+
+    // Given DeleteStatesRequest Without Registration
+    DeleteStatesRequest request = DeleteStatesRequest.builder()
+
+        .activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+
+        .build();
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    // When Getting URL
+    URI url =
+        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+            .build(queryParams);
+
+    // Then Result Is Expected
+    assertThat(url, is(URI.create(
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D")));
 
   }
 
