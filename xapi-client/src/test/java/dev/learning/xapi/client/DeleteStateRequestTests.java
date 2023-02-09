@@ -168,8 +168,4 @@ class DeleteStateRequestTests {
 
   }
 
-
-
 }
-
-
