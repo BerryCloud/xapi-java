@@ -23,4 +23,14 @@ public class GetStateRequest extends StateRequest {
     return HttpMethod.GET;
   }
 
+  /**
+   * Builder for GetStateRequest.
+   */
+  public abstract static class Builder<C extends GetStateRequest, B extends Builder<C, B>>
+      extends StateRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }
