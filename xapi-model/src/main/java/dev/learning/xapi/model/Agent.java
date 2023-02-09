@@ -29,7 +29,7 @@ import lombok.experimental.SuperBuilder;
     @JsonSubTypes.Type(value = Agent.class, name = "Person")})
 public class Agent extends Actor {
 
-  ObjectType objectType;
+  private ObjectType objectType;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
