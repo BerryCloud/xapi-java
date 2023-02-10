@@ -74,23 +74,6 @@ class XapiClientTests {
   }
 
 
-  @Test
-  void d() throws InterruptedException {
-
-
-    final ResponseEntity<String> request =
-        client.getState(r -> r.activityId("https://example.com/activity/1")
-
-            .agent(a -> a.name("A N Other").mbox("another@example.com"))
-
-            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
-
-            .stateId("bookmark"), String.class).block();
-
-    final String state = request.getBody();
-
-
-  }
 
   @Test
   void whenGettingASingleStateThenPathIsExpected() throws InterruptedException {
