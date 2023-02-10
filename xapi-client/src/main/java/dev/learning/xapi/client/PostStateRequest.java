@@ -41,4 +41,14 @@ public class PostStateRequest extends StateRequest {
     return HttpMethod.POST;
   }
 
+  /**
+   * Builder for PostStateRequest.
+   */
+  public abstract static class Builder<C extends PostStateRequest, B extends Builder<C, B>>
+      extends StateRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

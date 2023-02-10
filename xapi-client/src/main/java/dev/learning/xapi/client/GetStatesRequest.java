@@ -43,4 +43,14 @@ public class GetStatesRequest extends StatesRequest {
 
   }
 
+  /**
+   * Builder for DeleteStateRequest.
+   */
+  public abstract static class Builder<C extends GetStatesRequest, B extends Builder<C, B>>
+      extends StatesRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

@@ -38,4 +38,14 @@ public class PutStateRequest extends StateRequest {
     return HttpMethod.PUT;
   }
 
+  /**
+   * Builder for PutStateRequest.
+   */
+  public abstract static class Builder<C extends PutStateRequest, B extends Builder<C, B>>
+      extends StateRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

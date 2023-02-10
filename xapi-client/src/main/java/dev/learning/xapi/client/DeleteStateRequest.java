@@ -24,4 +24,14 @@ public class DeleteStateRequest extends StateRequest {
     return HttpMethod.DELETE;
   }
 
+  /**
+   * Builder for DeleteStateRequest.
+   */
+  public abstract static class Builder<C extends DeleteStateRequest, B extends Builder<C, B>>
+      extends StateRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }
