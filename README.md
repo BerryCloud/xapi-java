@@ -48,6 +48,8 @@ final var request = client.getState(r -> r.activityId("https://example.com/activ
     .stateId("bookmark"), String.class)
 
     .block();
+    
+final String state = request.getBody();
 ```
 
 #### Posting a state
@@ -144,21 +146,6 @@ final Statement statement = Statement.builder()
     .build();
 ```
 
-```java
-Agent agent = new Agent();
-agent.setMbox("mailto:info@tincanapi.com");
-
-Verb verb = new Verb("http://adlnet.gov/expapi/verbs/attempted");
-
-Activity activity = new Activity("http://rusticisoftware.github.com/TinCanJava");
-
-Statement st = new Statement();
-st.setActor(agent);
-st.setVerb(verb);
-st.setObject(activity);
-
-```
-
 ### Deserializing Statements
 
 The Jackson ObjectMapper can be used to deserialize statements into Java objects.
@@ -211,7 +198,7 @@ final String json = objectMapper.writeValueAsString(statement);
 
 ```
 
-### Creating a new statment using an existing statement as template
+### Creating a new statement using an existing statement as template
 
 Example:
 
