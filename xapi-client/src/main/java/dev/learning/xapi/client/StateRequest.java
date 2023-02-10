@@ -34,4 +34,14 @@ abstract class StateRequest extends StatesRequest {
 
   }
 
+  /**
+   * Builder for StateRequest.
+   */
+  public abstract static class Builder<C extends StateRequest, B extends Builder<C, B>>
+      extends StatesRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }
