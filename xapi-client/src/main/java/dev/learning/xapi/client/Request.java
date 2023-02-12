@@ -26,4 +26,13 @@ abstract class Request {
    */
   protected abstract HttpMethod getMethod();
 
+  /**
+   * Builder for Request.
+   */
+  public abstract static class Builder<C extends Request, B extends Builder<C, B>> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

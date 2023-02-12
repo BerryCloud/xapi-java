@@ -76,6 +76,9 @@ abstract class StatesRequest extends Request {
 
   }
 
+  /**
+   * Builder for StatesRequest.
+   */
   public abstract static class Builder<C extends StatesRequest, B extends Builder<C, B>>
       extends Request.Builder<C, B> {
 
