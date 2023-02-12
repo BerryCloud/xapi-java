@@ -3,12 +3,10 @@
       "objectType":"Group",
       "member":[
          {
-            "objectType":"Agent",
             "name":"Leader 1",
             "mbox":"mailto:leader1@example.com"
          },
          {
-            "objectType":"Agent",
             "name":"Leader 2",
             "mbox":"mailto:leader2@example.com"
          }

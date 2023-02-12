@@ -41,6 +41,21 @@ class GroupTests {
   }
 
   @Test
+  void whenDeserializingGroupWithMembersWithObjectTypeThenResultIsInstanceOfGroup()
+      throws IOException {
+
+    final File file =
+        ResourceUtils.getFile("classpath:group/group_with_members_with_object_type.json");
+
+    // When Deserializing Group With Members With Object Type
+    final Group result = objectMapper.readValue(file, Group.class);
+
+    // Then Result Is Instance Of Group
+    assertThat(result, instanceOf(Group.class));
+
+  }
+
+  @Test
   void whenDeserializingGroupThenMemberIsInstanceOfAgent() throws IOException {
 
     final File file = ResourceUtils.getFile("classpath:group/group.json");
@@ -87,7 +102,7 @@ class GroupTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://example.com/homePage, name=GroupAccount)), objectType=GROUP, member=[Agent(super=Actor(name=Member 1, mbox=mailto:member1@example.com, mboxSha1sum=null, openid=null, account=null), objectType=AGENT), Agent(super=Actor(name=Member 2, mbox=null, mboxSha1sum=null, openid=https://example.com/openId, account=null), objectType=AGENT)])"));
+        "Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://example.com/homePage, name=GroupAccount)), objectType=GROUP, member=[Agent(super=Actor(name=Member 1, mbox=mailto:member1@example.com, mboxSha1sum=null, openid=null, account=null), objectType=null), Agent(super=Actor(name=Member 2, mbox=null, mboxSha1sum=null, openid=https://example.com/openId, account=null), objectType=null)])"));
 
   }
 

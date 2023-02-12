@@ -6,6 +6,8 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +24,7 @@ import lombok.experimental.SuperBuilder;
  * This class represents the xAPI Group object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#group">xAPI Group</a>
  */
 @Getter
@@ -30,6 +32,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", visible = true,
+    include = As.EXISTING_PROPERTY)
 @JsonSubTypes({@JsonSubTypes.Type(value = Group.class, name = "Group")})
 public class Group extends Actor {
 
