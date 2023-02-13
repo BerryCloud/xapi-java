@@ -20,7 +20,7 @@ import org.springframework.http.HttpMethod;
 public class DeleteStatesRequest extends StatesRequest {
 
   @Override
-  protected HttpMethod getMethod() {
+  public HttpMethod getMethod() {
     return HttpMethod.DELETE;
   }
 

@@ -26,7 +26,7 @@ abstract class StateRequest extends StatesRequest {
   private final String stateId;
 
   @Override
-  protected UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
+  public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     queryParams.put("stateId", stateId);
 
