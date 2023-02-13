@@ -20,7 +20,7 @@ import org.springframework.http.HttpMethod;
 public class GetStateRequest extends StateRequest {
 
   @Override
-  protected HttpMethod getMethod() {
+  public HttpMethod getMethod() {
     return HttpMethod.GET;
   }
 

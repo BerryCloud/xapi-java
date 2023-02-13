@@ -28,7 +28,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @SuperBuilder
 @Getter
-abstract class StatesRequest extends Request {
+abstract class StatesRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -50,7 +50,7 @@ abstract class StatesRequest extends Request {
   private final UUID registration;
 
   @Override
-  protected UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
+  public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     queryParams.put("activityId", activityId);
     queryParams.put("agent", agentToJsonString());
@@ -79,8 +79,7 @@ abstract class StatesRequest extends Request {
   /**
    * Builder for StatesRequest.
    */
-  public abstract static class Builder<C extends StatesRequest, B extends Builder<C, B>>
-      extends Request.Builder<C, B> {
+  public abstract static class Builder<C extends StatesRequest, B extends Builder<C, B>> {
 
     /**
      * Consumer Builder for agent.

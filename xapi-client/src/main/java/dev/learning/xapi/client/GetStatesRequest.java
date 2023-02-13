@@ -31,12 +31,12 @@ public class GetStatesRequest extends StatesRequest {
   private final Instant since;
 
   @Override
-  protected HttpMethod getMethod() {
+  public HttpMethod getMethod() {
     return HttpMethod.GET;
   }
 
   @Override
-  protected UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
+  public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     return super.url(uriBuilder, queryParams).queryParamIfPresent("since",
         Optional.ofNullable(since));

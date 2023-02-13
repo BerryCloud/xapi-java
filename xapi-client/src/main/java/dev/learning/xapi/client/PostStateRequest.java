@@ -37,7 +37,7 @@ public class PostStateRequest extends StateRequest {
   private final Object state;
 
   @Override
-  protected HttpMethod getMethod() {
+  public HttpMethod getMethod() {
     return HttpMethod.POST;
   }
 
