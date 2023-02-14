@@ -4,8 +4,11 @@
 
 package dev.learning.xapi.client;
 
+import dev.learning.xapi.model.Statement;
+import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -38,6 +41,101 @@ public class XapiClient {
         .defaultHeader("X-Experience-API-Version", "1.0.3")
 
         .build();
+  }
+
+
+
+  /**
+   * Gets a Statement
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getStatement(UUID id) {
+
+
+    return this.webClient
+
+        .get()
+
+        .uri(u -> u.path("/statements").queryParam("statementId", id).build())
+
+        .retrieve()
+
+        .toEntity(Statement.class);
+
+  }
+
+
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getStatements() {
+
+    return getStatements(GetStatementsRequest.builder().build());
+  }
+
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The parameters of the get statements request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getStatements(GetStatementsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build())
+
+        .retrieve()
+
+        .toEntity(StatementResult.class);
+
+  }
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get statements request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getStatements(
+      Consumer<GetStatementsRequest.Builder> request) {
+
+    final GetStatementsRequest.Builder builder = GetStatementsRequest.builder();
+
+    request.accept(builder);
+
+    return getStatements(builder.build());
+
   }
 
   /**

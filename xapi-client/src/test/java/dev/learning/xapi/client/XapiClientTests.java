@@ -1,11 +1,19 @@
 /*
- * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016rue-2023 Berry Cloud Ltd. All rights reserved.
  */
 package dev.learning.xapi.client;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import dev.learning.xapi.model.StatementFormat;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -18,6 +26,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * XapiClient Tests.
@@ -49,6 +59,245 @@ class XapiClientTests {
   @AfterEach
   void tearDown() throws Exception {
     mockWebServer.shutdown();
+  }
+
+  // Get Statement
+
+
+  @Test
+  void hello() throws MalformedURLException {
+
+
+    var x1 = new URL("https://example.com:8080:tom");
+
+
+    var x2 = URI.create("example.com:tom");
+
+
+    var x3 = URI.create("example.com:8080/hello:tom");
+
+    String agent = null;
+    URI verb = URI.create("http://example.com/course/1?tom=1&bob=2");
+    Instant since = Instant.now();
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    queryParams.put("agent", agent);
+    queryParams.put("verb", verb);
+    queryParams.put("since", since);
+
+
+    UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance();
+
+
+    URI test1 = uriComponentsBuilder.path("statements")
+
+        .queryParam("agent", agent)
+
+        .queryParam("verb", verb)
+
+        .queryParam("since", since) // not encoded
+
+        .build()
+
+        .toUri();
+
+    System.out.println("test1 " + test1);
+
+
+    UriBuilder uriBuilder = UriComponentsBuilder.newInstance();
+
+    URI test2 = uriBuilder.path("statements")
+
+        .queryParam("agent", "{agent}")
+
+        .queryParam("verb", "{verb}")
+
+        .queryParam("since", "{since}")
+
+        .build(queryParams);
+
+    System.out.println("test2 " + test2);
+
+
+    UriComponentsBuilder uriComponentsBuilder2 = UriComponentsBuilder.newInstance();
+
+
+    URI test3 = uriComponentsBuilder2.path("statements")
+
+        .queryParam("agent", agent)
+
+        .queryParam("verb", verb)
+
+        .queryParam("since", since) // not encoded
+
+        .encode()
+
+        .build()
+
+        .toUri();
+
+    System.out.println("test3 " + test3);
+
+
+  }
+
+  @Test
+  void whenGettingStatementThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements
+    client.getStatement(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingStatementThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements
+    client.getStatement(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
+  }
+
+  // Get Statements
+
+  @Test
+  void whenGettingStatementsThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements
+    client.getStatements().block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+
+  @Test
+  void whenGettingStatementsThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements
+    client.getStatements().block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is("/statements"));
+  }
+
+  @Test
+  void whenGettingStatementsWithAllParametersThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements With All Parameters
+    client.getStatements(r -> r
+
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb("http://adlnet.gov/expapi/verbs/answered")
+
+        .activity("https://example.com/activity/1")
+
+        .registration("dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3")
+
+        .relatedActivities(true)
+
+        .relatedAgents(true)
+
+        .since(Instant.parse("2016-01-01T00:00:00Z"))
+
+        .until(Instant.parse("2018-01-01T00:00:00Z"))
+
+        .limit(10)
+
+        .format(StatementFormat.CANONICAL)
+
+        .attachments(true)
+
+        .ascending(true)
+
+    ).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/statements?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&verb=http%3A%2F%2Fadlnet.gov%2Fexpapi%2Fverbs%2Fanswered&activity=https%3A%2F%2Fexample.com%2Factivity%2F1&registration=dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3&related_activities=true&related_agents=true&since=2016-01-01T00%3A00%3A00Z&until=2018-01-01T00%3A00%3A00Z&limit=10&format=canonical&attachments=true&ascending=true"));
+  }
+
+  @Test
+  void whenGettingStatementsWithAgentParameterThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements With Agent Parameter
+    client.getStatements(r -> r
+
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+    ).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/statements?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+  }
+
+  @Test
+  void whenGettingStatementsWithVerbParameterThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements With Verb Parameter
+    client.getStatements(r -> r
+
+        .verb("http://adlnet.gov/expapi/verbs/answered")
+
+    ).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?verb=http%3A%2F%2Fadlnet.gov%2Fexpapi%2Fverbs%2Fanswered"));
+  }
+
+  @Test
+  void whenGettingStatementsWithActivityParameterThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements With Activity Parameter
+    client.getStatements(r -> r
+
+        .activity("https://example.com/activity/1")
+
+    ).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?activity=https%3A%2F%2Fexample.com%2Factivity%2F1"));
   }
 
   // Get Single State
