@@ -8,7 +8,6 @@ import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -43,7 +42,30 @@ public class XapiClient {
         .build();
   }
 
+  /**
+   * Gets a Statement
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
 
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Statement.class);
+
+  }
 
   /**
    * Gets a Statement
@@ -54,14 +76,133 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<Statement>> getStatement(UUID id) {
+  public Mono<ResponseEntity<Statement>> getStatement(
+      Consumer<GetStatementRequest.Builder> request) {
 
+    final GetStatementRequest.Builder builder = GetStatementRequest.builder();
+
+    request.accept(builder);
+
+    return getStatement(builder.build());
+
+  }
+
+  /**
+   * Posts Statement
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement identifier.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String>> postStatement(PostStatementRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
-        .get()
+        .method(request.getMethod())
 
-        .uri(u -> u.path("/statements").queryParam("statementId", id).build())
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .bodyValue(request.getStatement())
+
+        .retrieve()
+
+        .toEntity(String[].class)
+
+        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody()[0]));
+
+  }
+
+  /**
+   * Post Statement
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement identifier.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String>> postStatement(
+      Consumer<PostStatementRequest.Builder> request) {
+
+    final PostStatementRequest.Builder builder = PostStatementRequest.builder();
+
+    request.accept(builder);
+
+    return postStatement(builder.build());
+
+  }
+
+  /**
+   * Posts Statements
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and an array of Statement
+   * identifiers.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> postStatements(PostStatementsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .bodyValue(request.getStatements())
+
+        .retrieve()
+
+        .toEntity(String[].class);
+
+  }
+
+  /**
+   * Posts Statements
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and an array of Statement
+   * identifiers.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> postStatements(
+      Consumer<PostStatementsRequest.Builder> request) {
+
+    final PostStatementsRequest.Builder builder = PostStatementsRequest.builder();
+
+    request.accept(builder);
+
+    return postStatements(builder.build());
+
+  }
+
+  /**
+   * Gets a voided Statement
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the voided Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getVoidedStatement(GetVoidedStatementRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
 
         .retrieve()
 
@@ -69,7 +210,25 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets a voided Statement
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the voided Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getVoidedStatement(
+      Consumer<GetVoidedStatementRequest.Builder> request) {
 
+    final GetVoidedStatementRequest.Builder builder = GetVoidedStatementRequest.builder();
+
+    request.accept(builder);
+
+    return getVoidedStatement(builder.build());
+
+  }
 
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
@@ -85,7 +244,6 @@ public class XapiClient {
 
     return getStatements(GetStatementsRequest.builder().build());
   }
-
 
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
@@ -107,7 +265,7 @@ public class XapiClient {
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build())
+        .uri(u -> request.url(u, queryParams).build(queryParams))
 
         .retrieve()
 

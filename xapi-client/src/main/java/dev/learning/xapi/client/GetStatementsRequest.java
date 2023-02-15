@@ -20,13 +20,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
 
 /**
- * Request for getting multiple State documents.
+ * Request for getting multiple Statements.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get">Multiple
- *      State Document GET</a>
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+ *      Statements</a>
  *
- * @author István Rátkai (Selindek)
+ * @author Thomas Turrell-Croft
  */
 @Builder
 @Getter
@@ -72,7 +72,7 @@ public class GetStatementsRequest implements Request {
 
     if (agent != null) {
       queryParams.put("agent", agentToJsonString());
-      uriBuilder.queryParam("verb", "{agent}");
+      uriBuilder.queryParam("agent", "{agent}");
     }
 
     if (verb != null) {
@@ -80,38 +80,28 @@ public class GetStatementsRequest implements Request {
       uriBuilder.queryParam("verb", "{verb}");
     }
 
-    if (verb != null) {
+    if (activity != null) {
       queryParams.put("activity", activity);
       uriBuilder.queryParam("activity", "{activity}");
     }
 
     if (since != null) {
-      queryParams.put("since ", since);
-      uriBuilder.queryParam("since ", "{since}");
+      queryParams.put("since", since);
+      uriBuilder.queryParam("since", "{since}");
     }
 
-    if (since != null) {
-      queryParams.put("until ", until);
-      uriBuilder.queryParam("until ", "{until}");
+    if (until != null) {
+      queryParams.put("until", until);
+      uriBuilder.queryParam("until", "{until}");
     }
 
     return uriBuilder
-
-        .queryParamIfPresent("agent", templateIfParamPresent("{agent}", agent))
-
-        .queryParamIfPresent("verb", templateIfParamPresent("{verb}", verb))
-
-        .queryParamIfPresent("activity", templateIfParamPresent("{activity}", activity))
 
         .queryParamIfPresent("registration", Optional.ofNullable(registration))
 
         .queryParamIfPresent("related_activities", Optional.ofNullable(relatedActivities))
 
         .queryParamIfPresent("related_agents", Optional.ofNullable(relatedAgents))
-
-        .queryParamIfPresent("since", templateIfParamPresent("{since}", since))
-
-        .queryParamIfPresent("until", templateIfParamPresent("{until}", until))
 
         .queryParamIfPresent("limit", Optional.ofNullable(limit))
 
@@ -123,17 +113,8 @@ public class GetStatementsRequest implements Request {
 
   }
 
-  private Optional<String> templateIfParamPresent(String template, Object value) {
-
-    if (value == null) {
-      return Optional.empty();
-    }
-
-    return Optional.of(template);
-  }
-
   /**
-   * Builder for Verb.
+   * Builder for GetStatementsRequest.
    */
   public static class Builder {
 
@@ -261,9 +242,6 @@ public class GetStatementsRequest implements Request {
   }
 
   private String agentToJsonString() {
-    if (agent == null) {
-      return null;
-    }
 
     try {
       return objectMapper.writeValueAsString(agent);

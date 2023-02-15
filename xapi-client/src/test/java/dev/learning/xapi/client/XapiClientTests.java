@@ -6,13 +6,11 @@ package dev.learning.xapi.client;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementFormat;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
+import dev.learning.xapi.model.Verb;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Locale;
 import java.util.UUID;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -26,8 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * XapiClient Tests.
@@ -63,92 +59,13 @@ class XapiClientTests {
 
   // Get Statement
 
-
-  @Test
-  void hello() throws MalformedURLException {
-
-
-    var x1 = new URL("https://example.com:8080:tom");
-
-
-    var x2 = URI.create("example.com:tom");
-
-
-    var x3 = URI.create("example.com:8080/hello:tom");
-
-    String agent = null;
-    URI verb = URI.create("http://example.com/course/1?tom=1&bob=2");
-    Instant since = Instant.now();
-
-    Map<String, Object> queryParams = new HashMap<>();
-
-    queryParams.put("agent", agent);
-    queryParams.put("verb", verb);
-    queryParams.put("since", since);
-
-
-    UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance();
-
-
-    URI test1 = uriComponentsBuilder.path("statements")
-
-        .queryParam("agent", agent)
-
-        .queryParam("verb", verb)
-
-        .queryParam("since", since) // not encoded
-
-        .build()
-
-        .toUri();
-
-    System.out.println("test1 " + test1);
-
-
-    UriBuilder uriBuilder = UriComponentsBuilder.newInstance();
-
-    URI test2 = uriBuilder.path("statements")
-
-        .queryParam("agent", "{agent}")
-
-        .queryParam("verb", "{verb}")
-
-        .queryParam("since", "{since}")
-
-        .build(queryParams);
-
-    System.out.println("test2 " + test2);
-
-
-    UriComponentsBuilder uriComponentsBuilder2 = UriComponentsBuilder.newInstance();
-
-
-    URI test3 = uriComponentsBuilder2.path("statements")
-
-        .queryParam("agent", agent)
-
-        .queryParam("verb", verb)
-
-        .queryParam("since", since) // not encoded
-
-        .encode()
-
-        .build()
-
-        .toUri();
-
-    System.out.println("test3 " + test3);
-
-
-  }
-
   @Test
   void whenGettingStatementThenMethodIsGet() throws InterruptedException {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
 
     // When Getting Statements
-    client.getStatement(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+    client.getStatement(r -> r.id(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6"))).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
@@ -161,14 +78,277 @@ class XapiClientTests {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
 
-    // When Getting Statements
-    client.getStatement(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+    // When Getting Statement
+    client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
         is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
+  }
+
+  @Test
+  void whenGettingStatementWithAttachmentsThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statement With Attachments
+    client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&attachments=true"));
+  }
+
+  @Test
+  void whenGettingStatementWithCanonicalFormatThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statement With Canonical Format
+    client
+        .getStatement(
+            r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").format(StatementFormat.CANONICAL))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&format=canonical"));
+  }
+
+  // Posting Statements
+
+  @Test
+  void whenPostingStatementsThenMethodIsPost() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    final Statement attemptedStatement = Statement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+
+        .build();
+
+    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+
+    Statement statements[] = {attemptedStatement, passedStatement};
+
+    // When posting Statements
+    client.postStatements(r -> r.statements(statements)).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Post
+    assertThat(recordedRequest.getMethod(), is("POST"));
+  }
+
+  @Test
+  void whenPostingStatementsThenBodyIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    final Statement attemptedStatement = Statement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+
+        .build();
+
+    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+
+    Statement statements[] = {attemptedStatement, passedStatement};
+
+    // When Posting Statements
+    client.postStatements(r -> r.statements(statements)).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Body Is Expected
+    assertThat(recordedRequest.getBody().readUtf8(), is(
+        "[{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
+  }
+
+  @Test
+  void whenPostingStatementsThenContentTypeHeaderIsApplicationJson() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    final Statement attemptedStatement = Statement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+
+        .build();
+
+    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+
+    Statement statements[] = {attemptedStatement, passedStatement};
+
+    // When Posting Statements
+    client.postStatements(r -> r.statements(statements)).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Application Json
+    assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  // Posting a Statement
+
+  @Test
+  void whenPostingStatementThenMethodIsPost() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When posting Statement
+    client.postStatement(
+        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Post
+    assertThat(recordedRequest.getMethod(), is("POST"));
+  }
+
+  @Test
+  void whenPostingStatementThenBodyIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Posting Statement
+    client.postStatement(
+        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Body Is Expected
+    assertThat(recordedRequest.getBody().readUtf8(), is(
+        "{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}"));
+  }
+
+  @Test
+  void whenPostingStatementThenContentTypeHeaderIsApplicationJson() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Posting Statement
+    client.postStatement(
+        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Application Json
+    assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  // Get Voided Statement
+
+  @Test
+  void whenGettingVoidedStatementThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Voided Statement
+    client.getVoidedStatement(r -> r.id(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingVoidedStatementThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Voided Statement
+    client.getVoidedStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?voidedStatementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
+  }
+
+  @Test
+  void whenGettingVoidedStatementWithAttachmentsThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Voided Statement With Attachments
+    client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&attachments=true"));
+  }
+
+  @Test
+  void whenGettingVoidedStatementWithCanonicalFormatThenPathIsExpected()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Voided Statement With Canonical Format
+    client
+        .getStatement(
+            r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").format(StatementFormat.CANONICAL))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&format=canonical"));
   }
 
   // Get Statements
@@ -240,7 +420,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/statements?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&verb=http%3A%2F%2Fadlnet.gov%2Fexpapi%2Fverbs%2Fanswered&activity=https%3A%2F%2Fexample.com%2Factivity%2F1&registration=dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3&related_activities=true&related_agents=true&since=2016-01-01T00%3A00%3A00Z&until=2018-01-01T00%3A00%3A00Z&limit=10&format=canonical&attachments=true&ascending=true"));
+        "/statements?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&verb=http%3A%2F%2Fadlnet.gov%2Fexpapi%2Fverbs%2Fanswered&activity=https%3A%2F%2Fexample.com%2Factivity%2F1&since=2016-01-01T00%3A00%3A00Z&until=2018-01-01T00%3A00%3A00Z&registration=dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3&related_activities=true&related_agents=true&limit=10&format=canonical&attachments=true&ascending=true"));
   }
 
   @Test
@@ -321,8 +501,6 @@ class XapiClientTests {
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
   }
-
-
 
   @Test
   void whenGettingASingleStateThenPathIsExpected() throws InterruptedException {
