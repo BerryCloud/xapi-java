@@ -43,7 +43,7 @@ public class XapiClient {
   }
 
   /**
-   * Gets a Statement
+   * Gets a Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement.
@@ -68,7 +68,7 @@ public class XapiClient {
   }
 
   /**
-   * Gets a Statement
+   * Gets a Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement.
@@ -88,7 +88,7 @@ public class XapiClient {
   }
 
   /**
-   * Posts Statement
+   * Posts Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
@@ -117,7 +117,7 @@ public class XapiClient {
   }
 
   /**
-   * Post Statement
+   * Post Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
@@ -137,7 +137,7 @@ public class XapiClient {
   }
 
   /**
-   * Posts Statements
+   * Posts Statements.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and an array of Statement
@@ -165,7 +165,7 @@ public class XapiClient {
   }
 
   /**
-   * Posts Statements
+   * Posts Statements.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and an array of Statement
@@ -186,7 +186,7 @@ public class XapiClient {
   }
 
   /**
-   * Gets a voided Statement
+   * Gets a voided Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the voided Statement.
@@ -211,7 +211,7 @@ public class XapiClient {
   }
 
   /**
-   * Gets a voided Statement
+   * Gets a voided Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the voided Statement.
@@ -296,6 +296,18 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The parameters of the get more statements request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(GetMoreStatementsRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
@@ -312,6 +324,18 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get more statements request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(
       Consumer<GetMoreStatementsRequest.Builder> request) {
 

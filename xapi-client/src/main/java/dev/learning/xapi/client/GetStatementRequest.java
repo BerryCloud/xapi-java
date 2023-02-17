@@ -52,6 +52,9 @@ public class GetStatementRequest implements Request {
 
   }
 
+  /**
+   * Builder for GetStatementRequest.
+   */
   public static class Builder {
 
     /**
@@ -71,7 +74,7 @@ public class GetStatementRequest implements Request {
     /**
      * Sets the id.
      *
-     * @param verb The id of the GetStatementRequest.
+     * @param id The id of the GetStatementRequest.
      *
      * @return This builder
      *

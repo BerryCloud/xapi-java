@@ -60,7 +60,7 @@ public class GetVoidedStatementRequest implements Request {
     /**
      * Sets the id.
      *
-     * @param id The id of the GetStatementRequest.
+     * @param id The id of the GetVoidedStatementRequest.
      *
      * @return This builder
      *
@@ -74,7 +74,7 @@ public class GetVoidedStatementRequest implements Request {
     /**
      * Sets the id.
      *
-     * @param verb The id of the GetStatementRequest.
+     * @param id The id of the GetVoidedStatementRequest.
      *
      * @return This builder
      *
