@@ -55,7 +55,7 @@ public class GetStatementRequest implements Request {
   /**
    * Builder for GetStatementRequest.
    */
-  public abstract static class Builder<C extends GetStatementRequest, B extends Builder<C, B>> {
+  public abstract static class Builder<C extends GetStatementRequest, B extends Builder<?, ?>> {
 
     /**
      * Sets the id.
@@ -66,7 +66,7 @@ public class GetStatementRequest implements Request {
      *
      * @see GetStatementRequest#id
      */
-    public Builder<C, B> id(UUID id) {
+    public Builder<?, ?> id(UUID id) {
       this.id = id;
       return self();
     }
@@ -80,7 +80,7 @@ public class GetStatementRequest implements Request {
      *
      * @see GetStatementRequest#id
      */
-    public Builder<C, B> id(String id) {
+    public Builder<?, ?> id(String id) {
       this.id = UUID.fromString(id);
       return self();
     }
