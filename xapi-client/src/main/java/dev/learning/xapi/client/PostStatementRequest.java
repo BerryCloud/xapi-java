@@ -40,7 +40,7 @@ public class PostStatementRequest implements Request {
   }
 
   /**
-   * Builder for Statement.
+   * Builder for PostStatementRequest.
    */
   public static class Builder {
 

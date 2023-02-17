@@ -30,6 +30,85 @@ To use the xAPI Client include the appropriate XML in the `dependencies` section
 </project>
 ```
 
+### Statement Resource
+
+The xAPI Client allows applications to store and fetch xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements).
+
+### Getting a Statement
+
+```java
+var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+    
+Statement statement = response.getBody();
+```
+
+### Getting Statements
+
+Example:
+
+```java
+var response = client.getStatements().block();
+
+StatementResult statementResult = response.getBody();
+
+Statement[] statements = statementResult.getStatements();
+```
+
+### Getting the next page of Statements
+
+
+Example:
+
+```java
+var response = client.getStatements().block();
+
+var moreResponse = client.getMoreStatements(r -> r.more(response.getBody().getMore())).block();
+
+StatementResult moreStatementResult = moreResponse.getBody();
+
+Statement[] statements = moreStatementResult.getStatements();
+```
+
+
+### Posting a Statement
+
+Example:
+
+```java
+client.postStatement(
+    r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+    .block();
+```
+
+### Posting Statements
+
+Example:
+
+```java
+Statement attemptedStatement = Statement.builder()
+    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
+    .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+    .build();
+
+Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+
+client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).block();
+```
+
+### Getting voided a Statement
+
+```java
+var response = client.getVoidedStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+
+Statement voidedStatement = response.getBody();
+```
+
 ### State Resource
 
 The xAPI Client allows applications to store, change, fetch, or delete [state documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource).
@@ -39,7 +118,7 @@ The xAPI Client allows applications to store, change, fetch, or delete [state do
 Example:
 
 ```java
-final var request = client.getState(r -> r.activityId("https://example.com/activity/1")
+var request = client.getState(r -> r.activityId("https://example.com/activity/1")
 
     .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
@@ -48,8 +127,8 @@ final var request = client.getState(r -> r.activityId("https://example.com/activ
     .stateId("bookmark"), String.class)
 
     .block();
-    
-final String state = request.getBody();
+
+String state = request.getBody();
 ```
 
 #### Posting a state
@@ -134,7 +213,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
 Example:
 
 ```java
-final Statement statement = Statement.builder()
+Statement statement = Statement.builder()
 
     .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -153,7 +232,7 @@ The Jackson ObjectMapper can be used to deserialize statements into Java objects
 Example:
 
 ```java
-final String json = """
+String json = """
     {
         "actor":{
             "objectType":"Agent",
@@ -177,7 +256,7 @@ final String json = """
         }
     }""";
 
-final Statement statement = objectMapper.readValue(json, Statement.class);
+Statement statement = objectMapper.readValue(json, Statement.class);
 ```
 
 ### Serializing Statements
@@ -188,13 +267,13 @@ Example:
 
 ```java
 
-final Statement statement = Statement.builder()
+Statement statement = Statement.builder()
     .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
         .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
     .build();
 
-final String json = objectMapper.writeValueAsString(statement);
+String json = objectMapper.writeValueAsString(statement);
 
 ```
 
@@ -204,13 +283,13 @@ Example:
 
 ```java
 
-final Statement passed = Statement.builder()
+Statement passed = Statement.builder()
     .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.PASSED)
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
         .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
     .build();
 
-final Statement completed = passed.toBuilder().verb(Verb.COMPLETED).build();
+Statement completed = passed.toBuilder().verb(Verb.COMPLETED).build();
 
 ```
 

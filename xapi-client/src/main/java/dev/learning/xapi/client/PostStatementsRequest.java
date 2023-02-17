@@ -38,4 +38,27 @@ public class PostStatementsRequest implements Request {
 
   }
 
+  /**
+   * Builder for PostStatementsRequest.
+   */
+  public static class Builder {
+
+    // This static class extends the lombok builder.
+
+    /**
+     * Sets the statements.
+     *
+     * @param statements The statements of the PostStatementsRequest.
+     *
+     * @return This builder
+     *
+     * @see PostStatementsRequest#statements
+     */
+    public Builder statements(Statement... statements) {
+      this.statements = statements;
+      return this;
+    }
+
+  }
+
 }

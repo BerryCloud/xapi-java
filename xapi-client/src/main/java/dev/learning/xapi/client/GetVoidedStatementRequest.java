@@ -52,6 +52,9 @@ public class GetVoidedStatementRequest implements Request {
 
   }
 
+  /**
+   * Builder for GetVoidedStatementRequest.
+   */
   public static class Builder {
 
     /**
