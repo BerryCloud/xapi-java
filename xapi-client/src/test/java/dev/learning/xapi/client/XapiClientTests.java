@@ -65,7 +65,7 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
 
     // When Getting Statements
-    client.getStatement(r -> r.id(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6"))).block();
+    client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
@@ -86,6 +86,22 @@ class XapiClientTests {
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
         is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
+  }
+
+  @Test
+  void whenGettingStatementThenBodyIsInstanceOfStatement() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+
+        .setBody(
+            "{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}")
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting Statement
+    var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+
+    // Then Body Is Instance Of Statement
+    assertThat(response.getBody(), instanceOf(Statement.class));
   }
 
   @Test
@@ -478,6 +494,45 @@ class XapiClientTests {
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
         is("/statements?activity=https%3A%2F%2Fexample.com%2Factivity%2F1"));
+  }
+
+
+
+  @Test
+  void whenGettingMoreStatementsThenRequestMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements With Activity Parameter
+    client.getMoreStatements(r -> r
+
+        .more(mockWebServer.url("/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1").uri())
+
+    ).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingMoreStatementsThenRequestURLExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+
+    // When Getting Statements With Activity Parameter
+    client.getMoreStatements(r -> r
+
+        .more(mockWebServer.url("/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1").uri())
+
+    ).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Request URL Is Expected
+    assertThat(recordedRequest.getRequestUrl(),
+        is(mockWebServer.url("/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1")));
   }
 
   // Get Single State

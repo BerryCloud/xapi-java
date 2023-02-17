@@ -296,6 +296,33 @@ public class XapiClient {
 
   }
 
+  public Mono<ResponseEntity<StatementResult>> getMoreStatements(GetMoreStatementsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(StatementResult.class);
+
+  }
+
+  public Mono<ResponseEntity<StatementResult>> getMoreStatements(
+      Consumer<GetMoreStatementsRequest.Builder> request) {
+
+    final GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder();
+
+    request.accept(builder);
+
+    return getMoreStatements(builder.build());
+
+  }
+
   /**
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
