@@ -130,7 +130,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder agent(Agent agent) {
       this.agent = agent;
-      return this;
+      return self();
     }
 
     /**
@@ -144,7 +144,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder agent(Consumer<Agent.Builder<?, ?>> agent) {
 
-      final Agent.Builder<?, ?> builder = Agent.builder();
+      final dev.learning.xapi.model.Agent.Builder<?, ?> builder = Agent.builder();
 
       agent.accept(builder);
 
@@ -162,7 +162,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder verb(URI verb) {
       this.verb = verb;
-      return this;
+      return self();
     }
 
     /**
@@ -176,7 +176,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder verb(String verb) {
       this.verb = URI.create(verb);
-      return this;
+      return self();
     }
 
     /**
@@ -190,7 +190,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder activity(URI activity) {
       this.activity = activity;
-      return this;
+      return self();
     }
 
     /**
@@ -204,7 +204,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder activity(String activity) {
       this.activity = URI.create(activity);
-      return this;
+      return self();
     }
 
 
@@ -220,7 +220,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder registration(UUID registration) {
       this.registration = registration;
-      return this;
+      return self();
     }
 
     /**
@@ -234,7 +234,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder registration(String registration) {
       this.registration = UUID.fromString(registration);
-      return this;
+      return self();
     }
 
     // This static class extends the lombok builder.
