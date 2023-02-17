@@ -8,9 +8,9 @@ import dev.learning.xapi.model.StatementFormat;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
 
@@ -23,16 +23,16 @@ import org.springframework.web.util.UriBuilder;
  *
  * @author Thomas Turrell-Croft
  */
-@Builder
+@SuperBuilder
 @Getter
 public class GetStatementRequest implements Request {
 
   @NonNull
-  private final UUID id;
+  protected final UUID id;
 
-  private final StatementFormat format;
+  protected final StatementFormat format;
 
-  private final Boolean attachments;
+  protected final Boolean attachments;
 
   @Override
   public HttpMethod getMethod() {
@@ -55,7 +55,7 @@ public class GetStatementRequest implements Request {
   /**
    * Builder for GetStatementRequest.
    */
-  public static class Builder {
+  public abstract static class Builder<C extends GetStatementRequest, B extends Builder<C, B>> {
 
     /**
      * Sets the id.
@@ -66,9 +66,9 @@ public class GetStatementRequest implements Request {
      *
      * @see GetStatementRequest#id
      */
-    public Builder id(UUID id) {
+    public Builder<C, B> id(UUID id) {
       this.id = id;
-      return this;
+      return self();
     }
 
     /**
@@ -80,9 +80,9 @@ public class GetStatementRequest implements Request {
      *
      * @see GetStatementRequest#id
      */
-    public Builder id(String id) {
+    public Builder<C, B> id(String id) {
       this.id = UUID.fromString(id);
-      return this;
+      return self();
     }
 
     // This static class extends the lombok builder.
