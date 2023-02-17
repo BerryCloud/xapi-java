@@ -77,9 +77,9 @@ public class XapiClient {
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(
-      Consumer<GetStatementRequest.Builder> request) {
+      Consumer<GetStatementRequest.Builder<?, ?>> request) {
 
-    final GetStatementRequest.Builder builder = GetStatementRequest.builder();
+    final GetStatementRequest.Builder<?, ?> builder = GetStatementRequest.builder();
 
     request.accept(builder);
 
@@ -220,9 +220,9 @@ public class XapiClient {
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getVoidedStatement(
-      Consumer<GetVoidedStatementRequest.Builder> request) {
+      Consumer<GetVoidedStatementRequest.Builder<?, ?>> request) {
 
-    final GetVoidedStatementRequest.Builder builder = GetVoidedStatementRequest.builder();
+    final GetVoidedStatementRequest.Builder<?, ?> builder = GetVoidedStatementRequest.builder();
 
     request.accept(builder);
 
