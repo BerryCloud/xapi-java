@@ -130,7 +130,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder agent(Agent agent) {
       this.agent = agent;
-      return self();
+      return this;
     }
 
     /**
@@ -162,7 +162,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder verb(URI verb) {
       this.verb = verb;
-      return self();
+      return this;
     }
 
     /**
@@ -176,7 +176,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder verb(String verb) {
       this.verb = URI.create(verb);
-      return self();
+      return this;
     }
 
     /**
@@ -190,7 +190,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder activity(URI activity) {
       this.activity = activity;
-      return self();
+      return this;
     }
 
     /**
@@ -204,7 +204,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder activity(String activity) {
       this.activity = URI.create(activity);
-      return self();
+      return this;
     }
 
 
@@ -220,7 +220,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder registration(UUID registration) {
       this.registration = registration;
-      return self();
+      return this;
     }
 
     /**
@@ -234,7 +234,7 @@ public class GetStatementsRequest implements Request {
      */
     public Builder registration(String registration) {
       this.registration = UUID.fromString(registration);
-      return self();
+      return this;
     }
 
     // This static class extends the lombok builder.
