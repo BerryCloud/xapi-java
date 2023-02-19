@@ -24,7 +24,7 @@ To use the xAPI Client include the appropriate XML in the `dependencies` section
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
 </project>
@@ -202,7 +202,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
 </project>
