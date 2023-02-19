@@ -117,7 +117,7 @@ public class XapiClient {
   }
 
   /**
-   * Post Statement.
+   * Posts Statement.
    * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
