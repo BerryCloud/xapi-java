@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.client;
 
+import dev.learning.xapi.model.Statement;
+import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -38,6 +40,311 @@ public class XapiClient {
         .defaultHeader("X-Experience-API-Version", "1.0.3")
 
         .build();
+  }
+
+  /**
+   * Gets a Statement.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Statement.class);
+
+  }
+
+  /**
+   * Gets a Statement.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getStatement(
+      Consumer<GetStatementRequest.Builder<?, ?>> request) {
+
+    final GetStatementRequest.Builder<?, ?> builder = GetStatementRequest.builder();
+
+    request.accept(builder);
+
+    return getStatement(builder.build());
+
+  }
+
+  /**
+   * Posts Statement.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement identifier.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String>> postStatement(PostStatementRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .bodyValue(request.getStatement())
+
+        .retrieve()
+
+        .toEntity(String[].class)
+
+        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody()[0]));
+
+  }
+
+  /**
+   * Posts Statement.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the Statement identifier.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String>> postStatement(
+      Consumer<PostStatementRequest.Builder> request) {
+
+    final PostStatementRequest.Builder builder = PostStatementRequest.builder();
+
+    request.accept(builder);
+
+    return postStatement(builder.build());
+
+  }
+
+  /**
+   * Post Statements.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and an array of Statement
+   * identifiers.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> postStatements(PostStatementsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .bodyValue(request.getStatements())
+
+        .retrieve()
+
+        .toEntity(String[].class);
+
+  }
+
+  /**
+   * Posts Statements.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and an array of Statement
+   * identifiers.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> postStatements(
+      Consumer<PostStatementsRequest.Builder> request) {
+
+    final PostStatementsRequest.Builder builder = PostStatementsRequest.builder();
+
+    request.accept(builder);
+
+    return postStatements(builder.build());
+
+  }
+
+  /**
+   * Gets a voided Statement.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the voided Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getVoidedStatement(GetVoidedStatementRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Statement.class);
+
+  }
+
+  /**
+   * Gets a voided Statement.
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers and the voided Statement.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Statement>> getVoidedStatement(
+      Consumer<GetVoidedStatementRequest.Builder<?, ?>> request) {
+
+    final GetVoidedStatementRequest.Builder<?, ?> builder = GetVoidedStatementRequest.builder();
+
+    request.accept(builder);
+
+    return getVoidedStatement(builder.build());
+
+  }
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getStatements() {
+
+    return getStatements(GetStatementsRequest.builder().build());
+  }
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The parameters of the get statements request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getStatements(GetStatementsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(StatementResult.class);
+
+  }
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get statements request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getStatements(
+      Consumer<GetStatementsRequest.Builder> request) {
+
+    final GetStatementsRequest.Builder builder = GetStatementsRequest.builder();
+
+    request.accept(builder);
+
+    return getStatements(builder.build());
+
+  }
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The parameters of the get more statements request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getMoreStatements(GetMoreStatementsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(StatementResult.class);
+
+  }
+
+  /**
+   * Gets a StatementResult object, a list of Statements. If additional results are available, an
+   * URL to retrieve them will be included in the StatementResult Object.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and StatementResult.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get more statements request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<StatementResult>> getMoreStatements(
+      Consumer<GetMoreStatementsRequest.Builder> request) {
+
+    final GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder();
+
+    request.accept(builder);
+
+    return getMoreStatements(builder.build());
+
   }
 
   /**
