@@ -45,9 +45,8 @@ class XapiClientTests {
     mockWebServer = new MockWebServer();
     mockWebServer.start();
 
-    String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
+    webClientBuilder.baseUrl(mockWebServer.url("").toString());
 
-    webClientBuilder.baseUrl(baseUrl);
     client = new XapiClient(webClientBuilder);
 
   }
