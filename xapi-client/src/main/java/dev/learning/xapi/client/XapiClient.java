@@ -8,6 +8,7 @@ import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -96,7 +97,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String>> postStatement(PostStatementRequest request) {
+  public Mono<ResponseEntity<UUID>> postStatement(PostStatementRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -110,7 +111,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(String[].class)
+        .toEntity(UUID[].class)
 
         .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody()[0]));
 
@@ -125,8 +126,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String>> postStatement(
-      Consumer<PostStatementRequest.Builder> request) {
+  public Mono<ResponseEntity<UUID>> postStatement(Consumer<PostStatementRequest.Builder> request) {
 
     final PostStatementRequest.Builder builder = PostStatementRequest.builder();
 
@@ -146,7 +146,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> postStatements(PostStatementsRequest request) {
+  public Mono<ResponseEntity<UUID[]>> postStatements(PostStatementsRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -160,7 +160,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(String[].class);
+        .toEntity(UUID[].class);
 
   }
 
@@ -174,7 +174,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> postStatements(
+  public Mono<ResponseEntity<UUID[]>> postStatements(
       Consumer<PostStatementsRequest.Builder> request) {
 
     final PostStatementsRequest.Builder builder = PostStatementsRequest.builder();
