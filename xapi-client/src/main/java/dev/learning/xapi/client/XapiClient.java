@@ -97,7 +97,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String>> postStatement(PostStatementRequest request) {
+  public Mono<ResponseEntity<UUID>> postStatement(PostStatementRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -111,7 +111,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(String[].class)
+        .toEntity(UUID[].class)
 
         .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody()[0]));
 
@@ -126,8 +126,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String>> postStatement(
-      Consumer<PostStatementRequest.Builder> request) {
+  public Mono<ResponseEntity<UUID>> postStatement(Consumer<PostStatementRequest.Builder> request) {
 
     final PostStatementRequest.Builder builder = PostStatementRequest.builder();
 
