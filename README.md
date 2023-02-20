@@ -4,7 +4,7 @@ xAPI Java helps you to create applications that send or receive xAPI [Statements
 
 There are two projects in this [Monorepo](https://en.wikipedia.org/wiki/Monorepo), xAPI Client and xAPI Model.
 
-Both the xAPI client and xAPI Model use a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
+Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
 
 ## xAPI Java Client
 
