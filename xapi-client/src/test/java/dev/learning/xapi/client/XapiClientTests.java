@@ -61,7 +61,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementThenMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
@@ -75,7 +75,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statement
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
@@ -90,7 +90,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementThenBodyIsInstanceOfStatement() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 
         .setBody(
             "{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}")
@@ -106,7 +106,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementWithAttachmentsThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statement With Attachments
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
@@ -122,7 +122,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementWithCanonicalFormatThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statement With Canonical Format
     client
@@ -142,7 +142,7 @@ class XapiClientTests {
   @Test
   void whenPostingStatementsThenMethodIsPost() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     final Statement attemptedStatement = Statement.builder()
 
@@ -171,7 +171,7 @@ class XapiClientTests {
   @Test
   void whenPostingStatementsThenBodyIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     final Statement attemptedStatement = Statement.builder()
 
@@ -201,7 +201,7 @@ class XapiClientTests {
   @Test
   void whenPostingStatementsThenContentTypeHeaderIsApplicationJson() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     final Statement attemptedStatement = Statement.builder()
 
@@ -227,12 +227,42 @@ class XapiClientTests {
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
   }
 
+  @Test
+  void whenPostingStatementsThenResponseBodyIsInstanceOfUUIDArray() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody(
+            "[\"2eb84e56-441a-492c-9d7b-f8e9ddd3e15d\",\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .addHeader("Content-Type", "application/json"));
+
+    final Statement attemptedStatement = Statement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+
+        .build();
+
+    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+
+    Statement statements[] = {attemptedStatement, passedStatement};
+
+    // When Posting Statements
+    ResponseEntity<UUID[]> response = client.postStatements(r -> r.statements(statements)).block();
+
+    // Then Response Body Is Instance Of UUID Array
+    assertThat(response.getBody(), instanceOf(UUID[].class));
+  }
+
   // Posting a Statement
 
   @Test
   void whenPostingStatementThenMethodIsPost() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
         .setHeader("Content-Type", "application/json"));
 
@@ -255,7 +285,7 @@ class XapiClientTests {
   @Test
   void whenPostingStatementThenBodyIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
         .setHeader("Content-Type", "application/json"));
 
@@ -279,7 +309,7 @@ class XapiClientTests {
   @Test
   void whenPostingStatementThenContentTypeHeaderIsApplicationJson() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
         .setHeader("Content-Type", "application/json"));
 
@@ -304,7 +334,7 @@ class XapiClientTests {
   @Test
   void whenGettingVoidedStatementThenMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement
     client.getVoidedStatement(r -> r.id(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")))
@@ -319,7 +349,7 @@ class XapiClientTests {
   @Test
   void whenGettingVoidedStatementThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement
     client.getVoidedStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
@@ -334,7 +364,7 @@ class XapiClientTests {
   @Test
   void whenGettingVoidedStatementWithAttachmentsThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement With Attachments
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
@@ -351,7 +381,7 @@ class XapiClientTests {
   void whenGettingVoidedStatementWithCanonicalFormatThenPathIsExpected()
       throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement With Canonical Format
     client
@@ -371,7 +401,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementsThenMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements
     client.getStatements().block();
@@ -386,7 +416,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementsThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements
     client.getStatements().block();
@@ -400,7 +430,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementsWithAllParametersThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements With All Parameters
     client.getStatements(r -> r
@@ -441,7 +471,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementsWithAgentParameterThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements With Agent Parameter
     client.getStatements(r -> r
@@ -460,7 +490,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementsWithVerbParameterThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements With Verb Parameter
     client.getStatements(r -> r
@@ -479,7 +509,7 @@ class XapiClientTests {
   @Test
   void whenGettingStatementsWithActivityParameterThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements With Activity Parameter
     client.getStatements(r -> r
@@ -500,7 +530,7 @@ class XapiClientTests {
   @Test
   void whenGettingMoreStatementsThenRequestMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements With Activity Parameter
     client.getMoreStatements(r -> r
@@ -518,7 +548,7 @@ class XapiClientTests {
   @Test
   void whenGettingMoreStatementsThenRequestURLExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Statements With Activity Parameter
     client.getMoreStatements(r -> r
@@ -539,7 +569,7 @@ class XapiClientTests {
   @Test
   void whenGettingASingleStateThenMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting A Single State
     client.getState(r -> r.activityId("https://example.com/activity/1")
@@ -559,7 +589,7 @@ class XapiClientTests {
   @Test
   void whenGettingASingleStateThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting A Single State
     client.getState(r -> r.activityId("https://example.com/activity/1")
@@ -623,8 +653,8 @@ class XapiClientTests {
       throws InterruptedException {
 
     // Given State Content Type Is Text Plain
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
-        .setBody("Hello World!").addHeader("Content-Type", "text/plain; charset=utf-8"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
+        .addHeader("Content-Type", "text/plain; charset=utf-8"));
 
     // When Getting State
     ResponseEntity<String> response = client
@@ -647,8 +677,8 @@ class XapiClientTests {
       throws InterruptedException {
 
     // Given State Content Type Is Text Plain
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
-        .setBody("Hello World!").addHeader("Content-Type", "text/plain; charset=utf-8"));
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
+        .addHeader("Content-Type", "text/plain; charset=utf-8"));
 
     // When Getting State
     ResponseEntity<String> response = client
@@ -1049,7 +1079,7 @@ class XapiClientTests {
   @Test
   void whenGettingMultipleStatesThenMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"State1\", \"State2\", \"State3\"]")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
@@ -1071,7 +1101,7 @@ class XapiClientTests {
   @Test
   void whenGettingMultipleStatesThenPathIsExpected() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"State1\", \"State2\", \"State3\"]")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
@@ -1094,7 +1124,7 @@ class XapiClientTests {
   @Test
   void whenGettingMultipleStatesWithoutRegistrationThenMethodIsGet() throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"State1\", \"State2\", \"State3\"]")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
@@ -1115,7 +1145,7 @@ class XapiClientTests {
   void whenGettingMultipleStatesWithoutRegistrationThenPathIsExpected()
       throws InterruptedException {
 
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"State1\", \"State2\", \"State3\"]")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
@@ -1138,7 +1168,7 @@ class XapiClientTests {
       throws InterruptedException {
 
     // Given Multiple States Exist
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"State1\", \"State2\", \"State3\"]")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
@@ -1161,7 +1191,7 @@ class XapiClientTests {
       throws InterruptedException {
 
     // Given Multiple States Exist
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 No Content")
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
         .setBody("[\"State1\", \"State2\", \"State3\"]")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
