@@ -31,7 +31,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -50,7 +50,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark");
 
@@ -65,7 +65,7 @@ class GetStateRequestTests {
     // When Building GetStateRequest Without activityId
     Builder<?, ?> builder = GetStateRequest.builder()
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark");
 
@@ -97,7 +97,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then Null Pointer Exception Is Thrown
     assertThrows(NullPointerException.class, () -> builder.build());
@@ -112,7 +112,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -141,7 +141,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")
 

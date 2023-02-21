@@ -574,7 +574,7 @@ class XapiClientTests {
     // When Getting A Single State
     client.getState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -594,7 +594,7 @@ class XapiClientTests {
     // When Getting A Single State
     client.getState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -615,7 +615,7 @@ class XapiClientTests {
     // When Getting A Single State Without Registration
     client.getState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark"), String.class)
 
@@ -635,7 +635,7 @@ class XapiClientTests {
     // When Getting A Single State Without Registration
     client.getState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark"), String.class)
 
@@ -660,7 +660,7 @@ class XapiClientTests {
     ResponseEntity<String> response = client
         .getState(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("another@example.com"))
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
             .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -684,7 +684,7 @@ class XapiClientTests {
     ResponseEntity<String> response = client
         .getState(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("another@example.com"))
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
             .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -706,7 +706,7 @@ class XapiClientTests {
     // When Posting A Single State
     client.postState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -730,7 +730,7 @@ class XapiClientTests {
     // When Posting A Single State
     client.postState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -756,7 +756,7 @@ class XapiClientTests {
     // When Posting A Single State With Content Type Text Plain
     client.postState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -783,7 +783,7 @@ class XapiClientTests {
     // When Posting A Single State Without Content Type
     client.postState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -807,7 +807,7 @@ class XapiClientTests {
     // When Posting A Single State Without Registration
     client.postState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")
 
@@ -829,7 +829,7 @@ class XapiClientTests {
     // When Posting A Single State Without Registration
     client.postState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")
 
@@ -854,7 +854,7 @@ class XapiClientTests {
     // When Putting A Single State
     client.putState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -878,7 +878,7 @@ class XapiClientTests {
     // When Putting A Single State
     client.putState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -904,7 +904,7 @@ class XapiClientTests {
     // When Putting A Single State With Content Type Text Plain
     client.putState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -931,7 +931,7 @@ class XapiClientTests {
     // When Putting A Single State Without Content Type
     client.putState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -955,7 +955,7 @@ class XapiClientTests {
     // When Putting A Single State Without Registration
     client.putState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")
 
@@ -977,7 +977,7 @@ class XapiClientTests {
     // When Putting A Single State Without Registration
     client.putState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")
 
@@ -1002,7 +1002,7 @@ class XapiClientTests {
     // When Deleting A Single State
     client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -1022,7 +1022,7 @@ class XapiClientTests {
     // When Deleting A Single State
     client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -1043,7 +1043,7 @@ class XapiClientTests {
     // When Deleting A Single State Without Registration
     client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")).block();
 
@@ -1061,7 +1061,7 @@ class XapiClientTests {
     // When Deleting A Single State Without Registration
     client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -1086,7 +1086,7 @@ class XapiClientTests {
     // When Getting Multiple States
     client.getStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
 
@@ -1108,7 +1108,7 @@ class XapiClientTests {
     // When Getting Multiple States
     client.getStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
 
@@ -1131,7 +1131,7 @@ class XapiClientTests {
     // When Getting Multiple States Without Registration
     client.getStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com")))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
 
         .block();
 
@@ -1152,7 +1152,7 @@ class XapiClientTests {
     // When Getting Multiple States Without Registration
     client.getStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com")))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
 
         .block();
 
@@ -1176,7 +1176,7 @@ class XapiClientTests {
     ResponseEntity<String[]> response = client
         .getStates(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("another@example.com"))
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
             .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
 
@@ -1199,7 +1199,7 @@ class XapiClientTests {
     ResponseEntity<String[]> response = client
         .getStates(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("another@example.com"))
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
             .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
 
@@ -1219,7 +1219,7 @@ class XapiClientTests {
     // When Deleting Multiple States
     client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -1239,7 +1239,7 @@ class XapiClientTests {
     // When Deleting Multiple States
     client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -1261,7 +1261,7 @@ class XapiClientTests {
     // When Deleting Multiple States Without Registration
     client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     ).block();
 
@@ -1280,7 +1280,7 @@ class XapiClientTests {
     // When Deleting Multiple States Without Registration
     client.deleteStates(r -> r.activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     ).block();
 

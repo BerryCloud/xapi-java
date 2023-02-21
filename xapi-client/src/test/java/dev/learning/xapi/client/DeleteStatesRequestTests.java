@@ -32,7 +32,7 @@ class DeleteStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
@@ -49,7 +49,7 @@ class DeleteStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration(UUID.fromString("67828e3a-d116-4e18-8af3-2d2c59e27be6"));
 
@@ -66,7 +66,7 @@ class DeleteStatesRequestTests {
 
         .activityId(URI.create("https://example.com/activity/1"))
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration(("67828e3a-d116-4e18-8af3-2d2c59e27be6"));
 
@@ -83,7 +83,7 @@ class DeleteStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());
@@ -96,7 +96,7 @@ class DeleteStatesRequestTests {
     // When Building DeleteStatesRequest Without ActivityId
     Builder<?, ?> builder = DeleteStatesRequest.builder()
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
@@ -128,7 +128,7 @@ class DeleteStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -156,7 +156,7 @@ class DeleteStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .build();
 

@@ -32,7 +32,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -51,7 +51,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
@@ -68,7 +68,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());
@@ -83,7 +83,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());
@@ -96,7 +96,7 @@ class GetStatesRequestTests {
     // When Building GetStatesRequest Without ActivityId
     Builder<?, ?> builder = GetStatesRequest.builder()
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then Null Pointer Exception Is Thrown
     assertThrows(NullPointerException.class, () -> builder.build());
@@ -124,7 +124,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -153,7 +153,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .build();
 
@@ -178,7 +178,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
