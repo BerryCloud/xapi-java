@@ -121,7 +121,7 @@ The xAPI Client allows applications to store, change, fetch, or delete [state do
 Example:
 
 ```java
-var request = client.getState(r -> r.activityId("https://example.com/activity/1")
+var response = client.getState(r -> r.activityId("https://example.com/activity/1")
 
     .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -131,7 +131,7 @@ var request = client.getState(r -> r.activityId("https://example.com/activity/1"
 
     .block();
 
-String state = request.getBody();
+String state = response.getBody();
 ```
 
 #### Posting a state
