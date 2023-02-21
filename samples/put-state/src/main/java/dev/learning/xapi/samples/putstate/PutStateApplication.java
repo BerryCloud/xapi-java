@@ -23,7 +23,7 @@ public class PutStateApplication implements CommandLineRunner {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(PutStateApplication.class, args);
+		SpringApplication.run(PutStateApplication.class, args).close();
 	}
 
 	@Override
