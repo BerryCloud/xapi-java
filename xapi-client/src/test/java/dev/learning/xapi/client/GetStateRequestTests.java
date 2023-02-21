@@ -31,7 +31,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -50,7 +50,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark");
 
@@ -65,7 +65,7 @@ class GetStateRequestTests {
     // When Building GetStateRequest Without activityId
     Builder<?, ?> builder = GetStateRequest.builder()
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark");
 
@@ -97,7 +97,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then Null Pointer Exception Is Thrown
     assertThrows(NullPointerException.class, () -> builder.build());
@@ -112,7 +112,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -129,7 +129,7 @@ class GetStateRequestTests {
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
 
   }
 
@@ -141,7 +141,7 @@ class GetStateRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .stateId("bookmark")
 
@@ -156,7 +156,7 @@ class GetStateRequestTests {
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&stateId=bookmark")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark")));
 
   }
 

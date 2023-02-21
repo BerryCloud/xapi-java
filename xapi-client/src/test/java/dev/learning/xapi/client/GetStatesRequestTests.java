@@ -32,7 +32,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -51,7 +51,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
@@ -68,7 +68,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());
@@ -83,7 +83,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());
@@ -96,7 +96,7 @@ class GetStatesRequestTests {
     // When Building GetStatesRequest Without ActivityId
     Builder<?, ?> builder = GetStatesRequest.builder()
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"));
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then Null Pointer Exception Is Thrown
     assertThrows(NullPointerException.class, () -> builder.build());
@@ -124,7 +124,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -141,7 +141,7 @@ class GetStatesRequestTests {
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&since=2016-01-01T00:00:00Z")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&since=2016-01-01T00:00:00Z")));
 
   }
 
@@ -153,7 +153,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .build();
 
@@ -166,7 +166,7 @@ class GetStatesRequestTests {
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D")));
 
   }
 
@@ -178,7 +178,7 @@ class GetStatesRequestTests {
 
         .activityId("https://example.com/activity/1")
 
-        .agent(a -> a.name("A N Other").mbox("another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -193,7 +193,7 @@ class GetStatesRequestTests {
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6")));
 
   }
 

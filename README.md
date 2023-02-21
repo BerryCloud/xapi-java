@@ -36,6 +36,8 @@ The xAPI Client allows applications to store and fetch xAPI [Statements](https:/
 
 ### Getting a Statement
 
+Example:
+
 ```java
 var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
     
@@ -55,7 +57,6 @@ Statement[] statements = statementResult.getStatements();
 ```
 
 ### Getting the next page of Statements
-
 
 Example:
 
@@ -103,6 +104,8 @@ client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).bl
 
 ### Getting voided a Statement
 
+Example:
+
 ```java
 var response = client.getVoidedStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
@@ -120,7 +123,7 @@ Example:
 ```java
 var request = client.getState(r -> r.activityId("https://example.com/activity/1")
 
-    .agent(a -> a.name("A N Other").mbox("another@example.com"))
+    .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -138,7 +141,7 @@ Example:
 ```java
 client.postState(r -> r.activityId("https://example.com/activity/1")
 
-    .agent(a -> a.name("A N Other").mbox("another@example.com"))
+    .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -156,7 +159,7 @@ Example:
 ```java
 client.putState(r -> r.activityId("https://example.com/activity/1")
 
-    .agent(a -> a.name("A N Other").mbox("another@example.com"))
+    .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
@@ -174,7 +177,7 @@ Example:
 ```java
 client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
-    .agent(a -> a.name("A N Other").mbox("another@example.com"))
+    .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
