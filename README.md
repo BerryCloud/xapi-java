@@ -102,7 +102,7 @@ Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).bui
 client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).block();
 ```
 
-### Getting voided a Statement
+### Getting a voided Statement
 
 Example:
 
