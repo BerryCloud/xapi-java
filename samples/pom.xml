@@ -11,6 +11,9 @@
   <packaging>pom</packaging>
   <name>xAPI Samples Build</name>
   <description>learning.dev xAPI Samples Build</description>
+  <properties>
+    <sonar.skip>true</sonar.skip>
+  </properties>  
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
