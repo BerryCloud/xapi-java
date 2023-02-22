@@ -6,17 +6,7 @@
     <artifactId>xapi-samples-build</artifactId>
     <version>1.0.5-SNAPSHOT</version>
   </parent>
-  <artifactId>delete-state</artifactId>
-  <name>Delete xAPI State Sample</name>
-  <description>Delete xAPI State</description>
-  <dependencies>
-    <dependency>
-      <groupId>dev.learning.xapi</groupId>
-      <artifactId>xapi-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>dev.learning.xapi.samples</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-  </dependencies>
+  <artifactId>core</artifactId>
+  <name>xAPI Samples Core</name>
+  <description>learning.dev xAPI Samples Core</description>
 </project>

@@ -18,7 +18,17 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>dev.learning.xapi.samples</groupId>
+        <artifactId>core</artifactId>
+        <version>1.0.5-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <modules>
+    <module>core</module>
     <module>delete-state</module>
     <module>get-state</module>
     <module>get-statement</module>
@@ -33,7 +43,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <configuration>
-          <!-- Prevent samples from being deployed --> 
+          <!-- Prevent samples from being deployed -->
           <skip>true</skip>
         </configuration>
       </plugin>

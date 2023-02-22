@@ -1,6 +1,7 @@
 package dev.learning.xapi.samples.deletestate;
 
 import dev.learning.xapi.client.XapiClient;
+import dev.learning.xapi.samples.core.ExampleState;
 import java.time.Instant;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -54,41 +55,6 @@ public class DeleteStateApplication implements CommandLineRunner {
         .stateId("bookmark"))
 
         .block();
-
-  }
-
-  // Class which can be serialized and deserialized by Jackson
-  static class ExampleState {
-
-    private String message;
-    private Instant timestamp;
-
-    public ExampleState(String message, Instant timestamp) {
-      super();
-      this.message = message;
-      this.timestamp = timestamp;
-    }
-
-    public String getMessage() {
-      return message;
-    }
-
-    public void setMessage(String message) {
-      this.message = message;
-    }
-
-    public Instant getTimestamp() {
-      return timestamp;
-    }
-
-    public void setTimestamp(Instant timestamp) {
-      this.timestamp = timestamp;
-    }
-
-    @Override
-    public String toString() {
-      return "ExampleState [message=" + message + ", timestamp=" + timestamp + "]";
-    }
 
   }
 
