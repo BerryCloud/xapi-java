@@ -1,50 +1,64 @@
 package dev.learning.xapi.samples.poststatement;
 
+import dev.learning.xapi.client.XapiClient;
+import dev.learning.xapi.model.Verb;
 import java.util.Locale;
 import java.util.UUID;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import dev.learning.xapi.client.XapiClient;
-import dev.learning.xapi.model.Verb;
-
+/**
+ * Sample using xAPI client to post a statement.
+ *
+ * @author Thomas Turrell-Croft
+ */
 @SpringBootApplication
 public class PostStatementApplication implements CommandLineRunner {
 
-	private final XapiClient client;
+  private final XapiClient client;
 
-	public PostStatementApplication(WebClient.Builder webClientBuilder) {
+  /**
+   * Constructor for application. In this sample the WebClient.Builder instance is injected by the
+   * Spring Framework.
+   */
+  public PostStatementApplication(WebClient.Builder webClientBuilder) {
 
-		webClientBuilder.baseUrl("https://example.com/xapi").defaultHeader("Authorization",
-				"Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")
-				.build();
+    webClientBuilder
+        // Change for the URL of your LRS
+        .baseUrl("https://example.com/xapi/")
+        // Set the Authorization value
+        .defaultHeader("Authorization", "")
 
-		client = new XapiClient(webClientBuilder);
-	}
+        .build();
 
-	public static void main(String[] args) {
-		SpringApplication.run(PostStatementApplication.class, args).close();
-	}
+    client = new XapiClient(webClientBuilder);
+  }
 
-	@Override
-	public void run(String... args) throws Exception {
+  public static void main(String[] args) {
+    SpringApplication.run(PostStatementApplication.class, args).close();
+  }
 
-		// Post a statement
-		ResponseEntity<UUID> response = client.postStatement(
-				r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+  @Override
+  public void run(String... args) throws Exception {
 
-						.verb(Verb.ATTEMPTED)
+    // Post a statement
+    ResponseEntity<
+        UUID> response =
+            client
+                .postStatement(r -> r.statement(
+                    s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-						.activityObject(o -> o.id("https://example.com/activity/simplestatement")
-								.definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-				.block();
+                        .verb(Verb.ATTEMPTED)
 
-		// Print the statementId of the newly created statement to the console
-		System.out.println("StatementId " + response.getBody());
-	}
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                .block();
+
+    // Print the statementId of the newly created statement to the console
+    System.out.println("StatementId " + response.getBody());
+  }
 
 }

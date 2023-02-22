@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>dev.learning.xapi</groupId>
+    <artifactId>xapi-build</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+  </parent>
+  <groupId>dev.learning.xapi.samples</groupId>
+  <artifactId>xapi-samples-build</artifactId>
+  <packaging>pom</packaging>
+  <name>xAPI Samples Build</name>
+  <description>learning.dev xAPI Samples Build</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>delete-state</module>
+    <module>get-state</module>
+    <module>get-statement</module>
+    <module>get-statements</module>
+    <module>post-state</module>
+    <module>post-statement</module>
+    <module>put-state</module>
+  </modules>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <!-- Prevent samples from being deployed --> 
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

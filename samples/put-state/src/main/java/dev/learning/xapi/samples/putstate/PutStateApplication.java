@@ -1,75 +1,87 @@
 package dev.learning.xapi.samples.putstate;
 
+import dev.learning.xapi.client.XapiClient;
 import java.time.Instant;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import dev.learning.xapi.client.XapiClient;
-
+/**
+ * Sample using xAPI client to put a state.
+ *
+ * @author Thomas Turrell-Croft
+ */
 @SpringBootApplication
 public class PutStateApplication implements CommandLineRunner {
 
-	private final XapiClient client;
+  private final XapiClient client;
 
-	public PutStateApplication(WebClient.Builder webClientBuilder) {
+  /**
+   * Constructor for application. In this sample the WebClient.Builder instance is injected by the
+   * Spring Framework.
+   */
+  public PutStateApplication(WebClient.Builder webClientBuilder) {
 
-		webClientBuilder.baseUrl("https://cloud.scorm.com/lrs/QVVLD8EVWD/")
-				.defaultHeader("Authorization", "Basic MGJkWURLWmhkV3NwT194VnVTazpNSlo4Zy1sb2VYZHNQeHBDcE9F").build();
+    webClientBuilder
+        // Change for the URL of your LRS
+        .baseUrl("https://example.com/xapi/")
+        // Set the Authorization value
+        .defaultHeader("Authorization", "")
 
-		client = new XapiClient(webClientBuilder);
-	}
+        .build();
 
-	public static void main(String[] args) {
-		SpringApplication.run(PutStateApplication.class, args).close();
-	}
+    client = new XapiClient(webClientBuilder);
+  }
 
-	@Override
-	public void run(String... args) throws Exception {
+  public static void main(String[] args) {
+    SpringApplication.run(PutStateApplication.class, args).close();
+  }
 
-		// Put State
-		client.putState(r -> r.activityId("https://example.com/activity/1")
+  @Override
+  public void run(String... args) throws Exception {
 
-				.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    // Put State
+    client.putState(r -> r.activityId("https://example.com/activity/1")
 
-				.registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-				.stateId("bookmark")
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-				.state(new ExampleState("Hello World!", Instant.now())))
+        .stateId("bookmark")
 
-				.block();
-	}
+        .state(new ExampleState("Hello World!", Instant.now())))
 
-	// Class which can be serialized and deserialized by Jackson 
-	class ExampleState{
-		
-		private String message;
-		private Instant timestamp;
-				
-		public ExampleState(String message, Instant timestamp) {
-			super();
-			this.message = message;
-			this.timestamp = timestamp;
-		}
-		
-		public String getMessage() {
-			return message;
-		}
-		
-		public void setMessage(String message) {
-			this.message = message;
-		}
-		
-		public Instant getTimestamp() {
-			return timestamp;
-		}
-		
-		public void setTimestamp(Instant timestamp) {
-			this.timestamp = timestamp;
-		}
-		
-	}	
+        .block();
+  }
+
+  // Class which can be serialized and deserialized by Jackson
+  class ExampleState {
+
+    private String message;
+    private Instant timestamp;
+
+    public ExampleState(String message, Instant timestamp) {
+      super();
+      this.message = message;
+      this.timestamp = timestamp;
+    }
+
+    public String getMessage() {
+      return message;
+    }
+
+    public void setMessage(String message) {
+      this.message = message;
+    }
+
+    public Instant getTimestamp() {
+      return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+      this.timestamp = timestamp;
+    }
+
+  }
 }

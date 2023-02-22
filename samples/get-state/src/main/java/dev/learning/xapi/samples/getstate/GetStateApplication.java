@@ -1,104 +1,118 @@
 package dev.learning.xapi.samples.getstate;
 
+import dev.learning.xapi.client.XapiClient;
 import java.time.Instant;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import dev.learning.xapi.client.XapiClient;
-
+/**
+ * Sample using xAPI client to get a state.
+ *
+ * @author Thomas Turrell-Croft
+ */
 @SpringBootApplication
 public class GetStateApplication implements CommandLineRunner {
 
-	private final XapiClient client;
+  private final XapiClient client;
 
-	public GetStateApplication(WebClient.Builder webClientBuilder) {
+  /**
+   * Constructor for application. In this sample the WebClient.Builder instance is injected by the
+   * Spring Framework.
+   */
+  public GetStateApplication(WebClient.Builder webClientBuilder) {
 
-		webClientBuilder.baseUrl("https://cloud.scorm.com/lrs/QVVLD8EVWD/")
-				.defaultHeader("Authorization", "Basic MGJkWURLWmhkV3NwT194VnVTazpNSlo4Zy1sb2VYZHNQeHBDcE9F").build();
+    webClientBuilder
+        // Change for the URL of your LRS
+        .baseUrl("https://example.com/xapi/")
+        // Set the Authorization value
+        .defaultHeader("Authorization", "")
 
-		client = new XapiClient(webClientBuilder);
-	}
+        .build();
 
-	public static void main(String[] args) {
-		SpringApplication.run(GetStateApplication.class, args).close();
-	}
 
-	@Override
-	public void run(String... args) throws Exception {
+    client = new XapiClient(webClientBuilder);
+  }
 
-		// Post Example state for later retrieval 
-		postState();
+  public static void main(String[] args) {
+    SpringApplication.run(GetStateApplication.class, args).close();
+  }
 
-		// Get State
-		ResponseEntity<ExampleState> response = client.getState(r -> r.activityId("https://example.com/activity/1")
+  @Override
+  public void run(String... args) throws Exception {
 
-				.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    // Post Example state for later retrieval
+    postState();
 
-				.registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+    // Get State
+    ResponseEntity<ExampleState> response = client
+        .getState(r -> r.activityId("https://example.com/activity/1")
 
-				.stateId("bookmark"), ExampleState.class)
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-				.block();
-		
-		// Print the returned state to the console
-		System.out.println(response.getBody());
+            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-	}
+            .stateId("bookmark"), ExampleState.class)
 
-	// Class which can be serialized and deserialized by Jackson
-	static class ExampleState {
+        .block();
 
-		private String message;
-		private Instant timestamp;
+    // Print the returned state to the console
+    System.out.println(response.getBody());
 
-		public ExampleState(String message, Instant timestamp) {
-			super();
-			this.message = message;
-			this.timestamp = timestamp;
-		}
+  }
 
-		public String getMessage() {
-			return message;
-		}
+  // Class which can be serialized and deserialized by Jackson
+  static class ExampleState {
 
-		public void setMessage(String message) {
-			this.message = message;
-		}
+    private String message;
+    private Instant timestamp;
 
-		public Instant getTimestamp() {
-			return timestamp;
-		}
+    public ExampleState(String message, Instant timestamp) {
+      super();
+      this.message = message;
+      this.timestamp = timestamp;
+    }
 
-		public void setTimestamp(Instant timestamp) {
-			this.timestamp = timestamp;
-		}
+    public String getMessage() {
+      return message;
+    }
 
-		@Override
-		public String toString() {
-			return "ExampleState [message=" + message + ", timestamp=" + timestamp + "]";
-		}
+    public void setMessage(String message) {
+      this.message = message;
+    }
 
-	}
+    public Instant getTimestamp() {
+      return timestamp;
+    }
 
-	private void postState() {
+    public void setTimestamp(Instant timestamp) {
+      this.timestamp = timestamp;
+    }
 
-		// Post State
-		client.postState(r -> r.activityId("https://example.com/activity/1")
+    @Override
+    public String toString() {
+      return "ExampleState [message=" + message + ", timestamp=" + timestamp + "]";
+    }
 
-				.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+  }
 
-				.registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+  private void postState() {
 
-				.stateId("bookmark")
+    // Post State
+    client.postState(r -> r.activityId("https://example.com/activity/1")
 
-				.state(new ExampleState("Hello World!", Instant.now())))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-				.block();
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-	}
+        .stateId("bookmark")
+
+        .state(new ExampleState("Hello World!", Instant.now())))
+
+        .block();
+
+  }
 
 }

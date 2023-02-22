@@ -1,59 +1,74 @@
 package dev.learning.xapi.samples.getstatement;
 
+import dev.learning.xapi.client.XapiClient;
+import dev.learning.xapi.model.Statement;
+import dev.learning.xapi.model.Verb;
 import java.util.Locale;
 import java.util.UUID;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import dev.learning.xapi.client.XapiClient;
-import dev.learning.xapi.model.Statement;
-import dev.learning.xapi.model.Verb;
-
+/**
+ * Sample using xAPI client to get a statement.
+ *
+ * @author Thomas Turrell-Croft
+ */
 @SpringBootApplication
 public class GetStatementApplication implements CommandLineRunner {
 
-	private final XapiClient client;
+  private final XapiClient client;
 
-	public GetStatementApplication(WebClient.Builder webClientBuilder) {
+  /**
+   * Constructor for application. In this sample the WebClient.Builder instance is injected by the
+   * Spring Framework.
+   */
+  public GetStatementApplication(WebClient.Builder webClientBuilder) {
 
-		webClientBuilder.baseUrl("https://example.com/xapi").defaultHeader("Authorization",
-				"Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")
-				.build();
+    webClientBuilder
+        // Change for the URL of your LRS
+        .baseUrl("https://example.com/xapi/")
+        // Set the Authorization value
+        .defaultHeader("Authorization", "")
 
-		client = new XapiClient(webClientBuilder);
-	}
+        .build();
 
-	public static void main(String[] args) {
-		SpringApplication.run(GetStatementApplication.class, args).close();
-	}
 
-	@Override
-	public void run(String... args) throws Exception {
+    client = new XapiClient(webClientBuilder);
+  }
 
-		// Get Statements
-		ResponseEntity<Statement> response = client.getStatement(r -> r.id(postStatement())).block();
+  public static void main(String[] args) {
+    SpringApplication.run(GetStatementApplication.class, args).close();
+  }
 
-		// Print the returned statement to the console
-		System.out.println(response.getBody());
-	}
+  @Override
+  public void run(String... args) throws Exception {
 
-	private UUID postStatement() {
+    // Get Statements
+    ResponseEntity<Statement> response = client.getStatement(r -> r.id(postStatement())).block();
 
-		// Post a statement
-		ResponseEntity<UUID> response = client.postStatement(
-				r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    // Print the returned statement to the console
+    System.out.println(response.getBody());
+  }
 
-						.verb(Verb.ATTEMPTED)
+  private UUID postStatement() {
 
-						.activityObject(o -> o.id("https://example.com/activity/simplestatement")
-								.definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-				.block();
+    // Post a statement
+    ResponseEntity<
+        UUID> response =
+            client
+                .postStatement(r -> r.statement(
+                    s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-		return response.getBody();
-	}
+                        .verb(Verb.ATTEMPTED)
+
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                .block();
+
+    return response.getBody();
+  }
 
 }
