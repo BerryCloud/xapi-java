@@ -12,6 +12,7 @@
   <name>xAPI Samples Build</name>
   <description>learning.dev xAPI Samples Build</description>
   <properties>
+    <!-- Samples may violate sonar rules --> 
     <sonar.skip>true</sonar.skip>
   </properties>  
   <dependencies>
