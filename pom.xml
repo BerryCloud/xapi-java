@@ -79,6 +79,7 @@
   <modules>
     <module>xapi-model</module>
     <module>xapi-client</module>
+    <module>samples</module>    
   </modules>
   <build>
     <pluginManagement>
@@ -261,6 +262,11 @@
         <artifactId>xapi-model</artifactId>
         <version>1.0.5-SNAPSHOT</version>
       </dependency>
+      <dependency>
+        <groupId>dev.learning.xapi</groupId>
+        <artifactId>xapi-client</artifactId>
+        <version>1.0.5-SNAPSHOT</version>
+      </dependency>      
     </dependencies>
   </dependencyManagement>
   <distributionManagement>

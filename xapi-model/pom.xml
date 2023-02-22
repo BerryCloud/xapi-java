@@ -6,12 +6,9 @@
     <artifactId>xapi-build</artifactId>
     <version>1.0.5-SNAPSHOT</version>
   </parent>
-
   <artifactId>xapi-model</artifactId>
-
   <name>xAPI Model</name>
   <description>learning.dev xAPI Model</description>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -36,7 +33,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -45,5 +41,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

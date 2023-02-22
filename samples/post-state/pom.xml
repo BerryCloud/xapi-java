@@ -6,9 +6,9 @@
     <artifactId>xapi-samples-build</artifactId>
     <version>1.0.5-SNAPSHOT</version>
   </parent>
-  <artifactId>get-statements</artifactId>
-  <name>Get xAPI Statements Sample</name>
-  <description>Get xAPI Statements</description>
+  <artifactId>post-state</artifactId>
+  <name>Post xAPI State Sample</name>
+  <description>Post xAPI State</description>
   <dependencies>
     <dependency>
       <groupId>dev.learning.xapi</groupId>
