@@ -12,7 +12,7 @@ The xAPI Java Client can be used by learning record providers (LRP) to communica
 
 ### Getting started
 
-To use the xAPI Client include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
+To use the xAPI Java Client include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
 
 ```xml
 <project>
@@ -32,7 +32,7 @@ To use the xAPI Client include the appropriate XML in the `dependencies` section
 
 ### Statement Resource
 
-The xAPI Client allows applications to store and fetch xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements).
+The xAPI Java Client allows applications to store and fetch xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements).
 
 ### Getting a Statement
 
@@ -114,7 +114,7 @@ Statement voidedStatement = response.getBody();
 
 ### State Resource
 
-The xAPI Client allows applications to store, change, fetch, or delete [state documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource).
+The xAPI Java Client allows applications to store, change, fetch, or delete [state documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource).
 
 #### Getting a state
 
@@ -186,6 +186,9 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
     .block();
 ```
 
+### Samples
+
+The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
 
 ## xAPI Java Model
 
@@ -296,8 +299,6 @@ Statement completed = passed.toBuilder().verb(Verb.COMPLETED).build();
 
 ```
 
-### Requirements
+## Requirements
 
-xAPI Java requires Java 17
-
-    
+xAPI Java requires Java 17 or newer.
