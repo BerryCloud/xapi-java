@@ -296,5 +296,8 @@ Statement completed = passed.toBuilder().verb(Verb.COMPLETED).build();
 
 ```
 
-    
+### Requirements
+
+xAPI Java requires Java 17
+
     
