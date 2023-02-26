@@ -1291,4 +1291,40 @@ class XapiClientTests {
         "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
+  // Get Single Agent Profile
+
+  @Test
+  void whenGettingASingleAgentProfileThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting A Single State
+    client.getAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("cmi5LearnerPreferences"), String.class).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+
+  @Test
+  void whenGettingASingleAgentProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting A Single State
+    client.getAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("cmi5LearnerPreferences"), String.class).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&cmi5LearnerPreferences=cmi5LearnerPreferences"));
+  }
+
 }

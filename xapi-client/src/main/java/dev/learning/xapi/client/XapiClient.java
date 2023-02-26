@@ -653,4 +653,34 @@ public class XapiClient {
 
   }
 
+  public <T> Mono<ResponseEntity<T>> getAgentProfile(GetAgentProfileRequest request,
+      Class<T> bodyType) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(bodyType);
+
+  }
+
+  public <T> Mono<ResponseEntity<T>> getAgentProfile(
+      Consumer<GetAgentProfileRequest.Builder<?, ?>> request, Class<T> bodyType) {
+
+    final GetAgentProfileRequest.Builder<?, ?> builder = GetAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return getAgentProfile(builder.build(), bodyType);
+
+  }
+
+
+
 }
