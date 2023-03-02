@@ -653,6 +653,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the get agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public <T> Mono<ResponseEntity<T>> getAgentProfile(GetAgentProfileRequest request,
       Class<T> bodyType) {
 
@@ -670,6 +681,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public <T> Mono<ResponseEntity<T>> getAgentProfile(
       Consumer<GetAgentProfileRequest.Builder<?, ?>> request, Class<T> bodyType) {
 
@@ -681,6 +703,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Deletes a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the delete agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(DeleteAgentProfileRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
@@ -697,6 +730,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Deletes a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the delete agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(
       Consumer<DeleteAgentProfileRequest.Builder<?, ?>> request) {
 
@@ -708,6 +752,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Puts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the put agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<Void>> putAgentProfile(PutAgentProfileRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
@@ -728,6 +783,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Puts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the put agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<Void>> putAgentProfile(
       Consumer<PutAgentProfileRequest.Builder<?, ?>> request) {
 
@@ -739,6 +805,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Posts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the post agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<Void>> postAgentProfile(PostAgentProfileRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
@@ -759,6 +836,17 @@ public class XapiClient {
 
   }
 
+  /**
+   * Posts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the post agent profile request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<Void>> postAgentProfile(
       Consumer<PostAgentProfileRequest.Builder<?, ?>> request) {
 
@@ -770,6 +858,15 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets profile ids of all Profile documents for an Agent. If "since" parameter is specified, this
+   * is limited to entries that have been stored or updated since the specified Timestamp
+   * (exclusive).
+   *
+   * @param request The parameters of the get agent profiles request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<String[]>> getAgentProfiles(GetAgentProfilesRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
@@ -786,6 +883,15 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets profile ids of all Profile documents for an Agent. If "since" parameter is specified, this
+   * is limited to entries that have been stored or updated since the specified Timestamp
+   * (exclusive).
+   *
+   * @param request The Consumer Builder for the get agent profiles request
+   *
+   * @return the ResponseEntity
+   */
   public Mono<ResponseEntity<String[]>> getAgentProfiles(
       Consumer<GetAgentProfilesRequest.Builder> request) {
 

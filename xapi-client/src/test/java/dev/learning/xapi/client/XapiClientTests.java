@@ -12,6 +12,7 @@ import dev.learning.xapi.model.Verb;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.UUID;
+import lombok.Getter;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -1642,6 +1643,7 @@ class XapiClientTests {
         "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
+  @Getter
   private static class Person {
 
     private String firstName;
@@ -1651,14 +1653,6 @@ class XapiClientTests {
       super();
       this.firstName = firstName;
       this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-      return firstName;
-    }
-
-    public String getLastName() {
-      return lastName;
     }
 
   }

@@ -3,6 +3,7 @@ package dev.learning.xapi.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
+import java.time.Instant;
 import java.util.Map;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -11,6 +12,15 @@ import lombok.NonNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
 
+/**
+ * Request for getting multiple agent profiles.
+ *
+ * <p>
+ * TODO add see
+ * </p>
+ *
+ * @author Thomas Turrell-Croft
+ */
 @Getter
 @Builder
 public class GetAgentProfilesRequest implements Request {
@@ -20,11 +30,18 @@ public class GetAgentProfilesRequest implements Request {
   @NonNull
   private Agent agent;
 
+  private Instant since;
+
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
+
     queryParams.put("agent", agentToJsonString());
 
-    // TODO add since
+    if (since != null) {
+      queryParams.put("since", since);
+      uriBuilder.queryParam("since", "{since}");
+    }
+
     return uriBuilder.path("/agents/profile").queryParam("agent", "{agent}");
   }
 

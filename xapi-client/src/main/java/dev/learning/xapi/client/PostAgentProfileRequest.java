@@ -7,6 +7,15 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
+/**
+ * Request for posting a single agent profile.
+ *
+ * <p>
+ * TODO add see
+ * </p>
+ *
+ * @author Thomas Turrell-Croft
+ */
 @Getter
 @SuperBuilder
 public class PostAgentProfileRequest extends AgentProfileRequest {
