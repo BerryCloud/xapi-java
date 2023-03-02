@@ -1298,10 +1298,10 @@ class XapiClientTests {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
-    // When Getting A Single State
+    // When Getting A Single Agent Profile
     client.getAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-        .profileId("cmi5LearnerPreferences"), String.class).block();
+        .profileId("greeting"), String.class).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
@@ -1315,16 +1315,352 @@ class XapiClientTests {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
-    // When Getting A Single State
-    client.getAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    // When Getting A Single Agent Profile
+    client.getAgentProfile(r -> r
 
-        .profileId("cmi5LearnerPreferences"), String.class).block();
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("greeting"), String.class)
+
+        .block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&cmi5LearnerPreferences=cmi5LearnerPreferences"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+  }
+
+  // Delete Single Agent Profile
+
+  @Test
+  void whenDeletingASingleAgentProfileThenMethodIsDelete() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Deleting A Single Agent Profile
+    client.deleteAgentProfile(r -> r
+
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("greeting"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Delete
+    assertThat(recordedRequest.getMethod(), is("DELETE"));
+  }
+
+  @Test
+  void whenDeletetingASingleAgentProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Deleting A Single Agent Profile
+    client.deleteAgentProfile(
+        r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("greeting"))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+  }
+
+  // Put Single Agent Profile
+
+  @Test
+  void whenPuttingASingleAgentProfileThenMethodIsPut() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Putting A Single Agent Profile
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("greeting")
+
+        .profile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Put
+    assertThat(recordedRequest.getMethod(), is("PUT"));
+  }
+
+  @Test
+  void whenPuttingASingleAgentProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Putting A Single Agent Profile
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("greeting")
+
+        .profile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+  }
+
+  @Test
+  void whenPuttingASingleAgentProfileWithContentTypeTextPlainThenContentTypeHeaderIsTextPlain()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Putting A Single Agent Profile With Content Type Text Plain
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("greeting")
+
+        .profile("Hello World!")
+
+        .contentType(MediaType.TEXT_PLAIN))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Text Plain
+    assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
+  }
+
+  @Test
+  void whenPuttingASingleAgentProfileWithoutContentTypeThenContentTypeHeaderIsApplicationJson()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Putting A Single Agent Profile Without Content Type
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("greeting")
+
+        .profile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Application Json
+    assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  @Test
+  void whenPuttingASingleAgentProfileWithoutContentTypeThenBodyIsExpected()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Putting A Single Agent Profile Without Content Type
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("person")
+
+        .profile(new Person("A N", "Other")))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Body Is Expected
+    assertThat(recordedRequest.getBody().readUtf8(),
+        is("{\"firstName\":\"A N\",\"lastName\":\"Other\"}"));
+  }
+
+
+
+  // Post Single Agent Profile
+
+  @Test
+  void whenPostingASingleAgentProfileThenMethodIsPost() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Posting A Single Agent Profile
+    client
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("greeting")
+
+            .profile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Post
+    assertThat(recordedRequest.getMethod(), is("POST"));
+  }
+
+  @Test
+  void whenPostingASingleAgentProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Posting A Single Agent Profile
+    client
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("greeting")
+
+            .profile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+  }
+
+  @Test
+  void whenPostingASingleAgentProfileWithContentTypeTextPlainThenContentTypeHeaderIsTextPlain()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Posting A Single Agent Profile With Content Type Text Plain
+    client
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("greeting")
+
+            .profile("Hello World!")
+
+            .contentType(MediaType.TEXT_PLAIN))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Text Plain
+    assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
+  }
+
+  @Test
+  void whenPostingASingleAgentProfileWithoutContentTypeThenContentTypeHeaderIsApplicationJson()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Posting A Single Agent Profile Without Content Type
+    client
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("greeting")
+
+            .profile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Application Json
+    assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  @Test
+  void whenPostingASingleAgentProfileWithoutContentTypeThenBodyIsExpected()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Posting A Single Agent Profile Without Content Type
+    client
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("person")
+
+            .profile(new Person("A N", "Other")))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Body Is Expected
+    assertThat(recordedRequest.getBody().readUtf8(),
+        is("{\"firstName\":\"A N\",\"lastName\":\"Other\"}"));
+  }
+
+
+
+  @Test
+  void whenGettingProfilesThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Getting Profiles
+    client
+        .getAgentProfiles(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingProfilesThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Getting Profiles
+    client
+        .getAgentProfiles(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+  }
+
+  private static class Person {
+
+    private String firstName;
+    private String lastName;
+
+    public Person(String firstName, String lastName) {
+      super();
+      this.firstName = firstName;
+      this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+      return firstName;
+    }
+
+    public String getLastName() {
+      return lastName;
+    }
+
   }
 
 }

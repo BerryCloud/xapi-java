@@ -5,46 +5,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.util.Map;
 import java.util.function.Consumer;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
-import lombok.experimental.SuperBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
 
-@SuperBuilder
-abstract class AgentProfileRequest implements Request {
+@Getter
+@Builder
+public class GetAgentProfilesRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @NonNull
   private Agent agent;
 
-  @NonNull
-  private String profileId;
-
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
-
     queryParams.put("agent", agentToJsonString());
-    queryParams.put("profileId", profileId);
 
-    return uriBuilder.path("/agents/profile").queryParam("agent", "{agent}").queryParam("profileId",
-        "{profileId}");
+    // TODO add since
+    return uriBuilder.path("/agents/profile").queryParam("agent", "{agent}");
   }
 
-  private String agentToJsonString() {
+  @Override
+  public HttpMethod getMethod() {
 
-    try {
-      return objectMapper.writeValueAsString(agent);
-    } catch (JsonProcessingException e) {
-      // Should not happen
-      return null;
-    }
-
+    return HttpMethod.GET;
   }
 
   /**
-   * Builder for AgentProfileRequest.
+   * Builder for GetAgentProfilesRequest.
    */
-  public abstract static class Builder<C extends AgentProfileRequest, B extends Builder<C, B>> {
+  public static class Builder {
 
     /**
      * Consumer Builder for agent.
@@ -53,9 +46,9 @@ abstract class AgentProfileRequest implements Request {
      *
      * @return This builder
      *
-     * @see AgentProfileRequest#agent
+     * @see GetAgentProfilesRequest#agent
      */
-    public B agent(Consumer<Agent.Builder<?, ?>> agent) {
+    public Builder agent(Consumer<Agent.Builder<?, ?>> agent) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
@@ -72,14 +65,25 @@ abstract class AgentProfileRequest implements Request {
      *
      * @return This builder
      *
-     * @see AgentProfileRequest#agent
+     * @see GetAgentProfilesRequest#agent
      */
-    public B agent(Agent agent) {
+    public Builder agent(Agent agent) {
 
       this.agent = agent;
 
-      return self();
+      return this;
 
+    }
+
+  }
+
+  private String agentToJsonString() {
+
+    try {
+      return objectMapper.writeValueAsString(agent);
+    } catch (JsonProcessingException e) {
+      // Should not happen
+      return null;
     }
 
   }

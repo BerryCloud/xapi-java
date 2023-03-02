@@ -681,6 +681,120 @@ public class XapiClient {
 
   }
 
+  public Mono<ResponseEntity<Void>> deleteAgentProfile(DeleteAgentProfileRequest request) {
 
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  public Mono<ResponseEntity<Void>> deleteAgentProfile(
+      Consumer<DeleteAgentProfileRequest.Builder<?, ?>> request) {
+
+    final DeleteAgentProfileRequest.Builder<?, ?> builder = DeleteAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return deleteAgentProfile(builder.build());
+
+  }
+
+  public Mono<ResponseEntity<Void>> putAgentProfile(PutAgentProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getProfile())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  public Mono<ResponseEntity<Void>> putAgentProfile(
+      Consumer<PutAgentProfileRequest.Builder<?, ?>> request) {
+
+    final PutAgentProfileRequest.Builder<?, ?> builder = PutAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return putAgentProfile(builder.build());
+
+  }
+
+  public Mono<ResponseEntity<Void>> postAgentProfile(PostAgentProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getProfile())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  public Mono<ResponseEntity<Void>> postAgentProfile(
+      Consumer<PostAgentProfileRequest.Builder<?, ?>> request) {
+
+    final PostAgentProfileRequest.Builder<?, ?> builder = PostAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return postAgentProfile(builder.build());
+
+  }
+
+  public Mono<ResponseEntity<String[]>> getAgentProfiles(GetAgentProfilesRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(String[].class);
+
+  }
+
+  public Mono<ResponseEntity<String[]>> getAgentProfiles(
+      Consumer<GetAgentProfilesRequest.Builder> request) {
+
+    final GetAgentProfilesRequest.Builder builder = GetAgentProfilesRequest.builder();
+
+    request.accept(builder);
+
+    return getAgentProfiles(builder.build());
+
+  }
 
 }
