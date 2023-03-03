@@ -1,4 +1,4 @@
-package dev.learning.xapi.samples.postagentprofile;
+package dev.learning.xapi.samples.putagentprofile;
 
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.samples.core.ExampleState;
@@ -9,12 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Sample using xAPI client to post an agent profile.
+ * Sample using xAPI client to put an agent profile.
  *
  * @author Thomas Turrell-Croft
  */
 @SpringBootApplication
-public class PostAgentProfileApplication implements CommandLineRunner {
+public class PutAgentProfileApplication implements CommandLineRunner {
 
   private final XapiClient client;
 
@@ -22,7 +22,7 @@ public class PostAgentProfileApplication implements CommandLineRunner {
    * Constructor for application. In this sample the WebClient.Builder instance is injected by the
    * Spring Framework.
    */
-  public PostAgentProfileApplication(WebClient.Builder webClientBuilder) {
+  public PutAgentProfileApplication(WebClient.Builder webClientBuilder) {
 
     webClientBuilder
         // Change for the URL of your LRS
@@ -37,19 +37,18 @@ public class PostAgentProfileApplication implements CommandLineRunner {
   }
 
   public static void main(String[] args) {
-    SpringApplication.run(PostAgentProfileApplication.class, args).close();
+    SpringApplication.run(PutAgentProfileApplication.class, args).close();
   }
 
   @Override
   public void run(String... args) throws Exception {
 
-    // Post Profile
-    client
-        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    // Put Profile
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .profileId("bookmark")
+        .profileId("bookmark")
 
-            .profile(new ExampleState("Hello World!", Instant.now())))
+        .profile(new ExampleState("Hello World!", Instant.now())))
 
         .block();
   }

@@ -33,12 +33,16 @@
   </dependencyManagement>
   <modules>
     <module>core</module>
+    <module>delete-agent-profile</module>
     <module>delete-state</module>
+    <module>get-agent-profile</module>
     <module>get-state</module>
     <module>get-statement</module>
     <module>get-statements</module>
+    <module>post-agent-profile</module>
     <module>post-state</module>
     <module>post-statement</module>
+    <module>put-agent-profile</module>
     <module>put-state</module>
   </modules>
   <build>
