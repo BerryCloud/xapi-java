@@ -10,9 +10,9 @@ import org.springframework.http.MediaType;
 /**
  * Request for putting a single agent profile.
  *
- * <p>
- * TODO add see
- * </p>
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#single-agent-or-profile-document-put--post--get--delete">PUT
+ *      Single Agent Profile Document</a>
  *
  * @author Thomas Turrell-Croft
  */

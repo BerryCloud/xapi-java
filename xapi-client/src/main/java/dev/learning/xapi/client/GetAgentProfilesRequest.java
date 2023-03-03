@@ -15,9 +15,9 @@ import org.springframework.web.util.UriBuilder;
 /**
  * Request for getting multiple agent profiles.
  *
- * <p>
- * TODO add see
- * </p>
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get-1">Multiple
+ *      Document GET</a>
  *
  * @author Thomas Turrell-Croft
  */
