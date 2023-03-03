@@ -57,16 +57,13 @@ public class DeleteAgentProfileApplication implements CommandLineRunner {
 
   private void postAgentProfile() {
 
-    // Post State
-    client.postState(r -> r.activityId("https://example.com/activity/1")
+    // Post Profile
+    client
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+            .profileId("bookmark")
 
-        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
-
-        .stateId("bookmark")
-
-        .state(new ExampleState("Hello World!", Instant.now())))
+            .profile(new ExampleState("Hello World!", Instant.now())))
 
         .block();
 

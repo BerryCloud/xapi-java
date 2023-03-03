@@ -33,7 +33,6 @@ public class GetAgentProfileApplication implements CommandLineRunner {
 
         .build();
 
-
     client = new XapiClient(webClientBuilder);
   }
 
