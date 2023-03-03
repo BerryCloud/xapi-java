@@ -1643,6 +1643,29 @@ class XapiClientTests {
         "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
+
+  @Test
+  void whenGettingProfilesWithSinceParameterThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    // When Getting Profiles
+    client
+        .getAgentProfiles(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .since(Instant.parse("2016-01-01T00:00:00Z")))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&since=2016-01-01T00%3A00%3A00Z"));
+  }
+
   @Getter
   private static class Person {
 

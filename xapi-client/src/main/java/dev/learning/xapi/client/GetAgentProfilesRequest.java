@@ -36,13 +36,14 @@ public class GetAgentProfilesRequest implements Request {
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     queryParams.put("agent", agentToJsonString());
+    uriBuilder.path("/agents/profile").queryParam("agent", "{agent}");
 
     if (since != null) {
       queryParams.put("since", since);
       uriBuilder.queryParam("since", "{since}");
     }
 
-    return uriBuilder.path("/agents/profile").queryParam("agent", "{agent}");
+    return uriBuilder;
   }
 
   @Override
