@@ -14,9 +14,15 @@ abstract class AgentProfileRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
+  /**
+   * The Agent associated with this Profile document.
+   */
   @NonNull
   private Agent agent;
 
+  /**
+   * The profile id associated with this Profile document.
+   */
   @NonNull
   private String profileId;
 
