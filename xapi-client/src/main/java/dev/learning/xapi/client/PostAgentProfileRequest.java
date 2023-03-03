@@ -35,4 +35,14 @@ public class PostAgentProfileRequest extends AgentProfileRequest {
     return HttpMethod.POST;
   }
 
+  /**
+   * Builder for PostAgentProfileRequest.
+   */
+  public abstract static class Builder<C extends PostAgentProfileRequest, B extends Builder<C, B>>
+      extends AgentProfileRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

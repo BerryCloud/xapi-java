@@ -34,4 +34,14 @@ public class PutAgentProfileRequest extends AgentProfileRequest {
     return HttpMethod.PUT;
   }
 
+  /**
+   * Builder for PutAgentProfileRequest.
+   */
+  public abstract static class Builder<C extends PutAgentProfileRequest, B extends Builder<C, B>>
+      extends AgentProfileRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }
