@@ -2,9 +2,11 @@
 
 xAPI Java helps you to create applications that send or receive xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements) or [Documents](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#10-documents).
 
-There are two projects in this [Monorepo](https://en.wikipedia.org/wiki/Monorepo), xAPI Client and xAPI Model.
+There are two projects in this [Monorepo](https://en.wikipedia.org/wiki/Monorepo), xAPI Client and xAPI Model. 
 
-Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
+Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object). 
+
+[CheckStyle](https://checkstyle.sourceforge.io) is used to enforce the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html). Sonar performs automatic pull request reviews. [CodeQL](https://codeql.github.com) scans for vulnerabilities. The number of bugs, code smells and vulnerabilities in the codebase can be viewed in SonarCloud. The code coverage and code duplication percentages can also be viewed in SonarCloud. Over two-hundred unit tests ensure conformance with the xAPI specification.
 
 ## xAPI Java Client
 
