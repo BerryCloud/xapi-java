@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.client;
 
+import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
@@ -900,6 +901,46 @@ public class XapiClient {
     request.accept(builder);
 
     return getAgentProfiles(builder.build());
+
+  }
+
+  /**
+   * Loads the complete Activity Object specified.
+   *
+   * @param request The parameters of the get activity request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Activity>> getActivity(GetActivityRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Activity.class);
+
+  }
+
+  /**
+   * Loads the complete Activity Object specified.
+   *
+   * @param request The Consumer Builder for the get activity request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
+
+    final GetActivityRequest.Builder builder = GetActivityRequest.builder();
+
+    request.accept(builder);
+
+    return getActivity(builder.build());
 
   }
 

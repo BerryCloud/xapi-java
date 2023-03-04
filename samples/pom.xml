@@ -34,7 +34,8 @@
   <modules>
     <module>core</module>
     <module>delete-agent-profile</module>
-    <module>delete-state</module>
+    <module>delete-state</module>    
+    <module>get-activity</module>
     <module>get-agent-profile</module>
     <module>get-agent-profiles</module>
     <module>get-state</module>
