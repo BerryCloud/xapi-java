@@ -6,9 +6,11 @@ package dev.learning.xapi.client;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementFormat;
 import dev.learning.xapi.model.Verb;
+import java.net.URI;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.UUID;
@@ -1665,6 +1667,61 @@ class XapiClientTests {
     assertThat(recordedRequest.getPath(), is(
         "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&since=2016-01-01T00%3A00%3A00Z"));
   }
+
+  // Get Statement
+
+  @Test
+  void whenGettingActivityThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting Activity
+    client
+        .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingActivityThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting Activity
+    client
+        .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/activities?activityId=https%3A%2F%2Fexample.com%2Factivity%2Fsimplestatement"));
+  }
+
+  @Test
+  void whenGettingActivityThenBodyIsInstanceOfActivity() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(
+            "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}")
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting Activity
+    var response = client
+        .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
+        .block();
+
+    // Then Body Is Instance Of Activity
+    assertThat(response.getBody(), instanceOf(Activity.class));
+  }
+
+
 
   @Getter
   private static class Person {
