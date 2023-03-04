@@ -653,4 +653,254 @@ public class XapiClient {
 
   }
 
+  /**
+   * Gets a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the get agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public <T> Mono<ResponseEntity<T>> getAgentProfile(GetAgentProfileRequest request,
+      Class<T> bodyType) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(bodyType);
+
+  }
+
+  /**
+   * Gets a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public <T> Mono<ResponseEntity<T>> getAgentProfile(
+      Consumer<GetAgentProfileRequest.Builder<?, ?>> request, Class<T> bodyType) {
+
+    final GetAgentProfileRequest.Builder<?, ?> builder = GetAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return getAgentProfile(builder.build(), bodyType);
+
+  }
+
+  /**
+   * Deletes a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the delete agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteAgentProfile(DeleteAgentProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Deletes a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the delete agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteAgentProfile(
+      Consumer<DeleteAgentProfileRequest.Builder<?, ?>> request) {
+
+    final DeleteAgentProfileRequest.Builder<?, ?> builder = DeleteAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return deleteAgentProfile(builder.build());
+
+  }
+
+  /**
+   * Puts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the put agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> putAgentProfile(PutAgentProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getProfile())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Puts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the put agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> putAgentProfile(
+      Consumer<PutAgentProfileRequest.Builder<?, ?>> request) {
+
+    final PutAgentProfileRequest.Builder<?, ?> builder = PutAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return putAgentProfile(builder.build());
+
+  }
+
+  /**
+   * Posts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the post agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> postAgentProfile(PostAgentProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getProfile())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Posts a single agent profile by the given agent and profileId.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the post agent profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> postAgentProfile(
+      Consumer<PostAgentProfileRequest.Builder<?, ?>> request) {
+
+    final PostAgentProfileRequest.Builder<?, ?> builder = PostAgentProfileRequest.builder();
+
+    request.accept(builder);
+
+    return postAgentProfile(builder.build());
+
+  }
+
+  /**
+   * Gets profile ids of all Profile documents for an Agent. If "since" parameter is specified, this
+   * is limited to entries that have been stored or updated since the specified Timestamp
+   * (exclusive).
+   *
+   * @param request The parameters of the get agent profiles request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> getAgentProfiles(GetAgentProfilesRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(String[].class);
+
+  }
+
+  /**
+   * Gets profile ids of all Profile documents for an Agent. If "since" parameter is specified, this
+   * is limited to entries that have been stored or updated since the specified Timestamp
+   * (exclusive).
+   *
+   * @param request The Consumer Builder for the get agent profiles request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> getAgentProfiles(
+      Consumer<GetAgentProfilesRequest.Builder> request) {
+
+    final GetAgentProfilesRequest.Builder builder = GetAgentProfilesRequest.builder();
+
+    request.accept(builder);
+
+    return getAgentProfiles(builder.build());
+
+  }
+
 }
