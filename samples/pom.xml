@@ -12,9 +12,9 @@
   <name>xAPI Samples Build</name>
   <description>learning.dev xAPI Samples Build</description>
   <properties>
-    <!-- Samples may violate sonar rules --> 
+    <!-- Samples may violate sonar rules -->
     <sonar.skip>true</sonar.skip>
-  </properties>  
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -34,10 +34,11 @@
   <modules>
     <module>core</module>
     <module>delete-agent-profile</module>
-    <module>delete-state</module>    
+    <module>delete-state</module>
     <module>get-activity</module>
     <module>get-agent-profile</module>
     <module>get-agent-profiles</module>
+    <module>get-agents</module>
     <module>get-state</module>
     <module>get-statement</module>
     <module>get-statements</module>
