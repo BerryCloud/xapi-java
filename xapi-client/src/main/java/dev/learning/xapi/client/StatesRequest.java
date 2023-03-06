@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.net.URI;
@@ -14,6 +13,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import org.springframework.web.util.UriBuilder;
 
@@ -64,15 +64,11 @@ abstract class StatesRequest implements Request {
         .queryParamIfPresent("registration", Optional.ofNullable(registration));
   }
 
-
+  // Exception in write value as string should be impossible.
+  @SneakyThrows
   private String agentToJsonString() {
 
-    try {
-      return objectMapper.writeValueAsString(agent);
-    } catch (JsonProcessingException e) {
-      // Should not happen
-      return null;
-    }
+    return objectMapper.writeValueAsString(agent);
 
   }
 

@@ -1,12 +1,12 @@
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.util.Map;
 import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
 
@@ -25,6 +25,9 @@ import org.springframework.web.util.UriBuilder;
 public class GetAgentsRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
+
+
+  // TODO add since
 
   /**
    * The Agent representation to use in fetching expanded Agent information.
@@ -89,15 +92,13 @@ public class GetAgentsRequest implements Request {
   }
 
 
+  // Exception in write value as string should be impossible.
+  @SneakyThrows
   private String agentToJsonString() {
 
-    try {
-      return objectMapper.writeValueAsString(agent);
-    } catch (JsonProcessingException e) {
-      // Should not happen
-      return null;
-    }
+    return objectMapper.writeValueAsString(agent);
 
   }
+
 
 }
