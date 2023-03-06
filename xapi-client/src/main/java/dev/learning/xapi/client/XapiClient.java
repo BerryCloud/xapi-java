@@ -1000,8 +1000,6 @@ public class XapiClient {
 
   }
 
-
-
   // Activity Profile Resource
 
   /**
