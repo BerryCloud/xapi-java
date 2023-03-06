@@ -1208,6 +1208,59 @@ public class XapiClient {
 
   }
 
+  /**
+   * Fetches Profile ids of all Profile documents for an Activity. If "since" parameter is
+   * specified, this is limited to entries that have been stored or updated since the specified
+   * Timestamp (exclusive).
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the get activity profiles request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> getActivityProfiles(GetActivityProfilesRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(String[].class);
+
+  }
+
+  /**
+   * Fetches Profile ids of all Profile documents for an Activity. If "since" parameter is
+   * specified, this is limited to entries that have been stored or updated since the specified
+   * Timestamp (exclusive).
+   * 
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get activity profiles request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<String[]>> getActivityProfiles(
+      Consumer<GetActivityProfilesRequest.Builder> request) {
+
+    final GetActivityProfilesRequest.Builder builder = GetActivityProfilesRequest.builder();
+
+    request.accept(builder);
+
+    return getActivityProfiles(builder.build());
+
+  }
+
   // About Resource
 
   /**
