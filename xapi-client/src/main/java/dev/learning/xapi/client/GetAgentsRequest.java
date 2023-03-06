@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.util.Map;
+import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.NonNull;
 import org.springframework.http.HttpMethod;
@@ -43,6 +44,50 @@ public class GetAgentsRequest implements Request {
   public HttpMethod getMethod() {
     return HttpMethod.GET;
   }
+
+  /**
+   * Builder for GetAgentsRequest.
+   */
+  public static class Builder {
+
+    /**
+     * Consumer Builder for agent.
+     *
+     * @param agent The Consumer Builder for agent.
+     *
+     * @return This builder
+     *
+     * @see GetAgentsRequest#agent
+     */
+    public Builder agent(Consumer<Agent.Builder<?, ?>> agent) {
+
+      final Agent.Builder<?, ?> builder = Agent.builder();
+
+      agent.accept(builder);
+
+      return agent(builder.build());
+
+    }
+
+    /**
+     * Sets the agent.
+     *
+     * @param agent The Agent of the GetAgentsRequest.
+     *
+     * @return This builder
+     *
+     * @see GetAgentsRequest#agent
+     */
+    public Builder agent(Agent agent) {
+
+      this.agent = agent;
+
+      return this;
+
+    }
+
+  }
+
 
   private String agentToJsonString() {
 

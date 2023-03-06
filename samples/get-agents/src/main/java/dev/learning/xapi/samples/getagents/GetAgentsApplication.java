@@ -1,7 +1,6 @@
 package dev.learning.xapi.samples.getagents;
 
 import dev.learning.xapi.client.XapiClient;
-import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.Person;
 import dev.learning.xapi.model.Verb;
 import java.util.Locale;
@@ -30,10 +29,9 @@ public class GetAgentsApplication implements CommandLineRunner {
 
     webClientBuilder
         // Change for the URL of your LRS
-        .baseUrl("https://cloud.scorm.com/lrs/6SX8FQA8Q9/")
+        .baseUrl("https://example.com/xapi/")
         // Set the Authorization value
-        .defaultHeader("Authorization",
-            "Basic NUJZLWhXay1IcXdtOVFGWFh3Yzo1LTRNSDFBSFVvbDJGM2x1SE1J")
+        .defaultHeader("Authorization", "")
 
         .build();
 
@@ -51,10 +49,10 @@ public class GetAgentsApplication implements CommandLineRunner {
     // Post statement for later retrieval of activity
     postStatement();
 
-    Agent x = Agent.builder().name("A N Other").mbox("mailto:another@example.com").build();
-
     // Get Activity
-    ResponseEntity<Person> response = client.getAgents(r -> r.agent(x)).block();
+    ResponseEntity<Person> response =
+        client.getAgents(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
+            .block();
 
     // Print the returned activity to the console
     System.out.println(response.getBody());
