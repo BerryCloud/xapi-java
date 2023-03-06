@@ -6,6 +6,7 @@ package dev.learning.xapi.client;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Person;
 import dev.learning.xapi.model.Statement;
@@ -416,7 +417,6 @@ class XapiClientTests {
     assertThat(recordedRequest.getMethod(), is("GET"));
   }
 
-
   @Test
   void whenGettingStatementsThenPathIsExpected() throws InterruptedException {
 
@@ -528,8 +528,6 @@ class XapiClientTests {
     assertThat(recordedRequest.getPath(),
         is("/statements?activity=https%3A%2F%2Fexample.com%2Factivity%2F1"));
   }
-
-
 
   @Test
   void whenGettingMoreStatementsThenRequestMethodIsGet() throws InterruptedException {
@@ -1313,7 +1311,6 @@ class XapiClientTests {
     assertThat(recordedRequest.getMethod(), is("GET"));
   }
 
-
   @Test
   void whenGettingASingleAgentProfileThenPathIsExpected() throws InterruptedException {
 
@@ -1487,8 +1484,6 @@ class XapiClientTests {
         is("{\"firstName\":\"A N\",\"lastName\":\"Other\"}"));
   }
 
-
-
   // Post Single Agent Profile
 
   @Test
@@ -1605,8 +1600,6 @@ class XapiClientTests {
         is("{\"firstName\":\"A N\",\"lastName\":\"Other\"}"));
   }
 
-
-
   @Test
   void whenGettingProfilesThenMethodIsGet() throws InterruptedException {
 
@@ -1645,7 +1638,6 @@ class XapiClientTests {
     assertThat(recordedRequest.getPath(), is(
         "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
-
 
   @Test
   void whenGettingProfilesWithSinceParameterThenPathIsExpected() throws InterruptedException {
@@ -1722,8 +1714,6 @@ class XapiClientTests {
     assertThat(response.getBody(), instanceOf(Activity.class));
   }
 
-
-
   // Get Agents
 
   @Test
@@ -1772,7 +1762,59 @@ class XapiClientTests {
     assertThat(response.getBody(), instanceOf(Person.class));
   }
 
+  // Get About
 
+  @Test
+  void whenGettingAboutThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(
+            "{\"extensions\":{\"https://example.com/extensions/test\":{\"name\":\"Example extension\"}},\"version\":[\"0.9\",\"0.95\",\"1.0.3\"]}")
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting About
+    client.getAbout().block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingAboutThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(
+            "{\"extensions\":{\"https://example.com/extensions/test\":{\"name\":\"Example extension\"}},\"version\":[\"0.9\",\"0.95\",\"1.0.3\"]}")
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting About
+    client.getAbout().block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is("/about"));
+  }
+
+  @Test
+  void whenGettingAboutThenBodyIsInstanceOfAbout() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(
+            "{\"extensions\":{\"https://example.com/extensions/test\":{\"name\":\"Example extension\"}},\"version\":[\"0.9\",\"0.95\",\"1.0.3\"]}")
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting About
+    var response = client.getAbout().block();
+
+    // Then Body Is Instance Of About
+    assertThat(response.getBody(), instanceOf(About.class));
+  }
 
   @Getter
   private static class SamplePerson {
