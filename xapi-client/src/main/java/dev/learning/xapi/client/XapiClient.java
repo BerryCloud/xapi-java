@@ -46,6 +46,8 @@ public class XapiClient {
         .build();
   }
 
+  // Statement Resource
+
   /**
    * Gets a Statement.
    * 
@@ -349,7 +351,6 @@ public class XapiClient {
     return getMoreStatements(builder.build());
 
   }
-
 
   // State Resource
 

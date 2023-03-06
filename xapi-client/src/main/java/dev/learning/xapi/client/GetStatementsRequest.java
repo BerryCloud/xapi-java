@@ -207,8 +207,6 @@ public class GetStatementsRequest implements Request {
       return this;
     }
 
-
-
     /**
      * Sets the registration.
      *
