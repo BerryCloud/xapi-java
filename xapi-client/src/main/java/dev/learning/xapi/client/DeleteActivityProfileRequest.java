@@ -24,4 +24,14 @@ public class DeleteActivityProfileRequest extends ActivityProfileRequest {
     return HttpMethod.DELETE;
   }
 
+  /**
+   * Builder for DeleteActivityProfileRequest.
+   */
+  public abstract static class Builder<C extends DeleteActivityProfileRequest,
+      B extends Builder<C, B>> extends ActivityProfileRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

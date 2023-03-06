@@ -24,4 +24,14 @@ public class GetActivityProfileRequest extends ActivityProfileRequest {
     return HttpMethod.GET;
   }
 
+  /**
+   * Builder for GetActivityProfileRequest.
+   */
+  public abstract static class Builder<C extends GetActivityProfileRequest, B extends Builder<C, B>>
+      extends ActivityProfileRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
 }

@@ -38,4 +38,15 @@ public class PostActivityProfileRequest extends ActivityProfileRequest {
     return HttpMethod.POST;
   }
 
+  /**
+   * Builder for PostActivityProfileRequest.
+   */
+  public abstract static class Builder<C extends PostActivityProfileRequest,
+      B extends Builder<C, B>> extends ActivityProfileRequest.Builder<C, B> {
+
+    // This static class extends the lombok builder.
+
+  }
+
+
 }
