@@ -5,6 +5,7 @@
 package dev.learning.xapi.client;
 
 import dev.learning.xapi.model.Activity;
+import dev.learning.xapi.model.Person;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
@@ -941,6 +942,50 @@ public class XapiClient {
     request.accept(builder);
 
     return getActivity(builder.build());
+
+  }
+
+  /**
+   * Return a special, Person Object for a specified Agent. The Person Object is very similar to an
+   * Agent Object, but instead of each attribute having a single value, each attribute has an array
+   * value, and it is legal to include multiple identifying properties.
+   *
+   * @param request The parameters of the get agents request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Person>> getAgents(GetAgentsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Person.class);
+
+  }
+
+  /**
+   * Return a special, Person Object for a specified Agent. The Person Object is very similar to an
+   * Agent Object, but instead of each attribute having a single value, each attribute has an array
+   * value, and it is legal to include multiple identifying properties.
+   *
+   * @param request The Consumer Builder for the get agents request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
+
+    final GetAgentsRequest.Builder builder = GetAgentsRequest.builder();
+
+    request.accept(builder);
+
+    return getAgents(builder.build());
 
   }
 

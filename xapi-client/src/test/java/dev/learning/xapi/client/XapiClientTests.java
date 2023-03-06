@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import dev.learning.xapi.model.Activity;
+import dev.learning.xapi.model.Person;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementFormat;
 import dev.learning.xapi.model.Verb;
@@ -1475,7 +1476,7 @@ class XapiClientTests {
 
         .profileId("person")
 
-        .profile(new Person("A N", "Other")))
+        .profile(new SamplePerson("A N", "Other")))
 
         .block();
 
@@ -1593,7 +1594,7 @@ class XapiClientTests {
 
             .profileId("person")
 
-            .profile(new Person("A N", "Other")))
+            .profile(new SamplePerson("A N", "Other")))
 
         .block();
 
@@ -1668,7 +1669,7 @@ class XapiClientTests {
         "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&since=2016-01-01T00%3A00%3A00Z"));
   }
 
-  // Get Statement
+  // Get Activity
 
   @Test
   void whenGettingActivityThenMethodIsGet() throws InterruptedException {
@@ -1723,13 +1724,63 @@ class XapiClientTests {
 
 
 
+  // Get Agents
+
+  @Test
+  void whenGettingAgentsThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting Agents
+    client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingAgentsThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting Agents
+    client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(),
+        is("/agents?agent=%7B%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+  }
+
+  @Test
+  void whenGettingAgentsThenBodyIsInstanceOfPerson() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(
+            "{\"name\":[\"A N Other\"],\"mbox\":[\"mailto:another@example.com\"],\"objectType\":\"Person\"}")
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting Agents
+    var response =
+        client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
+
+    // Then Body Is Instance Of Activity
+    assertThat(response.getBody(), instanceOf(Person.class));
+  }
+
+
+
   @Getter
-  private static class Person {
+  private static class SamplePerson {
 
     private String firstName;
     private String lastName;
 
-    public Person(String firstName, String lastName) {
+    public SamplePerson(String firstName, String lastName) {
       super();
       this.firstName = firstName;
       this.lastName = lastName;
