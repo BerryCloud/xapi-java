@@ -1000,6 +1000,216 @@ public class XapiClient {
 
   }
 
+
+
+  // Activity Profile Resource
+
+  /**
+   * Fetches the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and body.
+   * </p>
+   *
+   * @param request The parameters of the get activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public <T> Mono<ResponseEntity<T>> getActivityProfile(GetActivityProfileRequest request,
+      Class<T> bodyType) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(bodyType);
+
+  }
+
+  /**
+   * Fetches the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and body.
+   * </p>
+   *
+   * @param request The Consumer Builder for the get activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public <T> Mono<ResponseEntity<T>> getActivityProfile(
+      Consumer<GetActivityProfileRequest.Builder<?, ?>> request, Class<T> bodyType) {
+
+    final GetActivityProfileRequest.Builder<?, ?> builder = GetActivityProfileRequest.builder();
+
+    request.accept(builder);
+
+    return getActivityProfile(builder.build(), bodyType);
+
+  }
+
+  /**
+   * Changes or stores the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and body.
+   * </p>
+   *
+   * @param request The parameters of the post activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> postActivityProfile(PostActivityProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getActivityProfile())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Changes or stores the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and body.
+   * </p>
+   *
+   * @param request The Consumer Builder for the post activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> postActivityProfile(
+      Consumer<PostActivityProfileRequest.Builder<?, ?>> request) {
+
+    final PostActivityProfileRequest.Builder<?, ?> builder = PostActivityProfileRequest.builder();
+
+    request.accept(builder);
+
+    return postActivityProfile(builder.build());
+
+  }
+
+  /**
+   * Stores the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and body.
+   * </p>
+   *
+   * @param request The parameters of the put activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> putActivityProfile(PutActivityProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .contentType(request.getContentType())
+
+        .bodyValue(request.getActivityProfile())
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Stores the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers and body.
+   * </p>
+   *
+   * @param request The Consumer Builder for the put activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> putActivityProfile(
+      Consumer<PutActivityProfileRequest.Builder<?, ?>> request) {
+
+    final PutActivityProfileRequest.Builder<?, ?> builder = PutActivityProfileRequest.builder();
+
+    request.accept(builder);
+
+    return putActivityProfile(builder.build());
+
+  }
+
+  /**
+   * Deletes the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The parameters of the delete activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteActivityProfile(DeleteActivityProfileRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toBodilessEntity();
+
+  }
+
+  /**
+   * Deletes the specified Profile document in the context of the specified Activity.
+   *
+   * <p>
+   * The returned ResponseEntity contains the response headers.
+   * </p>
+   *
+   * @param request The Consumer Builder for the delete activity profile request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Void>> deleteActivityProfile(
+      Consumer<DeleteActivityProfileRequest.Builder<?, ?>> request) {
+
+    final DeleteActivityProfileRequest.Builder<?, ?> builder =
+        DeleteActivityProfileRequest.builder();
+
+    request.accept(builder);
+
+    return deleteActivityProfile(builder.build());
+
+  }
+
   // About Resource
 
   /**

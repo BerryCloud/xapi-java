@@ -1,6 +1,5 @@
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.time.Instant;
@@ -9,6 +8,7 @@ import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
 
@@ -95,15 +95,13 @@ public class GetAgentProfilesRequest implements Request {
 
   }
 
+  // Exception in write value as string should be impossible.
+  @SneakyThrows
   private String agentToJsonString() {
 
-    try {
-      return objectMapper.writeValueAsString(agent);
-    } catch (JsonProcessingException e) {
-      // Should not happen
-      return null;
-    }
+    return objectMapper.writeValueAsString(agent);
 
   }
+
 
 }

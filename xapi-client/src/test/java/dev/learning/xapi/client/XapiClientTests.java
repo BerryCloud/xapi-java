@@ -1816,6 +1816,294 @@ class XapiClientTests {
     assertThat(response.getBody(), instanceOf(About.class));
   }
 
+
+
+  // Get Single Activity Profile
+
+  @Test
+  void whenGettingASingleActivityProfileThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting A Single Activity Profile
+    client.getActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark"), String.class).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+
+  @Test
+  void whenGettingASingleActivityProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting A Single Activity Profile
+    client.getActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark"), String.class).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&profileId=bookmark"));
+  }
+
+  @Test
+  void givenActivityProfileContentTypeIsTextPlainWhenGettingActivityProfileThenBodyIsInstanceOfString()
+      throws InterruptedException {
+
+    // Given ActivityProfile Content Type Is Text Plain
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
+        .addHeader("Content-Type", "text/plain; charset=utf-8"));
+
+    // When Getting ActivityProfile
+    ResponseEntity<String> response = client
+        .getActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+            .profileId("bookmark"), String.class)
+
+        .block();
+
+    // Then Body Is Instance Of String
+    assertThat(response.getBody(), instanceOf(String.class));
+  }
+
+  @Test
+  void givenActivityProfileContentTypeIsTextPlainWhenGettingActivityProfileThenBodyIsExpected()
+      throws InterruptedException {
+
+    // Given ActivityProfile Content Type Is Text Plain
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
+        .addHeader("Content-Type", "text/plain; charset=utf-8"));
+
+    // When Getting ActivityProfile
+    ResponseEntity<String> response = client
+        .getActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+            .profileId("bookmark"), String.class)
+
+        .block();
+
+    // Then Body Is Expected
+    assertThat(response.getBody(), is("Hello World!"));
+  }
+
+  // Post Single Activity Profile
+
+  @Test
+  void whenPostingASingleActivityProfileThenMethodIsPost() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Posting A Single Activity Profile
+    client.postActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Post
+    assertThat(recordedRequest.getMethod(), is("POST"));
+  }
+
+  @Test
+  void whenPostingASingleActivityProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Posting A Single Activity Profile
+    client.postActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&profileId=bookmark"));
+  }
+
+  @Test
+  void whenPostingASingleActivityProfileWithContentTypeTextPlainThenContentTypeHeaderIsTextPlain()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Posting A Single Activity Profile With Content Type Text Plain
+    client.postActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!")
+
+        .contentType(MediaType.TEXT_PLAIN))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Text Plain
+    assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
+  }
+
+  @Test
+  void whenPostingASingleActivityProfileWithoutContentTypeThenContentTypeHeaderIsApplicationJson()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Posting A Single Activity Profile Without Content Type
+    client.postActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Application Json
+    assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  // Put Single Activity Profile
+
+  @Test
+  void whenPuttingASingleActivityProfileThenMethodIsPut() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Putting A Single Activity Profile
+    client.putActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Post
+    assertThat(recordedRequest.getMethod(), is("PUT"));
+  }
+
+  @Test
+  void whenPuttingASingleActivityProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Putting A Single Activity Profile
+    client.putActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&profileId=bookmark"));
+  }
+
+  @Test
+  void whenPuttingASingleActivityProfileWithContentTypeTextPlainThenContentTypeHeaderIsTextPlain()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Putting A Single Activity Profile With Content Type Text Plain
+    client.putActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!")
+
+        .contentType(MediaType.TEXT_PLAIN))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Text Plain
+    assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
+  }
+
+  @Test
+  void whenPuttingASingleActivityProfileWithoutContentTypeThenContentTypeHeaderIsApplicationJson()
+      throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Putting A Single Activity Profile Without Content Type
+    client.putActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile("Hello World!"))
+
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Content Type Header Is Application Json
+    assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  // Deleting Single Activity Profile
+
+  @Test
+  void whenDeletingASingleActivityProfileThenMethodIsDelete() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting A Single Activity Profile
+    client.deleteActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Delete
+    assertThat(recordedRequest.getMethod(), is("DELETE"));
+  }
+
+  @Test
+  void whenDeletingASingleActivityProfileThenPathIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+
+    // When Deleting A Single Activity Profile
+    client.deleteActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")).block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Path Is Expected
+    assertThat(recordedRequest.getPath(), is(
+        "/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&profileId=bookmark"));
+  }
+
+
+
   @Getter
   private static class SamplePerson {
 
