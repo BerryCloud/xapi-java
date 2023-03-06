@@ -751,7 +751,6 @@ public class XapiClient {
   // Agent Profile Resource
 
   /**
-   * 
    * Gets a single agent profile by the given agent and profileId.
    *
    * <p>
