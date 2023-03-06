@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.client;
 
+import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Person;
 import dev.learning.xapi.model.Statement;
@@ -349,6 +350,9 @@ public class XapiClient {
 
   }
 
+
+  // State Resource
+
   /**
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
@@ -655,7 +659,98 @@ public class XapiClient {
 
   }
 
+  // Agents Resource
+
   /**
+   * Return a special, Person Object for a specified Agent. The Person Object is very similar to an
+   * Agent Object, but instead of each attribute having a single value, each attribute has an array
+   * value, and it is legal to include multiple identifying properties.
+   *
+   * @param request The parameters of the get agents request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Person>> getAgents(GetAgentsRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Person.class);
+
+  }
+
+  /**
+   * Return a special, Person Object for a specified Agent. The Person Object is very similar to an
+   * Agent Object, but instead of each attribute having a single value, each attribute has an array
+   * value, and it is legal to include multiple identifying properties.
+   *
+   * @param request The Consumer Builder for the get agents request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
+
+    final GetAgentsRequest.Builder builder = GetAgentsRequest.builder();
+
+    request.accept(builder);
+
+    return getAgents(builder.build());
+
+  }
+
+  // Activities Resource
+
+  /**
+   * Loads the complete Activity Object specified.
+   *
+   * @param request The parameters of the get activity request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Activity>> getActivity(GetActivityRequest request) {
+
+    Map<String, Object> queryParams = new HashMap<>();
+
+    return this.webClient
+
+        .method(request.getMethod())
+
+        .uri(u -> request.url(u, queryParams).build(queryParams))
+
+        .retrieve()
+
+        .toEntity(Activity.class);
+
+  }
+
+  /**
+   * Loads the complete Activity Object specified.
+   *
+   * @param request The Consumer Builder for the get activity request
+   *
+   * @return the ResponseEntity
+   */
+  public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
+
+    final GetActivityRequest.Builder builder = GetActivityRequest.builder();
+
+    request.accept(builder);
+
+    return getActivity(builder.build());
+
+  }
+
+  // Agent Profile Resource
+
+  /**
+   * 
    * Gets a single agent profile by the given agent and profileId.
    *
    * <p>
@@ -905,87 +1000,25 @@ public class XapiClient {
 
   }
 
+  // About Resource
+
   /**
-   * Loads the complete Activity Object specified.
-   *
-   * @param request The parameters of the get activity request
+   * Returns JSON Object containing information about this LRS, including the xAPI version
+   * supported.
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<Activity>> getActivity(GetActivityRequest request) {
-
-    Map<String, Object> queryParams = new HashMap<>();
+  public Mono<ResponseEntity<About>> getAbout() {
 
     return this.webClient
 
-        .method(request.getMethod())
+        .get()
 
-        .uri(u -> request.url(u, queryParams).build(queryParams))
-
-        .retrieve()
-
-        .toEntity(Activity.class);
-
-  }
-
-  /**
-   * Loads the complete Activity Object specified.
-   *
-   * @param request The Consumer Builder for the get activity request
-   *
-   * @return the ResponseEntity
-   */
-  public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
-
-    final GetActivityRequest.Builder builder = GetActivityRequest.builder();
-
-    request.accept(builder);
-
-    return getActivity(builder.build());
-
-  }
-
-  /**
-   * Return a special, Person Object for a specified Agent. The Person Object is very similar to an
-   * Agent Object, but instead of each attribute having a single value, each attribute has an array
-   * value, and it is legal to include multiple identifying properties.
-   *
-   * @param request The parameters of the get agents request
-   *
-   * @return the ResponseEntity
-   */
-  public Mono<ResponseEntity<Person>> getAgents(GetAgentsRequest request) {
-
-    Map<String, Object> queryParams = new HashMap<>();
-
-    return this.webClient
-
-        .method(request.getMethod())
-
-        .uri(u -> request.url(u, queryParams).build(queryParams))
+        .uri(u -> u.path("/about").build())
 
         .retrieve()
 
-        .toEntity(Person.class);
-
-  }
-
-  /**
-   * Return a special, Person Object for a specified Agent. The Person Object is very similar to an
-   * Agent Object, but instead of each attribute having a single value, each attribute has an array
-   * value, and it is legal to include multiple identifying properties.
-   *
-   * @param request The Consumer Builder for the get agents request
-   *
-   * @return the ResponseEntity
-   */
-  public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
-
-    final GetAgentsRequest.Builder builder = GetAgentsRequest.builder();
-
-    request.accept(builder);
-
-    return getAgents(builder.build());
+        .toEntity(About.class);
 
   }
 
