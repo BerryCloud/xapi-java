@@ -26,13 +26,11 @@ public class GetAboutApplication implements CommandLineRunner {
 
     webClientBuilder
         // Change for the URL of your LRS
-        .baseUrl("https://cloud.scorm.com/lrs/QVVLD8EVWD/")
+        .baseUrl("https://example.com/xapi/")
         // Set the Authorization value
-        .defaultHeader("Authorization",
-            "Basic NUJZLWhXay1IcXdtOVFGWFh3Yzo1LTRNSDFBSFVvbDJGM2x1SE1J")
+        .defaultHeader("Authorization", "")
 
         .build();
-
 
     client = new XapiClient(webClientBuilder);
   }
