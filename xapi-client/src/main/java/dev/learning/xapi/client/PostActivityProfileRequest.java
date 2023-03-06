@@ -1,3 +1,7 @@
+/*
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ */
+
 package dev.learning.xapi.client;
 
 import lombok.Builder.Default;
@@ -7,6 +11,15 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
+/**
+ * Request for posting a single ActivityProfile.
+ *
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#single-document-put--post--get--delete-1">Activity
+ *      Profile POST</a>
+ *
+ * @author Thomas Turrell-Croft
+ */
 @SuperBuilder
 @Getter
 public class PostActivityProfileRequest extends ActivityProfileRequest {
