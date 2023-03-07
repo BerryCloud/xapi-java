@@ -58,6 +58,7 @@ public class Group extends Actor {
     protected ObjectType objectType = ObjectType.GROUP;
     
     protected Builder<C, B> objectType(ObjectType objectType) {
+      this.objectType = objectType;
       return self();
     } 
     

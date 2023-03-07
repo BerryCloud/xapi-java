@@ -4,10 +4,10 @@
 
 package dev.learning.xapi.model;
 
+import org.springframework.util.Assert;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import lombok.Builder;
 import lombok.Value;
 
@@ -24,12 +24,9 @@ import lombok.Value;
 @JsonInclude(Include.NON_EMPTY)
 public class Score {
 
-  // TODO check that @DecimalMax and @DecimalMin apply to float
   /**
    * The score related to the experience as modified by scaling and/or normalization.
    */
-  @DecimalMax(value = "1.0")
-  @DecimalMin(value = "-1.0")
   private Float scaled;
 
   /**
@@ -55,9 +52,13 @@ public class Score {
    */
   public static class Builder {
 
-    @DecimalMax(value = "1.0")
-    @DecimalMin(value = "-1.0")
-    private Float scaled;
+    protected Float scaled;
+    
+    public Builder scaled(Float scaled) {
+      Assert.isTrue(scaled == null || (scaled>=-1.0 && scaled <=1.0) , "Scaled score vaule must be between -1.0 and 1.0");
+      this.scaled = scaled;
+      return this;
+    }
     
     // This static class extends the lombok builder.
 
