@@ -53,8 +53,16 @@ public class Score {
 
     protected Float scaled;
     
+    /**
+     * Sets the scaled score.
+     *
+     * @param scaled The scaled score.
+     *
+     * @return This builder
+     */
     public Builder scaled(Float scaled) {
-      Assert.isTrue(scaled == null || (scaled >= -1.0 && scaled <= 1.0) , "Scaled score vaule must be between -1.0 and 1.0");
+      Assert.isTrue(scaled == null || (scaled >= -1.0 && scaled <= 1.0),
+          "Scaled score vaule must be between -1.0 and 1.0");
       this.scaled = scaled;
       return this;
     }
