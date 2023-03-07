@@ -54,8 +54,6 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
 
     URI moreUrl = response.getBody().getMore();
 
-    System.out.println("me " + moreUrl);
-
     if (moreUrl.getPath() != "") {
       // Get More Statements
       ResponseEntity<StatementResult> more = client.getMoreStatements(r -> r.more(moreUrl)).block();
