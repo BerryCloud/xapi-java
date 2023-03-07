@@ -13,18 +13,32 @@ import org.junit.jupiter.api.Test;
  * GetMoreStatementsRequest Tests.
  *
  * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
 @DisplayName("GetMoreStatementsRequest Tests")
 class GetMoreStatementsRequestTests {
 
   @Test
-  void whenBuildingGetMoreStatementsRequestWithAllParametersThenNoExceptionIsThrown() {
+  void whenBuildingGetMoreStatementsRequestWithUriParameterThenNoExceptionIsThrown() {
 
-    // When Building GetMoreStatementsRequest With All Parameters
+    // When Building GetMoreStatementsRequest With Uri Parameter
     GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder()
 
         .more(
             URI.create("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1"));
+
+    // Then No Exception Is Thrown
+    assertDoesNotThrow(() -> builder.build());
+
+  }
+  
+  @Test
+  void whenBuildingGetMoreStatementsRequestWithStringParameterThenNoExceptionIsThrown() {
+
+    // When Building GetMoreStatementsRequest With String Parameter
+    GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder()
+
+        .more("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1");
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(() -> builder.build());
