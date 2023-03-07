@@ -1664,11 +1664,11 @@ class XapiClientTests {
   // Get Activity
 
   @Test
-  void whenGettingActivityThenMethodIsGet() throws InterruptedException {
+  void whenGettingActivityByUriThenMethodIsGet() throws InterruptedException {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
-    // When Getting Activity
+    // When Getting Activity By Uri
     client
         .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
         .block();
@@ -1679,6 +1679,22 @@ class XapiClientTests {
     assertThat(recordedRequest.getMethod(), is("GET"));
   }
 
+  @Test
+  void whenGettingActivityByStringThenMethodIsGet() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    // When Getting Activity By String
+    client
+        .getActivity(r -> r.activityId("https://example.com/activity/simplestatement"))
+        .block();
+
+    RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Method Is Get
+    assertThat(recordedRequest.getMethod(), is("GET"));
+  }
+  
   @Test
   void whenGettingActivityThenPathIsExpected() throws InterruptedException {
 

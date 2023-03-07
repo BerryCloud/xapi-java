@@ -47,6 +47,42 @@ public class GetActivityRequest implements Request {
    */
   public static class Builder {
 
+    @NonNull
+    private URI activityId;
+    
+    /**
+     * Sets the activityId.
+     *
+     * @param activityId The activityId of the GetActivityRequest.
+     *
+     * @return This builder
+     *
+     * @see GetActivityRequest#activityId
+     */
+    public Builder activityId(String activityId) {
+
+      this.activityId = URI.create(activityId);
+
+      return this;
+
+    }
+
+    /**
+     * Sets the activityId.
+     *
+     * @param activityId The activityId of the GetActivityRequest.
+     *
+     * @return This builder
+     *
+     * @see GetActivityRequest#activityId
+     */
+    public Builder activityId(URI activityId) {
+
+      this.activityId = activityId;
+
+      return this;
+
+    }
   }
 
 }
