@@ -55,7 +55,7 @@ public class Group extends Actor {
 
     // This static class extends the lombok builder.
 
-    private ObjectType objectType = ObjectType.GROUP;
+    protected ObjectType objectType = ObjectType.GROUP;
     
     protected Builder<C, B> objectType(ObjectType objectType) {
       return self();
