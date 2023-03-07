@@ -44,6 +44,9 @@ public class StatementReference implements StatementObject, SubStatementObject {
 
     // This static class extends the lombok builder.
 
+    @NotNull
+    private UUID id;
+    
   }
 
 

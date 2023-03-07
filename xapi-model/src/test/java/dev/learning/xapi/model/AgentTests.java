@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.util.ResourceUtils;
 
 /**
@@ -28,38 +30,15 @@ class AgentTests {
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
-  @Test
-  void whenDeserializingAgentThenResultIsInstanceOfAgent() throws IOException {
+  @ParameterizedTest
+  @ValueSource(strings = {"classpath:agent/agent.json", 
+      "classpath:agent/agent_without_object_type.json", 
+      "classpath:agent/agent_with_object_type.json"})
+  void whenDeserializingAgentThenResultIsInstanceOfAgent(String fileName) throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:agent/agent.json");
+    final File file = ResourceUtils.getFile(fileName);
 
     // When Deserializing Agent
-    final Agent result = objectMapper.readValue(file, Agent.class);
-
-    // Then Result Is Instance Of Agent
-    assertThat(result, instanceOf(Agent.class));
-
-  }
-
-  @Test
-  void whenDeserializingAgentWithoutObjectTypeThenResultIsInstanceOfAgent() throws IOException {
-
-    final File file = ResourceUtils.getFile("classpath:agent/agent_without_object_type.json");
-
-    // When Deserializing Agent Without Object Type
-    final Agent result = objectMapper.readValue(file, Agent.class);
-
-    // Then Result Is Instance Of Agent
-    assertThat(result, instanceOf(Agent.class));
-
-  }
-
-  @Test
-  void whenDeserializingAgentWithObjectTypeThenResultIsInstanceOfAgent() throws IOException {
-
-    final File file = ResourceUtils.getFile("classpath:agent/agent_with_object_type.json");
-
-    // When Deserializing Agent Without Object Type
     final Agent result = objectMapper.readValue(file, Agent.class);
 
     // Then Result Is Instance Of Agent

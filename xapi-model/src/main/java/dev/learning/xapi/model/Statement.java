@@ -103,6 +103,9 @@ public class Statement {
 
     // This static class extends the lombok builder.
 
+    @NotNull
+    private Actor actor;
+    
     /**
      * Consumer Builder for agent.
      *

@@ -55,6 +55,10 @@ public class Score {
    */
   public static class Builder {
 
+    @DecimalMax(value = "1.0")
+    @DecimalMin(value = "-1.0")
+    private Float scaled;
+    
     // This static class extends the lombok builder.
 
   }
