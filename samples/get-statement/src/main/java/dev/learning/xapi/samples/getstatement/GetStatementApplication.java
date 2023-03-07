@@ -33,7 +33,6 @@ public class GetStatementApplication implements CommandLineRunner {
         // Set the Authorization value
         .defaultHeader("Authorization", "")
 
-
         .build();
 
 
