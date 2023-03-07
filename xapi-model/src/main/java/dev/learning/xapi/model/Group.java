@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -56,11 +55,9 @@ public class Group extends Actor {
 
     // This static class extends the lombok builder.
 
-    @NonNull
     private ObjectType objectType = ObjectType.GROUP;
     
-    @NonNull
-    private Builder<C, B> objectType(ObjectType objectType) {
+    protected Builder<C, B> objectType(ObjectType objectType) {
       return self();
     } 
     
