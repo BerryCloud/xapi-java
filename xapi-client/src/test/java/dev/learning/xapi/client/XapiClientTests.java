@@ -342,7 +342,7 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement
-    client.getVoidedStatement(r -> r.id(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")))
+    client.getVoidedStatement(r -> r.voidedId(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")))
         .block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
@@ -357,7 +357,7 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement
-    client.getVoidedStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+    client.getVoidedStatement(r -> r.voidedId("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
     RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
