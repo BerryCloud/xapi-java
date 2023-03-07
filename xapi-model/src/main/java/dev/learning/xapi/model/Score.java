@@ -4,12 +4,11 @@
 
 package dev.learning.xapi.model;
 
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Builder;
 import lombok.Value;
+import org.springframework.util.Assert;
 
 /**
  * This class represents the xAPI Score object.
