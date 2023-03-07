@@ -31,7 +31,6 @@ public class GetStateApplication implements CommandLineRunner {
         // Set the Authorization value
         .defaultHeader("Authorization", "")
 
-
         .build();
 
 
