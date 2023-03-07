@@ -74,6 +74,9 @@ public abstract class Actor implements StatementObject, SubStatementObject {
    */
   public abstract static class Builder<C extends Actor, B extends Builder<C, B>> {
 
+    @Valid
+    Account account;
+    
     /**
      * Consumer Builder for account.
      *
