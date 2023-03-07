@@ -46,7 +46,7 @@ public class PutAgentProfileApplication implements CommandLineRunner {
     // Put Profile
     client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-        .profileId("bookmark864")
+        .profileId("bookmark")
 
         .profile(new ExampleState("Hello World!", Instant.now())))
 
