@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @author Thomas Turrell-Croft
  */
 @SpringBootApplication
-public class PutActivityProfile implements CommandLineRunner {
+public class PutActivityProfileApplication implements CommandLineRunner {
 
   private final XapiClient client;
 
@@ -26,7 +26,7 @@ public class PutActivityProfile implements CommandLineRunner {
    * Constructor for application. In this sample the WebClient.Builder instance is injected by the
    * Spring Framework.
    */
-  public PutActivityProfile(WebClient.Builder webClientBuilder) {
+  public PutActivityProfileApplication(WebClient.Builder webClientBuilder) {
 
     webClientBuilder
         // Change for the URL of your LRS
@@ -40,7 +40,7 @@ public class PutActivityProfile implements CommandLineRunner {
   }
 
   public static void main(String[] args) {
-    SpringApplication.run(PutActivityProfile.class, args).close();
+    SpringApplication.run(PutActivityProfileApplication.class, args).close();
   }
 
   @Override
