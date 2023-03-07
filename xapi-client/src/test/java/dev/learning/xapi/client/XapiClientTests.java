@@ -555,7 +555,7 @@ class XapiClientTests {
     // When Getting Statements With Activity Parameter
     client.getMoreStatements(r -> r
 
-        .more((URI.create("/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1")))
+        .more(URI.create("/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1"))
 
     ).block();
 
