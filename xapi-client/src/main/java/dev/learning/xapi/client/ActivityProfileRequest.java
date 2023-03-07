@@ -41,6 +41,7 @@ abstract class ActivityProfileRequest implements Request {
    */
   public abstract static class Builder<C extends ActivityProfileRequest, B extends Builder<C, B>> {
 
+    @NonNull
     private URI activityId;
     
     /**
