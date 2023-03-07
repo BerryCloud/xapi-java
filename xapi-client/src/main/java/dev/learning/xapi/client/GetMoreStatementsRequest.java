@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  *      Statements</a>
  *
  * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
 @Builder
 @Getter
@@ -46,6 +47,37 @@ public class GetMoreStatementsRequest implements Request {
    */
   public static class Builder {
 
+    @NonNull
+    private URI more;
+
+    /**
+     * Sets the more token.
+     *
+     * @param more The more token of the GetMoreStatementsRequest.
+     * @return This builder
+     */
+    public Builder more(String more) {
+
+      this.more = URI.create(more);
+
+      return this;
+
+    }
+
+    /**
+     * Sets the more token.
+     *
+     * @param more The more token of the GetMoreStatementsRequest.
+     * @return This builder
+     */
+    public Builder more(URI more) {
+
+      this.more = more;
+
+      return this;
+
+    }
+    
     // This static class extends the lombok builder.
 
   }

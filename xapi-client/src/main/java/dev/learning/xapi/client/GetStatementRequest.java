@@ -57,6 +57,9 @@ public class GetStatementRequest implements Request {
    */
   public abstract static class Builder<C extends GetStatementRequest, B extends Builder<C, B>> {
 
+    @NonNull
+    private UUID id;
+    
     /**
      * Sets the id.
      *

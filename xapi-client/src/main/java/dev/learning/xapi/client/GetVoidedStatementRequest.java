@@ -6,6 +6,7 @@ package dev.learning.xapi.client;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.web.util.UriBuilder;
@@ -18,6 +19,7 @@ import org.springframework.web.util.UriBuilder;
  *      Statements</a>
  *
  * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
 @SuperBuilder
 @Getter
@@ -34,6 +36,40 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
         .queryParamIfPresent("format", Optional.ofNullable(format))
 
         .queryParamIfPresent("attachments", Optional.ofNullable(attachments));
+
+  }
+
+  /**
+   * Builder for GetVoidedStatementRequest.
+   */
+  public abstract static class Builder<C extends GetVoidedStatementRequest, B extends Builder<C, B>>
+      extends GetStatementRequest.Builder<C, B> {
+
+    /**
+     * Sets the voidedId.
+     *
+     * @param voidedId The voidedId of the GetVoidedStatementRequest.
+     * @return This builder
+     * @see GetVoidedStatementRequest#voidedId
+     */
+    public Builder<C, B> voidedId(UUID voidedId) {
+      id(voidedId);
+      return self();
+    }
+
+    /**
+     * Sets the voidedId.
+     *
+     * @param voidedId The voidedId of the GetVoidedStatementRequest.
+     * @return This builder
+     * @see GetVoidedStatementRequest#voidedId
+     */
+    public Builder<C, B> voidedId(String voidedId) {
+      id(voidedId);
+      return self();
+    }
+
+    // This static class extends the lombok builder.
 
   }
 
