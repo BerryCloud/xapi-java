@@ -14,9 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -37,8 +37,7 @@ import lombok.experimental.SuperBuilder;
 @JsonSubTypes({@JsonSubTypes.Type(value = Group.class, name = "Group")})
 public class Group extends Actor {
 
-  @Default
-  private final ObjectType objectType = ObjectType.GROUP;
+  private ObjectType objectType;
 
   /**
    * The members of this Group.
@@ -57,6 +56,13 @@ public class Group extends Actor {
 
     // This static class extends the lombok builder.
 
+    private ObjectType objectType = ObjectType.GROUP;
+    
+    @NonNull
+    private Builder<C, B> objectType(ObjectType objectType) {
+      return self();
+    } 
+    
     /**
      * Consumer Builder for member.
      *
