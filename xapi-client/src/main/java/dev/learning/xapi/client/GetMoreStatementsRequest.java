@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Request for getting multiple Statements.
@@ -37,7 +36,8 @@ public class GetMoreStatementsRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    return UriComponentsBuilder.fromUri(more);
+    // TODO this seems unclear in the spec
+    return uriBuilder.replacePath(more.getPath()).replaceQuery(more.getQuery());
 
   }
 

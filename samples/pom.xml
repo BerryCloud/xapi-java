@@ -33,21 +33,38 @@
   </dependencyManagement>
   <modules>
     <module>core</module>
-    <module>delete-agent-profile</module>
-    <module>delete-state</module>
-    <module>get-about</module>
-    <module>get-activity</module>
-    <module>get-agent-profile</module>
-    <module>get-agent-profiles</module>
-    <module>get-agents</module>
-    <module>get-state</module>
+    <!-- Statements Resource -->
     <module>get-statement</module>
-    <module>get-statements</module>
-    <module>post-agent-profile</module>
-    <module>post-state</module>
     <module>post-statement</module>
-    <module>put-agent-profile</module>
+    <module>get-statements</module>
+    <module>get-more-statements</module>
+    <module>get-voided-statement</module>
+    <module>post-statements</module>
+    <!-- State Resource -->
+    <module>get-state</module>
+    <module>post-state</module>
     <module>put-state</module>
+    <module>delete-state</module>
+    <module>get-states</module>
+    <module>delete-states</module>
+    <!-- Agents Resource -->
+    <module>get-agents</module>
+    <!-- Activities Resource -->
+    <module>get-activity</module>
+    <!-- Agent Profile Resource -->
+    <module>get-agent-profile</module>
+    <module>post-agent-profile</module>
+    <module>put-agent-profile</module>
+    <module>delete-agent-profile</module>
+    <module>get-agent-profiles</module>
+    <!-- Activity Profile Resource -->
+    <module>get-activity-profile</module>
+    <module>post-activity-profile</module>
+    <module>put-activity-profile</module>
+    <module>delete-activity-profile</module>
+    <module>get-activity-profiles</module>
+    <!-- About Resource -->
+    <module>get-about</module>
   </modules>
   <build>
     <plugins>
