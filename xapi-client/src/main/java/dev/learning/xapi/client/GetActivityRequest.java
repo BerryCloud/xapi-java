@@ -1,3 +1,7 @@
+/*
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ */
+
 package dev.learning.xapi.client;
 
 import java.net.URI;
@@ -36,6 +40,13 @@ public class GetActivityRequest implements Request {
   public HttpMethod getMethod() {
 
     return HttpMethod.GET;
+  }
+
+  /**
+   * Builder for GetActivityRequest.
+   */
+  public static class Builder {
+
   }
 
 }
