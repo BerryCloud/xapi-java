@@ -31,7 +31,6 @@ public class GetAgentProfileApplication implements CommandLineRunner {
         // Set the Authorization value
         .defaultHeader("Authorization", "")
 
-
         .build();
 
     client = new XapiClient(webClientBuilder);
