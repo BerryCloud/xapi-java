@@ -51,7 +51,6 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
     // Print the returned statements to the console
     Arrays.asList(response.getBody().getStatements()).forEach(s -> System.out.println(s));
 
-
     URI moreUrl = response.getBody().getMore();
 
     if (moreUrl.getPath() != "") {
