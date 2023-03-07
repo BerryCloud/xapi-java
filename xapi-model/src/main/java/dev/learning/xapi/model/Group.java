@@ -56,6 +56,7 @@ public class Group extends Actor {
 
     // This static class extends the lombok builder.
 
+    @NonNull
     private ObjectType objectType = ObjectType.GROUP;
     
     @NonNull
