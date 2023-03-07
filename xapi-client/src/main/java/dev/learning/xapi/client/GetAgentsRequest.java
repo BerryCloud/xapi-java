@@ -1,3 +1,7 @@
+/*
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ */
+
 package dev.learning.xapi.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +20,7 @@ import org.springframework.web.util.UriBuilder;
  * value, and it is legal to include multiple identifying properties.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#24-agents-resourcehttps://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#24-agents-resource">Agents
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#24-agents-resource">Agents
  *      Resource</a>
  *
  * @author Thomas Turrell-Croft
