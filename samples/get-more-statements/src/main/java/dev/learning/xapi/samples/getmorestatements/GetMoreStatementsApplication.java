@@ -2,7 +2,6 @@ package dev.learning.xapi.samples.getmorestatements;
 
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.model.StatementResult;
-import java.net.URI;
 import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -48,14 +47,15 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
     // Get Statements
     ResponseEntity<StatementResult> response = client.getStatements(r -> r.limit(1)).block();
 
+    StatementResult result = response.getBody();
+
     // Print the returned statements to the console
-    Arrays.asList(response.getBody().getStatements()).forEach(s -> System.out.println(s));
+    Arrays.asList(result.getStatements()).forEach(s -> System.out.println(s));
 
-    URI moreUrl = response.getBody().getMore();
-
-    if (moreUrl.getPath() != "") {
+    if (result.hasMore()) {
       // Get More Statements
-      ResponseEntity<StatementResult> more = client.getMoreStatements(r -> r.more(moreUrl)).block();
+      ResponseEntity<StatementResult> more =
+          client.getMoreStatements(r -> r.more(result.getMore())).block();
 
       // Print the returned statements to the console
       Arrays.asList(more.getBody().getStatements()).forEach(s -> System.out.println(s));

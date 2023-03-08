@@ -132,5 +132,50 @@ class StatementResultTest {
 
   }
 
+  @Test
+  void whenBuildingStatementResultWithEmptyMoreThenHasMoreIsFalse() {
+
+    // When Building StatementResult With Empty More
+    final StatementResult statementResult = StatementResult.builder()
+
+        .more(URI.create(""))
+
+        .build();
+
+    // Then HasMore Is False
+    assertThat(statementResult.hasMore(), is(false));
+
+  }
+
+  @Test
+  void whenBuildingStatementResultWithNullMoreThenHasMoreIsFalse() {
+
+    // When Building StatementResult With Null More
+    final StatementResult statementResult = StatementResult.builder()
+
+        .more(null)
+
+        .build();
+
+    // Then HasMore Is False
+    assertThat(statementResult.hasMore(), is(false));
+
+  }
+
+  @Test
+  void whenBuildingStatementResultWithMoreThenHasMoreIsTrue() {
+
+    // When Building StatementResult With More
+    final StatementResult statementResult = StatementResult.builder()
+
+        .more(URI.create("123"))
+
+        .build();
+
+    // Then HasMore Is True
+    assertThat(statementResult.hasMore(), is(true));
+
+  }
+
 
 }
