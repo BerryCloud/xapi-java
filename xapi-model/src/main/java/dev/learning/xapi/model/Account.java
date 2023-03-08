@@ -45,12 +45,6 @@ public class Account {
    */
   public static class Builder {
 
-    @NotNull
-    private URI homePage;
-
-    @NotBlank
-    private String name;
-    
     // This static class extends the lombok builder.
 
   }

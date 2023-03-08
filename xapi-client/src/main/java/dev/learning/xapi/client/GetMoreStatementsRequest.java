@@ -47,9 +47,6 @@ public class GetMoreStatementsRequest implements Request {
    */
   public static class Builder {
 
-    @NonNull
-    private URI more;
-
     /**
      * Sets the more token.
      *

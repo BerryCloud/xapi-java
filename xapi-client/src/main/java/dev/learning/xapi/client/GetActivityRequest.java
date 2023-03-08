@@ -20,6 +20,7 @@ import org.springframework.web.util.UriBuilder;
  *      Activity Object GET</a>
  *
  * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
 @Getter
 @Builder
@@ -47,9 +48,6 @@ public class GetActivityRequest implements Request {
    */
   public static class Builder {
 
-    @NonNull
-    private URI activityId;
-    
     /**
      * Sets the activityId.
      *
