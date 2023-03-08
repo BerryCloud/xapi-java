@@ -1,3 +1,7 @@
+/*
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ */
+
 package dev.learning.xapi.samples.deletestate;
 
 import dev.learning.xapi.client.XapiClient;
@@ -25,9 +29,9 @@ public class DeleteStateApplication implements CommandLineRunner {
   public DeleteStateApplication(WebClient.Builder webClientBuilder) {
 
     webClientBuilder
-
+        // Change for the URL of your LRS
         .baseUrl("https://example.com/xapi/")
-
+        // Set the Authorization value
         .defaultHeader("Authorization", "")
 
         .build();

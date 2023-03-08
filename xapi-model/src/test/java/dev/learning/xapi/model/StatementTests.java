@@ -350,6 +350,26 @@ class StatementTests {
   }
 
   @Test
+  void WhenCallingToBuilderAndSettingVerbToCompletedThenResultVerbIsCompleted() {
+
+    // When Building Statement With Statement Reference Object
+    final Statement statement = Statement.builder()
+
+        .actor(a -> a.name("A N Other"))
+
+        .verb(Verb.VOIDED)
+
+        .statementReferenceObject(
+            sr -> sr.id(UUID.fromString("c972020f-0718-4033-95d0-4b502a115aa9")))
+
+        .build();
+
+    // Then Statement Object Is Instances Of StatementReference
+    assertThat(statement.getObject(), instanceOf(StatementReference.class));
+
+  }
+
+  @Test
   void whenValidatingStatementWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final Statement statement = Statement.builder()

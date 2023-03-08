@@ -245,6 +245,25 @@ public class Statement {
     }
 
     /**
+     * Consumer Builder for statement reference object.
+     *
+     * @param statementReference The Consumer Builder for statement reference object
+     *
+     * @return This builder
+     *
+     * @see Statement#object
+     */
+    public Builder statementReferenceObject(
+        Consumer<StatementReference.Builder> statementReference) {
+
+      final StatementReference.Builder builder = StatementReference.builder();
+
+      statementReference.accept(builder);
+
+      return object(builder.build());
+    }
+
+    /**
      * Consumer Builder for context.
      *
      * @param context The Consumer Builder for context
