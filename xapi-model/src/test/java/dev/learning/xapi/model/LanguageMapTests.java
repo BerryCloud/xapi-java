@@ -13,6 +13,8 @@ import java.util.Locale.LanguageRange;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * LanguageMap Tests.
@@ -20,8 +22,12 @@ import org.junit.jupiter.api.Test;
 @DisplayName("LanguageMap tests")
 class LanguageMapTests {
 
-  @Test
-  void givenUkandUSKeyWhenGettingUKValueThenValueIsUK() throws Exception {
+  @ParameterizedTest
+  @CsvSource({
+    "en-GB, Colour",
+    "en-US, Color",
+    "de, Colour"})
+  void givenUkAndUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected) throws Exception {
 
     final LanguageMap languageMap = new LanguageMap();
 
@@ -29,28 +35,11 @@ class LanguageMapTests {
     languageMap.put(Locale.UK, "Colour");
     languageMap.put(Locale.US, "Color");
 
-    // When Getting UK Value
-    final String value = languageMap.get(LanguageRange.parse("en-GB"));
+    // When Getting Locale Value
+    final String value = languageMap.get(LanguageRange.parse(locale));
 
-    // Then Value Is UK
-    assertThat(value, is("Colour"));
-
-  }
-
-  @Test
-  void givenUkandUsKeyWhenGettingUsValueThenValueIsUs() throws Exception {
-
-    final LanguageMap languageMap = new LanguageMap();
-
-    // Given UK and US Key
-    languageMap.put(Locale.UK, "Colour");
-    languageMap.put(Locale.US, "Color");
-
-    // When Getting US Value
-    final String value = languageMap.get(LanguageRange.parse("en-US"));
-
-    // Then Value Is US
-    assertThat(value, is("Color"));
+    // Then Value Is Expected
+    assertThat(value, is(expected));
 
   }
 
@@ -103,23 +92,6 @@ class LanguageMapTests {
 
     // Then Value Is French
     assertThat(value, is("Couleur"));
-
-  }
-
-  @Test
-  void givenUkandUsKeyWhenGettingGermanValueThenValueIsFirstEntry() throws Exception {
-
-    final LanguageMap languageMap = new LanguageMap();
-
-    // Given UK and US Key
-    languageMap.put(Locale.UK, "Colour");
-    languageMap.put(Locale.US, "Color");
-
-    // When Getting German Value
-    final String value = languageMap.get(LanguageRange.parse("de"));
-
-    // Then Value Is First Entry
-    assertThat(value, is("Colour"));
 
   }
 
