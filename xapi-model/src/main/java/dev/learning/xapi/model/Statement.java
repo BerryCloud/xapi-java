@@ -256,10 +256,11 @@ public class Statement {
     public Builder object(StatementObject object) {
 
       if (object instanceof Agent agent) {
-        agent.setObjectType(ObjectType.AGENT);
+        // This is the only place where we HAVE TO provide the Agent ObjectType
+        this.object = agent.toBuilder().objectType(ObjectType.AGENT).build();
+      } else {
+        this.object = object;
       }
-      
-      this.object = object;
 
       return this;
     }

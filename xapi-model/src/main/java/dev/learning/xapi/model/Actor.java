@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">xAPI Actor</a>
  */
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "name")

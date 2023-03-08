@@ -5,7 +5,6 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;

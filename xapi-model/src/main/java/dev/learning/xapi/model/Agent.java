@@ -5,12 +5,9 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -22,15 +19,14 @@ import lombok.experimental.SuperBuilder;
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#agent">xAPI Agent</a>
  */
 @Getter
-@SuperBuilder
-@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
 public class Agent extends Actor {
 
-  @Setter(AccessLevel.PACKAGE)
-  private ObjectType objectType = null;
+  private final ObjectType objectType;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
@@ -42,6 +38,10 @@ public class Agent extends Actor {
 
     // This static class extends the lombok builder.
 
+    Builder<C, B> objectType(ObjectType objectType) {
+      this.objectType = objectType;
+      return self();
+    }
   }
 
 }
