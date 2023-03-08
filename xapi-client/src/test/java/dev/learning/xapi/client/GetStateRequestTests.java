@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import dev.learning.xapi.client.GetStateRequest.Builder;
 import java.net.URI;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ class GetStateRequestTests {
   void whenBuildingGetStateRequestWithAllParametersThenNoExceptionIsThrown() {
 
     // When Building GetStateRequest With All Parameters
-    Builder<?, ?> builder = GetStateRequest.builder()
+    final Builder<?, ?> builder = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -46,7 +47,7 @@ class GetStateRequestTests {
   void whenBuildingGetStateRequestWithoutRegistrationThenNoExceptionIsThrown() {
 
     // When Building GetStateRequest Without Registration
-    Builder<?, ?> builder = GetStateRequest.builder()
+    final Builder<?, ?> builder = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -63,7 +64,7 @@ class GetStateRequestTests {
   void whenBuildingGetStateRequestWithoutActivityIdThenNullPointerExceptionIsThrown() {
 
     // When Building GetStateRequest Without activityId
-    Builder<?, ?> builder = GetStateRequest.builder()
+    final Builder<?, ?> builder = GetStateRequest.builder()
 
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -78,7 +79,7 @@ class GetStateRequestTests {
   void whenBuildingGetStateRequestWithoutAgentThenNullPointerExceptionIsThrown() {
 
     // When Building GetStateRequest Without Agent
-    Builder<?, ?> builder = GetStateRequest.builder()
+    final Builder<?, ?> builder = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -93,7 +94,7 @@ class GetStateRequestTests {
   void whenBuildingGetStateRequestWithoutStateIdThenNullPointerExceptionIsThrown() {
 
     // When Building GetStateRequest Without StateId
-    Builder<?, ?> builder = GetStateRequest.builder()
+    final Builder<?, ?> builder = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -108,7 +109,7 @@ class GetStateRequestTests {
   void givenGetStateRequestWithAllParametersWhenGettingURLThenResultIsExpected() {
 
     // Given GetStateRequest With All Parameters
-    GetStateRequest request = GetStateRequest.builder()
+    final GetStateRequest request = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -120,16 +121,16 @@ class GetStateRequestTests {
 
         .build();
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
-    URI result =
-        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-            .build(queryParams);
+    final URI result = request
+        .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+        .build(queryParams);
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
 
   }
 
@@ -137,7 +138,7 @@ class GetStateRequestTests {
   void givenGetStateRequestWithoutRegistrationWhenGettingURLThenResultIsExpected() {
 
     // Given GetStateRequest Without Registration
-    GetStateRequest request = GetStateRequest.builder()
+    final GetStateRequest request = GetStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -147,16 +148,16 @@ class GetStateRequestTests {
 
         .build();
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
-    URI result =
-        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-            .build(queryParams);
+    final URI result = request
+        .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+        .build(queryParams);
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark")));
 
   }
 

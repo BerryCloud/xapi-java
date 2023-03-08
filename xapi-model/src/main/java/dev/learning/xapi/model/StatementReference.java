@@ -4,11 +4,9 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Value;
 
 /**
@@ -22,11 +20,7 @@ import lombok.Value;
  */
 @Value
 @Builder
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType")
 public class StatementReference implements StatementObject, SubStatementObject {
-
-  @Default
-  private final ObjectType objectType = ObjectType.STATEMENTREF;
 
   /**
    * The UUID of a Statement.

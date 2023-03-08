@@ -42,19 +42,6 @@ class ActivityTests {
   }
 
   @Test
-  void whenDeserializingActivityThenObjectTypeIsExpected() throws Exception {
-
-    final File file = ResourceUtils.getFile("classpath:activity/activity_with_object_type.json");
-
-    // When Deserializing Activity
-    final Activity result = objectMapper.readValue(file, Activity.class);
-
-    // Then Object Type Is Expected
-    assertThat(result.getObjectType(), is(ObjectType.ACTIVITY));
-
-  }
-
-  @Test
   void whenDeserializingActivityThenIdIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:activity/activity.json");
@@ -113,8 +100,6 @@ class ActivityTests {
 
     final Activity activity = Activity.builder()
 
-        .objectType(ObjectType.ACTIVITY)
-
         .id(URI.create("http://www.example.co.uk/exampleactivity"))
 
         .definition(d -> d.addDescription(Locale.US,
@@ -127,7 +112,7 @@ class ActivityTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Activity(objectType=ACTIVITY, id=http://www.example.co.uk/exampleactivity, definition=ActivityDefinition(name=null, description={en_US=A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.}, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null))"));
+        "Activity(id=http://www.example.co.uk/exampleactivity, definition=ActivityDefinition(name=null, description={en_US=A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.}, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null))"));
 
   }
 

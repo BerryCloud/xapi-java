@@ -4,13 +4,11 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.function.Consumer;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -24,12 +22,8 @@ import lombok.Value;
  */
 @Value
 @Builder
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType")
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject {
-
-  @Default
-  private final ObjectType objectType = ObjectType.SUBSTATEMENT;
 
   /**
    * Whom the Statement is about, as an Agent or Group Object.

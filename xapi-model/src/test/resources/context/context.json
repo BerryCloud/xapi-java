@@ -4,6 +4,7 @@
 	"platform": "platform",
 	"language": "en",
 	"instructor": {
+		"objectType": "Agent",
 		"name": "Andrew Downes",
 		"mbox": "mailto:andrew@example.co.uk"
 	},
