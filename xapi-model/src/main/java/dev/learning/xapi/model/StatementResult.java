@@ -28,7 +28,7 @@ import lombok.Value;
 @JsonInclude(Include.NON_NULL) // Statements array could be empty
 public class StatementResult {
 
-  private final static URI NO_MORE = URI.create("");
+  private static final URI NO_MORE = URI.create("");
 
   /**
    * List of Statements. Where no matching Statements are found, this property will contain an empty
@@ -45,7 +45,7 @@ public class StatementResult {
 
   /**
    * True if more is not empty or null.
-   * 
+   *
    * @return true if there are more statements
    */
   public boolean hasMore() {
