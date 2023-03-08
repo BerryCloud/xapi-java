@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import dev.learning.xapi.client.DeleteStateRequest.Builder;
 import java.net.URI;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ class DeleteStateRequestTests {
   void whenBuildingDeleteStateRequestWithAllParametersThenNoExceptionIsThrown() {
 
     // When Building DeleteStateRequest With All Parameters
-    Builder<?, ?> builder = DeleteStateRequest.builder()
+    final Builder<?, ?> builder = DeleteStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -46,7 +47,7 @@ class DeleteStateRequestTests {
   void whenBuildingDeleteStateRequestWithoutRegistrationThenNoExceptionIsThrown() {
 
     // When Building DeleteStateRequest Without Registration
-    Builder<?, ?> builder = DeleteStateRequest.builder()
+    final Builder<?, ?> builder = DeleteStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -63,7 +64,7 @@ class DeleteStateRequestTests {
   void whenBuildingDeleteStateRequestWithoutActivityIdThenExceptionIsThrown() {
 
     // When Building DeleteStateRequest Without ActivityId
-    Builder<?, ?> builder = DeleteStateRequest.builder()
+    final Builder<?, ?> builder = DeleteStateRequest.builder()
 
         .agent(a -> a.name("A N Other").mbox("another@example.com"))
 
@@ -80,7 +81,7 @@ class DeleteStateRequestTests {
   void whenBuildingDeleteStateRequestWithoutAgentThenExceptionIsThrown() {
 
     // When Building DeleteStateRequest Without Agent
-    Builder<?, ?> builder = DeleteStateRequest.builder()
+    final Builder<?, ?> builder = DeleteStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -97,7 +98,7 @@ class DeleteStateRequestTests {
   void whenBuildingDeleteStateRequestWithoutStateIdThenExceptionIsThrown() {
 
     // When Building DeleteStateRequest Without StateId
-    Builder<?, ?> builder = DeleteStateRequest.builder()
+    final Builder<?, ?> builder = DeleteStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -114,7 +115,7 @@ class DeleteStateRequestTests {
   void givenDeleteStateRequestWithAllParametersWhenGettingURLThenResultIsExpected() {
 
     // Given DeleteStateRequest With All Parameters
-    DeleteStateRequest request = DeleteStateRequest.builder()
+    final DeleteStateRequest request = DeleteStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -126,16 +127,16 @@ class DeleteStateRequestTests {
 
         .build();
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
-    URI result =
-        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-            .build(queryParams);
+    final URI result = request
+        .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+        .build(queryParams);
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark")));
 
   }
 
@@ -143,7 +144,7 @@ class DeleteStateRequestTests {
   void givenDeleteStateRequestWithoutRegistrationWhenGettingURLThenResultIsExpected() {
 
     // Given DeleteStateRequest Without Registration
-    DeleteStateRequest request = DeleteStateRequest.builder()
+    final DeleteStateRequest request = DeleteStateRequest.builder()
 
         .activityId("https://example.com/activity/1")
 
@@ -153,16 +154,16 @@ class DeleteStateRequestTests {
 
         .build();
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
-    URI result =
-        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-            .build(queryParams);
+    final URI result = request
+        .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+        .build(queryParams);
 
     // Then Result Is Expected
     assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&stateId=bookmark")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22another%40example.com%22%7D&stateId=bookmark")));
 
   }
 

@@ -10,7 +10,6 @@ import java.net.URI;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -28,9 +27,6 @@ import lombok.Value;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
-
-  @Default
-  private final ObjectType objectType = ObjectType.ACTIVITY;
 
   /**
    * An identifier for a single unique Activity.
@@ -53,7 +49,6 @@ public class Activity implements StatementObject, SubStatementObject {
    */
   public Activity(String id) {
 
-    this.objectType = ObjectType.ACTIVITY;
     this.id = URI.create(id);
     this.definition = null;
   }

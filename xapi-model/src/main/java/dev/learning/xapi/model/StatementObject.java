@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
  */
 @JsonInclude(Include.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", defaultImpl = Activity.class,
-    visible = true, include = As.EXISTING_PROPERTY)
+    include = As.PROPERTY)
 @JsonSubTypes({@JsonSubTypes.Type(value = Activity.class, name = "Activity"),
     @JsonSubTypes.Type(value = Agent.class, name = "Agent"),
     @JsonSubTypes.Type(value = Group.class, name = "Group"),

@@ -5,16 +5,12 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -32,13 +28,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", visible = true,
-    include = As.EXISTING_PROPERTY)
-@JsonSubTypes({@JsonSubTypes.Type(value = Group.class, name = "Group")})
 public class Group extends Actor {
-
-  @Default
-  private final ObjectType objectType = ObjectType.GROUP;
 
   /**
    * The members of this Group.

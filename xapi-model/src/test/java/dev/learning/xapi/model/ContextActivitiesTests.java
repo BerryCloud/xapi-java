@@ -131,7 +131,7 @@ class ContextActivitiesTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "ContextActivities(parent=[Activity(objectType=ACTIVITY, id=https://example.com/activity/1, definition=null)], grouping=[Activity(objectType=ACTIVITY, id=https://example.com/activity/2, definition=null)], category=[Activity(objectType=ACTIVITY, id=https://example.com/activity/3, definition=null)], other=[Activity(objectType=ACTIVITY, id=https://example.com/activity/4, definition=null)])"));
+        "ContextActivities(parent=[Activity(id=https://example.com/activity/1, definition=null)], grouping=[Activity(id=https://example.com/activity/2, definition=null)], category=[Activity(id=https://example.com/activity/3, definition=null)], other=[Activity(id=https://example.com/activity/4, definition=null)])"));
 
   }
 

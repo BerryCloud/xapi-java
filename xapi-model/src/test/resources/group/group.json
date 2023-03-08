@@ -7,10 +7,12 @@
 	"objectType": "Group",
 	"member": [
 		{
+			"objectType": "Agent",
 			"name": "Member 1",
 			"mbox": "mailto:member1@example.com"
 		},
 		{
+			"objectType": "Agent",
 			"name": "Member 2",
 			"openid": "https://example.com/openId"
 		}
