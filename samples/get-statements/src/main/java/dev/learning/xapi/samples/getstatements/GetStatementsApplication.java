@@ -1,7 +1,12 @@
+/*
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ */
+
 package dev.learning.xapi.samples.getstatements;
 
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.model.StatementResult;
+import dev.learning.xapi.model.Verb;
 import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -49,6 +54,16 @@ public class GetStatementsApplication implements CommandLineRunner {
 
     // Print the returned statements to the console
     Arrays.asList(response.getBody().getStatements()).forEach(s -> System.out.println(s));
+
+
+
+    // Get Statements with Verb filter
+    ResponseEntity<StatementResult> filteredResponse =
+        client.getStatements(r -> r.verb(Verb.ATTEMPTED.getId())).block();
+
+    // Print the returned statements to the console
+    Arrays.asList(filteredResponse.getBody().getStatements()).forEach(s -> System.out.println(s));
+
   }
 
 }
