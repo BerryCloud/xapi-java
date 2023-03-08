@@ -35,10 +35,10 @@ class LanguageMapTests {
     languageMap.put(Locale.UK, "Colour");
     languageMap.put(Locale.US, "Color");
 
-    // When Getting UK Value
+    // When Getting Locale Value
     final String value = languageMap.get(LanguageRange.parse(locale));
 
-    // Then Value Is UK
+    // Then Value Is Expected
     assertThat(value, is(expected));
 
   }
