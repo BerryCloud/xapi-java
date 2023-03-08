@@ -27,7 +27,7 @@ class LanguageMapTests {
     "en-GB, Colour",
     "en-US, Color",
     "de, Colour"})
-  void givenUkandUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected) throws Exception {
+  void givenUkAndUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected) throws Exception {
 
     final LanguageMap languageMap = new LanguageMap();
 
