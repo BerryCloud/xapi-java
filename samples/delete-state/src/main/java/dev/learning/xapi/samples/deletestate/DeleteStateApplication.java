@@ -25,9 +25,9 @@ public class DeleteStateApplication implements CommandLineRunner {
   public DeleteStateApplication(WebClient.Builder webClientBuilder) {
 
     webClientBuilder
-
+        // Change for the URL of your LRS
         .baseUrl("https://example.com/xapi/")
-
+        // Set the Authorization value
         .defaultHeader("Authorization", "")
 
         .build();

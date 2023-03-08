@@ -46,15 +46,15 @@ public class GetAgentsApplication implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
 
-    // Post statement for later retrieval of activity
+    // Post statement for later retrieval of Agent
     postStatement();
 
-    // Get Activity
+    // Get Agents
     ResponseEntity<Person> response =
         client.getAgents(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
             .block();
 
-    // Print the returned activity to the console
+    // Print the returned Person to the console
     System.out.println(response.getBody());
   }
 
