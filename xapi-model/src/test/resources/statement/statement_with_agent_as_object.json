@@ -1,0 +1,15 @@
+{
+   "actor":{
+      "name":"actor"
+   },
+   "verb":{
+      "id":"http://example.com/xapi/verbs#tagged",
+      "display":{
+         "en_US":"tagged"
+      }
+   },
+   "object":{
+      "name":"target",
+      "objectType":"Agent"
+   }
+}

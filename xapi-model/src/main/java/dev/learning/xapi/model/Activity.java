@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.function.Consumer;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 /**
@@ -25,11 +24,10 @@ import lombok.Value;
  */
 @Value
 @Builder
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
 
-  @Default
   private final ObjectType objectType = ObjectType.ACTIVITY;
 
   /**
@@ -53,7 +51,6 @@ public class Activity implements StatementObject, SubStatementObject {
    */
   public Activity(String id) {
 
-    this.objectType = ObjectType.ACTIVITY;
     this.id = URI.create(id);
     this.definition = null;
   }

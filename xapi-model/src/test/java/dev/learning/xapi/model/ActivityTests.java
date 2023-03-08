@@ -113,8 +113,6 @@ class ActivityTests {
 
     final Activity activity = Activity.builder()
 
-        .objectType(ObjectType.ACTIVITY)
-
         .id(URI.create("http://www.example.co.uk/exampleactivity"))
 
         .definition(d -> d.addDescription(Locale.US,

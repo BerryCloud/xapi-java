@@ -5,10 +5,12 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import lombok.AllArgsConstructor;
+
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -21,15 +23,14 @@ import lombok.experimental.SuperBuilder;
  */
 @Getter
 @SuperBuilder
-@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
-@JsonSubTypes({@JsonSubTypes.Type(value = Agent.class, name = "Agent"),
-    @JsonSubTypes.Type(value = Agent.class, name = "Person")})
 public class Agent extends Actor {
 
-  private ObjectType objectType;
+  @Setter(AccessLevel.PACKAGE)
+  private ObjectType objectType = null;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 

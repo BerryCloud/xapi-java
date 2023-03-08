@@ -243,6 +243,26 @@ public class Statement {
 
       return object(builder.build());
     }
+    
+    /**
+     * Sets the object.
+     *
+     * @param object The object of the statement
+     *
+     * @return This builder
+     *
+     * @see Statement#object
+     */
+    public Builder object(StatementObject object) {
+
+      if (object instanceof Agent agent) {
+        agent.setObjectType(ObjectType.AGENT);
+      }
+      
+      this.object = object;
+
+      return this;
+    }
 
     /**
      * Consumer Builder for context.

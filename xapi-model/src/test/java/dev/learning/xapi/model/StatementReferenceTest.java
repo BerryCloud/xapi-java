@@ -91,7 +91,7 @@ class StatementReferenceTest {
 
     // Then Result Is Expected
     assertThat(result,
-        is("StatementReference(objectType=null, id=099bbde8-780e-483f-8181-128393db0f53)"));
+        is("StatementReference(objectType=STATEMENTREF, id=099bbde8-780e-483f-8181-128393db0f53)"));
 
   }
 

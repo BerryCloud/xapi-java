@@ -32,7 +32,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "name")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", visible = false,
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType",
     defaultImpl = Agent.class, include = As.EXISTING_PROPERTY)
 @JsonSubTypes({@JsonSubTypes.Type(value = Agent.class, name = "Agent"),
     @JsonSubTypes.Type(value = Agent.class, name = "Person"),

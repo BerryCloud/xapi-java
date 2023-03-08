@@ -323,6 +323,34 @@ class StatementTests {
   }
 
   @Test
+  void whenSerializingStatementWithAgentAsObjectThenResultIsEqualToExpectedJson() throws IOException {
+
+    final Statement statement = Statement.builder()
+        
+        .actor(a -> a.name("actor"))
+        
+        .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#tagged"))
+            .addDisplay(Locale.US, "tagged"))
+        
+        .object(Agent.builder()
+            
+            .name("target")
+            
+            .build())
+
+        .build();
+
+    // When Serializing Statement
+    final Statement result = objectMapper.readValue(objectMapper.writeValueAsString(statement), Statement.class);
+
+    // Then Result Is Equal To Expected Json
+    assertThat(result,
+        is(objectMapper.readValue(
+            ResourceUtils.getFile("classpath:statement/statement_with_agent_as_object.json"), Statement.class)));
+
+  }
+  
+  @Test
   void givenStatementWithPassedVerbWhenCallingToBuilderAndSettingVerbToCompletedThenResultVerbIsCompleted() {
 
     // Given Statement With Passed Verb
