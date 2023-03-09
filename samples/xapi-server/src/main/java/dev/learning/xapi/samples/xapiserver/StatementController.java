@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * StatementsController.
- * Basic implementation of xAPI statements PUT and POST endpoint.
- * </p>
+ * Basic implementation of xAPI statements PUT and POST resources.
  *
- * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI resources</a>
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
+ *      resources</a>
+ * 
  * @author István Rátkai (Selindek)
  */
 @Validated
@@ -37,25 +37,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatementController {
 
   Logger log = LoggerFactory.getLogger(StatementController.class);
-  
+
   @Autowired
   private StatementService statementService;
 
   /**
-   * <p>
    * Put Statement.
-   * </p>
    *
-   * @param statementId the {@link UUID} of the statement.
-   * @param statement   the body of the statement.
-   * @return a {@link org.springframework.http.ResponseEntity} object.
-   * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#211-put-statements">xAPI put statements endpoint</a>
+   * @param statementId the statementId of the statement
+   * @param statement The statement to process
+   * 
+   * @return the ResponseEntity
+   * 
+   * @see <a href=
+   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#211-put-statements">PUT
+   *      statements</a>
    */
-  @PutMapping(params = { "statementId" }, consumes = { "application/json" })
+  @PutMapping(params = {"statementId"}, consumes = {"application/json"})
   public ResponseEntity<Void> putStatement(@RequestParam(required = true) UUID statementId,
-      @Valid @RequestBody Statement statement)  {
+      @Valid @RequestBody Statement statement) {
 
-    log.debug("PUT statement: {} Statement ID: {}", statement, statementId);
+    log.debug("PUT statement");
 
     statementService.processStatement(statementId, statement);
 
@@ -63,23 +65,23 @@ public class StatementController {
   }
 
   /**
-   * <p>
    * Post Statements.
-   * </p>
    *
-   * @param statements an array of {@link io.launchlearning.xapi.model.Statement} objects.
-   * @return a {@link org.springframework.http.ResponseEntity} object.
-   * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">xAPI post statements endpoint</a>
+   * @param statements The statements to process.
+   * 
+   * @return the ResponseEntity
+   * 
+   * @see <a href=
+   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
+   *      statements</a>
    */
-  @PostMapping(consumes = { "application/json" })
-  public ResponseEntity<Collection<UUID>> 
-      postStatements(@Valid @RequestBody List<Statement> statements) {
+  @PostMapping(consumes = {"application/json"})
+  public ResponseEntity<Collection<UUID>> postStatements(
+      @Valid @RequestBody List<Statement> statements) {
 
     log.debug("POST statements");
 
-    statements.forEach(s -> statementService.processStatement(s.getId(), s));
-
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(statementService.processStatements(statements), HttpStatus.OK);
   }
 
 }

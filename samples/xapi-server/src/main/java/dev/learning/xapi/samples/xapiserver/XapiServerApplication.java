@@ -29,13 +29,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class XapiServerApplication {
 
-  /**
-   * <p>
-   * main.
-   * </p>
-   *
-   * @param args an array of {@link java.lang.String} objects.
-   */
   public static void main(String[] args) {
     SpringApplication.run(XapiServerApplication.class, args);
   }
