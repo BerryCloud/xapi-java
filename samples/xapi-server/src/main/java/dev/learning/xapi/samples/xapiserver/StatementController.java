@@ -4,11 +4,11 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
+import dev.learning.xapi.model.Statement;
 import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +22,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.learning.xapi.model.Statement;
-
 /**
  * <p>
  * StatementsController.
  * Basic implementation of xAPI statements PUT and POST endpoint.
- * </p>   
+ * </p>
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI resources</a>
  * @author István Rátkai (Selindek)
  */
 @Validated
 @RestController
-@RequestMapping(value = "/xapi/statements" )
+@RequestMapping(value = "/xapi/statements")
 public class StatementController {
 
   Logger log = LoggerFactory.getLogger(StatementController.class);
@@ -73,11 +72,12 @@ public class StatementController {
    * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">xAPI post statements endpoint</a>
    */
   @PostMapping(consumes = { "application/json" })
-  public ResponseEntity<Collection<UUID>> postStatements(@Valid @RequestBody List<Statement> statements) {
+  public ResponseEntity<Collection<UUID>> 
+      postStatements(@Valid @RequestBody List<Statement> statements) {
 
     log.debug("POST statements");
 
-    statements.forEach(statement -> statementService.processStatement(statement.getId(), statement));
+    statements.forEach(s -> statementService.processStatement(s.getId(), s));
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
