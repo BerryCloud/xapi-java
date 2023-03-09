@@ -6,9 +6,9 @@
     <artifactId>xapi-samples-build</artifactId>
     <version>1.0.8-SNAPSHOT</version>
   </parent>
-  <artifactId>get-statement</artifactId>
-  <name>Get xAPI Statement Sample</name>
-  <description>Get xAPI Statement</description>
+  <artifactId>xapi-server</artifactId>
+  <name>xAPI Server Sample</name>
+  <description>Basic xAPI Statement Resource implementation</description>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
