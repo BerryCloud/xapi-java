@@ -65,6 +65,8 @@
     <module>get-activity-profiles</module>
     <!-- About Resource -->
     <module>get-about</module>
+    <!-- Using xapi-model in server sider -->
+    <module>xapi-server</module>
   </modules>
   <build>
     <plugins>
