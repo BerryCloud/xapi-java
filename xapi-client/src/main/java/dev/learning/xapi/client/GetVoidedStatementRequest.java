@@ -50,7 +50,6 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
      *
      * @param voidedId The voidedId of the GetVoidedStatementRequest.
      * @return This builder
-     * @see GetVoidedStatementRequest#voidedId
      */
     public Builder<C, B> voidedId(UUID voidedId) {
       id(voidedId);
@@ -62,7 +61,6 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
      *
      * @param voidedId The voidedId of the GetVoidedStatementRequest.
      * @return This builder
-     * @see GetVoidedStatementRequest#voidedId
      */
     public Builder<C, B> voidedId(String voidedId) {
       id(voidedId);
