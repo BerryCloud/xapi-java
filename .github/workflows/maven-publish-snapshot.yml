@@ -28,3 +28,5 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+      - name: Generate Javadoc
+        run: mvn -B javadoc:javadoc --file pom.xml # This checks that the Javadoc is vaild
