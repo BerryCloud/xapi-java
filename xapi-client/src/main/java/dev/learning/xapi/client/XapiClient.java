@@ -42,7 +42,7 @@ public class XapiClient {
       List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
       };
   
-/**
+  /**
    * Default constructor for XapiClient.
    *
    * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
@@ -1230,8 +1230,9 @@ public class XapiClient {
    * @param request The parameters of the get activity profiles request
    *
    * @return the ResponseEntity
-   */
-  public Mono<ResponseEntity<List<String>>> getActivityProfiles(GetActivityProfilesRequest request) {
+   */ 
+  public Mono<ResponseEntity<List<String>>> getActivityProfiles(
+      GetActivityProfilesRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
