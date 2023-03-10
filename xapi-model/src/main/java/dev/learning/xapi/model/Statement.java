@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 /**
  * This class represents the xAPI Statement object.
@@ -28,6 +29,7 @@ import lombok.Value;
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-properties">xAPI
  *      Statement</a>
  */
+@With
 @Value
 @Builder(toBuilder = true)
 @JsonIgnoreProperties("inProgress")
