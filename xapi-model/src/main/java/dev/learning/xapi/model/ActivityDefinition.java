@@ -170,7 +170,7 @@ public class ActivityDefinition {
     public Builder addChoice(InteractionComponent interactionComponent) {
 
       if (choices == null) {
-        choices = new ArrayList<InteractionComponent>();
+        choices = new ArrayList<>();
       }
       choices.add(interactionComponent);
       return this;

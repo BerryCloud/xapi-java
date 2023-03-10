@@ -76,7 +76,7 @@ public class Group extends Actor {
     public Builder<C, B> addMember(Agent agent) {
 
       if (member == null) {
-        member = new ArrayList<Agent>();
+        member = new ArrayList<>();
       }
 
       member.add(agent);

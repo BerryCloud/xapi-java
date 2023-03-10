@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -92,7 +91,7 @@ public class StatementResult {
     public Builder addStatement(Statement statement) {
 
       if (statements == null) {
-        statements = new ArrayList<Statement>();
+        statements = new ArrayList<>();
       }
 
       statements.add(statement);

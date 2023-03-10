@@ -95,7 +95,7 @@ public class ContextActivities {
     public Builder addParent(Activity activity) {
 
       if (parent == null) {
-        parent = new ArrayList<Activity>();
+        parent = new ArrayList<>();
       }
       
       parent.add(activity);
@@ -134,7 +134,7 @@ public class ContextActivities {
     public Builder addGrouping(Activity activity) {
 
       if (grouping == null) {
-        grouping = new ArrayList<Activity>();
+        grouping = new ArrayList<>();
       }
 
       grouping.add(activity);
@@ -173,7 +173,7 @@ public class ContextActivities {
     public Builder addCategory(Activity activity) {
 
       if (category == null) {
-        category = new ArrayList<Activity>();
+        category = new ArrayList<>();
       }
 
       category.add(activity);
@@ -212,7 +212,7 @@ public class ContextActivities {
     public Builder addOther(Activity activity) {
 
       if (other == null) {
-        other = new ArrayList<Activity>();
+        other = new ArrayList<>();
       }
 
       other.add(activity);
