@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Set;
@@ -197,7 +198,7 @@ class StatementTests {
     final Statement result = objectMapper.readValue(file, Statement.class);
 
     // Then Attachments Is Instance Of Attachment
-    assertThat(result.getAttachments()[0], instanceOf(Attachment.class));
+    assertThat(result.getAttachments().get(0), instanceOf(Attachment.class));
 
   }
 
@@ -306,7 +307,7 @@ class StatementTests {
 
                 .extensions(extensions)))
 
-        .attachments(new Attachment[] {attachment})
+        .attachments(Collections.singletonList(attachment))
 
         .version("1.0.0")
 

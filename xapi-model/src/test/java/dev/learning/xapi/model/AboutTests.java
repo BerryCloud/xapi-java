@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +53,7 @@ class AboutTests {
     final About result = objectMapper.readValue(file, About.class);
 
     // Then Version Is Expected
-    assertThat(result.getVersion(), is(new String[] {"1.0"}));
+    assertThat(result.getVersion(), is(Collections.singletonList("1.0")));
 
   }
 
@@ -65,7 +67,7 @@ class AboutTests {
     final About result = objectMapper.readValue(file, About.class);
 
     // Then Multiple Versions Are Expected
-    assertThat(result.getVersion(), is(new String[] {"1.0", "1.0.1"}));
+    assertThat(result.getVersion(), is(Arrays.asList("1.0", "1.0.1")));
 
   }
 
@@ -92,7 +94,7 @@ class AboutTests {
     final About result = objectMapper.readValue(file, About.class);
 
     // Then Version Is Expected
-    assertThat(result.getVersion(), is(new String[] {"1.0"}));
+    assertThat(result.getVersion(), is(Collections.singletonList("1.0")));
   }
 
   @Test
@@ -100,7 +102,7 @@ class AboutTests {
 
     final About about = About.builder()
 
-        .version(new String[] {"1.0"})
+        .version(Collections.singletonList("1.0"))
 
         .build();
 
@@ -121,7 +123,7 @@ class AboutTests {
 
     final About about = About.builder()
 
-        .version(new String[] {"1.0"})
+        .version(Collections.singletonList("1.0"))
 
         .extensions(extensions)
 
@@ -144,7 +146,7 @@ class AboutTests {
 
     final About about = About.builder()
 
-        .version(new String[] {"1.0"})
+        .version(Collections.singletonList("1.0"))
 
         .extensions(extensions)
 

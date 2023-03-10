@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.UUID;
@@ -133,7 +134,7 @@ class SubStatementTests {
     final SubStatement result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Attachments Is Instance Of Attachment
-    assertThat(result.getAttachments()[0], instanceOf(Attachment.class));
+    assertThat(result.getAttachments().get(0), instanceOf(Attachment.class));
 
   }
 
@@ -260,13 +261,13 @@ class SubStatementTests {
 
     final ContextActivities contextActivities = ContextActivities.builder()
 
-        .parent(new Activity[] {activity})
+        .parent(Collections.singletonList(activity))
 
-        .grouping(new Activity[] {activity})
+        .grouping(Collections.singletonList(activity))
 
-        .category(new Activity[] {activity})
+        .category(Collections.singletonList(activity))
 
-        .other(new Activity[] {activity}).build();
+        .other(Collections.singletonList(activity)).build();
 
     final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
     extensions.put(URI.create("http://url"), "www.example.com");
@@ -323,7 +324,7 @@ class SubStatementTests {
 
         .context(context)
 
-        .attachments(new Attachment[] {attachment})
+        .attachments(Collections.singletonList(attachment))
 
         .build();
 

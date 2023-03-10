@@ -15,6 +15,8 @@ import dev.learning.xapi.model.StatementFormat;
 import dev.learning.xapi.model.Verb;
 import java.net.URI;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import lombok.Getter;
@@ -164,7 +166,7 @@ class XapiClientTests {
 
     final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
-    final Statement statements[] = { attemptedStatement, passedStatement };
+    final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
     // When posting Statements
     client.postStatements(r -> r.statements(statements)).block();
@@ -193,7 +195,7 @@ class XapiClientTests {
 
     final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
-    final Statement statements[] = { attemptedStatement, passedStatement };
+    final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
     // When Posting Statements
     client.postStatements(r -> r.statements(statements)).block();
@@ -223,7 +225,7 @@ class XapiClientTests {
 
     final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
-    final Statement statements[] = { attemptedStatement, passedStatement };
+    final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
     // When Posting Statements
     client.postStatements(r -> r.statements(statements)).block();
@@ -255,14 +257,14 @@ class XapiClientTests {
 
     final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
-    final Statement statements[] = { attemptedStatement, passedStatement };
+    final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
     // When Posting Statements
     final ResponseEntity<
-        UUID[]> response = client.postStatements(r -> r.statements(statements)).block();
+        List<UUID>> response = client.postStatements(r -> r.statements(statements)).block();
 
     // Then Response Body Is Instance Of UUID Array
-    assertThat(response.getBody(), instanceOf(UUID[].class));
+    assertThat(response.getBody(), instanceOf(List.class));
   }
 
   // Posting a Statement
@@ -1178,7 +1180,7 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Multiple States
-    final ResponseEntity<String[]> response = client
+    final ResponseEntity<List<String>> response = client
         .getStates(r -> r.activityId("https://example.com/activity/1")
 
             .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
@@ -1188,7 +1190,7 @@ class XapiClientTests {
         .block();
 
     // Then Body Is Instance Of String Array
-    assertThat(response.getBody(), instanceOf(String[].class));
+    assertThat(response.getBody(), instanceOf(List.class));
   }
 
   @Test
@@ -1201,7 +1203,7 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Multiple States
-    final ResponseEntity<String[]> response = client
+    final ResponseEntity<List<String>> response = client
         .getStates(r -> r.activityId("https://example.com/activity/1")
 
             .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
@@ -1211,7 +1213,7 @@ class XapiClientTests {
         .block();
 
     // Then Body Is Expected
-    assertThat(response.getBody(), is(new String[] { "State1", "State2", "State3" }));
+    assertThat(response.getBody(), is(Arrays.asList( "State1", "State2", "State3" )));
   }
 
   // Deleting Multiple States

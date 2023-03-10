@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -94,7 +95,7 @@ public class Statement {
    * Headers for Attachments to the Statement.
    */
   @JsonFormat(without = {JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY})
-  private Attachment[] attachments;
+  private List<Attachment> attachments;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 

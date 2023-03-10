@@ -10,9 +10,11 @@ import dev.learning.xapi.model.Person;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -32,6 +34,14 @@ public class XapiClient {
 
   private final WebClient webClient;
 
+  private static final ParameterizedTypeReference<
+      List<UUID>> LIST_UUID_TYPE = new ParameterizedTypeReference<>() {
+      };
+
+  private static final ParameterizedTypeReference<
+      List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
+      };
+  
   /**
    * Default constructor for XapiClient.
    *
@@ -116,9 +126,9 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(UUID[].class)
+        .toEntity(LIST_UUID_TYPE)
 
-        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody()[0]));
+        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody().get(0)));
 
   }
 
@@ -151,7 +161,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<UUID[]>> postStatements(PostStatementsRequest request) {
+  public Mono<ResponseEntity<List<UUID>>> postStatements(PostStatementsRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -165,7 +175,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(UUID[].class);
+        .toEntity(LIST_UUID_TYPE);
 
   }
 
@@ -179,7 +189,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<UUID[]>> postStatements(
+  public Mono<ResponseEntity<List<UUID>>> postStatements(
       Consumer<PostStatementsRequest.Builder> request) {
 
     final PostStatementsRequest.Builder builder = PostStatementsRequest.builder();
@@ -572,7 +582,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> getStates(GetStatesRequest request) {
+  public Mono<ResponseEntity<List<String>>> getStates(GetStatesRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -584,7 +594,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(String[].class);
+        .toEntity(LIST_STRING_TYPE);
 
   }
 
@@ -600,7 +610,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> getStates(
+  public Mono<ResponseEntity<List<String>>> getStates(
       Consumer<GetStatesRequest.Builder<?, ?>> request) {
 
     final GetStatesRequest.Builder<?, ?> builder = GetStatesRequest.builder();
@@ -964,7 +974,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> getAgentProfiles(GetAgentProfilesRequest request) {
+  public Mono<ResponseEntity<List<String>>> getAgentProfiles(GetAgentProfilesRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -976,7 +986,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(String[].class);
+        .toEntity(LIST_STRING_TYPE);
 
   }
 
@@ -989,7 +999,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> getAgentProfiles(
+  public Mono<ResponseEntity<List<String>>> getAgentProfiles(
       Consumer<GetAgentProfilesRequest.Builder> request) {
 
     final GetAgentProfilesRequest.Builder builder = GetAgentProfilesRequest.builder();
@@ -1220,8 +1230,9 @@ public class XapiClient {
    * @param request The parameters of the get activity profiles request
    *
    * @return the ResponseEntity
-   */
-  public Mono<ResponseEntity<String[]>> getActivityProfiles(GetActivityProfilesRequest request) {
+   */ 
+  public Mono<ResponseEntity<List<String>>> getActivityProfiles(
+      GetActivityProfilesRequest request) {
 
     Map<String, Object> queryParams = new HashMap<>();
 
@@ -1233,7 +1244,7 @@ public class XapiClient {
 
         .retrieve()
 
-        .toEntity(String[].class);
+        .toEntity(LIST_STRING_TYPE);
 
   }
 
@@ -1250,7 +1261,7 @@ public class XapiClient {
    *
    * @return the ResponseEntity
    */
-  public Mono<ResponseEntity<String[]>> getActivityProfiles(
+  public Mono<ResponseEntity<List<String>>> getActivityProfiles(
       Consumer<GetActivityProfilesRequest.Builder> request) {
 
     final GetActivityProfilesRequest.Builder builder = GetActivityProfilesRequest.builder();

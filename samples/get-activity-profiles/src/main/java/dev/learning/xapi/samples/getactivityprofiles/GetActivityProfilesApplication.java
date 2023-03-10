@@ -7,7 +7,7 @@ package dev.learning.xapi.samples.getactivityprofiles;
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.samples.core.ExampleState;
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,13 +52,13 @@ public class GetActivityProfilesApplication implements CommandLineRunner {
     postActivityProfile();
 
     // Get Activity Profiles
-    ResponseEntity<String[]> response =
+    ResponseEntity<List<String>> response =
         client.getActivityProfiles(r -> r.activityId("https://example.com/activity/1"))
 
             .block();
 
     // Print the each returned activity profile id to the console
-    Arrays.asList(response.getBody()).forEach(id -> System.out.println(id));
+    response.getBody().stream().forEach(id -> System.out.println(id));
   }
 
   private void postActivityProfile() {

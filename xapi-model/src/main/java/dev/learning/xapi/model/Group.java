@@ -7,7 +7,6 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,7 @@ public class Group extends Actor {
    */
   @Valid
   @JsonFormat(without = {JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY})
-  private final Agent[] member;
+  private final List<Agent> member;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
@@ -77,14 +76,10 @@ public class Group extends Actor {
     public Builder<C, B> addMember(Agent agent) {
 
       if (member == null) {
-        member = new Agent[] {agent};
-
-        return self();
+        member = new ArrayList<>();
       }
 
-      final List<Agent> list = new ArrayList<>(Arrays.asList(member));
-      list.add(agent);
-      member = list.toArray(member);
+      member.add(agent);
 
       return self();
 

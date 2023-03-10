@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -49,7 +51,7 @@ class PersonTests {
     final Person result = objectMapper.readValue(file, Person.class);
 
     // Then Name Is Expected
-    assertThat(result.getName(), is(new String[] {"Normal Person"}));
+    assertThat(result.getName(), is(Collections.singletonList("Normal Person")));
 
   }
 
@@ -62,7 +64,7 @@ class PersonTests {
     final Person result = objectMapper.readValue(file, Person.class);
 
     // Then Mbox Is Expected
-    assertThat(result.getMbox(), is(new String[] {"normal.person@normal.mail"}));
+    assertThat(result.getMbox(), is(Collections.singletonList("normal.person@normal.mail")));
 
   }
 
@@ -75,7 +77,7 @@ class PersonTests {
     final Person result = objectMapper.readValue(file, Person.class);
 
     // Then ShaSum Is Expected
-    assertThat(result.getMboxSha1sum(), is(new String[] {"123"}));
+    assertThat(result.getMboxSha1sum(), is(Collections.singletonList("123")));
 
   }
 
@@ -88,7 +90,7 @@ class PersonTests {
     final Person result = objectMapper.readValue(file, Person.class);
 
     // Then Openid Is Expected
-    assertThat(result.getOpenid(), is(new URI[] {URI.create("https://example.com")}));
+    assertThat(result.getOpenid(), is(Collections.singletonList(URI.create("https://example.com"))));
 
   }
 
@@ -101,7 +103,7 @@ class PersonTests {
     final Person result = objectMapper.readValue(file, Person.class);
 
     // Then Account Is Instance Of Account
-    assertThat(result.getAccount()[0], instanceOf(Account.class));
+    assertThat(result.getAccount().get(0), instanceOf(Account.class));
 
   }
 
@@ -110,13 +112,13 @@ class PersonTests {
 
     final Person person = Person.builder()
 
-        .name(new String[] {"Normal Person"})
+        .name(Collections.singletonList("Normal Person"))
 
-        .mbox(new String[] {"normal.person@normal.mail"})
+        .mbox(Collections.singletonList("normal.person@normal.mail"))
 
-        .mboxSha1sum(new String[] {"123"})
+        .mboxSha1sum(Collections.singletonList("123"))
 
-        .openid(new URI[] {URI.create("https://example.com")})
+        .openid(Collections.singletonList(URI.create("https://example.com")))
 
         .addAccount(a -> a.name("example1").homePage(URI.create("https://example.com")))
 

@@ -7,7 +7,7 @@ package dev.learning.xapi.samples.getstates;
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.samples.core.ExampleState;
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -53,7 +53,7 @@ public class GetStatesApplication implements CommandLineRunner {
     postState();
 
     // Get States
-    ResponseEntity<String[]> response = client
+    ResponseEntity<List<String>> response = client
         .getStates(r -> r.activityId("https://example.com/activity/1")
 
             .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
@@ -63,7 +63,7 @@ public class GetStatesApplication implements CommandLineRunner {
         .block();
 
     // Print the each returned state id to the console
-    Arrays.asList(response.getBody()).forEach(id -> System.out.println(id));
+    response.getBody().stream().forEach(id -> System.out.println(id));
 
   }
 
