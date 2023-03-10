@@ -13,6 +13,8 @@ import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
 import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
 import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
 import dev.learning.xapi.model.validation.constraints.Variant;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -144,7 +147,7 @@ public class Statement implements CoreStatement {
      *      Signed Statements</a>
      */
     public Statement sign(PrivateKey privateKey) {
-      var claims = new HashMap<String, Object>();
+      Map<String, Object> claims = new HashMap<String, Object>();
 
       // Put only the significant properties into the signature payload
       // https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-comparision-requirements
