@@ -5,6 +5,7 @@
 package dev.learning.xapi.client;
 
 import dev.learning.xapi.model.Statement;
+import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,7 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 public class PostStatementsRequest implements Request {
 
-  private final Statement[] statements;
+  private final List<Statement> statements;
 
   @Override
   public HttpMethod getMethod() {
@@ -54,7 +55,7 @@ public class PostStatementsRequest implements Request {
      *
      * @see PostStatementsRequest#statements
      */
-    public Builder statements(Statement... statements) {
+    public Builder statements(List<Statement> statements) {
       this.statements = statements;
       return this;
     }
