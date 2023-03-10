@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -39,29 +38,29 @@ public class Person {
   /**
    * List of names.
    */
-  private String[] name;
+  private List<String> name;
 
   /**
    * List of e-mail addresses.
    */
-  private String[] mbox;
+  private List<String> mbox;
 
   /**
    * List of the SHA1 hashes of mailto IRIs.
    */
   @JsonProperty("mbox_sha1sum")
-  private String[] mboxSha1sum;
+  private List<String> mboxSha1sum;
 
   /**
    * List of openids that uniquely identify the Agents retrieved.
    */
-  private URI[] openid;
+  private List<URI> openid;
 
   /**
    * List of accounts.
    */
   @Valid
-  private Account[] account;
+  private List<Account> account;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
@@ -101,14 +100,10 @@ public class Person {
      */
     public Builder addAccount(Account account) {
       if (this.account == null) {
-        this.account = new Account[] {account};
-
-        return this;
+        this.account = new ArrayList<Account>();
       }
 
-      final List<Account> list = new ArrayList<>(Arrays.asList(this.account));
-      list.add(account);
-      this.account = list.toArray(this.account);
+      this.account.add(account);
 
       return this;
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.net.URI;
 import java.util.LinkedHashMap;
+import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 
@@ -26,7 +27,7 @@ import lombok.Value;
 @JsonInclude(Include.NON_EMPTY)
 public class About {
 
-  private String[] version;
+  private List<String> version;
 
   private LinkedHashMap<URI, Object> extensions;
 

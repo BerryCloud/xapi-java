@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -67,7 +68,7 @@ public class SubStatement implements StatementObject {
    * Headers for Attachments to the Statement.
    */
   @Valid
-  private Attachment[] attachments;
+  private List<Attachment> attachments;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 

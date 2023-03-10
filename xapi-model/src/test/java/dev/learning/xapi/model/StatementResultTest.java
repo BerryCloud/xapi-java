@@ -5,7 +5,7 @@
 package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -52,7 +52,7 @@ class StatementResultTest {
     final StatementResult result = objectMapper.readValue(file, StatementResult.class);
 
     // Then Statements Is Instance Of Statement
-    assertThat(result.getStatements()[0], instanceOf(Statement.class));
+    assertThat(result.getStatements().get(0), instanceOf(Statement.class));
 
   }
 
@@ -128,7 +128,7 @@ class StatementResultTest {
         .build();
 
     // Then Statments Is Array With Size Two
-    assertThat(statementResult.getStatements(), arrayWithSize(2));
+    assertThat(statementResult.getStatements(), hasSize(2));
 
   }
 

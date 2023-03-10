@@ -5,7 +5,7 @@
 package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -51,7 +51,7 @@ class ContextActivitiesTests {
     final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Parent Is Instance Of Activity
-    assertThat(result.getParent()[0], instanceOf(Activity.class));
+    assertThat(result.getParent().get(0), instanceOf(Activity.class));
 
   }
 
@@ -64,7 +64,7 @@ class ContextActivitiesTests {
     final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Grouping Is Instance Of Activity
-    assertThat(result.getGrouping()[0], instanceOf(Activity.class));
+    assertThat(result.getGrouping().get(0), instanceOf(Activity.class));
 
   }
 
@@ -77,7 +77,7 @@ class ContextActivitiesTests {
     final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Category Is Instance Of Activity
-    assertThat(result.getCategory()[0], instanceOf(Activity.class));
+    assertThat(result.getCategory().get(0), instanceOf(Activity.class));
 
   }
 
@@ -90,7 +90,7 @@ class ContextActivitiesTests {
     final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Other Is Instance Of Activity
-    assertThat(result.getOther()[0], instanceOf(Activity.class));
+    assertThat(result.getOther().get(0), instanceOf(Activity.class));
 
   }
 
@@ -136,7 +136,7 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoParentsThenParentIsArrayWithSizeTwo()
+  void whenBuildingContextActivitiesWithTwoParentsThenParentIshasSizeTwo()
       throws IOException {
 
     // When Building ContextActivities With Two Parents
@@ -149,12 +149,12 @@ class ContextActivitiesTests {
         .build();
 
     // Then Parent Is Array With Size Two
-    assertThat(contextActivities.getParent(), arrayWithSize(2));
+    assertThat(contextActivities.getParent(), hasSize(2));
 
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIsArrayWithSizeTwo()
+  void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIshasSizeTwo()
       throws IOException {
 
     // When Building ContextActivities With Two Groupings
@@ -167,12 +167,12 @@ class ContextActivitiesTests {
         .build();
 
     // Then Grouping Is Array With Size Two
-    assertThat(contextActivities.getGrouping(), arrayWithSize(2));
+    assertThat(contextActivities.getGrouping(), hasSize(2));
 
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoOtherThenOtherIsArrayWithSizeTwo() throws IOException {
+  void whenBuildingContextActivitiesWithTwoOtherThenOtherIshasSizeTwo() throws IOException {
 
     // When Building ContextActivities With Two Others
     final ContextActivities contextActivities = ContextActivities.builder()
@@ -184,12 +184,12 @@ class ContextActivitiesTests {
         .build();
 
     // Then Other Is Array With Size Two
-    assertThat(contextActivities.getOther(), arrayWithSize(2));
+    assertThat(contextActivities.getOther(), hasSize(2));
 
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIsArrayWithSizeTwo()
+  void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIshasSizeTwo()
       throws IOException {
 
     // When Building ContextActivities With Two Categories
@@ -202,12 +202,12 @@ class ContextActivitiesTests {
         .build();
 
     // Then Category Is Array With Size Two
-    assertThat(contextActivities.getCategory(), arrayWithSize(2));
+    assertThat(contextActivities.getCategory(), hasSize(2));
 
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoParentsWithSameIdThenParentIsArrayWithSizeTwo()
+  void whenBuildingContextActivitiesWithTwoParentsWithSameIdThenParentIshasSizeTwo()
       throws IOException {
 
     // When Building ContextActivities With Two Parents With Same Id
@@ -220,7 +220,7 @@ class ContextActivitiesTests {
         .build();
 
     // Then Parent Is Array With Size Two
-    assertThat(contextActivities.getParent(), arrayWithSize(2));
+    assertThat(contextActivities.getParent(), hasSize(2));
 
   }
 
