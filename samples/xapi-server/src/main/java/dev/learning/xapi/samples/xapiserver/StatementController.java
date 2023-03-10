@@ -77,7 +77,7 @@ public class StatementController {
    */
   @PostMapping(consumes = {"application/json"})
   public ResponseEntity<Collection<UUID>> postStatements(
-      @Valid @RequestBody List<Statement> statements) {
+      @RequestBody List<@Valid Statement> statements) {
 
     log.debug("POST statements");
 
