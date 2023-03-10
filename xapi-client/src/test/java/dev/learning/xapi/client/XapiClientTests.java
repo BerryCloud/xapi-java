@@ -1213,7 +1213,7 @@ class XapiClientTests {
         .block();
 
     // Then Body Is Expected
-    assertThat(response.getBody(), is(Arrays.asList( "State1", "State2", "State3" )));
+    assertThat(response.getBody(), is(Arrays.asList("State1", "State2", "State3")));
   }
 
   // Deleting Multiple States

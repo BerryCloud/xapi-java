@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.net.URI;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.Value;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * This class represents the xAPI Attachment object.
@@ -72,6 +74,15 @@ public class Attachment {
   // **Warning** do not add fields that are not required by the xAPI specification.
 
   /**
+   * The data of the attachment.
+   * <p>
+   * This is the actual String representation of the attachment as it appears in the http message.
+   * </p>
+   */
+  @JsonIgnore
+  private String data;
+  
+  /**
    * Builder for Attachment.
    */
   public static class Builder {
@@ -117,6 +128,52 @@ public class Attachment {
       return this;
 
     }
+    
+    /**
+     * <p>
+     * Sets SHA-2 hash of the Attachment.
+     * </p>
+     * <p>
+     * The sha2 is set ONLY if the data property was not set yet. 
+     * (otherwise the sha2 is calculated automatically)
+     * </p>
+     *
+     * @param sha2  The SHA-2 hash of the Attachment data.
+     *
+     * @return This builder
+     */
+    public Builder sha2(String sha2) {
+      if (this.data == null) {
+        this.sha2 = sha2;
+      }
+      
+      return this;
+
+    }
+    
+    /**
+     * <p>
+     * Sets data of the Attachment.
+     * </p>
+     * <p>
+     * This method also automatically calculates the SHA-2 hash for the data.
+     * </p>
+     *
+     * @param data The data of the Attachment as a String.
+     *
+     * @return This builder
+     */
+    public Builder data(String data) {
+      this.data = data;
+      if (data != null) {
+        this.sha2 = DigestUtils.sha256Hex(data);
+      } 
+      
+      return this;
+
+    }
+  
+
   }
 
 }

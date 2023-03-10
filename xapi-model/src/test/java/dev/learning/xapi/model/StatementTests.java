@@ -483,5 +483,109 @@ class StatementTests {
 
   }
 
+  @Test
+  void whenBuildingStatementWithTwoAttachmentsThenAttachmentsHasTwoEntries() {
+    
+    // When Building Statement With Two Attachments
+    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    extensions.put(URI.create("http://name"), "Kilby");
+
+    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+        .fileUrl(URI.create("http://example.com"))
+
+        .addDisplay(Locale.ENGLISH, "value")
+
+        .addDescription(Locale.ENGLISH, "value")
+
+        .length(123)
+
+        .sha2("123")
+
+        .contentType("file")
+
+        .build();
+
+    final Account account = Account.builder()
+
+        .homePage(URI.create("https://example.com"))
+
+        .name("13936749")
+
+        .build();
+
+
+    final Statement statement = Statement.builder()
+
+        .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
+
+        .actor(a -> a.name("A N Other"))
+
+        .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
+            .addDisplay(Locale.US, "attended"))
+
+        .result(r -> r.success(true).completion(true).response("Response").duration("P1D"))
+
+        .context(c -> c
+
+            .registration(UUID.fromString("ec531277-b57b-4c15-8d91-d292c5b2b8f7"))
+
+            .agentInstructor(a -> a.name("A N Other").account(account))
+
+            .team(t -> t.name("Team").mbox("mailto:team@example.com"))
+
+            .platform("Example virtual meeting software")
+
+            .language(Locale.ENGLISH)
+
+            .statementReference(s -> s.id(UUID.fromString("6690e6c9-3ef0-4ed3-8b37-7f3964730bee")))
+
+        )
+
+        .timestamp(Instant.parse("2013-05-18T05:32:34.804+00:00"))
+
+        .stored(Instant.parse("2013-05-18T05:32:34.804+00:00"))
+
+        .agentAuthority(a -> a.account(account))
+
+        .activityObject(a -> a.id("http://www.example.com/meetings/occurances/34534")
+
+            .definition(d -> d.addName(Locale.UK,
+                "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
+
+                .addDescription(Locale.UK,
+                    "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
+
+                .type(URI.create("http://adlnet.gov/expapi/activities/meeting"))
+
+                .moreInfo(URI.create("http://virtualmeeting.example.com/345256"))
+
+                .extensions(extensions)))
+
+        .addAttachment(attachment)
+
+        .addAttachment(a-> a.usageType(URI.create("http://example.com"))
+            
+            .fileUrl(URI.create("http://example.com/2"))
+
+            .addDisplay(Locale.ENGLISH, "value2")
+
+            .addDescription(Locale.ENGLISH, "value2")
+
+            .length(1234)
+
+            .sha2("1234")
+
+            .contentType("file")
+
+        )
+        
+        .version("1.0.0")
+
+        .build();
+    
+    // Then Attachments Has Two Entries
+    assertThat(statement.getAttachments(), hasSize(2));
+
+  }
 
 }

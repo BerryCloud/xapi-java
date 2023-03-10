@@ -37,11 +37,11 @@ class AttachmentTests {
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
-  void whenDeserializingActivityDefinitionThenResultIsInstanceOfAttachment() throws Exception {
+  void whenDeserializingAttachmentThenResultIsInstanceOfAttachment() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then Result Is Instance Of Attachment
@@ -50,11 +50,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenUsageTypeIsExpected() throws Exception {
+  void whenDeserializingAttachmentThenUsageTypeIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then UsageType Is Expected
@@ -64,11 +64,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenDisplayIsExpected() throws Exception {
+  void whenDeserializingAttachmentThenDisplayIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then Display Is Expected
@@ -77,11 +77,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenDescriptionIsExpected() throws Exception {
+  void whenDeserializingAttachmentThenDescriptionIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then Description Is Expected
@@ -90,11 +90,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenContentTypeIsExpected() throws Exception {
+  void whenDeserializingAttachmentThenContentTypeIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then ContentType Is Expected
@@ -103,11 +103,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenLengthIsExpected() throws Exception {
+  void whenDeserializingAttachmentThenLengthIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then Length Is Expected
@@ -116,11 +116,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenSha2IsExpected() throws Exception {
+  void whenDeserializingAttachmentThenSha2IsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then Sha2 Is Expected
@@ -130,11 +130,11 @@ class AttachmentTests {
   }
 
   @Test
-  void whenDeserializingActivityDefinitionThenFileUrlIsExpected() throws Exception {
+  void whenDeserializingAttachmentThenFileUrlIsExpected() throws Exception {
 
     final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
-    // When Deserializing ActivityDefinition
+    // When Deserializing Attachment
     final Attachment result = objectMapper.readValue(file, Attachment.class);
 
     // Then FileUrl Is Expected
@@ -184,7 +184,7 @@ class AttachmentTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Attachment(usageType=http://adlnet.gov/expapi/attachments/signature, display={en_US=Signature}, description={en_US=A test signature}, contentType=application/octet-stream, length=4235, sha2=672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634, fileUrl=https://example.com)"));
+        "Attachment(usageType=http://adlnet.gov/expapi/attachments/signature, display={en_US=Signature}, description={en_US=A test signature}, contentType=application/octet-stream, length=4235, sha2=672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634, fileUrl=https://example.com, data=null)"));
 
   }
 
@@ -192,6 +192,83 @@ class AttachmentTests {
    * Builder Tests
    */
 
+  @Test
+  void whenBuildingAttachmentWithDataThenDataIsSet() {
+
+    // When Building Attachment With Data
+    final Attachment attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+
+        .addDisplay(Locale.US, "Text")
+
+        .contentType("plain/text")
+
+        .length(4)
+
+        .data("text")
+        
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Data Is Set
+    assertThat(attachment.getData(), is("text"));
+
+  }
+  
+  @Test
+  void whenBuildingAttachmentWithDataThenSha2IsSet() {
+
+    // When Building Attachment With Data
+    final Attachment attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+
+        .addDisplay(Locale.US, "Text")
+
+        .contentType("plain/text")
+
+        .length(4)
+
+        .data("text")
+        
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Sha2 Is Set
+    assertThat(attachment.getSha2(), is("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1"));
+
+  }
+  
+  @Test
+  void whenBuildingAttachmentWithDataAndSha2ThenSha2IsTheCalculatedOne() {
+
+    // When Building Attachment With Data And Sha2
+    final Attachment attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+
+        .addDisplay(Locale.US, "Text")
+
+        .contentType("plain/text")
+
+        .length(4)
+
+        .data("text")
+        
+        .sha2("000000000000000000000000000000000000000000000")
+        
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Sha2 Is Set Is The Calculated One
+    assertThat(attachment.getSha2(), is("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1"));
+
+  }
+  
   @Test
   void whenBuildingAttachmentWithTwoDisplayValuesThenDisplayLanguageMapHasTwoEntries() {
 
