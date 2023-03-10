@@ -40,7 +40,15 @@ public class XapiClient {
   private static final ParameterizedTypeReference<List<String>> LIST_STRING_TYPE =
       new ParameterizedTypeReference<>() {};
 
-  /**
+  private static final ParameterizedTypeReference<
+      List<UUID>> LIST_UUID_TYPE = new ParameterizedTypeReference<>() {
+      };
+
+  private static final ParameterizedTypeReference<
+      List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
+      };
+  
+/**
    * Default constructor for XapiClient.
    *
    * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
