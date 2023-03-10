@@ -61,7 +61,7 @@ public class StatementController {
 
     statementService.processStatement(statementId, statement);
 
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   /**
