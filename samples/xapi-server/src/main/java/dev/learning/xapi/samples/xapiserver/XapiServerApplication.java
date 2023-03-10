@@ -9,19 +9,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * <p>
- * Sample of creating an xAPI server using the xAPI model.
+ * This sample demonstrates how the xAPI model can be used in applications that receive statements.
  * </p>
  * 
  * <p>
- * The xapi-model package can be used on server side too. 
- * Most commercial xAPI LRS implementations provide some kind of statement-forwarding feature. 
- * Using this feature you can easily implement custom functionalities which can be triggered 
- * when an xAPI statement is sent to the LRS. 
- * Eg. creating unique reports, storing the statement or some of its properties in our own 
- * database, sending email or text notifications, etc.
- * In certain cases you don't even need an LRS, you can redirect the statements directly to
- * your custom xAPI server. 
- * Eventually you can even build a fully functional LRS too.
+ * The xapi-model package can be used on server side too. Most commercial xAPI LRS implementations
+ * provide some kind of statement-forwarding feature. Using this feature you can easily implement
+ * custom functionalities which can be triggered when an xAPI statement is sent to the LRS. Eg.
+ * creating unique reports, storing the statement or some of its properties in our own database,
+ * sending email or text notifications, etc. In certain cases you don't even need an LRS, you can
+ * redirect the statements directly to your custom xAPI server. Eventually you can even build a
+ * fully functional LRS too.
  * </p>
  *
  * @author István Rátkai (Selindek)
