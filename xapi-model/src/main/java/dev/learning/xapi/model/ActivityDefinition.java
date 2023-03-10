@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,32 +59,32 @@ public class ActivityDefinition {
    * A pattern representing the correct response to the interaction. The structure of this pattern
    * varies depending on the interactionType.
    */
-  private String[] correctResponsesPattern;
+  private List<String> correctResponsesPattern;
 
   /**
    * A list of the options available in the interaction for selection or ordering.
    */
-  private InteractionComponent[] choices;
+  private List<InteractionComponent> choices;
 
   /**
    * A list of the options on the likert scale.
    */
-  private InteractionComponent[] scale;
+  private List<InteractionComponent> scale;
 
   /**
    * Lists of sources to be matched.
    */
-  private InteractionComponent[] source;
+  private List<InteractionComponent> source;
 
   /**
    * Lists of targets to be matched.
    */
-  private InteractionComponent[] target;
+  private List<InteractionComponent> target;
 
   /**
    * A list of the elements making up the performance interaction.
    */
-  private InteractionComponent[] steps;
+  private List<InteractionComponent> steps;
 
   /**
    * A map of other properties as needed.
@@ -171,15 +170,9 @@ public class ActivityDefinition {
     public Builder addChoice(InteractionComponent interactionComponent) {
 
       if (choices == null) {
-        choices = new InteractionComponent[] {interactionComponent};
-
-        return this;
+        choices = new ArrayList<InteractionComponent>();
       }
-
-      final List<InteractionComponent> list = new ArrayList<>(Arrays.asList(choices));
-      list.add(interactionComponent);
-      choices = list.toArray(choices);
-
+      choices.add(interactionComponent);
       return this;
 
     }

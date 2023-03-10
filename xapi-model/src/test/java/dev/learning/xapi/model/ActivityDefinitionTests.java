@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Locale;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,8 +85,8 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then CorrectResponsesPattern Is Expected
-    assertThat(result.getCorrectResponsesPattern(), is(new String[] {
-        "{case_matters=false}{lang=en}To store and provide access to learning experiences."}));
+    assertThat(result.getCorrectResponsesPattern(), is(Collections.singletonList(
+        "{case_matters=false}{lang=en}To store and provide access to learning experiences.")));
 
   }
 
@@ -172,7 +173,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Choices ID Is Expected
-    assertThat(result.getChoices()[0].getId(), is("1"));
+    assertThat(result.getChoices().get(0).getId(), is("1"));
 
   }
 
@@ -187,7 +188,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Choices Description Is Expected
-    assertThat(result.getChoices()[0].getDescription().get(Locale.ENGLISH),
+    assertThat(result.getChoices().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -202,7 +203,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Scale ID Is Expected
-    assertThat(result.getScale()[0].getId(), is("1"));
+    assertThat(result.getScale().get(0).getId(), is("1"));
 
   }
 
@@ -217,7 +218,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Scale Description Is Expected
-    assertThat(result.getScale()[0].getDescription().get(Locale.ENGLISH),
+    assertThat(result.getScale().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -232,7 +233,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Source ID Is Expected
-    assertThat(result.getSource()[0].getId(), is("1"));
+    assertThat(result.getSource().get(0).getId(), is("1"));
 
   }
 
@@ -247,7 +248,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Source Description Is Expected
-    assertThat(result.getSource()[0].getDescription().get(Locale.ENGLISH),
+    assertThat(result.getSource().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -262,7 +263,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Target ID Is Expected
-    assertThat(result.getTarget()[0].getId(), is("1"));
+    assertThat(result.getTarget().get(0).getId(), is("1"));
 
   }
 
@@ -277,7 +278,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Target Description Is Expected
-    assertThat(result.getTarget()[0].getDescription().get(Locale.ENGLISH),
+    assertThat(result.getTarget().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -292,7 +293,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Steps ID Is Expected
-    assertThat(result.getSteps()[0].getId(), is("1"));
+    assertThat(result.getSteps().get(0).getId(), is("1"));
 
   }
 
@@ -307,7 +308,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Steps Description Is Expected
-    assertThat(result.getSteps()[0].getDescription().get(Locale.ENGLISH),
+    assertThat(result.getSteps().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -324,7 +325,7 @@ class ActivityDefinitionTests {
 
         .interactionType(InteractionType.TRUE_FALSE)
 
-        .correctResponsesPattern(new String[] {"true"})
+        .correctResponsesPattern(Collections.singletonList("true"))
 
         .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
@@ -352,7 +353,7 @@ class ActivityDefinitionTests {
 
         .interactionType(InteractionType.CHOICE)
 
-        .correctResponsesPattern(new String[] {"golf[,]tetris"})
+        .correctResponsesPattern(Collections.singletonList("golf[,]tetris"))
 
         .addChoice(c -> c.id("golf").addDescription(Locale.ENGLISH, "Golf Example"))
 
@@ -405,7 +406,7 @@ class ActivityDefinitionTests {
 
         .interactionType(InteractionType.TRUE_FALSE)
 
-        .correctResponsesPattern(new String[] {"true"})
+        .correctResponsesPattern(Collections.singletonList("true"))
 
         .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
@@ -430,7 +431,7 @@ class ActivityDefinitionTests {
 
         .interactionType(InteractionType.TRUE_FALSE)
 
-        .correctResponsesPattern(new String[] {"true"})
+        .correctResponsesPattern(Collections.singletonList("true"))
 
         .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 

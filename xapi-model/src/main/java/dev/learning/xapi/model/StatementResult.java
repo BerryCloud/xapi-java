@@ -34,7 +34,7 @@ public class StatementResult {
    * List of Statements. Where no matching Statements are found, this property will contain an empty
    * array.
    */
-  private Statement[] statements;
+  private List<Statement> statements;
 
   /**
    * Relative IRL that can be used to fetch more results.
@@ -92,14 +92,10 @@ public class StatementResult {
     public Builder addStatement(Statement statement) {
 
       if (statements == null) {
-        statements = new Statement[] {statement};
-
-        return this;
+        statements = new ArrayList<Statement>();
       }
 
-      final List<Statement> list = new ArrayList<>(Arrays.asList(statements));
-      list.add(statement);
-      statements = list.toArray(statements);
+      statements.add(statement);
 
       return this;
 

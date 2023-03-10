@@ -64,7 +64,7 @@ class GroupTests {
     final Group result = objectMapper.readValue(file, Group.class);
 
     // Then Member Is Instance Of Agent
-    assertThat(result.getMember()[0], instanceOf(Agent.class));
+    assertThat(result.getMember().get(0), instanceOf(Agent.class));
   }
 
   @Test

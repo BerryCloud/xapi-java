@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -34,28 +33,28 @@ public class ContextActivities {
    */
   @Valid
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  private Activity[] parent;
+  private List<Activity> parent;
 
   /**
    * Activities with an indirect relation to the Activity which is the Object of the Statement.
    */
   @Valid
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  private Activity[] grouping;
+  private List<Activity> grouping;
 
   /**
    * Activities used to categorize the Statement.
    */
   @Valid
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  private Activity[] category;
+  private List<Activity> category;
 
   /**
    * Activities that do not fit one of the other properties.
    */
   @Valid
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  private Activity[] other;
+  private List<Activity> other;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
@@ -96,14 +95,10 @@ public class ContextActivities {
     public Builder addParent(Activity activity) {
 
       if (parent == null) {
-        parent = new Activity[] {activity};
-
-        return this;
+        parent = new ArrayList<Activity>();
       }
-
-      final List<Activity> list = new ArrayList<>(Arrays.asList(parent));
-      list.add(activity);
-      parent = list.toArray(parent);
+      
+      parent.add(activity);
 
       return this;
 
@@ -139,15 +134,11 @@ public class ContextActivities {
     public Builder addGrouping(Activity activity) {
 
       if (grouping == null) {
-        grouping = new Activity[] {activity};
-
-        return this;
+        grouping = new ArrayList<Activity>();
       }
 
-      final List<Activity> list = new ArrayList<>(Arrays.asList(grouping));
-      list.add(activity);
-      grouping = list.toArray(grouping);
-
+      grouping.add(activity);
+      
       return this;
 
     }
@@ -182,14 +173,10 @@ public class ContextActivities {
     public Builder addCategory(Activity activity) {
 
       if (category == null) {
-        category = new Activity[] {activity};
-
-        return this;
+        category = new ArrayList<Activity>();
       }
 
-      final List<Activity> list = new ArrayList<>(Arrays.asList(category));
-      list.add(activity);
-      category = list.toArray(category);
+      category.add(activity);
 
       return this;
 
@@ -225,14 +212,10 @@ public class ContextActivities {
     public Builder addOther(Activity activity) {
 
       if (other == null) {
-        other = new Activity[] {activity};
-
-        return this;
+        other = new ArrayList<Activity>();
       }
 
-      final List<Activity> list = new ArrayList<>(Arrays.asList(other));
-      list.add(activity);
-      other = list.toArray(other);
+      other.add(activity);
 
       return this;
 
