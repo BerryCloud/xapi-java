@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.Value;
 
 /**
@@ -87,6 +88,9 @@ public class Attachment {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
+  @JsonIgnore
+  private byte[] data;
+  
   /**
    * Builder for Attachment.
    */
