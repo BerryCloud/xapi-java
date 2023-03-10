@@ -48,7 +48,7 @@ public class XapiClient {
       List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
       };
   
-/**
+  /**
    * Default constructor for XapiClient.
    *
    * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
