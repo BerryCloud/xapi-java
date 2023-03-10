@@ -31,6 +31,7 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
+@ToString(exclude = "data")
 @EqualsAndHashCode(of = "sha2")
 public class Attachment {
 
