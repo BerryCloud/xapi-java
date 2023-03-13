@@ -16,6 +16,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 
 /**
  * Helper methods for creating multipart message from statements.
@@ -38,12 +39,62 @@ public final class MultipartHelper {
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   /**
-   * Gets {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
+   * <p>
+   * Add a Statement to the request.
+   * </p>
+   * This method adds the statement and its attachments if there are any to the request body. Also
+   * sets the content-type to multipart/mixed if needed.
+   *
+   * @param requestSpec a {@link RequestBodySpec} object.
+   * @param statement   a {@link Statement} to add.
+   */
+  public static void addBody(RequestBodySpec requestSpec, Statement statement) {
+
+    addBody(requestSpec, statement, getRealAttachments(statement));
+
+  }
+
+  /**
+   * <p>
+   * Adds a List of {@link Statement}s to the request.
+   * </p>
+   * This method adds the statements and their attachments if there are any to the request body.
+   * Also sets the content-type to multipart/mixed if needed.
+   *
+   * @param requestSpec a {@link RequestBodySpec} object.
+   * @param statement   list of {@link Statement}s to add.
+   */
+  public static void addBody(RequestBodySpec requestSpec, List<Statement> statements) {
+
+    addBody(requestSpec, statements,
+        statements.stream().flatMap(MultipartHelper::getRealAttachments));
+
+  }
+
+  public static void addBody(RequestBodySpec requestSpec, Object statements,
+      Stream<Attachment> attachments) {
+
+    final String attachmentsBody = writeAttachments(attachments);
+
+    if (attachmentsBody.isEmpty()) {
+      // add body directly, content-type is default application/json
+      requestSpec.bodyValue(statements);
+    } else {
+      // has at least one attachment with actual data -> set content-type
+      requestSpec.contentType(MULTIPART_MEDIATYPE);
+      // construct whole multipart body manually
+      requestSpec.bodyValue(createMultipartBody(statements, attachmentsBody));
+    }
+
+  }
+
+  /**
+   * Gets {@link Attachment}s of a {@link Statement} which has data property as a {@link Stream}.
    *
    * @param statement a {@link Statement} object
    * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
    */
-  public static Stream<Attachment> getRealAttachments(Statement statement) {
+  private static Stream<Attachment> getRealAttachments(Statement statement) {
 
     // handle the rare scenario when a sub-statement has an attachment
     Stream<Attachment> stream = statement.getObject() instanceof final SubStatement substatement
@@ -57,66 +108,8 @@ public final class MultipartHelper {
     return stream.filter(a -> a.getData() != null);
   }
 
-  /**
-   * Checks if a {@link Statement} has at least one attachment with data property.
-   *
-   * @param statement a {@link Statement} object
-   * @return whether the {@link Statement} has at least attachment with data property.
-   */
-  public static boolean hasRealAttachments(Statement statement) {
-
-    return getRealAttachments(statement).findAny().isPresent();
-  }
-
-  /**
-   * Checks if any {@link Statement}s in a list has at least one attachment with data property.
-   *
-   * @param statement a list of {@link Statement}s
-   * @return whether any {@link Statement}s in the list has at least one attachment with data
-   *         property.
-   */
-  public static boolean hasRealAttachments(List<Statement> statements) {
-
-    return statements.stream().anyMatch(MultipartHelper::hasRealAttachments);
-  }
-
-  /**
-   * Creates an xAPI multipart/mixed body from a {@link Statement}.
-   *
-   * @param statement a {@link Statement} object.
-   * @return the body as a String
-   */
   @SneakyThrows
-  public static String createMultipartBody(Statement statement) {
-    var body = new StringBuilder();
-    // Multipart Boundary
-    body.append(BODY_SEPARATOR);
-
-    // Header of first part
-    body.append(HttpHeaders.CONTENT_TYPE).append(':').append(MediaType.APPLICATION_JSON_VALUE)
-        .append(CRLF);
-    body.append(CRLF);
-
-    // Body of first part
-    body.append(objectMapper.writeValueAsString(statement)).append(CRLF);
-
-    // Body of attachments
-    writeAttachments(body, getRealAttachments(statement));
-
-    // footer
-    body.append(BODY_FOOTER);
-
-    return body.toString();
-  }
-
-  /**
-   * Creates an xAPI multipart/mixed body from a list of {@link Statement}s.
-   *
-   * @param statements a list of {@link Statement}s.
-   * @return the body as a String
-   */
-  @SneakyThrows
-  public static String createMultipartBody(List<Statement> statements) {
+  private static String createMultipartBody(Object statements, String attachments) {
     final var body = new StringBuilder();
     // Multipart Boundary
     body.append(BODY_SEPARATOR);
@@ -130,16 +123,21 @@ public final class MultipartHelper {
     body.append(objectMapper.writeValueAsString(statements)).append(CRLF);
 
     // Body of attachments
-    writeAttachments(body, statements.stream().flatMap(MultipartHelper::getRealAttachments));
+    body.append(attachments);
 
     // Footer
     body.append(BODY_FOOTER);
 
-    System.err.println(body.toString());
     return body.toString();
   }
 
-  private static void writeAttachments(StringBuilder body, Stream<Attachment> attachments) {
+  /*
+   * Writes distinct attachments. If there are no attachments in the stream then returns an empty
+   * String.
+   */
+  private static String writeAttachments(Stream<Attachment> attachments) {
+
+    final var body = new StringBuilder();
 
     // Write identical attachments only once
     attachments.distinct().forEach(a -> {
@@ -160,6 +158,7 @@ public final class MultipartHelper {
       }
     });
 
+    return body.toString();
   }
 
 }
