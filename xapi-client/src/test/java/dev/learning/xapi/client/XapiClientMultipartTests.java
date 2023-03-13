@@ -318,6 +318,4 @@ class XapiClientMultipartTests {
 
   }
 
-
-
 }

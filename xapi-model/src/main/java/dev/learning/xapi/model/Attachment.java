@@ -18,6 +18,7 @@ import java.util.Locale;
 import lombok.Builder;
 import lombok.ToString;
 import lombok.Value;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * This class represents the xAPI Attachment object.
@@ -87,8 +88,14 @@ public class Attachment {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
+  /**
+   * The data of the attachment.
+   * <p>
+   * This is the actual String representation of the attachment as it appears in the http message. 
+   * </p>
+   */
   @JsonIgnore
-  private byte[] data;
+  private String data;
   
   /**
    * Builder for Attachment.
@@ -222,7 +229,6 @@ public class Attachment {
         throw new IllegalArgumentException(e);
       }
 
-    }
   }
 
 }

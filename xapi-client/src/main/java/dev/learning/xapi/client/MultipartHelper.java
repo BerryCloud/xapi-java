@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
@@ -141,23 +140,20 @@ public final class MultipartHelper {
     final var body = new StringBuilder();
 
     // Write sha2-identical attachments only once
-    attachments.collect(Collectors.toMap(Attachment::getSha2, p -> p)).values().forEach(a -> {
-      // Multipart Boundary
-      body.append(BODY_SEPARATOR);
+    attachments.collect(Collectors.toMap(Attachment::getSha2, v -> v, (k, v) -> v)).values()
+        .forEach(a -> {
+          // Multipart Boundary
+          body.append(BODY_SEPARATOR);
 
-      // Multipart header
-      body.append(HttpHeaders.CONTENT_TYPE).append(':').append(a.getContentType()).append(CRLF);
-      body.append("Content-Transfer-Encoding:binary").append(CRLF);
-      body.append("X-Experience-API-Hash:").append(a.getSha2()).append(CRLF);
-      body.append(CRLF);
+          // Multipart header
+          body.append(HttpHeaders.CONTENT_TYPE).append(':').append(a.getContentType()).append(CRLF);
+          body.append("Content-Transfer-Encoding:binary").append(CRLF);
+          body.append("X-Experience-API-Hash:").append(a.getSha2()).append(CRLF);
+          body.append(CRLF);
 
-      // Multipart body
-      if (MediaType.TEXT_PLAIN_VALUE.equals(a.getContentType())) {
-        body.append(new String(a.getData())).append(CRLF);
-      } else {
-        body.append(Base64.decodeBase64(a.getData())).append(CRLF);
-      }
-    });
+          // Multipart body
+          body.append(a.getData()).append(CRLF);
+        });
 
     return body.toString();
   }

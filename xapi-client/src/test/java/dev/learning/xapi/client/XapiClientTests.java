@@ -6,7 +6,6 @@ package dev.learning.xapi.client;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.hamcrest.core.StringStartsWith.startsWith;
 
 import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
@@ -363,62 +362,6 @@ class XapiClientTests {
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
-  }
-
-  @Test
-  void whenPostingStatementWithAttachmentThenBodyIsExpected() throws InterruptedException {
-
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
-        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
-        .setHeader("Content-Type", "application/json"));
-
-    // When Posting Statement With Attachment
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-            .addAttachment(a -> a.data("Simple attachment")
-                .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
-                .addDisplay(Locale.ENGLISH, "text attachment"))
-
-            .verb(Verb.ATTEMPTED)
-
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-        .block();
-
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
-
-    // Then Body Is Expected
-    assertThat(recordedRequest.getBody().readUtf8(), is(
-        "--xapi-learning-dev-boundary\r\nContent-Type:application/json\r\n\r\n{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}},\"attachments\":[{\"usageType\":\"http://adlnet.gov/expapi/attachments/text\",\"display\":{\"en\":\"text attachment\"},\"contentType\":\"text/plain\",\"length\":17,\"sha2\":\"b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5\"}]}\r\n--xapi-learning-dev-boundary\r\nContent-Type:text/plain\r\nContent-Transfer-Encoding:binary\r\nX-Experience-API-Hash:b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5\r\n\r\nSimple attachment\r\n--xapi-learning-dev-boundary--"));
-  }
-
-  @Test
-  void whenPostingStatementWithAttachmentThenContentTypeHeaderIsMultipartMixed()
-      throws InterruptedException {
-
-    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
-        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
-        .setHeader("Content-Type", "application/json"));
-
-    // When Posting Statement With Attachment
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-            .addAttachment(a -> a.data("Simple attachment")
-                .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
-                .addDisplay(Locale.ENGLISH, "text attachment"))
-
-            .verb(Verb.ATTEMPTED)
-
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-        .block();
-
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
-
-    // Then Content Type Header Is Multipart Mixed
-    assertThat(recordedRequest.getHeader("content-type"), startsWith("multipart/mixed"));
   }
 
   // Get Voided Statement
