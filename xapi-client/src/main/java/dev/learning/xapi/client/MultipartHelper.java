@@ -9,6 +9,7 @@ import dev.learning.xapi.model.Attachment;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.SubStatement;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -139,8 +140,8 @@ public final class MultipartHelper {
 
     final var body = new StringBuilder();
 
-    // Write identical attachments only once
-    attachments.distinct().forEach(a -> {
+    // Write sha2-identical attachments only once
+    attachments.collect(Collectors.toMap(Attachment::getSha2, p -> p)).values().forEach(a -> {
       // Multipart Boundary
       body.append(BODY_SEPARATOR);
 

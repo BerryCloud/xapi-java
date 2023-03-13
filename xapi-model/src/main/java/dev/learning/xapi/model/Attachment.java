@@ -16,7 +16,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
@@ -32,7 +31,6 @@ import lombok.Value;
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 @ToString(exclude = "data")
-@EqualsAndHashCode(of = "sha2")
 public class Attachment {
 
   /**
