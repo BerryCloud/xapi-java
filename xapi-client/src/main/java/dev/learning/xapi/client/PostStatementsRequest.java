@@ -5,6 +5,7 @@
 package dev.learning.xapi.client;
 
 import dev.learning.xapi.model.Statement;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -72,6 +73,17 @@ public class PostStatementsRequest implements Request {
       return this;
     }
 
+    /**
+     * Sets the statements.
+     *
+     * @param statements The statements of the PostStatementsRequest.
+     * @return This builder
+     * @see PostStatementsRequest#statements
+     */
+    public Builder statements(Statement... statements) {
+      this.statements = Arrays.asList(statements);
+      return this;
+    }
   }
 
 }
