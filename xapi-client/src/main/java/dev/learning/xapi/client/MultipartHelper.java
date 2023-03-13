@@ -62,7 +62,7 @@ public final class MultipartHelper {
    * Also sets the content-type to multipart/mixed if needed.
    *
    * @param requestSpec a {@link RequestBodySpec} object.
-   * @param statement   list of {@link Statement}s to add.
+   * @param statements  list of {@link Statement}s to add.
    */
   public static void addBody(RequestBodySpec requestSpec, List<Statement> statements) {
 
@@ -71,7 +71,7 @@ public final class MultipartHelper {
 
   }
 
-  public static void addBody(RequestBodySpec requestSpec, Object statements,
+  private static void addBody(RequestBodySpec requestSpec, Object statements,
       Stream<Attachment> attachments) {
 
     final String attachmentsBody = writeAttachments(attachments);
@@ -132,7 +132,7 @@ public final class MultipartHelper {
   }
 
   /*
-   * Writes distinct attachments. If there are no attachments in the stream then returns an empty
+   * Writes attachments to a String. If there are no attachments in the stream then returns an empty
    * String.
    */
   private static String writeAttachments(Stream<Attachment> attachments) {
