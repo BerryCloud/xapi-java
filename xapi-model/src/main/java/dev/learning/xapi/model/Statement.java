@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -145,7 +144,7 @@ public class Statement implements CoreStatement {
      *      Signed Statements</a>
      */
     public Statement sign(PrivateKey privateKey) {
-      Map<String, Object> claims = new HashMap<String, Object>();
+      var claims = new HashMap<String, Object>();
 
       // Put only the significant properties into the signature payload
       // https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-comparision-requirements
