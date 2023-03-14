@@ -16,9 +16,14 @@ import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.net.URI;
+import java.security.PrivateKey;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -127,6 +132,45 @@ public class Statement implements CoreStatement {
 
     // This static class extends the lombok builder.
 
+    /**
+     * Special build method for signing and building a {@link Statement}.
+     * <p>
+     * An signature attachment is automatically added to the Statement's attachments.
+     * </p>
+     *
+     * @param privateKey a {@link PrivateKey} for signing the {@link Statement}.
+     * @return an immutable, signed {@link Statement} object.
+     * @see <a href=
+     *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#26-signed-statements">
+     *      Signed Statements</a>
+     */
+    public Statement sign(PrivateKey privateKey) {
+      Map<String, Object> claims = new HashMap<String, Object>();
+
+      // Put only the significant properties into the signature payload
+      // https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-comparision-requirements
+      claims.put("actor", this.actor);
+      claims.put("verb", this.verb);
+      claims.put("object", this.object);
+      claims.put("result", this.result);
+      claims.put("context", this.context);
+
+      String token = Jwts.builder().setClaims(claims).signWith(privateKey, SignatureAlgorithm.RS512)
+          .compact();
+
+      addAttachment(a -> a.usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
+
+          .addDisplay(Locale.ENGLISH, "JSW signature")
+
+          .data(token)
+        
+          .length(token.length())
+
+          .contentType("application/octet-stream"));
+      
+      return build();
+    }
+    
     /**
      * Consumer Builder for agent.
      *
