@@ -13,7 +13,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>  
+    </dependency>
+    <!-- If the hibernate validator is on the class path the model will be validated -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
     <dependency>
       <groupId>dev.learning.xapi</groupId>
       <artifactId>xapi-model</artifactId>

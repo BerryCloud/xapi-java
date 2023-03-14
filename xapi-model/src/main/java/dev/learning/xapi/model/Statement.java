@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.Instant;
@@ -46,28 +47,33 @@ public class Statement {
    * Whom the Statement is about, as an Agent or Group Object.
    */
   @NotNull
+  @Valid
   private Actor actor;
 
   /**
    * Action taken by the Actor.
    */
   @NotNull
+  @Valid
   private Verb verb;
 
   /**
    * Activity, Agent, or another Statement that is the Object of the Statement.
    */
   @NotNull
+  @Valid
   private StatementObject object;
 
   /**
    * Result Object, further details representing a measured outcome.
    */
+  @Valid
   private Result result;
 
   /**
    * Context that gives the Statement more meaning.
    */
+  @Valid
   private Context context;
 
   /**
