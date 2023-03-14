@@ -1,1 +1,2 @@
-  dev.learning.xapi.model.validation.internal.validators.HasSchemeValidatorForUri
+dev.learning.xapi.model.validation.internal.validators.HasSchemeValidatorForUri
+dev.learning.xapi.model.validation.internal.validators.VariantValidatorForUuid

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -41,6 +42,7 @@ public class Statement {
   /**
    * UUID assigned by LRS if not set by the Learning Record Provider.
    */
+  @Variant(2)
   private UUID id;
 
   /**

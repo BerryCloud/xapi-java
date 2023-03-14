@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.LinkedHashMap;
@@ -32,6 +33,7 @@ public class Context {
   /**
    * The registration that the Statement is associated with.
    */
+  @Variant(2)
   private UUID registration;
 
 

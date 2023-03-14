@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.Builder;
@@ -32,6 +33,7 @@ public class ActivityState {
   @Valid
   private Agent agent;
 
+  @Variant(2)
   private UUID registration;
 
   private ObjectNode state;
