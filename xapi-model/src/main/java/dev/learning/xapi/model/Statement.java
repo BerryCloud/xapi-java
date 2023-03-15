@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.ValidStatement;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,7 @@ import lombok.With;
 @JsonIgnoreProperties("inProgress")
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
+@ValidStatement
 public class Statement {
 
   /**
