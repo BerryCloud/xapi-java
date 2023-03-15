@@ -11,7 +11,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
@@ -19,7 +18,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * The annotated element must have a scheme.
+ * The annotated UUID must have the specified variant.
  *
  * @author Thomas Turrell-Croft
  */
