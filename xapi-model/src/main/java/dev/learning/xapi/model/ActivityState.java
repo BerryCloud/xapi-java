@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class ActivityState {
   private String stateId;
 
   @Valid
+  @ValidActor
   private Agent agent;
 
   @Variant(2)

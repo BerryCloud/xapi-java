@@ -86,7 +86,7 @@ public class Attachment {
      *
      * @return This builder
      *
-     * @see ActivityDefinition#description
+     * @see Attachment#description
      */
     public Builder addDisplay(Locale key, String value) {
 
@@ -106,7 +106,7 @@ public class Attachment {
      *
      * @return This builder
      *
-     * @see ActivityDefinition#description
+     * @see Attachment#description
      */
     public Builder addDescription(Locale key, String value) {
       if (this.description == null) {

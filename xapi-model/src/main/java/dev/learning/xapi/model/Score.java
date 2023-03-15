@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.ScaledScore;
 import lombok.Builder;
 import lombok.Value;
 
@@ -25,6 +26,7 @@ public class Score {
   /**
    * The score related to the experience as modified by scaling and/or normalization.
    */
+  @ScaledScore
   private Float scaled;
 
   /**

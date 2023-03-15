@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.validation.constraints.ValidActor;
+import dev.learning.xapi.model.validation.constraints.ValidStatement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
@@ -24,6 +26,7 @@ import lombok.Value;
 @Value
 @Builder
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
+@ValidStatement
 public class SubStatement implements StatementObject {
 
   /**
@@ -31,6 +34,7 @@ public class SubStatement implements StatementObject {
    */
   @NotNull
   @Valid
+  @ValidActor
   private Actor actor;
 
   /**
@@ -45,6 +49,7 @@ public class SubStatement implements StatementObject {
    */
   @NotNull
   @Valid
+  @ValidActor
   private SubStatementObject object;
 
   /**
