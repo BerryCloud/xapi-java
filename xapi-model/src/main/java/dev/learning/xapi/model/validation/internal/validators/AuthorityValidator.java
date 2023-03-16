@@ -29,7 +29,7 @@ public class AuthorityValidator implements ConstraintValidator<ValidAuthority, A
 
     final var group = (Group) value;
     // ... or must be an anonymous Group with exactly two members
-    return group.isAnonymous() && group.getMember().size() == 2);
+    return group.isAnonymous() && group.getMember().size() == 2;
 
   }
 
