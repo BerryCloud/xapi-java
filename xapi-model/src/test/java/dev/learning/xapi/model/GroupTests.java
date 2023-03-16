@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -132,6 +133,47 @@ class GroupTests {
   }
 
   @Test
+  void givenGroupWithNameAndNoMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+
+    // Given Group With Name And Empty Members
+    final Group group = Group.builder()
+
+        .name("Example Group")
+
+        .member(new ArrayList<Agent>())
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+  @Test
+  void givenGroupWithNameAndNullMembersWhenCallingIsAnonymousThenResultIsFalse()
+      throws IOException {
+
+    // Given Group With Name And Null Members
+    final Group group = Group.builder()
+
+        .name("Example Group")
+
+        .member(null)
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+  @Test
   void givenGroupWithMboxAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
 
     // Given Group With MBox And Members
@@ -175,6 +217,30 @@ class GroupTests {
     assertFalse(result);
 
   }
+
+  @Test
+  void givenGroupWithOpenIDAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+
+    // Given Group With OpenID And Members
+    final Group group = Group.builder()
+
+        .openid(URI.create("https://example.com"))
+
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+
 
   @Test
   void givenGroupWithAccountAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
