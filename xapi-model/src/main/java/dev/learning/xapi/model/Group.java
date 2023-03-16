@@ -5,6 +5,7 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class Group extends Actor {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
+  @JsonIgnore
   public boolean isAnonymous() {
 
     return account == null && mbox == null && mboxSha1sum == null && openid == null

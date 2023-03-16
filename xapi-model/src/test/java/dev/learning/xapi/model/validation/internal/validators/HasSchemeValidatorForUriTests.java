@@ -1,3 +1,7 @@
+/*
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ */
+
 package dev.learning.xapi.model.validation.internal.validators;
 
 import static org.hamcrest.MatcherAssert.assertThat;
