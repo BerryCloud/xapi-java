@@ -4,7 +4,12 @@
 
 package dev.learning.xapi.model.validation.constraints;
 
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import jakarta.validation.Constraint;
@@ -14,22 +19,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * The annotated element must be a valid statement.
+ * The annotated element must have a scheme.
  *
  * @author Thomas Turrell-Croft
- * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-properties">Statement</a>
  */
 @Documented
 @Constraint(validatedBy = {})
-@Target(TYPE)
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-public @interface ValidStatement {
+public @interface ValidAuthority {
 
   /**
    * Error Message.
    */
-  String message() default "must be a valid statement";
+  String message() default "must be of type agent or a group with two agents";
 
   /**
    * Groups.

@@ -38,6 +38,12 @@ public class Group extends Actor {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
+  public boolean isAnonymous() {
+
+    return account == null && mbox == null && mboxSha1sum == null && openid == null
+        && member != null && !member.isEmpty();
+  }
+
   /**
    * Builder for Group.
    */

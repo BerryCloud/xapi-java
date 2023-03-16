@@ -7,14 +7,14 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Context;
 import dev.learning.xapi.model.SubStatement;
-import dev.learning.xapi.model.validation.constraints.ValidStatement;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.Valid;
 
 /**
  * The SubStatement being validated must be valid.
  */
-public class ValidatorForSubStatement implements ConstraintValidator<ValidStatement, SubStatement> {
+public class ValidatorForSubStatement implements ConstraintValidator<Valid, SubStatement> {
 
   @Override
   public boolean isValid(SubStatement value, ConstraintValidatorContext context) {
