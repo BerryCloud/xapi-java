@@ -39,6 +39,9 @@ public class Group extends Actor {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
+  /**
+   * Returns true if the group is anonymous.
+   */
   @JsonIgnore
   public boolean isAnonymous() {
 
