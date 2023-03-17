@@ -5,6 +5,8 @@
 package dev.learning.xapi.model;
 
 import dev.learning.xapi.model.validation.constraints.ValidActor;
+import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
+import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
@@ -24,8 +26,10 @@ import lombok.Value;
  */
 @Value
 @Builder
+@ValidStatementPlatform
+@ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
-public class SubStatement implements StatementObject {
+public class SubStatement implements StatementObject, ValidableStatement {
 
   /**
    * Whom the Statement is about, as an Agent or Group Object.
