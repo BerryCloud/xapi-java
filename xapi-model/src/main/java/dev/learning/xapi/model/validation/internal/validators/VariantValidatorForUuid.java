@@ -31,7 +31,6 @@ public class VariantValidatorForUuid implements ConstraintValidator<Variant, UUI
       return true;
     }
 
-    System.out.println("value " + value.variant());
     return value.variant() == variant;
 
   }
