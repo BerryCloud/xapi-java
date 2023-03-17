@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("StatementPlatformValidator tests")
-public class StatementPlatformValidatorTest {
+class StatementPlatformValidatorTest {
 
   private static final StatementPlatformValidator validator = new StatementPlatformValidator();
   

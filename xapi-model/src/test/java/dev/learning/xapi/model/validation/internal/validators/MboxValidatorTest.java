@@ -12,6 +12,9 @@ import java.lang.annotation.Annotation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import dev.learning.xapi.model.validation.constraints.Mbox;
 
 /**
@@ -20,7 +23,7 @@ import dev.learning.xapi.model.validation.constraints.Mbox;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("MboxValidator tests")
-public class MboxValidatorTest {
+class MboxValidatorTest {
 
   private static final MboxValidator validator = new MboxValidator();
   
@@ -71,33 +74,15 @@ public class MboxValidatorTest {
   }
   
   @Test
-  void whenValueHasInvalidPrefixThenResultIsFalse() {
+  @ParameterizedTest
+  @ValueSource(strings = {"email:fred@example.com", "fred@example.com", "mailto:fred@example@com"})
+  void whenValueIsInvalidThenResultIsFalse(String value) {
     
-    // When Value Has Invalid Prefix
-    var result = validator.isValid("email:fred@example.com", null);
-    
-    // Then Result Is False
-    assertFalse(result);
-  }
-
-  @Test
-  void whenValueHasNoPrefixThenResultIsFalse() {
-    
-    // When Value Has No Prefix
-    var result = validator.isValid("fred@example.com", null);
+    // When Value Is Invalid
+    var result = validator.isValid(value, null);
     
     // Then Result Is False
     assertFalse(result);
   }
-
-  @Test
-  void whenValueHasInvalidEmailThenResultIsFalse() {
-    
-    // When Value Has Invalid Email
-    var result = validator.isValid("mailto:fred@example@com", null);
-    
-    // Then Result Is False
-    assertFalse(result);
-  }
-
+  
 }

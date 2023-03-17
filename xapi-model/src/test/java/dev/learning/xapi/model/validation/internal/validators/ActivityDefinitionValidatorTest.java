@@ -19,7 +19,7 @@ import dev.learning.xapi.model.InteractionType;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("ActivityDefinitionValidator tests")
-public class ActivityDefinitionValidatorTest {
+class ActivityDefinitionValidatorTest {
 
   private static final ActivityDefinitionValidator validator = new ActivityDefinitionValidator();
   

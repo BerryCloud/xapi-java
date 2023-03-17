@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("StatementVerbValidator tests")
-public class StatementVerbValidatorTest {
+class StatementVerbValidatorTest {
 
   private static final StatementVerbValidator validator = new StatementVerbValidator();
   

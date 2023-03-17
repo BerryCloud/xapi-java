@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("StatementRevisionValidator tests")
-public class StatementRevisionValidatorTest {
+class StatementRevisionValidatorTest {
 
   private static final StatementRevisionValidator validator = new StatementRevisionValidator();
   
