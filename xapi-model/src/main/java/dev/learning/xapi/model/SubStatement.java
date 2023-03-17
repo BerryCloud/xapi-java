@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.validation.constraints.ValidActor;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
@@ -31,6 +32,7 @@ public class SubStatement implements StatementObject {
    */
   @NotNull
   @Valid
+  @ValidActor
   private Actor actor;
 
   /**
@@ -45,6 +47,7 @@ public class SubStatement implements StatementObject {
    */
   @NotNull
   @Valid
+  @ValidActor
   private SubStatementObject object;
 
   /**

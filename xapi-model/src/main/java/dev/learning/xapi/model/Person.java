@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class Person {
   /**
    * List of e-mail addresses.
    */
-  private List<String> mbox;
+  private List<@Mbox String> mbox;
 
   /**
    * List of the SHA1 hashes of mailto IRIs.

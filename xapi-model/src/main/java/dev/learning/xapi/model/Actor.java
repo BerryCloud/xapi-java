@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.function.Consumer;
@@ -48,6 +49,7 @@ public abstract class Actor implements StatementObject, SubStatementObject {
   /**
    * An email address. The required format is "mailto:email address".
    */
+  @Mbox
   String mbox;
 
   /**

@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.validation.constraints.ValidActivityDefinition;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -38,6 +39,7 @@ public class Activity implements StatementObject, SubStatementObject {
    * Metadata.
    */
   @Valid
+  @ValidActivityDefinition
   private ActivityDefinition definition;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
