@@ -16,76 +16,76 @@ import org.junit.jupiter.api.Test;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("ScaledSoreValidator tests")
-public class ScaledScoreValidatorTests {
+class ScaledScoreValidatorTests {
 
   private static final ScaledScoreValidator validator = new ScaledScoreValidator();
 
   @Test
   void whenValueIsNullThenResultIsTrue() {
-    
+
     // When Value Is Null
     var result = validator.isValid(null, null);
-    
+
     // Then Result Is True
     assertTrue(result);
   }
-  
+
   @Test
   void whenValueIsValidScaledScoreThenResultIsTrue() {
-    
+
     // When Value Is Valid Score
     var result = validator.isValid(0F, null);
-    
+
     // Then Result Is True
     assertTrue(result);
   }
 
   @Test
   void whenValueIsValidMinimumScoreThenResultIsTrue() {
-    
+
     // When Value Is Valid Minimum Score
     var result = validator.isValid(-1F, null);
-    
+
     // Then Result Is True
     assertTrue(result);
   }
 
   @Test
   void whenValueIsValidMaximumScoreThenResultIsTrue() {
-    
+
     // When Value Is Valid Maximum Score
     var result = validator.isValid(1F, null);
-    
+
     // Then Result Is True
     assertTrue(result);
   }
 
   @Test
   void WhenValueIsOverMaximumScoreThenResultIsFalse() {
-    
+
     // when Value Is Over Maximum Score
     var result = validator.isValid(1.001F, null);
-    
+
     // Then Result Is False
     assertFalse(result);
   }
 
   @Test
   void whenValueIsBelowMinimumScoreThenResultIsFalse() {
-    
+
     // When Value Is Below Minimum Score
     var result = validator.isValid(-1.001F, null);
-    
+
     // Then Result Is False
     assertFalse(result);
   }
 
   @Test
   void whenValueIsNanThenResultIsFalse() {
-    
+
     // When Value Is NaN
     var result = validator.isValid(Float.NaN, null);
-    
+
     // Then Result Is False
     assertFalse(result);
   }
