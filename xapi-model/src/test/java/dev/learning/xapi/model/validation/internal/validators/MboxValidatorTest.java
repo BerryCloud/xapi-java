@@ -73,7 +73,6 @@ class MboxValidatorTest {
     assertTrue(result);
   }
   
-  @Test
   @ParameterizedTest
   @ValueSource(strings = {"email:fred@example.com", "fred@example.com", "mailto:fred@example@com"})
   void whenValueIsInvalidThenResultIsFalse(String value) {
