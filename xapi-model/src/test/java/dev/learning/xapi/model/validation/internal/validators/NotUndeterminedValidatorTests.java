@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("NotUndeterminedValidator tests")
-public class NotUndeterminedValidatorTest {
+public class NotUndeterminedValidatorTests {
 
   private static final NotUndeterminedValidator validator = new NotUndeterminedValidator();
   

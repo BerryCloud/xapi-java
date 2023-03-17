@@ -25,7 +25,7 @@ import dev.learning.xapi.model.SubStatement;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("ActorValidator tests")
-public class ActorValidatorTest {
+public class ActorValidatorTests {
 
   private static final ActorValidator validator = new ActorValidator();
   

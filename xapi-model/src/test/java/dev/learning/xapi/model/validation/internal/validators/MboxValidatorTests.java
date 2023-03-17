@@ -20,7 +20,7 @@ import dev.learning.xapi.model.validation.constraints.Mbox;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("MboxValidator tests")
-public class MboxValidatorTest {
+public class MboxValidatorTests {
 
   private static final MboxValidator validator = new MboxValidator();
   
