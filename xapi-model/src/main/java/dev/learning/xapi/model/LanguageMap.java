@@ -11,6 +11,12 @@ import java.util.Locale.LanguageRange;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import dev.learning.xapi.jackson.LocaleDeserializer;
+import dev.learning.xapi.jackson.LocaleSerializer;
+
 /**
  * A language map is a dictionary where the key is a RFC 5646 Language Tag, and the value is a
  * string in the language specified in the tag.
@@ -20,6 +26,8 @@ import java.util.Optional;
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps">Language
  *      Maps</a>
  */
+@JsonSerialize(keyUsing = LocaleSerializer.LocaleKeySerializer.class)
+@JsonDeserialize(keyUsing = LocaleDeserializer.LocaleKeyDeserializer.class)
 public class LanguageMap extends LinkedHashMap<Locale, String> {
 
   private static final long serialVersionUID = 7375610804995032187L;

@@ -240,9 +240,9 @@ class StatementTests {
     final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
-        .addDisplay(Locale.ENGLISH, "value")
+        .addDisplay(Locale.US, "value")
 
-        .addDescription(Locale.ENGLISH, "value")
+        .addDescription(Locale.US, "value")
 
         .length(123)
 
@@ -282,7 +282,7 @@ class StatementTests {
 
             .platform("Example virtual meeting software")
 
-            .language(Locale.ENGLISH)
+            .language(Locale.US)
 
             .statementReference(s -> s.id(UUID.fromString("6690e6c9-3ef0-4ed3-8b37-7f3964730bee")))
 
