@@ -8,8 +8,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import java.net.URI;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("HasSchemeValidatorForUri tests")
 class HasSchemeValidatorForUriTests {
 
   private HasSchemeValidatorForUri constraintValidator = new HasSchemeValidatorForUri();
