@@ -6,6 +6,11 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import dev.learning.xapi.jackson.LocaleDeserializer;
+import dev.learning.xapi.jackson.LocaleSerializer;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.NotUndetermined;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
@@ -73,6 +78,8 @@ public class Context {
    * The language in which the experience being recorded in this Statement (mainly) occurred in.
    */
   @NotUndetermined
+  @JsonSerialize(using = LocaleSerializer.class)
+  @JsonDeserialize(using = LocaleDeserializer.class)
   private Locale language;
 
   /**
