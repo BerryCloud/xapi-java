@@ -11,14 +11,14 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 
 /**
- * Specific Locale converter using {@link Locale#forLanguageTag(String)} instead of {@link Locale#Locale(String)}.
+ * Specific Locale converter using {@link Locale#forLanguageTag(String)} instead of
+ * {@link Locale#Locale(String)}.
  *
  * @author István Rátkai (Selindek)
  */
@@ -31,10 +31,11 @@ public class LocaleDeserializer extends StdDeserializer<Locale> {
   }
 
   @Override
-  public Locale deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+  public Locale deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) 
+      throws IOException {
     if (jsonParser.getCurrentToken() != JsonToken.VALUE_STRING) {
-      throw deserializationContext.wrongTokenException(jsonParser, (JavaType) null, JsonToken.VALUE_STRING,
-          "Attempted to parse non-String value to Locale");
+      throw deserializationContext.wrongTokenException(jsonParser, (JavaType) null,
+          JsonToken.VALUE_STRING, "Attempted to parse non-String value to Locale");
     }
 
     return validateLocale(jsonParser.getValueAsString(), deserializationContext);
@@ -54,7 +55,8 @@ public class LocaleDeserializer extends StdDeserializer<Locale> {
     }
     // test the validity of the whole key
     if (locale == null || !locale.toLanguageTag().equalsIgnoreCase(localeString)) {
-      throw deserializationContext.weirdStringException(localeString, Locale.class, "Invalid locale");
+      throw deserializationContext.weirdStringException(localeString, Locale.class,
+          "Invalid locale");
     }
     return locale;
   }
@@ -64,13 +66,14 @@ public class LocaleDeserializer extends StdDeserializer<Locale> {
    * Locale Key Deserializer.
    * </p>
    * For deserializing Locale keys in {@link Map}s
-   * 
+   *
    * @author István Rátkai (Selindek)
    */
   public static class LocaleKeyDeserializer extends KeyDeserializer {
 
     @Override
-    public Object deserializeKey(String key, DeserializationContext deserializationContext) throws IOException {
+    public Object deserializeKey(String key, DeserializationContext deserializationContext)
+        throws IOException {
 
       return validateLocale(key, deserializationContext);
     }

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import dev.learning.xapi.jackson.LocaleDeserializer;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
