@@ -28,10 +28,6 @@ public class ActorValidator implements ConstraintValidator<ValidActor, Statement
   @Override
   public boolean isValid(StatementObject value, ConstraintValidatorContext context) {
 
-    if (value == null) {
-      return true;
-    }
-
     if (value instanceof final Group group) {
       return group.getAccount() == null && group.getMbox() == null && group.getMboxSha1sum() == null
           && group.getOpenid() == null ? group.getMember() != null && !group.getMember().isEmpty()
