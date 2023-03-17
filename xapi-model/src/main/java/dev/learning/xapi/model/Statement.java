@@ -39,7 +39,6 @@ import lombok.With;
 @JsonIgnoreProperties("inProgress")
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
-@ValidStatement
 public class Statement {
 
   /**
