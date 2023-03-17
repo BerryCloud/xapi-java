@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
  * This interface represents the xAPI statement object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#244-object">xAPI
  *      Object</a>
  */
