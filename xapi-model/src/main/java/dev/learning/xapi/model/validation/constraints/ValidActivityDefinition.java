@@ -35,7 +35,7 @@ public @interface ValidActivityDefinition {
   /**
    * Error Message.
    */
-  String message() default "Must be a valid Activity Definition";
+  String message() default "must be a valid Activity Definition";
 
   /**
    * Groups.

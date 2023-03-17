@@ -35,7 +35,7 @@ public @interface ValidActor {
   /**
    * Error Message.
    */
-  String message() default "Actor must contain exactly one identifier";
+  String message() default "actor must contain exactly one identifier";
 
   /**
    * Groups.

@@ -33,7 +33,7 @@ public @interface Mbox {
   /**
    * Error Message.
    */
-  String message() default "Must be a valid mbox";
+  String message() default "must be a valid mbox";
 
   /**
    * Groups.

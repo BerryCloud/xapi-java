@@ -33,7 +33,7 @@ public @interface ScaledScore {
   /**
    * Error Message.
    */
-  String message() default "Scaled score must be between -1 and 1";
+  String message() default "scaled score must be between -1 and 1";
 
   /**
    * Groups.

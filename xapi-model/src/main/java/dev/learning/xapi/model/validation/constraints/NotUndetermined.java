@@ -33,7 +33,7 @@ public @interface NotUndetermined {
   /**
    * Error Message.
    */
-  String message() default "Locale is not allowed";
+  String message() default "undetermined (und) locale is not allowed";
 
   /**
    * Groups.
