@@ -22,7 +22,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("MboxValidator tests")
-public class MboxValidatorTests {
+class MboxValidatorTests {
 
   private static final MboxValidator validator = new MboxValidator();
 
