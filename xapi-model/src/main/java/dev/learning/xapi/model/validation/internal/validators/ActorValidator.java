@@ -18,7 +18,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * @author István Rátkai (Selindek)
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">Actor</a>
  */
-public class ActorValidator implements ConstraintValidator<ValidActor, StatementObject> {
+public class ActorValidator implements ConstraintValidator<ValidActor, Object> {
 
   /**
    * Checks if this {@link Actor} contains exactly one identifier.
@@ -26,7 +26,7 @@ public class ActorValidator implements ConstraintValidator<ValidActor, Statement
    * @return true if this object is valid.
    */
   @Override
-  public boolean isValid(StatementObject value, ConstraintValidatorContext context) {
+  public boolean isValid(Object value, ConstraintValidatorContext context) {
 
     if (value instanceof final Group group) {
       return group.getAccount() == null && group.getMbox() == null && group.getMboxSha1sum() == null
@@ -35,7 +35,7 @@ public class ActorValidator implements ConstraintValidator<ValidActor, Statement
     } else if (value instanceof final Agent agent) {
       return hasSingleIdentifier(agent);
     }
-    
+
     return true;
 
   }
