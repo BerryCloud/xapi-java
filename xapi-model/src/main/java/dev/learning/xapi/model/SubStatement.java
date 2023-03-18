@@ -87,6 +87,42 @@ public class SubStatement implements StatementObject, CoreStatement {
     // This static class extends the lombok builder.
 
     /**
+     * Consumer Builder for agent.
+     *
+     * @param agent The Consumer Builder for agent
+     *
+     * @return This builder
+     *
+     * @see SubStatement#actor
+     */
+    public Builder actor(Consumer<Agent.Builder<?, ?>> agent) {
+
+      // TODO Handle a Group Builder
+
+      final Agent.Builder<?, ?> builder = Agent.builder();
+
+      agent.accept(builder);
+
+      return actor(builder.build());
+    }
+
+    /**
+     * Sets the agent.
+     *
+     * @param actor The actor of the Statement
+     *
+     * @return This builder
+     *
+     * @see SubStatement#actor
+     */
+    public Builder actor(Actor actor) {
+
+      this.actor = actor;
+
+      return this;
+    }
+
+    /**
      * Consumer Builder for verb.
      *
      * @param verb The Consumer Builder for verb
