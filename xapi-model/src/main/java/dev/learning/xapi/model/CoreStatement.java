@@ -5,15 +5,17 @@
 package dev.learning.xapi.model;
 
 /**
- * This is a helper interface for signing Statement-like objects which can be targets of
- * class level Statement-validators.
+ * This is a helper interface for signing Statement-like objects which can be targets of class level
+ * Statement-validators.
  *
  * @author István Rátkai (Selindek)
  */
-public interface ValidableStatement {
+public interface CoreStatement {
+
+  Actor getActor();
 
   Verb getVerb();
-  
+
   Object getObject();
 
   Context getContext();

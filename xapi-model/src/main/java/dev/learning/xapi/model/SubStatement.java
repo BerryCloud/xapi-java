@@ -29,7 +29,7 @@ import lombok.Value;
 @ValidStatementPlatform
 @ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
-public class SubStatement implements StatementObject, ValidableStatement {
+public class SubStatement implements StatementObject, CoreStatement {
 
   /**
    * Whom the Statement is about, as an Agent or Group Object.

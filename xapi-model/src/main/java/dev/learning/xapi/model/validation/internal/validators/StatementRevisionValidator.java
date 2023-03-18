@@ -5,7 +5,7 @@
 package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.Activity;
-import dev.learning.xapi.model.ValidableStatement;
+import dev.learning.xapi.model.CoreStatement;
 import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -22,10 +22,10 @@ import jakarta.validation.ConstraintValidatorContext;
  *      Statement Context Requirements</a>
  */
 public class StatementRevisionValidator implements
-    ConstraintValidator<ValidStatementRevision, ValidableStatement> {
+    ConstraintValidator<ValidStatementRevision, CoreStatement> {
 
   @Override
-  public boolean isValid(ValidableStatement value, ConstraintValidatorContext context) {
+  public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
 
     return value == null || value.getContext() == null || value.getContext().getRevision() == null
         || value.getObject() instanceof Activity; 

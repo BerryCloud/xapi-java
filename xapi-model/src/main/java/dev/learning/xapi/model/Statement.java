@@ -43,7 +43,7 @@ import lombok.With;
 @Builder(toBuilder = true)
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
-public class Statement implements ValidableStatement {
+public class Statement implements CoreStatement {
 
   /**
    * UUID assigned by LRS if not set by the Learning Record Provider.

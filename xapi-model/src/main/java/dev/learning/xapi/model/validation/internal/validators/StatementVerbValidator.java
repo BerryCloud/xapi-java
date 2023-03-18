@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.model.validation.internal.validators;
 
+import dev.learning.xapi.model.CoreStatement;
 import dev.learning.xapi.model.StatementReference;
-import dev.learning.xapi.model.ValidableStatement;
 import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -21,15 +21,15 @@ import jakarta.validation.ConstraintValidatorContext;
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#requirements-1">
  *      Voiding Statement Requirements</a>
  */
-public class StatementVerbValidator implements
-    ConstraintValidator<ValidStatementVerb, ValidableStatement> {
+public class StatementVerbValidator
+    implements ConstraintValidator<ValidStatementVerb, CoreStatement> {
 
   @Override
-  public boolean isValid(ValidableStatement value, ConstraintValidatorContext context) {
+  public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
 
-    return value == null || value.getVerb() == null || !value.getVerb().isVoided() 
+    return value == null || value.getVerb() == null || !value.getVerb().isVoided()
         || value.getObject() instanceof StatementReference;
-    
+
   }
 
 }
