@@ -6,9 +6,9 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.ScaledScore;
 import lombok.Builder;
 import lombok.Value;
-import org.springframework.util.Assert;
 
 /**
  * This class represents the xAPI Score object.
@@ -26,6 +26,7 @@ public class Score {
   /**
    * The score related to the experience as modified by scaling and/or normalization.
    */
+  @ScaledScore
   private Float scaled;
 
   /**
@@ -51,22 +52,6 @@ public class Score {
    */
   public static class Builder {
 
-    protected Float scaled;
-    
-    /**
-     * Sets the scaled score.
-     *
-     * @param scaled The scaled score.
-     *
-     * @return This builder
-     */
-    public Builder scaled(Float scaled) {
-      Assert.isTrue(scaled == null || (scaled >= -1.0 && scaled <= 1.0),
-          "Scaled score vaule must be between -1.0 and 1.0");
-      this.scaled = scaled;
-      return this;
-    }
-    
     // This static class extends the lombok builder.
 
   }

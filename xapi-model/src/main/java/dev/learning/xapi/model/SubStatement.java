@@ -4,6 +4,9 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.validation.constraints.ValidActor;
+import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
+import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
@@ -23,49 +26,57 @@ import lombok.Value;
  */
 @Value
 @Builder
+@ValidStatementPlatform
+@ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
-public class SubStatement implements StatementObject {
+public class SubStatement implements StatementObject, CoreStatement {
 
   /**
-   * Whom the Statement is about, as an Agent or Group Object.
+   * {@inheritDoc}
    */
   @NotNull
   @Valid
+  @ValidActor
   private Actor actor;
 
   /**
-   * Action taken by the Actor.
+   * {@inheritDoc}
    */
   @NotNull
   @Valid
   private Verb verb;
 
   /**
-   * Activity or Agent.
+   * {@inheritDoc}
+   * 
+   * <p>
+   * A SubStatement MUST NOT contain a SubStatement of its own, i.e., cannot be nested.
+   * </p>
    */
   @NotNull
   @Valid
+  @ValidActor
   private SubStatementObject object;
 
   /**
-   * Result Object, further details representing a measured outcome.
+   * {@inheritDoc}
    */
   @Valid
   private Result result;
 
   /**
-   * Context that gives the Statement more meaning.
+   * {@inheritDoc}
    */
   @Valid
   private Context context;
 
   /**
-   * Timestamp of when the events described within this Statement occurred.
+   * {@inheritDoc}
    */
   private Instant timestamp;
 
   /**
-   * Headers for Attachments to the Statement.
+   * {@inheritDoc}
    */
   @Valid
   private List<Attachment> attachments;
@@ -78,6 +89,42 @@ public class SubStatement implements StatementObject {
   public static class Builder {
 
     // This static class extends the lombok builder.
+
+    /**
+     * Consumer Builder for agent.
+     *
+     * @param agent The Consumer Builder for agent
+     *
+     * @return This builder
+     *
+     * @see SubStatement#actor
+     */
+    public Builder actor(Consumer<Agent.Builder<?, ?>> agent) {
+
+      // TODO Handle a Group Builder
+
+      final Agent.Builder<?, ?> builder = Agent.builder();
+
+      agent.accept(builder);
+
+      return actor(builder.build());
+    }
+
+    /**
+     * Sets the agent.
+     *
+     * @param actor The actor of the Statement
+     *
+     * @return This builder
+     *
+     * @see SubStatement#actor
+     */
+    public Builder actor(Actor actor) {
+
+      this.actor = actor;
+
+      return this;
+    }
 
     /**
      * Consumer Builder for verb.

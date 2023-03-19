@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import java.net.URI;
@@ -58,7 +59,7 @@ public class Result {
       message = "Must be a valid ISO 8601:2004 duration format.")
   private String duration;
 
-  private LinkedHashMap<URI, Object> extensions;
+  private LinkedHashMap<@HasScheme URI, Object> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 

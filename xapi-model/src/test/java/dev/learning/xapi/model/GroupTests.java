@@ -7,11 +7,15 @@ package dev.learning.xapi.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -105,5 +109,161 @@ class GroupTests {
         "Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://example.com/homePage, name=GroupAccount)), member=[Agent(super=Actor(name=Member 1, mbox=mailto:member1@example.com, mboxSha1sum=null, openid=null, account=null)), Agent(super=Actor(name=Member 2, mbox=null, mboxSha1sum=null, openid=https://example.com/openId, account=null))])"));
 
   }
+
+  @Test
+  void givenGroupWithNameAndMembersWhenCallingIsAnonymousThenResultIsTrue() throws IOException {
+
+    // Given Group With Name And Members
+    final Group group = Group.builder()
+
+        .name("Example Group")
+
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is True
+    assertTrue(result);
+
+  }
+
+  @Test
+  void givenGroupWithNameAndNoMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+
+    // Given Group With Name And Empty Members
+    final Group group = Group.builder()
+
+        .name("Example Group")
+
+        .member(new ArrayList<Agent>())
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+  @Test
+  void givenGroupWithNameAndNullMembersWhenCallingIsAnonymousThenResultIsFalse()
+      throws IOException {
+
+    // Given Group With Name And Null Members
+    final Group group = Group.builder()
+
+        .name("Example Group")
+
+        .member(null)
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+  @Test
+  void givenGroupWithMboxAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+
+    // Given Group With MBox And Members
+    final Group group = Group.builder()
+
+        .mbox("mailto:another@example.com")
+
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+  @Test
+  void givenGroupWithMboxSha1sumAndMembersWhenCallingIsAnonymousThenResultIsFalse()
+      throws IOException {
+
+    // Given Group With MboxSha1sum And Members
+    final Group group = Group.builder()
+
+        .mboxSha1sum("mailto:another@example.com")
+
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+  @Test
+  void givenGroupWithOpenIDAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+
+    // Given Group With OpenID And Members
+    final Group group = Group.builder()
+
+        .openid(URI.create("https://example.com"))
+
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+
+
+  @Test
+  void givenGroupWithAccountAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+
+    // Given Group With Account And Members
+    final Group group = Group.builder()
+
+        .addMember(a -> a.name("Member 1").mbox("mailto:member1@example.com"))
+
+        .addMember(a -> a.name("Member 2").openid(URI.create("https://example.com/openId")))
+
+        .account(a -> a.name("name").homePage(URI.create("https://example.com")))
+
+        .build();
+
+    // When Calling Is Anonymous
+    boolean result = group.isAnonymous();
+
+    // Then Result Is False
+    assertFalse(result);
+
+  }
+
+
 
 }

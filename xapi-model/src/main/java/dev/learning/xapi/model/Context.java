@@ -6,6 +6,10 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
+import dev.learning.xapi.model.validation.constraints.NotUndetermined;
+import dev.learning.xapi.model.validation.constraints.ValidActor;
+import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.LinkedHashMap;
@@ -31,6 +35,7 @@ public class Context {
   /**
    * The registration that the Statement is associated with.
    */
+  @Variant(2)
   private UUID registration;
 
 
@@ -38,12 +43,14 @@ public class Context {
    * Instructor that the Statement relates to, if not included as the Actor of the Statement.
    */
   @Valid
+  @ValidActor
   private Actor instructor;
 
   /**
    * Team that this Statement relates to, if not included as the Actor of the Statement.
    */
   @Valid
+  @ValidActor
   private Group team;
 
   /**
@@ -65,6 +72,7 @@ public class Context {
   /**
    * The language in which the experience being recorded in this Statement (mainly) occurred in.
    */
+  @NotUndetermined
   private Locale language;
 
   /**
@@ -76,7 +84,7 @@ public class Context {
   /**
    * A map of any other domain-specific context relevant to this Statement.
    */
-  private LinkedHashMap<URI, Object> extensions;
+  private LinkedHashMap<@HasScheme URI, Object> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 

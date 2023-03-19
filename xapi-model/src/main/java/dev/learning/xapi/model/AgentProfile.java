@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.learning.xapi.model.validation.constraints.ValidActor;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Value;
@@ -25,6 +26,7 @@ import lombok.Value;
 public class AgentProfile {
 
   @Valid
+  @ValidActor
   private Agent agent;
 
   private String profileId;

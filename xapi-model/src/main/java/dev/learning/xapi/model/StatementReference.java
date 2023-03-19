@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class StatementReference implements StatementObject, SubStatementObject {
   /**
    * The UUID of a Statement.
    */
+  @Variant(2)
   @NotNull
   private UUID id;
 

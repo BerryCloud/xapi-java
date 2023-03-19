@@ -5,6 +5,8 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.learning.xapi.model.validation.constraints.ValidActor;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +36,19 @@ public class Group extends Actor {
    */
   @Valid
   @JsonFormat(without = {JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY})
-  private final List<Agent> member;
+  private final List<@ValidActor Agent> member;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
+
+  /**
+   * Returns true if the group is anonymous.
+   */
+  @JsonIgnore
+  public boolean isAnonymous() {
+
+    return account == null && mbox == null && mboxSha1sum == null && openid == null
+        && member != null && !member.isEmpty();
+  }
 
   /**
    * Builder for Group.

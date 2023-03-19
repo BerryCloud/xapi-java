@@ -5,9 +5,15 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.ValidActor;
+import dev.learning.xapi.model.validation.constraints.ValidAuthority;
+import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
+import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
+import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
+import dev.learning.xapi.model.validation.constraints.Variant;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.Instant;
@@ -31,43 +37,53 @@ import lombok.With;
  */
 @With
 @Value
+@ValidStatementPlatform
+@ValidStatementRevision
+@ValidStatementVerb
 @Builder(toBuilder = true)
-@JsonIgnoreProperties("inProgress")
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
-public class Statement {
+public class Statement implements CoreStatement {
 
   /**
    * UUID assigned by LRS if not set by the Learning Record Provider.
    */
+  @Variant(2)
   private UUID id;
 
   /**
    * Whom the Statement is about, as an Agent or Group Object.
    */
   @NotNull
+  @Valid
+  @ValidActor
   private Actor actor;
 
   /**
    * Action taken by the Actor.
    */
   @NotNull
+  @Valid
   private Verb verb;
 
   /**
    * Activity, Agent, or another Statement that is the Object of the Statement.
    */
   @NotNull
+  @Valid
+  @ValidActor
   private StatementObject object;
 
   /**
    * Result Object, further details representing a measured outcome.
    */
+  @Valid
   private Result result;
 
   /**
    * Context that gives the Statement more meaning.
    */
+  @Valid
   private Context context;
 
   /**
@@ -83,6 +99,8 @@ public class Statement {
   /**
    * Agent or Group who is asserting this Statement is true.
    */
+  @ValidActor
+  @ValidAuthority
   private Actor authority;
 
   /**

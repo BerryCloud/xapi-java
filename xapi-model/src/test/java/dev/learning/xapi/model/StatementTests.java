@@ -8,6 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
@@ -445,6 +446,40 @@ class StatementTests {
 
     // Then ConstraintViolations Size Is One
     assertThat(constraintViolations, hasSize(1));
+
+  }
+
+  @Test
+  void whenValidatingStatementWithSubStatementWithStatementReferenceThenConstraintViolationsSizeIsZero() {
+
+    StatementReference statementRef = StatementReference.builder()
+        .id(UUID.fromString("9e13cefd-53d3-4eac-b5ed-2cf6693903bb")).build();
+
+    SubStatement subStatement = SubStatement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.EXPERIENCED)
+
+        .object(statementRef)
+
+        .build();
+
+    final Statement statement = Statement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.EXPERIENCED)
+
+        .object(subStatement)
+
+        .build();
+
+    // When Validating Statement With SubStatement With StatementReference
+    final Set<ConstraintViolation<Statement>> constraintViolations = validator.validate(statement);
+
+    // Then ConstraintViolations Size Is Zero
+    assertThat(constraintViolations, hasSize(0));
 
   }
 
