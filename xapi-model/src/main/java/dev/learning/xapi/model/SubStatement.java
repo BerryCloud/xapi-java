@@ -32,7 +32,7 @@ import lombok.Value;
 public class SubStatement implements StatementObject, CoreStatement {
 
   /**
-   * Whom the Statement is about, as an Agent or Group Object.
+   * {@inheritDoc}
    */
   @NotNull
   @Valid
@@ -40,14 +40,18 @@ public class SubStatement implements StatementObject, CoreStatement {
   private Actor actor;
 
   /**
-   * Action taken by the Actor.
+   * {@inheritDoc}
    */
   @NotNull
   @Valid
   private Verb verb;
 
   /**
-   * Activity or Agent.
+   * {@inheritDoc}
+   * 
+   * <p>
+   * A SubStatement MUST NOT contain a SubStatement of its own, i.e., cannot be nested.
+   * </p>
    */
   @NotNull
   @Valid
@@ -55,24 +59,24 @@ public class SubStatement implements StatementObject, CoreStatement {
   private SubStatementObject object;
 
   /**
-   * Result Object, further details representing a measured outcome.
+   * {@inheritDoc}
    */
   @Valid
   private Result result;
 
   /**
-   * Context that gives the Statement more meaning.
+   * {@inheritDoc}
    */
   @Valid
   private Context context;
 
   /**
-   * Timestamp of when the events described within this Statement occurred.
+   * {@inheritDoc}
    */
   private Instant timestamp;
 
   /**
-   * Headers for Attachments to the Statement.
+   * {@inheritDoc}
    */
   @Valid
   private List<Attachment> attachments;
