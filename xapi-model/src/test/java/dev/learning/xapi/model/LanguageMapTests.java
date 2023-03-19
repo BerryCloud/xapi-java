@@ -68,7 +68,7 @@ class LanguageMapTests {
 
     // Given French And English Key
     languageMap.put(Locale.FRENCH, "Couleur");
-    languageMap.put(Locale.US, "Color");
+    languageMap.put(Locale.ENGLISH, "Color");
 
     // When Getting US Value
     final String value = languageMap.get(LanguageRange.parse("en-US"));

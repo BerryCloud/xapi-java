@@ -114,7 +114,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Name Is Expected
-    assertThat(result.getName().get(Locale.US),
+    assertThat(result.getName().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -129,7 +129,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Description Is Expected
-    assertThat(result.getDescription().get(Locale.US), is("pong[.]1:[,]dg[.]:10[,]lunch[.]"));
+    assertThat(result.getDescription().get(Locale.ENGLISH), is("pong[.]1:[,]dg[.]:10[,]lunch[.]"));
 
   }
 
@@ -188,7 +188,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Choices Description Is Expected
-    assertThat(result.getChoices().get(0).getDescription().get(Locale.US),
+    assertThat(result.getChoices().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -218,7 +218,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Scale Description Is Expected
-    assertThat(result.getScale().get(0).getDescription().get(Locale.US),
+    assertThat(result.getScale().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -248,7 +248,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Source Description Is Expected
-    assertThat(result.getSource().get(0).getDescription().get(Locale.US),
+    assertThat(result.getSource().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -278,7 +278,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Target Description Is Expected
-    assertThat(result.getTarget().get(0).getDescription().get(Locale.US),
+    assertThat(result.getTarget().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -308,7 +308,7 @@ class ActivityDefinitionTests {
     final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Steps Description Is Expected
-    assertThat(result.getSteps().get(0).getDescription().get(Locale.US),
+    assertThat(result.getSteps().get(0).getDescription().get(Locale.ENGLISH),
         is("Does the xAPI include the concept of statements?"));
 
   }
@@ -319,9 +319,9 @@ class ActivityDefinitionTests {
 
     final ActivityDefinition activityDefinition = ActivityDefinition.builder()
 
-        .addName(Locale.US, "True false question")
+        .addName(Locale.ENGLISH, "True false question")
 
-        .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+        .addDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
 
         .interactionType(InteractionType.TRUE_FALSE)
 
@@ -347,21 +347,21 @@ class ActivityDefinitionTests {
 
     final ActivityDefinition activityDefinition = ActivityDefinition.builder()
 
-        .addName(Locale.US, "Choice")
+        .addName(Locale.ENGLISH, "Choice")
 
-        .addDescription(Locale.US, "Which of these prototypes are available at the beta site?")
+        .addDescription(Locale.ENGLISH, "Which of these prototypes are available at the beta site?")
 
         .interactionType(InteractionType.CHOICE)
 
         .correctResponsesPattern(Collections.singletonList("golf[,]tetris"))
 
-        .addChoice(c -> c.id("golf").addDescription(Locale.US, "Golf Example"))
+        .addChoice(c -> c.id("golf").addDescription(Locale.ENGLISH, "Golf Example"))
 
-        .addChoice(c -> c.id("facebook").addDescription(Locale.US, "Facebook App"))
+        .addChoice(c -> c.id("facebook").addDescription(Locale.ENGLISH, "Facebook App"))
 
-        .addChoice(c -> c.id("tetris").addDescription(Locale.US, "Tetris Example"))
+        .addChoice(c -> c.id("tetris").addDescription(Locale.ENGLISH, "Tetris Example"))
 
-        .addChoice(c -> c.id("scrabble").addDescription(Locale.US, "Scrabble Example"))
+        .addChoice(c -> c.id("scrabble").addDescription(Locale.ENGLISH, "Scrabble Example"))
 
         .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
@@ -389,7 +389,7 @@ class ActivityDefinitionTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "ActivityDefinition(name={en_US=Does the xAPI include the concept of statements?}, description={en_US=pong[.]1:[,]dg[.]:10[,]lunch[.]}, type=http://adlnet.gov/expapi/activities/cmi.interaction, moreInfo=http://example.com/more, interactionType=TRUE_FALSE, correctResponsesPattern=[{case_matters=false}{lang=en}To store and provide access to learning experiences.], choices=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], scale=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], source=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], target=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], steps=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], extensions={http://url=www.example.com})"));
+        "ActivityDefinition(name={en=Does the xAPI include the concept of statements?}, description={en=pong[.]1:[,]dg[.]:10[,]lunch[.]}, type=http://adlnet.gov/expapi/activities/cmi.interaction, moreInfo=http://example.com/more, interactionType=TRUE_FALSE, correctResponsesPattern=[{case_matters=false}{lang=en}To store and provide access to learning experiences.], choices=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], scale=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], source=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], target=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], steps=[InteractionComponent(id=1, description={en=Does the xAPI include the concept of statements?})], extensions={http://url=www.example.com})"));
   }
 
   @Test
@@ -398,11 +398,11 @@ class ActivityDefinitionTests {
     // When Building ActivityDefinition With Two Name Values
     final ActivityDefinition activityDefinition = ActivityDefinition.builder()
 
-        .addName(Locale.US, "True false question")
+        .addName(Locale.ENGLISH, "True false question")
 
         .addName(Locale.GERMAN, "Richtig / Falsch-Frage")
 
-        .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+        .addDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
 
         .interactionType(InteractionType.TRUE_FALSE)
 
@@ -423,9 +423,9 @@ class ActivityDefinitionTests {
     // When Building ActivityDefinition With Two Description Values
     final ActivityDefinition activityDefinition = ActivityDefinition.builder()
 
-        .addName(Locale.US, "True false question")
+        .addName(Locale.ENGLISH, "True false question")
 
-        .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+        .addDescription(Locale.ENGLISH, "Does the xAPI include the concept of statements?")
 
         .addDescription(Locale.GERMAN, "Enthält die xAPI das Konzept von Anweisungen?")
 

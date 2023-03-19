@@ -79,9 +79,9 @@ class ActivityTests {
 
         .definition(d -> d
 
-            .addName(Locale.US, "simple statement")
+            .addName(Locale.ENGLISH, "simple statement")
 
-            .addDescription(Locale.US,
+            .addDescription(Locale.ENGLISH,
                 "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
 
         .build();

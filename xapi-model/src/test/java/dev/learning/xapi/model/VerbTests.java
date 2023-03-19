@@ -78,7 +78,7 @@ class VerbTests {
 
         .id(URI.create("http://adlnet.gov/expapi/verbs/answered"))
 
-        .addDisplay(Locale.US, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .build();
 
@@ -128,7 +128,7 @@ class VerbTests {
 
     // Then Result Is Expected
     assertThat(result,
-        is("Verb(id=http://adlnet.gov/expapi/verbs/answered, display={en_US=answered})"));
+        is("Verb(id=http://adlnet.gov/expapi/verbs/answered, display={en=answered})"));
 
   }
 
@@ -187,7 +187,7 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .addDisplay(Locale.US, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .addDisplay(Locale.GERMAN, "antwortete")
 
@@ -217,7 +217,7 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .addDisplay(Locale.US, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .build());
 
@@ -243,7 +243,7 @@ class VerbTests {
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
-        .addDisplay(Locale.US, "answered")
+        .addDisplay(Locale.ENGLISH, "answered")
 
         .build());
 
@@ -318,7 +318,7 @@ class VerbTests {
   void whenValidatingVerbWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final Verb verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/answered")
-        .addDisplay(Locale.US, "answered").build();
+        .addDisplay(Locale.ENGLISH, "answered").build();
 
     // When Validating Interaction Component With All Required Properties
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);
@@ -331,7 +331,7 @@ class VerbTests {
   @Test
   void whenValidatingVerbWithoutIdThenConstraintViolationsSizeIsOne() {
 
-    final Verb verb = Verb.builder().addDisplay(Locale.US, "answered").build();
+    final Verb verb = Verb.builder().addDisplay(Locale.ENGLISH, "answered").build();
 
     // When Validating Interaction Component Without Id
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);

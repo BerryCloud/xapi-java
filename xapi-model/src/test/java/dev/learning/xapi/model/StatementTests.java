@@ -240,9 +240,9 @@ class StatementTests {
     final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
-        .addDisplay(Locale.US, "value")
+        .addDisplay(Locale.ENGLISH, "value")
 
-        .addDescription(Locale.US, "value")
+        .addDescription(Locale.ENGLISH, "value")
 
         .length(123)
 
@@ -282,7 +282,7 @@ class StatementTests {
 
             .platform("Example virtual meeting software")
 
-            .language(Locale.US)
+            .language(Locale.ENGLISH)
 
             .statementReference(s -> s.id(UUID.fromString("6690e6c9-3ef0-4ed3-8b37-7f3964730bee")))
 
@@ -450,7 +450,7 @@ class StatementTests {
   }
 
   @Test
-  void whenValidatingStatementWithSubStatementWithStatementRefrenceThenConstraintViolationsSizeIsZero() {
+  void whenValidatingStatementWithSubStatementWithStatementReferenceThenConstraintViolationsSizeIsZero() {
 
     StatementReference statementRef = StatementReference.builder()
         .id(UUID.fromString("9e13cefd-53d3-4eac-b5ed-2cf6693903bb")).build();
@@ -475,7 +475,7 @@ class StatementTests {
 
         .build();
 
-    // When Validating Statement With SubStatement With StatementRefrence
+    // When Validating Statement With SubStatement With StatementReference
     final Set<ConstraintViolation<Statement>> constraintViolations = validator.validate(statement);
 
     // Then ConstraintViolations Size Is Zero

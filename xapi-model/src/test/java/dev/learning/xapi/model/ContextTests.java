@@ -93,7 +93,7 @@ class ContextTests {
     final Context result = objectMapper.readValue(file, Context.class);
 
     // Then Language Is Expected
-    assertThat(result.getLanguage(), is(Locale.US));
+    assertThat(result.getLanguage(), is(Locale.ENGLISH));
 
   }
 
@@ -230,7 +230,7 @@ class ContextTests {
 
         .platform("platform")
 
-        .language(Locale.US)
+        .language(Locale.ENGLISH)
 
         .statementReference(s -> s.id(UUID.fromString("e9b6b9ed-ef48-4986-9b86-2ef697578bf7")))
 
@@ -268,7 +268,7 @@ class ContextTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Context(registration=1d527164-ed0d-4b1d-9f9b-39aab0e4a089, instructor=Agent(super=Actor(name=Andrew Downes, mbox=mailto:andrew@example.co.uk, mboxSha1sum=null, openid=null, account=null)), team=Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=null), member=null), contextActivities=ContextActivities(parent=[Activity(id=https://example.com/activity/1, definition=null)], grouping=[Activity(id=https://example.com/activity/2, definition=null)], category=[Activity(id=https://example.com/activity/3, definition=null)], other=[Activity(id=https://example.com/activity/4, definition=null)]), revision=revision, platform=platform, language=en_US, statement=StatementReference(id=e9b6b9ed-ef48-4986-9b86-2ef697578bf7), extensions={http://url=www.example.com})"));
+        "Context(registration=1d527164-ed0d-4b1d-9f9b-39aab0e4a089, instructor=Agent(super=Actor(name=Andrew Downes, mbox=mailto:andrew@example.co.uk, mboxSha1sum=null, openid=null, account=null)), team=Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=null), member=null), contextActivities=ContextActivities(parent=[Activity(id=https://example.com/activity/1, definition=null)], grouping=[Activity(id=https://example.com/activity/2, definition=null)], category=[Activity(id=https://example.com/activity/3, definition=null)], other=[Activity(id=https://example.com/activity/4, definition=null)]), revision=revision, platform=platform, language=en, statement=StatementReference(id=e9b6b9ed-ef48-4986-9b86-2ef697578bf7), extensions={http://url=www.example.com})"));
 
   }
 

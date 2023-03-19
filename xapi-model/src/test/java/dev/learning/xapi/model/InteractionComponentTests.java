@@ -75,7 +75,7 @@ class InteractionComponentTests {
     final InteractionComponent result = objectMapper.readValue(file, InteractionComponent.class);
 
     // Then Description Is Expected
-    assertThat(result.getDescription().get(Locale.US), is("value"));
+    assertThat(result.getDescription().get(Locale.ENGLISH), is("value"));
 
   }
 
@@ -86,7 +86,7 @@ class InteractionComponentTests {
 
         .id("1")
 
-        .addDescription(Locale.US, "value")
+        .addDescription(Locale.ENGLISH, "value")
 
         .build();
 
@@ -111,7 +111,7 @@ class InteractionComponentTests {
     final String result = interactionComponent.toString();
 
     // Then Result Is Expected
-    assertThat(result, is("InteractionComponent(id=1, description={en_US=value})"));
+    assertThat(result, is("InteractionComponent(id=1, description={en=value})"));
 
   }
 
@@ -120,7 +120,7 @@ class InteractionComponentTests {
 
     // When Building InteractionComponent With Two Description Values
     final InteractionComponent interactionComponent = InteractionComponent.builder().id("1")
-        .addDescription(Locale.US, "value").addDescription(Locale.GERMAN, "Wert").build();
+        .addDescription(Locale.ENGLISH, "value").addDescription(Locale.GERMAN, "Wert").build();
 
     // Then Description Language Map Has Two Entries
     assertThat(interactionComponent.getDescription(), aMapWithSize(2));
@@ -131,7 +131,7 @@ class InteractionComponentTests {
   void whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final InteractionComponent interactionComponent =
-        InteractionComponent.builder().id("1").addDescription(Locale.US, "value").build();
+        InteractionComponent.builder().id("1").addDescription(Locale.ENGLISH, "value").build();
 
     // When Validating Interaction Component With All Required Properties
     final Set<ConstraintViolation<InteractionComponent>> constraintViolations =
@@ -146,7 +146,7 @@ class InteractionComponentTests {
   void whenValidatingInteractionComponentWithoutIdThenConstraintViolationsSizeIsOne() {
 
     final InteractionComponent interactionComponent =
-        InteractionComponent.builder().addDescription(Locale.US, "value").build();
+        InteractionComponent.builder().addDescription(Locale.ENGLISH, "value").build();
 
     // When Validating Interaction Component Without Id
     final Set<ConstraintViolation<InteractionComponent>> constraintViolations =
