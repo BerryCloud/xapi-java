@@ -26,7 +26,7 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.0.8</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 </project>
@@ -210,7 +210,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.0.8</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 </project>
@@ -298,6 +298,43 @@ Statement passed = Statement.builder()
     .build();
 
 Statement completed = passed.toBuilder().verb(Verb.COMPLETED).build();
+
+```
+
+### Validating Statements
+
+Statements can be validated programmatically.
+
+Example:
+
+```java
+Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+Statement statement = Statement.builder()
+
+    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+    .activityObject(o -> o.id("https://example.com/xapi/activity/simplestatement"))
+
+    .build();
+
+Set<ConstraintViolation<Statement>> constraintViolations = validator.validate(statement);
+
+// Prints ConstraintViolationImpl{interpolatedMessage='must not be null', propertyPath=verb, rootBeanClass=class dev.learning.xapi.model.Statement, messageTemplate='{jakarta.validation.constraints.NotNull.message}'}
+
+```
+
+Statements can also be validated when they are received by a method in a REST controller. The following example requires Spring MVC and the Hibernate Validator.
+
+```java
+@PostMapping
+public ResponseEntity<Collection<UUID>> postStatements(
+    @RequestBody List<@Valid Statement> statements) {
+
+  // Process the statements
+
+  return new ResponseEntity<>(HttpStatus.OK);
+}
 
 ```
 
