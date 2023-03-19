@@ -13,8 +13,8 @@ import jakarta.validation.ConstraintValidatorContext;
  * The {@link ActivityDefinition} being validated must be valid.
  *
  * @author István Rátkai (Selindek)
- * @see <a
- *      href=https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">Activity
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">Activity
  *      Definition</a>
  */
 public class ActivityDefinitionValidator
