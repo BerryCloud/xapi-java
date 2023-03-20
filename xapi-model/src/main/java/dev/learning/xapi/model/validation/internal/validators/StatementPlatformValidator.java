@@ -18,17 +18,18 @@ import jakarta.validation.ConstraintValidatorContext;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#requirements-10">
  *      Statement Context Requirements</a>
  */
-public class StatementPlatformValidator implements
-    ConstraintValidator<ValidStatementPlatform, CoreStatement> {
+public class StatementPlatformValidator
+    implements ConstraintValidator<ValidStatementPlatform, CoreStatement> {
 
   @Override
   public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
 
     return value == null || value.getContext() == null || value.getContext().getPlatform() == null
-        || value.getObject() instanceof Activity; 
+        || value.getObject() instanceof Activity;
   }
 
 }

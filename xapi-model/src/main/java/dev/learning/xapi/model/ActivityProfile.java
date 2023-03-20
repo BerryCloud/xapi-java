@@ -14,6 +14,7 @@ import lombok.Value;
  * This class represents the xAPI Activity Profile object.
  *
  * @author Thomas Turrell-Croft
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#27-activity-profile-resource">xAPI
  *      Activity Profile</a>

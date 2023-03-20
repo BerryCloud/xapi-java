@@ -33,8 +33,8 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "name")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", 
-    defaultImpl = Agent.class, include = As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", defaultImpl = Agent.class,
+    include = As.PROPERTY)
 @JsonSubTypes({@JsonSubTypes.Type(value = Agent.class, name = "Agent"),
     @JsonSubTypes.Type(value = Agent.class, name = "Person"),
     @JsonSubTypes.Type(value = Group.class, name = "Group")})
@@ -87,7 +87,7 @@ public abstract class Actor implements StatementObject, SubStatementObject {
      */
     public Builder<C, B> account(Consumer<Account.Builder> account) {
 
-      final Account.Builder builder = Account.builder();
+      final var builder = Account.builder();
 
       account.accept(builder);
 

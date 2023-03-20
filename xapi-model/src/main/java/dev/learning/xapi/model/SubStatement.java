@@ -20,7 +20,7 @@ import lombok.Value;
  * This class represents the xAPI SubStatement object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#substatements">xAPI
  *      SubStatement</a>
  */
@@ -48,7 +48,6 @@ public class SubStatement implements StatementObject, CoreStatement {
 
   /**
    * {@inheritDoc}
-   * 
    * <p>
    * A SubStatement MUST NOT contain a SubStatement of its own, i.e., cannot be nested.
    * </p>
@@ -137,7 +136,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      */
     public Builder verb(Consumer<Verb.Builder> verb) {
 
-      final Verb.Builder builder = Verb.builder();
+      final var builder = Verb.builder();
 
       verb.accept(builder);
 
