@@ -10,6 +10,7 @@
   <name>xAPI Model</name>
   <description>learning.dev xAPI Model</description>
   <dependencies>
+    <!-- For calculating attachments' sha2 hash -->
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
