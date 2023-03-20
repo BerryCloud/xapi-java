@@ -27,8 +27,8 @@ import org.springframework.web.reactive.function.client.WebClient.RequestBodySpe
 public final class MultipartHelper {
 
   private static final String MULTIPART_BOUNDARY = "xapi-learning-dev-boundary";
-  private static final String MULTIPART_CONTENT_TYPE = "multipart/mixed; boundary="
-      + MULTIPART_BOUNDARY;
+  private static final String MULTIPART_CONTENT_TYPE =
+      "multipart/mixed; boundary=" + MULTIPART_BOUNDARY;
   private static final String CRLF = "\r\n";
   private static final String BOUNDARY_PREFIX = "--";
   private static final String BODY_SEPARATOR = BOUNDARY_PREFIX + MULTIPART_BOUNDARY + CRLF;
@@ -46,7 +46,7 @@ public final class MultipartHelper {
    * sets the content-type to multipart/mixed if needed.
    *
    * @param requestSpec a {@link RequestBodySpec} object.
-   * @param statement   a {@link Statement} to add.
+   * @param statement a {@link Statement} to add.
    */
   public static void addBody(RequestBodySpec requestSpec, Statement statement) {
 
@@ -62,7 +62,7 @@ public final class MultipartHelper {
    * Also sets the content-type to multipart/mixed if needed.
    *
    * @param requestSpec a {@link RequestBodySpec} object.
-   * @param statements  list of {@link Statement}s to add.
+   * @param statements list of {@link Statement}s to add.
    */
   public static void addBody(RequestBodySpec requestSpec, List<Statement> statements) {
 
@@ -74,7 +74,7 @@ public final class MultipartHelper {
   private static void addBody(RequestBodySpec requestSpec, Object statements,
       Stream<Attachment> attachments) {
 
-    final String attachmentsBody = writeAttachments(attachments);
+    final var attachmentsBody = writeAttachments(attachments);
 
     if (attachmentsBody.isEmpty()) {
       // add body directly, content-type is default application/json
@@ -92,12 +92,13 @@ public final class MultipartHelper {
    * Gets {@link Attachment}s of a {@link Statement} which has data property as a {@link Stream}.
    *
    * @param statement a {@link Statement} object
+   *
    * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
    */
   private static Stream<Attachment> getRealAttachments(Statement statement) {
 
     // handle the rare scenario when a sub-statement has an attachment
-    Stream<Attachment> stream = statement.getObject() instanceof final SubStatement substatement
+	Stream<Attachment> stream = statement.getObject() instanceof final SubStatement substatement
         && substatement.getAttachments() != null ? substatement.getAttachments().stream()
             : Stream.empty();
 
