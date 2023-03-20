@@ -240,9 +240,9 @@ class StatementTests {
     final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
-        .addDisplay(Locale.ENGLISH, "value")
+        .addDisplay(Locale.US, "value")
 
-        .addDescription(Locale.ENGLISH, "value")
+        .addDescription(Locale.US, "value")
 
         .length(123)
 
@@ -282,7 +282,7 @@ class StatementTests {
 
             .platform("Example virtual meeting software")
 
-            .language(Locale.ENGLISH)
+            .language(Locale.US)
 
             .statementReference(s -> s.id(UUID.fromString("6690e6c9-3ef0-4ed3-8b37-7f3964730bee")))
 
@@ -296,10 +296,10 @@ class StatementTests {
 
         .activityObject(a -> a.id("http://www.example.com/meetings/occurances/34534")
 
-            .definition(d -> d.addName(Locale.UK,
+            .definition(d -> d.addName(Locale.US,
                 "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
 
-                .addDescription(Locale.UK,
+                .addDescription(Locale.US,
                     "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
 
                 .type(URI.create("http://adlnet.gov/expapi/activities/meeting"))
@@ -321,6 +321,100 @@ class StatementTests {
     assertThat(result,
         is(objectMapper.readTree(objectMapper.writeValueAsString(objectMapper.readValue(
             ResourceUtils.getFile("classpath:statement/statement.json"), Statement.class)))));
+
+  }
+
+  @Test
+  void whenSerializingStatementWithEnLocaleThenResultIsEqualToExpectedJson() throws IOException {
+
+    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    extensions.put(URI.create("http://name"), "Kilby");
+
+    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+        .fileUrl(URI.create("http://example.com"))
+
+        .addDisplay(Locale.ENGLISH, "value")
+
+        .addDescription(Locale.ENGLISH, "value")
+
+        .length(123)
+
+        .sha2("123")
+
+        .contentType("file")
+
+        .build();
+
+    final Account account = Account.builder()
+
+        .homePage(URI.create("https://example.com"))
+
+        .name("13936749")
+
+        .build();
+
+
+    final Statement statement = Statement.builder()
+
+        .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
+
+        .actor(a -> a.name("A N Other"))
+
+        .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
+            .addDisplay(Locale.ENGLISH, "attended"))
+
+        .result(r -> r.success(true).completion(true).response("Response").duration("P1D"))
+
+        .context(c -> c
+
+            .registration(UUID.fromString("ec531277-b57b-4c15-8d91-d292c5b2b8f7"))
+
+            .agentInstructor(a -> a.name("A N Other").account(account))
+
+            .team(t -> t.name("Team").mbox("mailto:team@example.com"))
+
+            .platform("Example virtual meeting software")
+
+            .language(Locale.ENGLISH)
+
+            .statementReference(s -> s.id(UUID.fromString("6690e6c9-3ef0-4ed3-8b37-7f3964730bee")))
+
+        )
+
+        .timestamp(Instant.parse("2013-05-18T05:32:34.804+00:00"))
+
+        .stored(Instant.parse("2013-05-18T05:32:34.804+00:00"))
+
+        .agentAuthority(a -> a.account(account))
+
+        .activityObject(a -> a.id("http://www.example.com/meetings/occurances/34534")
+
+            .definition(d -> d.addName(Locale.ENGLISH,
+                "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
+
+                .addDescription(Locale.ENGLISH,
+                    "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
+
+                .type(URI.create("http://adlnet.gov/expapi/activities/meeting"))
+
+                .moreInfo(URI.create("http://virtualmeeting.example.com/345256"))
+
+                .extensions(extensions)))
+
+        .attachments(Collections.singletonList(attachment))
+
+        .version("1.0.0")
+
+        .build();
+
+    // When Serializing Statement With En Locale
+    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+
+    // Then Result Is Equal To Expected Json
+    assertThat(result,
+        is(objectMapper.readTree(objectMapper.writeValueAsString(objectMapper.readValue(
+            ResourceUtils.getFile("classpath:statement/statement_with_en_locale.json"),
+            Statement.class)))));
 
   }
 

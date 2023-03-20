@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import dev.learning.xapi.jackson.LocaleSerializer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +22,7 @@ import java.util.Optional;
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps">Language
  *      Maps</a>
  */
+@JsonSerialize(keyUsing = LocaleSerializer.LocaleKeySerializer.class)
 public class LanguageMap extends LinkedHashMap<Locale, String> {
 
   private static final long serialVersionUID = 7375610804995032187L;
