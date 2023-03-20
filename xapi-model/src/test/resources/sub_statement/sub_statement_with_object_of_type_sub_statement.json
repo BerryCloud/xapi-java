@@ -19,7 +19,7 @@
       "verb":{
          "id":"http://example.com/confirmed",
          "display":{
-            "en":"confirmed"
+            "en-US":"confirmed"
          }
       },
       "object":{
