@@ -57,7 +57,7 @@ public class PostStatementRequest implements Request {
      */
     public Builder statement(Consumer<Statement.Builder> statement) {
 
-      final Statement.Builder builder = Statement.builder();
+      final var builder = Statement.builder();
 
       statement.accept(builder);
 

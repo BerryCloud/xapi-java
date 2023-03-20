@@ -11,14 +11,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Locale.LanguageRange;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * A language map is a dictionary where the key is a RFC 5646 Language Tag, and the value is a
  * string in the language specified in the tag.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps">Language
  *      Maps</a>
  */
@@ -78,19 +77,19 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
   public String get(List<LanguageRange> languageRanges) {
 
     // Return best match
-    final Locale best = Locale.lookup(languageRanges, keySet());
+    final var best = Locale.lookup(languageRanges, keySet());
     if (best != null) {
       return get(best);
     }
 
     // Otherwise return UND
-    final String und = get(new Locale("und"));
+    final var und = get(new Locale("und"));
     if (und != null) {
       return und;
     }
 
     // Otherwise return first
-    final Optional<Locale> first = keySet().stream().findFirst();
+    final var first = keySet().stream().findFirst();
     if (first.isPresent()) {
       return get(first.get());
     }

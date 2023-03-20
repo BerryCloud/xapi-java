@@ -16,7 +16,7 @@ import lombok.Value;
  * This class represents the xAPI Interaction Component object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#interaction-components">xAPI
  *      Interaction Components</a>

@@ -51,6 +51,7 @@ public class GetMoreStatementsRequest implements Request {
      * Sets the more token.
      *
      * @param more The more token of the GetMoreStatementsRequest.
+     *
      * @return This builder
      */
     public Builder more(String more) {
@@ -65,6 +66,7 @@ public class GetMoreStatementsRequest implements Request {
      * Sets the more token.
      *
      * @param more The more token of the GetMoreStatementsRequest.
+     *
      * @return This builder
      */
     public Builder more(URI more) {
@@ -74,7 +76,7 @@ public class GetMoreStatementsRequest implements Request {
       return this;
 
     }
-    
+
     // This static class extends the lombok builder.
 
   }

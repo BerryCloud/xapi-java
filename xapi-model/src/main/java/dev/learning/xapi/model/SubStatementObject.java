@@ -12,13 +12,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 /**
  * This interface represents the xAPI SubStatement object.
- * 
  * <p>
  * <strong>Note:</strong> A SubStatement object cannot be a SubStatement.
  * </p>
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#substatements">xAPI
  *      SubStatements</a>
  */

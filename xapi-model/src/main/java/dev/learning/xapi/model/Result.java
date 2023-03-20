@@ -19,7 +19,7 @@ import lombok.Value;
  * This class represents the xAPI Result object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#result">xAPI
  *      Result</a>
  */
@@ -81,7 +81,7 @@ public class Result {
      */
     public Builder score(Consumer<Score.Builder> score) {
 
-      final Score.Builder builder = Score.builder();
+      final var builder = Score.builder();
 
       score.accept(builder);
 

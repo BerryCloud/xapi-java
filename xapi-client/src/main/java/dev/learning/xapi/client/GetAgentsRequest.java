@@ -34,7 +34,7 @@ public class GetAgentsRequest implements Request {
    * The Agent representation to use in fetching expanded Agent information.
    */
   @NonNull
-  private Agent agent;
+  private final Agent agent;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {

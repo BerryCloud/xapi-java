@@ -17,7 +17,7 @@ import lombok.Value;
  * This class represents the xAPI Statement Result object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#25-retrieval-of-statements">xAPI
  *      Statement Result</a>
@@ -72,7 +72,7 @@ public class StatementResult {
      */
     public Builder addStatement(Consumer<Statement.Builder> statement) {
 
-      final Statement.Builder builder = Statement.builder();
+      final var builder = Statement.builder();
 
       statement.accept(builder);
 
