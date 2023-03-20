@@ -7,7 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import dev.learning.xapi.client.XapiClient;
-import dev.learning.xapi.client.configuration.XapiClientConfigurationTest2.XapiTestClientConfiguration2;
+import dev.learning.xapi.client.configuration.XapiClientConfiguration2Test.XapiTestClientConfiguration2;
 import java.io.IOException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -22,16 +22,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 
 /**
- * XapiClientConfiguration Test.
+ * XapiClientConfiguration2 Test.
  *
  * @author István Rátkai (Selindek)
  */
-@DisplayName("XapiClientConfigurationTest2 Test")
+@DisplayName("XapiClientConfiguration2Test Test")
 @SpringBootTest(
     classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
         XapiTestClientConfiguration2.class },
     properties = "xapi.client.authorization = bearer 1234")
-class XapiClientConfigurationTest2 {
+class XapiClientConfiguration2Test {
 
   @Autowired
   private XapiClient client;
