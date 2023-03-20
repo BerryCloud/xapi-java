@@ -12,8 +12,9 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Specific Locale serializer using {@link Locale#toLanguageTag()} instead of {@link Locale#toString()}.
- * 
+ * Specific Locale serializer using {@link Locale#toLanguageTag()} instead of 
+ * {@link Locale#toString()}.
+ *
  * @author István Rátkai (Selindek)
  */
 public class LocaleSerializer extends StdSerializer<Locale> {
@@ -25,7 +26,8 @@ public class LocaleSerializer extends StdSerializer<Locale> {
   }
 
   @Override
-  public void serialize(Locale value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+  public void serialize(Locale value, JsonGenerator gen, SerializerProvider provider)
+      throws IOException {
     gen.writeString(value.toLanguageTag());
   }
 
@@ -46,7 +48,8 @@ public class LocaleSerializer extends StdSerializer<Locale> {
     }
 
     @Override
-    public void serialize(Locale value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Locale value, JsonGenerator gen, SerializerProvider provider) 
+        throws IOException {
       gen.writeFieldName(value.toLanguageTag());
     }
 
