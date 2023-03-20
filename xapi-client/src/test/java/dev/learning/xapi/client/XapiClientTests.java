@@ -195,10 +195,8 @@ class XapiClientTests {
 
     final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
-    final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
-
     // When Posting Statements
-    client.postStatements(r -> r.statements(statements)).block();
+    client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).block();
 
     final RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
@@ -1213,7 +1211,7 @@ class XapiClientTests {
         .block();
 
     // Then Body Is Expected
-    assertThat(response.getBody(), is(Arrays.asList( "State1", "State2", "State3" )));
+    assertThat(response.getBody(), is(Arrays.asList("State1", "State2", "State3")));
   }
 
   // Deleting Multiple States

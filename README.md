@@ -32,6 +32,21 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
 </project>
 ```
 
+### Configuration
+
+The xAPI Java Client has a Spring AutoConfiguration bean which picks up the following properties from the environment:
+
+```
+xapi.client.baseUrl
+xapi.client.username
+xapi.client.password
+xapi.client.authorization
+```
+
+Set `xapi.client.baseUrl` to your xApi LRS endpoint. Use `xapi.client.username` and `xapi.client.password` for basic authorization, or set the whole authorization header via `xapi.client.authorization`. (The latter has precedence if both method is used)
+
+If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
+
 ### Statement Resource
 
 The xAPI Java Client allows applications to store and fetch xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements).
