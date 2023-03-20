@@ -27,7 +27,7 @@ import org.springframework.web.util.UriBuilder;
 public class GetActivityRequest implements Request {
 
   @NonNull
-  private URI activityId;
+  private final URI activityId;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {

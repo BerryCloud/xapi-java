@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -31,8 +32,8 @@ class AgentTests {
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
   @ParameterizedTest
-  @ValueSource(strings = {"classpath:agent/agent.json", 
-      "classpath:agent/agent_without_object_type.json", 
+  @ValueSource(strings = {"classpath:agent/agent.json",
+      "classpath:agent/agent_without_object_type.json",
       "classpath:agent/agent_with_object_type.json"})
   void whenDeserializingAgentThenResultIsInstanceOfAgent(String fileName) throws IOException {
 

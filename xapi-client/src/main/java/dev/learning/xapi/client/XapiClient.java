@@ -33,13 +33,11 @@ public class XapiClient {
 
   private final WebClient webClient;
 
-  private static final ParameterizedTypeReference<
-      List<UUID>> LIST_UUID_TYPE = new ParameterizedTypeReference<>() {
-      };
+  private static final ParameterizedTypeReference<List<UUID>> LIST_UUID_TYPE =
+      new ParameterizedTypeReference<>() {};
 
-  private static final ParameterizedTypeReference<
-      List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
-      };
+  private static final ParameterizedTypeReference<List<String>> LIST_STRING_TYPE =
+      new ParameterizedTypeReference<>() {};
 
   /**
    * Default constructor for XapiClient.
@@ -138,7 +136,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<UUID>> postStatement(Consumer<PostStatementRequest.Builder> request) {
 
-    final PostStatementRequest.Builder builder = PostStatementRequest.builder();
+    final var builder = PostStatementRequest.builder();
 
     request.accept(builder);
 
@@ -185,7 +183,7 @@ public class XapiClient {
   public Mono<ResponseEntity<List<UUID>>> postStatements(
       Consumer<PostStatementsRequest.Builder> request) {
 
-    final PostStatementsRequest.Builder builder = PostStatementsRequest.builder();
+    final var builder = PostStatementsRequest.builder();
 
     request.accept(builder);
 
@@ -289,7 +287,7 @@ public class XapiClient {
   public Mono<ResponseEntity<StatementResult>> getStatements(
       Consumer<GetStatementsRequest.Builder> request) {
 
-    final GetStatementsRequest.Builder builder = GetStatementsRequest.builder();
+    final var builder = GetStatementsRequest.builder();
 
     request.accept(builder);
 
@@ -336,7 +334,7 @@ public class XapiClient {
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(
       Consumer<GetMoreStatementsRequest.Builder> request) {
 
-    final GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder();
+    final var builder = GetMoreStatementsRequest.builder();
 
     request.accept(builder);
 
@@ -665,7 +663,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
 
-    final GetAgentsRequest.Builder builder = GetAgentsRequest.builder();
+    final var builder = GetAgentsRequest.builder();
 
     request.accept(builder);
 
@@ -705,7 +703,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
 
-    final GetActivityRequest.Builder builder = GetActivityRequest.builder();
+    final var builder = GetActivityRequest.builder();
 
     request.accept(builder);
 
@@ -939,7 +937,7 @@ public class XapiClient {
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(
       Consumer<GetAgentProfilesRequest.Builder> request) {
 
-    final GetAgentProfilesRequest.Builder builder = GetAgentProfilesRequest.builder();
+    final var builder = GetAgentProfilesRequest.builder();
 
     request.accept(builder);
 
@@ -1181,7 +1179,7 @@ public class XapiClient {
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(
       Consumer<GetActivityProfilesRequest.Builder> request) {
 
-    final GetActivityProfilesRequest.Builder builder = GetActivityProfilesRequest.builder();
+    final var builder = GetActivityProfilesRequest.builder();
 
     request.accept(builder);
 

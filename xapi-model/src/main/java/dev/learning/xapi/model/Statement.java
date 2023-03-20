@@ -31,7 +31,7 @@ import lombok.With;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-properties">xAPI
  *      Statement</a>
@@ -172,7 +172,7 @@ public class Statement implements CoreStatement {
      */
     public Builder verb(Consumer<Verb.Builder> verb) {
 
-      final Verb.Builder builder = Verb.builder();
+      final var builder = Verb.builder();
 
       verb.accept(builder);
 
@@ -206,7 +206,7 @@ public class Statement implements CoreStatement {
      */
     public Builder result(Consumer<Result.Builder> result) {
 
-      final Result.Builder builder = Result.builder();
+      final var builder = Result.builder();
 
       result.accept(builder);
 
@@ -259,7 +259,7 @@ public class Statement implements CoreStatement {
      */
     public Builder activityObject(Consumer<Activity.Builder> activity) {
 
-      final Activity.Builder builder = Activity.builder();
+      final var builder = Activity.builder();
 
       activity.accept(builder);
 
@@ -278,7 +278,7 @@ public class Statement implements CoreStatement {
     public Builder statementReferenceObject(
         Consumer<StatementReference.Builder> statementReference) {
 
-      final StatementReference.Builder builder = StatementReference.builder();
+      final var builder = StatementReference.builder();
 
       statementReference.accept(builder);
 
@@ -296,7 +296,7 @@ public class Statement implements CoreStatement {
      */
     public Builder context(Consumer<Context.Builder> context) {
 
-      final Context.Builder builder = Context.builder();
+      final var builder = Context.builder();
 
       context.accept(builder);
 

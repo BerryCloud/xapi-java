@@ -5,6 +5,7 @@ package dev.learning.xapi.client;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.net.URI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class GetMoreStatementsRequestTests {
     assertDoesNotThrow(() -> builder.build());
 
   }
-  
+
   @Test
   void whenBuildingGetMoreStatementsRequestWithStringParameterThenNoExceptionIsThrown() {
 

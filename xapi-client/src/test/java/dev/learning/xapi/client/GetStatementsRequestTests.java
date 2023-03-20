@@ -4,6 +4,7 @@
 package dev.learning.xapi.client;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import dev.learning.xapi.model.StatementFormat;
 import java.net.URI;
 import java.time.Instant;

@@ -30,12 +30,12 @@ public class GetActivityProfilesRequest implements Request {
    * The Activity id associated with these Profile documents.
    */
   @NonNull
-  private URI activityId;
+  private final URI activityId;
 
   /**
    * Only ids of Profile documents stored since the specified Timestamp (exclusive) are returned.
    */
-  private Instant since;
+  private final Instant since;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {

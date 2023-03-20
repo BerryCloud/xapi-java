@@ -24,7 +24,7 @@ public class NotUndeterminedValidator implements ConstraintValidator<NotUndeterm
     }
 
     return !value.toLanguageTag().equalsIgnoreCase("und");
-    
+
   }
 
 }

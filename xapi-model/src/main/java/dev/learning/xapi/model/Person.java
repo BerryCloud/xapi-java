@@ -83,7 +83,7 @@ public class Person {
      */
     public Builder addAccount(Consumer<Account.Builder> account) {
 
-      final Account.Builder builder = Account.builder();
+      final var builder = Account.builder();
 
       account.accept(builder);
 
@@ -101,7 +101,7 @@ public class Person {
      */
     public Builder addAccount(Account account) {
       if (this.account == null) {
-        this.account = new ArrayList<Account>();
+        this.account = new ArrayList<>();
       }
 
       this.account.add(account);

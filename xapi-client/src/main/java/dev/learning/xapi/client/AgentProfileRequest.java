@@ -22,13 +22,13 @@ abstract class AgentProfileRequest implements Request {
    * The Agent associated with this Profile document.
    */
   @NonNull
-  private Agent agent;
+  private final Agent agent;
 
   /**
    * The profile id associated with this Profile document.
    */
   @NonNull
-  private String profileId;
+  private final String profileId;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
