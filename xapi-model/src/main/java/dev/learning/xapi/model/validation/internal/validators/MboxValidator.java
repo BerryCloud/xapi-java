@@ -14,6 +14,7 @@ import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="http://xmlns.com/foaf/0.1/#term_mbox">Mbox</a>
  */
 public class MboxValidator implements ConstraintValidator<Mbox, String> {

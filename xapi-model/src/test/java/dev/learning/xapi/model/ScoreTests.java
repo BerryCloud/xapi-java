@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -17,7 +18,7 @@ import org.springframework.util.ResourceUtils;
 
 /**
  * Score Tests.
- * 
+ *
  * @author Lukáš Sahula
  * @author Martin Myslik
  */

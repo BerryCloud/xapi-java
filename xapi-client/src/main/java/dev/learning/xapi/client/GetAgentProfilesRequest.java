@@ -32,9 +32,9 @@ public class GetAgentProfilesRequest implements Request {
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @NonNull
-  private Agent agent;
+  private final Agent agent;
 
-  private Instant since;
+  private final Instant since;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {

@@ -18,7 +18,7 @@ import lombok.Value;
  * This class represents the xAPI Activity object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2441-when-the-objecttype-is-activity">xAPI
  *      Activity</a>
@@ -105,7 +105,7 @@ public class Activity implements StatementObject, SubStatementObject {
      */
     public Builder definition(Consumer<ActivityDefinition.Builder> definition) {
 
-      final ActivityDefinition.Builder builder = ActivityDefinition.builder();
+      final var builder = ActivityDefinition.builder();
 
       definition.accept(builder);
 

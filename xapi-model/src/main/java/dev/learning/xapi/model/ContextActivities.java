@@ -18,7 +18,7 @@ import lombok.Value;
  * This class represents the xAPI Context Activities object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2462-contextactivities-property">xAPI
  *      Context Activities</a>
@@ -76,7 +76,7 @@ public class ContextActivities {
      */
     public Builder addParent(Consumer<Activity.Builder> activity) {
 
-      final Activity.Builder builder = Activity.builder();
+      final var builder = Activity.builder();
 
       activity.accept(builder);
 
@@ -97,7 +97,7 @@ public class ContextActivities {
       if (parent == null) {
         parent = new ArrayList<>();
       }
-      
+
       parent.add(activity);
 
       return this;
@@ -115,7 +115,7 @@ public class ContextActivities {
      */
     public Builder addGrouping(Consumer<Activity.Builder> activity) {
 
-      final Activity.Builder builder = Activity.builder();
+      final var builder = Activity.builder();
 
       activity.accept(builder);
 
@@ -138,7 +138,7 @@ public class ContextActivities {
       }
 
       grouping.add(activity);
-      
+
       return this;
 
     }
@@ -154,7 +154,7 @@ public class ContextActivities {
      */
     public Builder addCategory(Consumer<Activity.Builder> activity) {
 
-      final Activity.Builder builder = Activity.builder();
+      final var builder = Activity.builder();
 
       activity.accept(builder);
 
@@ -193,7 +193,7 @@ public class ContextActivities {
      */
     public Builder addOther(Consumer<Activity.Builder> activity) {
 
-      final Activity.Builder builder = Activity.builder();
+      final var builder = Activity.builder();
 
       activity.accept(builder);
 
