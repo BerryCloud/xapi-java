@@ -16,7 +16,7 @@ import lombok.Value;
  * This class represents the xAPI Account object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2424-account-object">xAPI
  *      Account</a>

@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">Actor</a>
  */
 @Documented

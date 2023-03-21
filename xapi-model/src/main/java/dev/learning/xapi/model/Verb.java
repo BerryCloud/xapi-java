@@ -22,7 +22,7 @@ import lombok.With;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#243-verb">xAPI
  *      Verb</a>
  */

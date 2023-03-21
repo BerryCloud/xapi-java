@@ -17,13 +17,13 @@ abstract class ActivityProfileRequest implements Request {
    * The Activity id associated with this Profile document.
    */
   @NonNull
-  private URI activityId;
+  private final URI activityId;
 
   /**
    * The profile id associated with this Profile document.
    */
   @NonNull
-  private String profileId;
+  private final String profileId;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {

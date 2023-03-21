@@ -16,6 +16,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * The {@link StatementObject} being validated must be valid.
  *
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">Actor</a>
  */
 public class ActorValidator implements ConstraintValidator<ValidActor, Object> {

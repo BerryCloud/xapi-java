@@ -7,20 +7,20 @@ package dev.learning.xapi.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
 
 /**
  * Person Tests.
- * 
+ *
  * @author Lukáš Sahula
  * @author Martin Myslik
  */

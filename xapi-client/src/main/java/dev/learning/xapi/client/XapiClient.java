@@ -34,14 +34,12 @@ public class XapiClient {
 
   private final WebClient webClient;
 
-  private static final ParameterizedTypeReference<
-      List<UUID>> LIST_UUID_TYPE = new ParameterizedTypeReference<>() {
-      };
+  private static final ParameterizedTypeReference<List<UUID>> LIST_UUID_TYPE =
+      new ParameterizedTypeReference<>() {};
 
-  private static final ParameterizedTypeReference<
-      List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
-      };
-  
+  private static final ParameterizedTypeReference<List<String>> LIST_STRING_TYPE =
+      new ParameterizedTypeReference<>() {};
+
   /**
    * Default constructor for XapiClient.
    *
@@ -60,7 +58,6 @@ public class XapiClient {
 
   /**
    * Gets a Statement.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement.
    * </p>
@@ -69,7 +66,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -85,7 +82,6 @@ public class XapiClient {
 
   /**
    * Gets a Statement.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement.
    * </p>
@@ -105,7 +101,6 @@ public class XapiClient {
 
   /**
    * Posts Statement.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
    * </p>
@@ -114,7 +109,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<UUID>> postStatement(PostStatementRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -134,7 +129,6 @@ public class XapiClient {
 
   /**
    * Posts Statement.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
    * </p>
@@ -143,7 +137,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<UUID>> postStatement(Consumer<PostStatementRequest.Builder> request) {
 
-    final PostStatementRequest.Builder builder = PostStatementRequest.builder();
+    final var builder = PostStatementRequest.builder();
 
     request.accept(builder);
 
@@ -153,7 +147,6 @@ public class XapiClient {
 
   /**
    * Post Statements.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and an array of Statement
    * identifiers.
@@ -163,7 +156,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<List<UUID>>> postStatements(PostStatementsRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -181,7 +174,6 @@ public class XapiClient {
 
   /**
    * Posts Statements.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and an array of Statement
    * identifiers.
@@ -192,7 +184,7 @@ public class XapiClient {
   public Mono<ResponseEntity<List<UUID>>> postStatements(
       Consumer<PostStatementsRequest.Builder> request) {
 
-    final PostStatementsRequest.Builder builder = PostStatementsRequest.builder();
+    final var builder = PostStatementsRequest.builder();
 
     request.accept(builder);
 
@@ -202,7 +194,6 @@ public class XapiClient {
 
   /**
    * Gets a voided Statement.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and the voided Statement.
    * </p>
@@ -211,7 +202,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Statement>> getVoidedStatement(GetVoidedStatementRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -227,7 +218,6 @@ public class XapiClient {
 
   /**
    * Gets a voided Statement.
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers and the voided Statement.
    * </p>
@@ -248,7 +238,6 @@ public class XapiClient {
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and StatementResult.
    * </p>
@@ -263,7 +252,6 @@ public class XapiClient {
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and StatementResult.
    * </p>
@@ -274,7 +262,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<StatementResult>> getStatements(GetStatementsRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -291,7 +279,6 @@ public class XapiClient {
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and StatementResult.
    * </p>
@@ -303,7 +290,7 @@ public class XapiClient {
   public Mono<ResponseEntity<StatementResult>> getStatements(
       Consumer<GetStatementsRequest.Builder> request) {
 
-    final GetStatementsRequest.Builder builder = GetStatementsRequest.builder();
+    final var builder = GetStatementsRequest.builder();
 
     request.accept(builder);
 
@@ -314,7 +301,6 @@ public class XapiClient {
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and StatementResult.
    * </p>
@@ -325,7 +311,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(GetMoreStatementsRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -342,7 +328,6 @@ public class XapiClient {
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and StatementResult.
    * </p>
@@ -354,7 +339,7 @@ public class XapiClient {
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(
       Consumer<GetMoreStatementsRequest.Builder> request) {
 
-    final GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder();
+    final var builder = GetMoreStatementsRequest.builder();
 
     request.accept(builder);
 
@@ -367,7 +352,6 @@ public class XapiClient {
   /**
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -378,7 +362,7 @@ public class XapiClient {
    */
   public <T> Mono<ResponseEntity<T>> getState(GetStateRequest request, Class<T> bodyType) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -395,7 +379,6 @@ public class XapiClient {
   /**
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -418,7 +401,6 @@ public class XapiClient {
   /**
    * Posts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -429,7 +411,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> postState(PostStateRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -450,7 +432,6 @@ public class XapiClient {
   /**
    * Posts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -472,7 +453,6 @@ public class XapiClient {
   /**
    * Puts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -483,7 +463,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> putState(PutStateRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -504,7 +484,6 @@ public class XapiClient {
   /**
    * Puts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -526,7 +505,6 @@ public class XapiClient {
   /**
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -537,7 +515,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> deleteState(DeleteStateRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -554,7 +532,6 @@ public class XapiClient {
   /**
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -584,7 +561,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<List<String>>> getStates(GetStatesRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -601,7 +578,6 @@ public class XapiClient {
   /**
    * Gets all stateId's specified by the given activityId, agent and optional registration and since
    * parameters.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -623,7 +599,6 @@ public class XapiClient {
 
   /**
    * Deletes all documents specified by the given activityId, agent and optional registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -634,7 +609,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> deleteStates(DeleteStatesRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -650,7 +625,6 @@ public class XapiClient {
 
   /**
    * Deletes all documents specified by the given activityId, agent and optional registration.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -683,7 +657,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Person>> getAgents(GetAgentsRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -708,7 +682,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
 
-    final GetAgentsRequest.Builder builder = GetAgentsRequest.builder();
+    final var builder = GetAgentsRequest.builder();
 
     request.accept(builder);
 
@@ -727,7 +701,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Activity>> getActivity(GetActivityRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -750,7 +724,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
 
-    final GetActivityRequest.Builder builder = GetActivityRequest.builder();
+    final var builder = GetActivityRequest.builder();
 
     request.accept(builder);
 
@@ -762,7 +736,6 @@ public class XapiClient {
 
   /**
    * Gets a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -774,7 +747,7 @@ public class XapiClient {
   public <T> Mono<ResponseEntity<T>> getAgentProfile(GetAgentProfileRequest request,
       Class<T> bodyType) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -790,7 +763,6 @@ public class XapiClient {
 
   /**
    * Gets a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -812,7 +784,6 @@ public class XapiClient {
 
   /**
    * Deletes a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -823,7 +794,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(DeleteAgentProfileRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -839,7 +810,6 @@ public class XapiClient {
 
   /**
    * Deletes a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -861,7 +831,6 @@ public class XapiClient {
 
   /**
    * Puts a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -872,7 +841,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> putAgentProfile(PutAgentProfileRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -892,7 +861,6 @@ public class XapiClient {
 
   /**
    * Puts a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -914,7 +882,6 @@ public class XapiClient {
 
   /**
    * Posts a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -925,7 +892,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> postAgentProfile(PostAgentProfileRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -945,7 +912,6 @@ public class XapiClient {
 
   /**
    * Posts a single agent profile by the given agent and profileId.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -976,7 +942,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(GetAgentProfilesRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -1002,7 +968,7 @@ public class XapiClient {
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(
       Consumer<GetAgentProfilesRequest.Builder> request) {
 
-    final GetAgentProfilesRequest.Builder builder = GetAgentProfilesRequest.builder();
+    final var builder = GetAgentProfilesRequest.builder();
 
     request.accept(builder);
 
@@ -1014,7 +980,6 @@ public class XapiClient {
 
   /**
    * Fetches the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -1026,7 +991,7 @@ public class XapiClient {
   public <T> Mono<ResponseEntity<T>> getActivityProfile(GetActivityProfileRequest request,
       Class<T> bodyType) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -1042,7 +1007,6 @@ public class XapiClient {
 
   /**
    * Fetches the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -1064,7 +1028,6 @@ public class XapiClient {
 
   /**
    * Changes or stores the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -1075,7 +1038,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> postActivityProfile(PostActivityProfileRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -1095,7 +1058,6 @@ public class XapiClient {
 
   /**
    * Changes or stores the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -1117,7 +1079,6 @@ public class XapiClient {
 
   /**
    * Stores the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -1128,7 +1089,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> putActivityProfile(PutActivityProfileRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -1148,7 +1109,6 @@ public class XapiClient {
 
   /**
    * Stores the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers and body.
    * </p>
@@ -1170,7 +1130,6 @@ public class XapiClient {
 
   /**
    * Deletes the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -1181,7 +1140,7 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<Void>> deleteActivityProfile(DeleteActivityProfileRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -1197,7 +1156,6 @@ public class XapiClient {
 
   /**
    * Deletes the specified Profile document in the context of the specified Activity.
-   *
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -1222,7 +1180,6 @@ public class XapiClient {
    * Fetches Profile ids of all Profile documents for an Activity. If "since" parameter is
    * specified, this is limited to entries that have been stored or updated since the specified
    * Timestamp (exclusive).
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -1230,11 +1187,11 @@ public class XapiClient {
    * @param request The parameters of the get activity profiles request
    *
    * @return the ResponseEntity
-   */ 
+   */
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(
       GetActivityProfilesRequest request) {
 
-    Map<String, Object> queryParams = new HashMap<>();
+    final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
 
@@ -1252,7 +1209,6 @@ public class XapiClient {
    * Fetches Profile ids of all Profile documents for an Activity. If "since" parameter is
    * specified, this is limited to entries that have been stored or updated since the specified
    * Timestamp (exclusive).
-   * 
    * <p>
    * The returned ResponseEntity contains the response headers.
    * </p>
@@ -1264,7 +1220,7 @@ public class XapiClient {
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(
       Consumer<GetActivityProfilesRequest.Builder> request) {
 
-    final GetActivityProfilesRequest.Builder builder = GetActivityProfilesRequest.builder();
+    final var builder = GetActivityProfilesRequest.builder();
 
     request.accept(builder);
 

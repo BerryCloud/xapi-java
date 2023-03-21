@@ -60,7 +60,7 @@ public class PostStatementsRequest implements Request {
       this.statements = statements;
       return this;
     }
-    
+
     /**
      * Sets the statements.
      *

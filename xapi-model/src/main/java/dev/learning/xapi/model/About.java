@@ -17,7 +17,7 @@ import lombok.Value;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#24-agents-resource">xAPI
  *      About</a>

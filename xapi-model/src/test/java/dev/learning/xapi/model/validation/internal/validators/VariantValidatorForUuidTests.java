@@ -15,7 +15,7 @@ import org.junit.platform.commons.util.AnnotationUtils;
 
 /**
  * VariantValidatorForUuid Tests.
- * 
+ *
  * @author Thomas Turrell-Croft
  */
 @DisplayName("VariantValidatorForUuidTest tests")

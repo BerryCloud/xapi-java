@@ -20,7 +20,7 @@ import lombok.Value;
  * This class represents the xAPI Activity Definition object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">xAPI
  *      Activity Definition</a>
@@ -106,7 +106,7 @@ public class ActivityDefinition {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     * 
+     *
      * @return This builder
      *
      * @see ActivityDefinition#name
@@ -126,7 +126,7 @@ public class ActivityDefinition {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     * 
+     *
      * @return This builder
      *
      * @see ActivityDefinition#description
@@ -152,7 +152,7 @@ public class ActivityDefinition {
      */
     public Builder addChoice(Consumer<InteractionComponent.Builder> interactionComponent) {
 
-      final InteractionComponent.Builder builder = InteractionComponent.builder();
+      final var builder = InteractionComponent.builder();
 
       interactionComponent.accept(builder);
 

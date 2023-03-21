@@ -25,7 +25,7 @@ import lombok.Value;
  * This class represents the xAPI Context object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#context">xAPI
  *      Context</a>
  */
@@ -178,7 +178,7 @@ public class Context {
      */
     public Builder contextActivities(Consumer<ContextActivities.Builder> contextActivities) {
 
-      final ContextActivities.Builder builder = ContextActivities.builder();
+      final var builder = ContextActivities.builder();
 
       contextActivities.accept(builder);
 
@@ -211,7 +211,7 @@ public class Context {
      */
     public Builder statementReference(Consumer<StatementReference.Builder> statementReference) {
 
-      final StatementReference.Builder builder = StatementReference.builder();
+      final var builder = StatementReference.builder();
 
       statementReference.accept(builder);
 

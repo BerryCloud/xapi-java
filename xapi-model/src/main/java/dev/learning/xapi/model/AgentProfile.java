@@ -16,6 +16,7 @@ import lombok.Value;
  * This class represents the xAPI Agent Profile object.
  *
  * @author Thomas Turrell-Croft
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#agentprofres">xAPI
  *      Agent Profile</a>

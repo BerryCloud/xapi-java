@@ -14,7 +14,7 @@ import lombok.Value;
  * This class represents the xAPI Score object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2451-score">xAPI
  *      Score</a>
  */

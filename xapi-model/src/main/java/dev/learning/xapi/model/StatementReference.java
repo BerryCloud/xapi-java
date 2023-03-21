@@ -14,7 +14,7 @@ import lombok.Value;
  * This class represents the xAPI Statement Reference object.
  *
  * @author Thomas Turrell-Croft
- * 
+ *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-references">xAPI
  *      Statement Reference</a>

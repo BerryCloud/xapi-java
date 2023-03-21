@@ -27,7 +27,6 @@ public enum ObjectType {
 
   /**
    * Person object type.
-   *
    * <p>
    * <strong>Note:</strong> Version 0.9 statements use the person object type.
    * </p>
