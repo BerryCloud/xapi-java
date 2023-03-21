@@ -98,7 +98,7 @@ public final class MultipartHelper {
   private static Stream<Attachment> getRealAttachments(Statement statement) {
 
     // handle the rare scenario when a sub-statement has an attachment
-	Stream<Attachment> stream = statement.getObject() instanceof final SubStatement substatement
+    Stream<Attachment> stream = statement.getObject() instanceof final SubStatement substatement
         && substatement.getAttachments() != null ? substatement.getAttachments().stream()
             : Stream.empty();
 
