@@ -4,7 +4,7 @@
   <parent>
     <groupId>dev.learning.xapi.samples</groupId>
     <artifactId>xapi-samples-build</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2-SNAPSHOT</version>
   </parent>
   <artifactId>put-activity-profile</artifactId>
   <name>Put xAPI Activity Profile Sample</name>
