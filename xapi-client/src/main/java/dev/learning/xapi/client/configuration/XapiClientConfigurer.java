@@ -6,6 +6,7 @@ package dev.learning.xapi.client.configuration;
 
 import dev.learning.xapi.client.XapiClient;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  *
  * @author István Rátkai (Selindek)
  */
+@Component
 public interface XapiClientConfigurer extends Consumer<WebClient.Builder> {
 
 }
