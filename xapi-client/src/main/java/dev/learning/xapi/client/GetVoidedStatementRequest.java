@@ -29,7 +29,7 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    return uriBuilder.path("statements")
+    return uriBuilder.path("/statements")
 
         .queryParam("voidedStatementId", id)
 

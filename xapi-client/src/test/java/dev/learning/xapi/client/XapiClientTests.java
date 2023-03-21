@@ -1,5 +1,5 @@
 /*
- * Copyright 2016rue-2023 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 package dev.learning.xapi.client;
 
@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -105,8 +104,8 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Statement
-    final var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6"))
-        .block();
+    final var response =
+        client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
     // Then Body Is Instance Of Statement
     assertThat(response.getBody(), instanceOf(Statement.class));
@@ -153,7 +152,7 @@ class XapiClientTests {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
-    final Statement attemptedStatement = Statement.builder()
+    final var attemptedStatement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -164,7 +163,7 @@ class XapiClientTests {
 
         .build();
 
-    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+    final var passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
     final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
@@ -177,12 +176,13 @@ class XapiClientTests {
     assertThat(recordedRequest.getMethod(), is("POST"));
   }
 
+  
   @Test
   void whenPostingStatementsThenBodyIsExpected() throws InterruptedException {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
-    final Statement attemptedStatement = Statement.builder()
+    final var attemptedStatement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -193,11 +193,40 @@ class XapiClientTests {
 
         .build();
 
-    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+    final var passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+
+    // When Posting Statements
+    client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).block();
+
+    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+
+    // Then Body Is Expected
+    assertThat(recordedRequest.getBody().readUtf8(), is(
+        "[{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
+  }
+
+  
+  @Test
+  void whenPostingStatementsArrayThenBodyIsExpected() throws InterruptedException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
+
+    final var attemptedStatement = Statement.builder()
+
+        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+
+        .build();
+
+    final var passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
     final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
-    // When Posting Statements
+    // When Posting Statements Array
     client.postStatements(r -> r.statements(statements)).block();
 
     final RecordedRequest recordedRequest = mockWebServer.takeRequest();
@@ -212,7 +241,7 @@ class XapiClientTests {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
-    final Statement attemptedStatement = Statement.builder()
+    final var attemptedStatement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -223,7 +252,7 @@ class XapiClientTests {
 
         .build();
 
-    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+    final var passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
     final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
@@ -244,7 +273,7 @@ class XapiClientTests {
             "[\"2eb84e56-441a-492c-9d7b-f8e9ddd3e15d\",\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
         .addHeader("Content-Type", "application/json"));
 
-    final Statement attemptedStatement = Statement.builder()
+    final var attemptedStatement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -255,13 +284,12 @@ class XapiClientTests {
 
         .build();
 
-    final Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
+    final var passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
     final List<Statement> statements = Arrays.asList(attemptedStatement, passedStatement);
 
     // When Posting Statements
-    final ResponseEntity<
-        List<UUID>> response = client.postStatements(r -> r.statements(statements)).block();
+    final var response = client.postStatements(r -> r.statements(statements)).block();
 
     // Then Response Body Is Instance Of UUID Array
     assertThat(response.getBody(), instanceOf(List.class));
@@ -664,14 +692,13 @@ class XapiClientTests {
         .addHeader("Content-Type", "text/plain; charset=utf-8"));
 
     // When Getting State
-    final ResponseEntity<String> response = client
-        .getState(r -> r.activityId("https://example.com/activity/1")
+    final var response = client.getState(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-            .stateId("bookmark"), String.class)
+        .stateId("bookmark"), String.class)
 
         .block();
 
@@ -688,14 +715,13 @@ class XapiClientTests {
         .addHeader("Content-Type", "text/plain; charset=utf-8"));
 
     // When Getting State
-    final ResponseEntity<String> response = client
-        .getState(r -> r.activityId("https://example.com/activity/1")
+    final var response = client.getState(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
 
-            .stateId("bookmark"), String.class)
+        .stateId("bookmark"), String.class)
 
         .block();
 
@@ -1180,12 +1206,11 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Multiple States
-    final ResponseEntity<List<String>> response = client
-        .getStates(r -> r.activityId("https://example.com/activity/1")
+    final var response = client.getStates(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
 
         .block();
 
@@ -1203,17 +1228,16 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Multiple States
-    final ResponseEntity<List<String>> response = client
-        .getStates(r -> r.activityId("https://example.com/activity/1")
+    final var response = client.getStates(r -> r.activityId("https://example.com/activity/1")
 
-            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
 
         .block();
 
     // Then Body Is Expected
-    assertThat(response.getBody(), is(Arrays.asList( "State1", "State2", "State3" )));
+    assertThat(response.getBody(), is(Arrays.asList("State1", "State2", "State3")));
   }
 
   // Deleting Multiple States
@@ -1774,8 +1798,8 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Agents
-    final var response = client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com")))
-        .block();
+    final var response =
+        client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
 
     // Then Body Is Instance Of Activity
     assertThat(response.getBody(), instanceOf(Person.class));
@@ -1879,7 +1903,7 @@ class XapiClientTests {
         .addHeader("Content-Type", "text/plain; charset=utf-8"));
 
     // When Getting ActivityProfile
-    final ResponseEntity<String> response = client
+    final var response = client
         .getActivityProfile(r -> r.activityId("https://example.com/activity/1")
 
             .profileId("bookmark"), String.class)
@@ -1899,7 +1923,7 @@ class XapiClientTests {
         .addHeader("Content-Type", "text/plain; charset=utf-8"));
 
     // When Getting ActivityProfile
-    final ResponseEntity<String> response = client
+    final var response = client
         .getActivityProfile(r -> r.activityId("https://example.com/activity/1")
 
             .profileId("bookmark"), String.class)
