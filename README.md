@@ -43,7 +43,7 @@ The xAPI Java Client has a Spring AutoConfiguration bean which picks up the foll
 | xapi.client.password          | Password for basic authorization header                            |
 | xapi.client.authorization     | Authorization header (has precedence over the username and password properties)    |
 
-Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#boot-features-external-config) method supported by Spring Boot.
+Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/3.0.4/reference/htmlsingle/#features.external-config.files) method supported by Spring Boot.
 
 If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
 
