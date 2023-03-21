@@ -41,7 +41,7 @@ The xAPI Java Client has a Spring AutoConfiguration bean which picks up the foll
 | xapi.client.baseUrl           | The base url of the LRS endpoint                                   |
 | xapi.client.username          | Username for basic authorization header                            |
 | xapi.client.password          | Password for basic authorization header                            |
-| xapi.client.authorization     | Authorization header (has precedence over the above properties)    |
+| xapi.client.authorization     | Authorization header (has precedence over the username and password properties)    |
 
 Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#boot-features-external-config) method supported by Spring Boot.
 
