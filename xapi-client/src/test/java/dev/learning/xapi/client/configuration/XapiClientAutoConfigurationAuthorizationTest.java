@@ -1,5 +1,5 @@
 /*
- * Copyright 2016rue-2023 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 package dev.learning.xapi.client.configuration;
 
@@ -7,11 +7,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import dev.learning.xapi.client.XapiClient;
-import dev.learning.xapi.client.configuration.XapiClientConfiguration2Test.XapiTestClientConfiguration2;
+import dev.learning.xapi.client.configuration.XapiClientAutoConfigurationAuthorizationTest.XapiTestClientConfiguration2;
 import java.io.IOException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 
 /**
- * XapiClientConfiguration2 Test.
+ * XapiClientAutoConfigurationAuthorization Test.
  *
  * @author István Rátkai (Selindek)
  */
-@DisplayName("XapiClientConfiguration2Test Test")
+@DisplayName("XapiClientAutoConfigurationAuthorization Test")
 @SpringBootTest(
     classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
         XapiTestClientConfiguration2.class },
     properties = "xapi.client.authorization = bearer 1234")
-class XapiClientConfiguration2Test {
+class XapiClientAutoConfigurationAuthorizationTest {
 
   @Autowired
   private XapiClient client;
@@ -49,6 +50,11 @@ class XapiClientConfiguration2Test {
       builder.baseUrl(mockWebServer.url("").toString());
     }
 
+  }
+
+  @AfterAll
+  static void tearDown() throws Exception {
+    mockWebServer.shutdown();
   }
 
   @Test

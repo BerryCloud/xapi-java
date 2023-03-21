@@ -41,7 +41,7 @@ public class XapiClientAutoConfiguration {
     }
 
     if (properties.getBaseUrl() != null) {
-      builder.baseUrl(properties.getBaseUrl());
+      builder.baseUrl(properties.getBaseUrl().toString());
     }
 
     configurers.forEach(c -> c.accept(builder));

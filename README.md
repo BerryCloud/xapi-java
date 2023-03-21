@@ -34,16 +34,16 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
 
 ### Configuration
 
-The xAPI Java Client has a Spring AutoConfiguration bean which picks up the following properties from the environment:
+The xAPI Java Client has a Spring AutoConfiguration bean which picks up the following properties:
 
-```
-xapi.client.baseUrl
-xapi.client.username
-xapi.client.password
-xapi.client.authorization
-```
+| Property                      | Description                                                        |
+| ----------------------------- | ------------------------------------------------------------------ |
+| xapi.client.baseUrl           | The base url of the LRS endpoint                                   |
+| xapi.client.username          | Username for basic authorization header                            |
+| xapi.client.password          | Password for basic authorization header                            |
+| xapi.client.authorization     | Authorization header (has precedence over the above properties)    |
 
-Set `xapi.client.baseUrl` to your xApi LRS endpoint. Use `xapi.client.username` and `xapi.client.password` for basic authorization, or set the whole authorization header via `xapi.client.authorization`. (The latter has precedence if both method is used)
+Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#boot-features-external-config) method supported by Spring Boot.
 
 If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
 

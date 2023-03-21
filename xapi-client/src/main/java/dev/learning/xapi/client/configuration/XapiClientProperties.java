@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.client.configuration;
 
+import java.net.URI;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,7 +22,7 @@ public class XapiClientProperties {
   /**
    * The base URL for the xAPI client requests.
    */
-  private String baseUrl;
+  private URI baseUrl;
 
   /**
    * Username for basic authorization header.
