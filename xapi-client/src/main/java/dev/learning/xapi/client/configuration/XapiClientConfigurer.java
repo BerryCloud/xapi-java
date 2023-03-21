@@ -10,10 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Interface for {@link XapiClient} configurers.
+ * Interface for {@link XapiClient} a configurer.
  * <p>
- * {@link XapiClient} is basically an extension of {@link WebClient}, so all custom configuration
- * can be done via a {@link Builder} object.
+ * Custom configuration of the XapiClient can be done via a {@link WebClient.Builder} object.
  * </p>
  *
  * @author István Rátkai (Selindek)
