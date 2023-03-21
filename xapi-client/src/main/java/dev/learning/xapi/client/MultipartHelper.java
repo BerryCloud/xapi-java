@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Attachment;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.SubStatement;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,8 +28,8 @@ import org.springframework.web.reactive.function.client.WebClient.RequestBodySpe
 public final class MultipartHelper {
 
   private static final String MULTIPART_BOUNDARY = "xapi-learning-dev-boundary";
-  private static final String MULTIPART_CONTENT_TYPE =
-      "multipart/mixed; boundary=" + MULTIPART_BOUNDARY;
+  private static final String MULTIPART_CONTENT_TYPE = "multipart/mixed; boundary="
+      + MULTIPART_BOUNDARY;
   private static final String CRLF = "\r\n";
   private static final String BOUNDARY_PREFIX = "--";
   private static final String BODY_SEPARATOR = BOUNDARY_PREFIX + MULTIPART_BOUNDARY + CRLF;
@@ -46,7 +47,7 @@ public final class MultipartHelper {
    * sets the content-type to multipart/mixed if needed.
    *
    * @param requestSpec a {@link RequestBodySpec} object.
-   * @param statement a {@link Statement} to add.
+   * @param statement   a {@link Statement} to add.
    */
   public static void addBody(RequestBodySpec requestSpec, Statement statement) {
 
@@ -62,7 +63,7 @@ public final class MultipartHelper {
    * Also sets the content-type to multipart/mixed if needed.
    *
    * @param requestSpec a {@link RequestBodySpec} object.
-   * @param statements list of {@link Statement}s to add.
+   * @param statements  list of {@link Statement}s to add.
    */
   public static void addBody(RequestBodySpec requestSpec, List<Statement> statements) {
 
@@ -92,7 +93,6 @@ public final class MultipartHelper {
    * Gets {@link Attachment}s of a {@link Statement} which has data property as a {@link Stream}.
    *
    * @param statement a {@link Statement} object
-   *
    * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
    */
   private static Stream<Attachment> getRealAttachments(Statement statement) {
@@ -106,7 +106,7 @@ public final class MultipartHelper {
       stream = Stream.concat(stream, statement.getAttachments().stream());
     }
 
-    return stream.filter(a -> a.getData() != null);
+    return stream.filter(a -> a.getContent() != null);
   }
 
   @SneakyThrows
@@ -153,7 +153,7 @@ public final class MultipartHelper {
           body.append(CRLF);
 
           // Multipart body
-          body.append(a.getData()).append(CRLF);
+          body.append(new String(a.getContent(), StandardCharsets.UTF_8)).append(CRLF);
         });
 
     return body.toString();

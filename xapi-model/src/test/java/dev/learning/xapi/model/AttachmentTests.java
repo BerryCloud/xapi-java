@@ -18,6 +18,7 @@ import jakarta.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
@@ -185,7 +186,7 @@ class AttachmentTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Attachment(usageType=http://adlnet.gov/expapi/attachments/signature, display={en_US=Signature}, description={en_US=A test signature}, contentType=application/octet-stream, length=4235, sha2=672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634, fileUrl=https://example.com, data=null)"));
+        "Attachment(usageType=http://adlnet.gov/expapi/attachments/signature, display={en_US=Signature}, description={en_US=A test signature}, contentType=application/octet-stream, length=4235, sha2=672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634, fileUrl=https://example.com, content=null)"));
 
   }
 
@@ -207,14 +208,14 @@ class AttachmentTests {
 
         .length(4)
 
-        .data("text")
+        .content("text")
         
         .fileUrl(URI.create("https://example.com"))
 
         .build();
 
     // Then Data Is Set
-    assertThat(attachment.getData(), is("text"));
+    assertThat(new String(attachment.getContent(), StandardCharsets.UTF_8), is("text"));
 
   }
   
@@ -232,7 +233,7 @@ class AttachmentTests {
 
         .length(4)
 
-        .data("text")
+        .content("text")
         
         .fileUrl(URI.create("https://example.com"))
 
@@ -257,7 +258,7 @@ class AttachmentTests {
 
         .length(4)
 
-        .data("text")
+        .content("text")
         
         .sha2("000000000000000000000000000000000000000000000")
         

@@ -9,10 +9,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.Value;
-import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * This class represents the xAPI Attachment object.
@@ -71,17 +73,14 @@ public class Attachment {
    */
   private URI fileUrl;
 
-  // **Warning** do not add fields that are not required by the xAPI specification.
-
   /**
-   * The data of the attachment.
-   * <p>
-   * This is the actual String representation of the attachment as it appears in the http message.
-   * </p>
+   * The data of the attachment as byte array.
    */
   @JsonIgnore
-  private String data;
-  
+  private byte[] content;
+
+  // **Warning** do not add fields that are not required by the xAPI specification.
+
   /**
    * Builder for Attachment.
    */
@@ -134,7 +133,7 @@ public class Attachment {
      * Sets SHA-2 hash of the Attachment.
      * </p>
      * <p>
-     * The sha2 is set ONLY if the data property was not set yet. 
+     * The sha2 is set ONLY if the content property was not set yet. 
      * (otherwise the sha2 is calculated automatically)
      * </p>
      *
@@ -143,7 +142,7 @@ public class Attachment {
      * @return This builder
      */
     public Builder sha2(String sha2) {
-      if (this.data == null) {
+      if (this.content == null) {
         this.sha2 = sha2;
       }
       
@@ -159,21 +158,58 @@ public class Attachment {
      * This method also automatically calculates the SHA-2 hash for the data.
      * </p>
      *
-     * @param data The data of the Attachment as a String.
+     * @param content The data of the Attachment as a byte array.
      *
      * @return This builder
      */
-    public Builder data(String data) {
-      this.data = data;
-      if (data != null) {
-        this.sha2 = DigestUtils.sha256Hex(data);
+    public Builder content(byte[] content) {
+      this.content = content;
+      if (content != null) {
+        this.sha2 = sha256Hex(content);
       } 
       
       return this;
 
     }
   
+    /**
+     * <p>
+     * Sets data of the Attachment as a String.
+     * </p>
+     * <p>
+     * This is a convenient method for creating text attachments.
+     * </p>
+     *
+     * @param content The data of the Attachment as a String.
+     *
+     * @return This builder
+     * 
+     * @see Builder#content(byte[])
+     */
+    public Builder content(String content) {
+      
+      return content(content.getBytes(StandardCharsets.UTF_8));
 
+    }
+    
+    private static String sha256Hex(byte[] data) { 
+      try {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(data);
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+          String hex = Integer.toHexString(0xff & hash[i]);
+          if (hex.length() == 1) {
+            hexString.append('0');
+          }
+          hexString.append(hex);
+        }
+        return hexString.toString();      
+      } catch (NoSuchAlgorithmException e) {
+        throw new IllegalArgumentException(e);
+      }
+
+    }
   }
 
 }
