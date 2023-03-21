@@ -55,7 +55,7 @@ abstract class StatesRequest implements Request {
     queryParams.put("activityId", activityId);
     queryParams.put("agent", agentToJsonString());
 
-    return uriBuilder.path("activities/state")
+    return uriBuilder.path("/activities/state")
 
         .queryParam("activityId", "{activityId}")
 
