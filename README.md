@@ -26,11 +26,26 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.1.0</version>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 </project>
 ```
+
+### Configuration
+
+The xAPI Java Client has a Spring AutoConfiguration bean which picks up the following properties:
+
+| Property                      | Description                                                        |
+| ----------------------------- | ------------------------------------------------------------------ |
+| xapi.client.baseUrl           | The base url of the LRS endpoint                                   |
+| xapi.client.username          | Username for basic authorization header                            |
+| xapi.client.password          | Password for basic authorization header                            |
+| xapi.client.authorization     | Authorization header (has precedence over the username and password properties)    |
+
+Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/3.0.4/reference/htmlsingle/#features.external-config.files) method supported by Spring Boot.
+
+If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
 
 ### Statement Resource
 
@@ -210,7 +225,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.1.0</version>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 </project>

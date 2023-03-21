@@ -68,7 +68,7 @@ public class GetStatementsRequest implements Request {
 
     // All queryParams are optional
 
-    uriBuilder.path("statements");
+    uriBuilder.path("/statements");
 
     if (agent != null) {
       queryParams.put("agent", agentToJsonString());
