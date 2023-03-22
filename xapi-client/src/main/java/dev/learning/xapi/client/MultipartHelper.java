@@ -8,15 +8,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Attachment;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.SubStatement;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 
 /**
@@ -24,6 +26,7 @@ import org.springframework.web.reactive.function.client.WebClient.RequestBodySpe
  *
  * @author István Rátkai (Selindek)
  */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MultipartHelper {
 
@@ -34,6 +37,18 @@ public final class MultipartHelper {
   private static final String BOUNDARY_PREFIX = "--";
   private static final String BODY_SEPARATOR = BOUNDARY_PREFIX + MULTIPART_BOUNDARY + CRLF;
   private static final String BODY_FOOTER = BOUNDARY_PREFIX + MULTIPART_BOUNDARY + BOUNDARY_PREFIX;
+  private static final String CONTENT_TYPE = HttpHeaders.CONTENT_TYPE + ":";
+
+  private static final byte[] BA_APP_JSON_HEADER = (CONTENT_TYPE + MediaType.APPLICATION_JSON_VALUE
+      + CRLF + CRLF).getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_CRLF = CRLF.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_BODY_SEPARATOR = BODY_SEPARATOR.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_BODY_FOOTER = BODY_FOOTER.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_CONTENT_TYPE = CONTENT_TYPE.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_ENCODING_HEADER = ("Content-Transfer-Encoding:binary" + CRLF)
+      .getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_X_API_HASH = "X-Experience-API-Hash:"
+      .getBytes(StandardCharsets.UTF_8);
 
   public static final MediaType MULTIPART_MEDIATYPE = MediaType.valueOf(MULTIPART_CONTENT_TYPE);
 
@@ -77,7 +92,7 @@ public final class MultipartHelper {
 
     final var attachmentsBody = writeAttachments(attachments);
 
-    if (attachmentsBody.isEmpty()) {
+    if (attachmentsBody.length == 0) {
       // add body directly, content-type is default application/json
       requestSpec.bodyValue(statements);
     } else {
@@ -109,54 +124,70 @@ public final class MultipartHelper {
     return stream.filter(a -> a.getContent() != null);
   }
 
-  @SneakyThrows
-  private static String createMultipartBody(Object statements, String attachments) {
-    final var body = new StringBuilder();
-    // Multipart Boundary
-    body.append(BODY_SEPARATOR);
+  private static byte[] createMultipartBody(Object statements, byte[] attachments) {
 
-    // Header of first part
-    body.append(HttpHeaders.CONTENT_TYPE).append(':').append(MediaType.APPLICATION_JSON_VALUE)
-        .append(CRLF);
-    body.append(CRLF);
+    try (var stream = new FastByteArrayOutputStream()) {
+      // Multipart Boundary
+      stream.write(BA_BODY_SEPARATOR);
 
-    // Body of first part
-    body.append(objectMapper.writeValueAsString(statements)).append(CRLF);
+      // Header of first part
+      stream.write(BA_APP_JSON_HEADER);
 
-    // Body of attachments
-    body.append(attachments);
+      // Body of first part
+      stream.write(objectMapper.writeValueAsBytes(statements));
+      stream.write(BA_CRLF);
 
-    // Footer
-    body.append(BODY_FOOTER);
+      // Body of attachments
+      stream.write(attachments);
 
-    return body.toString();
+      // Footer
+      stream.write(BA_BODY_FOOTER);
+
+      return stream.toByteArrayUnsafe();
+    } catch (final IOException e) {
+      log.error("Cannot create multipart body", e);
+      return new byte[] {};
+    }
   }
 
   /*
-   * Writes attachments to a String. If there are no attachments in the stream then returns an empty
-   * String.
+   * Writes attachments to a byte array. If there are no attachments in the stream then returns an
+   * empty array.
    */
-  private static String writeAttachments(Stream<Attachment> attachments) {
+  private static byte[] writeAttachments(Stream<Attachment> attachments) {
 
-    final var body = new StringBuilder();
+    try (var stream = new FastByteArrayOutputStream()) {
 
-    // Write sha2-identical attachments only once
-    attachments.collect(Collectors.toMap(Attachment::getSha2, v -> v, (k, v) -> v)).values()
-        .forEach(a -> {
-          // Multipart Boundary
-          body.append(BODY_SEPARATOR);
+      // Write each sha2-identical attachments only once
+      attachments.collect(Collectors.toMap(Attachment::getSha2, v -> v, (k, v) -> v)).values()
+          .forEach(a -> {
+            try {
+              // Multipart Boundary
+              stream.write(BA_BODY_SEPARATOR);
 
-          // Multipart header
-          body.append(HttpHeaders.CONTENT_TYPE).append(':').append(a.getContentType()).append(CRLF);
-          body.append("Content-Transfer-Encoding:binary").append(CRLF);
-          body.append("X-Experience-API-Hash:").append(a.getSha2()).append(CRLF);
-          body.append(CRLF);
+              // Multipart headers
+              stream.write(BA_CONTENT_TYPE);
+              stream.write(a.getContentType().getBytes(StandardCharsets.UTF_8));
+              stream.write(BA_CRLF);
 
-          // Multipart body
-          body.append(new String(a.getContent(), StandardCharsets.UTF_8)).append(CRLF);
-        });
+              stream.write(BA_ENCODING_HEADER);
 
-    return body.toString();
+              stream.write(BA_X_API_HASH);
+              stream.write(a.getSha2().getBytes(StandardCharsets.UTF_8));
+              stream.write(BA_CRLF);
+              stream.write(BA_CRLF);
+
+              // Multipart body
+              stream.write(a.getContent());
+              stream.write(BA_CRLF);
+            } catch (final IOException e) {
+              log.error("Cannot create multipart body", e);
+            }
+
+          });
+
+      return stream.toByteArrayUnsafe();
+    }
   }
 
 }
