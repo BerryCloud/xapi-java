@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.FastByteArrayOutputStream;
@@ -25,6 +26,7 @@ import org.springframework.web.reactive.function.client.WebClient.RequestBodySpe
  *
  * @author István Rátkai (Selindek)
  */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MultipartHelper {
 
@@ -143,8 +145,8 @@ public final class MultipartHelper {
 
       return stream.toByteArrayUnsafe();
     } catch (final IOException e) {
-      // should never happen
-      throw new RuntimeException(e);
+      log.error("Cannot create multipart body", e);
+      return new byte[] {};
     }
   }
 
@@ -179,8 +181,7 @@ public final class MultipartHelper {
               stream.write(a.getContent());
               stream.write(BA_CRLF);
             } catch (final IOException e) {
-              // should never happen
-              throw new RuntimeException(e);
+              log.error("Cannot create multipart body", e);
             }
 
           });
