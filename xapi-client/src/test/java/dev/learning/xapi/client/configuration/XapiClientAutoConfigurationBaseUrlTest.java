@@ -4,6 +4,7 @@
 package dev.learning.xapi.client.configuration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
 
 import dev.learning.xapi.client.XapiClient;
@@ -23,8 +24,8 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("XapiClientAutoConfigurationBaseUrl Test")
-@SpringBootTest(classes = {XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class},
-    properties = {"xapi.client.baseUrl = http://127.0.0.1:55123/"})
+@SpringBootTest(classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class },
+    properties = { "xapi.client.baseUrl = http://127.0.0.1:55123/" })
 class XapiClientAutoConfigurationBaseUrlTest {
 
   @Autowired
@@ -52,8 +53,9 @@ class XapiClientAutoConfigurationBaseUrlTest {
     final var recordedRequest = mockWebServer.takeRequest();
 
     // Then BaseUrl Is Set (Request was sent to the proper url)
-    assertThat(recordedRequest.getRequestUrl().toString(),
-        is("http://localhost:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
+    assertThat(recordedRequest.getRequestUrl().toString(), anyOf(
+        is("http://127.0.0.1:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"),
+        is("http://localhost:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6")));
   }
 
 }
