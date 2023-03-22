@@ -36,6 +36,7 @@
     <!-- Statements Resource -->
     <module>get-statement</module>
     <module>post-statement</module>
+    <module>post-statement-with-attachment</module>
     <module>get-statements</module>
     <module>get-more-statements</module>
     <module>get-voided-statement</module>
