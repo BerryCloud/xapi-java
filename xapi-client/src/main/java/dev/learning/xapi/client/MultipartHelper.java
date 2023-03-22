@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Attachment;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.SubStatement;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,7 +80,7 @@ public final class MultipartHelper {
 
     final var attachmentsBody = writeAttachments(attachments);
 
-    if (attachmentsBody.isEmpty()) {
+    if (attachmentsBody.length == 0) {
       // add body directly, content-type is default application/json
       requestSpec.bodyValue(statements);
     } else {
@@ -110,8 +113,11 @@ public final class MultipartHelper {
   }
 
   @SneakyThrows
-  private static String createMultipartBody(Object statements, String attachments) {
-    final var body = new StringBuilder();
+  private static byte[] createMultipartBody(Object statements, byte[] attachments) {
+
+    var stream = new ByteArrayOutputStream();
+    final var body = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
+
     // Multipart Boundary
     body.append(BODY_SEPARATOR);
 
@@ -124,39 +130,55 @@ public final class MultipartHelper {
     body.append(objectMapper.writeValueAsString(statements)).append(CRLF);
 
     // Body of attachments
-    body.append(attachments);
+    body.flush();
+    stream.writeBytes(attachments);
 
     // Footer
     body.append(BODY_FOOTER);
 
-    return body.toString();
+    body.flush();
+
+    return stream.toByteArray();
   }
 
   /*
    * Writes attachments to a String. If there are no attachments in the stream then returns an empty
    * String.
    */
-  private static String writeAttachments(Stream<Attachment> attachments) {
+  @SneakyThrows
+  private static byte[] writeAttachments(Stream<Attachment> attachments) {
 
-    final var body = new StringBuilder();
+    final var stream = new ByteArrayOutputStream();
+    final var body = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
 
     // Write sha2-identical attachments only once
     attachments.collect(Collectors.toMap(Attachment::getSha2, v -> v, (k, v) -> v)).values()
         .forEach(a -> {
-          // Multipart Boundary
-          body.append(BODY_SEPARATOR);
+          try {
+            // Multipart Boundary
+            body.append(BODY_SEPARATOR);
 
-          // Multipart header
-          body.append(HttpHeaders.CONTENT_TYPE).append(':').append(a.getContentType()).append(CRLF);
-          body.append("Content-Transfer-Encoding:binary").append(CRLF);
-          body.append("X-Experience-API-Hash:").append(a.getSha2()).append(CRLF);
-          body.append(CRLF);
+            // Multipart header
+            body.append(HttpHeaders.CONTENT_TYPE).append(':').append(a.getContentType())
+                .append(CRLF);
+            body.append("Content-Transfer-Encoding:binary").append(CRLF);
+            body.append("X-Experience-API-Hash:").append(a.getSha2()).append(CRLF);
+            body.append(CRLF);
 
-          // Multipart body
-          body.append(new String(a.getContent(), StandardCharsets.UTF_8)).append(CRLF);
+            // Multipart body
+            body.flush();
+            // write directly into the underlying stream
+            stream.writeBytes(a.getContent());
+            body.append(CRLF);
+          } catch (final IOException e) {
+            throw new RuntimeException(e);
+          }
+
         });
 
-    return body.toString();
+    body.flush();
+
+    return stream.toByteArray();
   }
 
 }

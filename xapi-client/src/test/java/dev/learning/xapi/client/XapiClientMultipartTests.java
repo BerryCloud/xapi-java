@@ -123,7 +123,7 @@ class XapiClientMultipartTests {
     client.postStatement(
         r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .addAttachment(a -> a.content(new byte[] { 64, 65, 66, 67, 68, 69 }).length(6)
+            .addAttachment(a -> a.content(new byte[] { 64, 65, 66, 67, 68, (byte) 255 }).length(6)
                 .contentType("application/octet-stream")
                 .usageType(URI.create("http://adlnet.gov/expapi/attachments/code"))
                 .addDisplay(Locale.ENGLISH, "binary attachment"))
@@ -138,7 +138,7 @@ class XapiClientMultipartTests {
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
-        "--xapi-learning-dev-boundary\r\nContent-Type:application/json\r\n\r\n{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}},\"attachments\":[{\"usageType\":\"http://adlnet.gov/expapi/attachments/code\",\"display\":{\"en\":\"binary attachment\"},\"contentType\":\"application/octet-stream\",\"length\":6,\"sha2\":\"0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef\"}]}\r\n--xapi-learning-dev-boundary\r\nContent-Type:application/octet-stream\r\nContent-Transfer-Encoding:binary\r\nX-Experience-API-Hash:0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef\r\n\r\n@ABCDE\r\n--xapi-learning-dev-boundary--"));
+        "--xapi-learning-dev-boundary\r\nContent-Type:application/json\r\n\r\n{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}},\"attachments\":[{\"usageType\":\"http://adlnet.gov/expapi/attachments/code\",\"display\":{\"en\":\"binary attachment\"},\"contentType\":\"application/octet-stream\",\"length\":6,\"sha2\":\"0f4b9b79ad9e0572dbc7ce7d4dd38b96dc66d28ca87d7fd738ec8f9a30935bf6\"}]}\r\n--xapi-learning-dev-boundary\r\nContent-Type:application/octet-stream\r\nContent-Transfer-Encoding:binary\r\nX-Experience-API-Hash:0f4b9b79ad9e0572dbc7ce7d4dd38b96dc66d28ca87d7fd738ec8f9a30935bf6\r\n\r\n@ABCD�\r\n--xapi-learning-dev-boundary--"));
   }
 
   @Test
