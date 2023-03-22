@@ -62,7 +62,7 @@ public class PostStatementWithAttachmentApplication implements CommandLineRunner
 
                         // Add binary attachment
                         .addAttachment(a -> a.content(data).length(data.length)
-                            .contentType("img/jpg")
+                            .contentType("image/jpeg")
                             .usageType(URI.create("http://adlnet.gov/expapi/attachments/jpg"))
                             .addDisplay(Locale.ENGLISH, "JPG attachment"))
                         
