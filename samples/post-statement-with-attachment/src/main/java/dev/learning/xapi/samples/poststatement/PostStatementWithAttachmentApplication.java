@@ -57,13 +57,13 @@ public class PostStatementWithAttachmentApplication implements CommandLineRunner
                         // Add simple text attachment
                         .addAttachment(a -> a.content("Simple attachment").length(17)
                             .contentType("text/plain")
-                            .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+                            .usageType(URI.create("https://learning.dev/examples/attachments/greeting"))
                             .addDisplay(Locale.ENGLISH, "text attachment"))
 
                         // Add binary attachment
                         .addAttachment(a -> a.content(data).length(data.length)
                             .contentType("image/jpeg")
-                            .usageType(URI.create("http://adlnet.gov/expapi/attachments/jpg"))
+                            .usageType(URI.create("https://learning.dev/examples/attachments/greeting"))
                             .addDisplay(Locale.ENGLISH, "JPG attachment"))
                         
                     )).block();
