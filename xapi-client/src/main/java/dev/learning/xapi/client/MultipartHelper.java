@@ -8,18 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Attachment;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.SubStatement;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 
 /**
@@ -37,6 +35,18 @@ public final class MultipartHelper {
   private static final String BOUNDARY_PREFIX = "--";
   private static final String BODY_SEPARATOR = BOUNDARY_PREFIX + MULTIPART_BOUNDARY + CRLF;
   private static final String BODY_FOOTER = BOUNDARY_PREFIX + MULTIPART_BOUNDARY + BOUNDARY_PREFIX;
+  private static final String CONTENT_TYPE = HttpHeaders.CONTENT_TYPE + ":";
+
+  private static final byte[] BA_APP_JSON_HEADER = (CONTENT_TYPE + MediaType.APPLICATION_JSON_VALUE
+      + CRLF + CRLF).getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_CRLF = CRLF.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_BODY_SEPARATOR = BODY_SEPARATOR.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_BODY_FOOTER = BODY_FOOTER.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_CONTENT_TYPE = CONTENT_TYPE.getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_ENCODING_HEADER = ("Content-Transfer-Encoding:binary" + CRLF)
+      .getBytes(StandardCharsets.UTF_8);
+  private static final byte[] BA_X_API_HASH = "X-Experience-API-Hash:"
+      .getBytes(StandardCharsets.UTF_8);
 
   public static final MediaType MULTIPART_MEDIATYPE = MediaType.valueOf(MULTIPART_CONTENT_TYPE);
 
@@ -112,73 +122,71 @@ public final class MultipartHelper {
     return stream.filter(a -> a.getContent() != null);
   }
 
-  @SneakyThrows
   private static byte[] createMultipartBody(Object statements, byte[] attachments) {
 
-    var stream = new ByteArrayOutputStream();
-    final var body = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
+    try (var stream = new FastByteArrayOutputStream()) {
+      // Multipart Boundary
+      stream.write(BA_BODY_SEPARATOR);
 
-    // Multipart Boundary
-    body.append(BODY_SEPARATOR);
+      // Header of first part
+      stream.write(BA_APP_JSON_HEADER);
 
-    // Header of first part
-    body.append(HttpHeaders.CONTENT_TYPE).append(':').append(MediaType.APPLICATION_JSON_VALUE)
-        .append(CRLF);
-    body.append(CRLF);
+      // Body of first part
+      stream.write(objectMapper.writeValueAsBytes(statements));
+      stream.write(BA_CRLF);
 
-    // Body of first part
-    body.append(objectMapper.writeValueAsString(statements)).append(CRLF);
+      // Body of attachments
+      stream.write(attachments);
 
-    // Body of attachments
-    body.flush();
-    stream.writeBytes(attachments);
+      // Footer
+      stream.write(BA_BODY_FOOTER);
 
-    // Footer
-    body.append(BODY_FOOTER);
-
-    body.flush();
-
-    return stream.toByteArray();
+      return stream.toByteArrayUnsafe();
+    } catch (final IOException e) {
+      // should never happen
+      throw new RuntimeException(e);
+    }
   }
 
   /*
-   * Writes attachments to a String. If there are no attachments in the stream then returns an empty
-   * String.
+   * Writes attachments to a byte array. If there are no attachments in the stream then returns an
+   * empty array.
    */
-  @SneakyThrows
   private static byte[] writeAttachments(Stream<Attachment> attachments) {
 
-    final var stream = new ByteArrayOutputStream();
-    final var body = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
+    try (var stream = new FastByteArrayOutputStream()) {
 
-    // Write sha2-identical attachments only once
-    attachments.collect(Collectors.toMap(Attachment::getSha2, v -> v, (k, v) -> v)).values()
-        .forEach(a -> {
-          try {
-            // Multipart Boundary
-            body.append(BODY_SEPARATOR);
+      // Write each sha2-identical attachments only once
+      attachments.collect(Collectors.toMap(Attachment::getSha2, v -> v, (k, v) -> v)).values()
+          .forEach(a -> {
+            try {
+              // Multipart Boundary
+              stream.write(BA_BODY_SEPARATOR);
 
-            // Multipart header
-            body.append(HttpHeaders.CONTENT_TYPE).append(':').append(a.getContentType())
-                .append(CRLF);
-            body.append("Content-Transfer-Encoding:binary").append(CRLF);
-            body.append("X-Experience-API-Hash:").append(a.getSha2()).append(CRLF);
-            body.append(CRLF);
+              // Multipart headers
+              stream.write(BA_CONTENT_TYPE);
+              stream.write(a.getContentType().getBytes(StandardCharsets.UTF_8));
+              stream.write(BA_CRLF);
 
-            // Multipart body
-            body.flush();
-            // write directly into the underlying stream
-            stream.writeBytes(a.getContent());
-            body.append(CRLF);
-          } catch (final IOException e) {
-            throw new RuntimeException(e);
-          }
+              stream.write(BA_ENCODING_HEADER);
 
-        });
+              stream.write(BA_X_API_HASH);
+              stream.write(a.getSha2().getBytes(StandardCharsets.UTF_8));
+              stream.write(BA_CRLF);
+              stream.write(BA_CRLF);
 
-    body.flush();
+              // Multipart body
+              stream.write(a.getContent());
+              stream.write(BA_CRLF);
+            } catch (final IOException e) {
+              // should never happen
+              throw new RuntimeException(e);
+            }
 
-    return stream.toByteArray();
+          });
+
+      return stream.toByteArrayUnsafe();
+    }
   }
 
 }
