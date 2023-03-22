@@ -64,7 +64,7 @@ public class PostStatementWithAttachmentApplication implements CommandLineRunner
                         .addAttachment(a -> a.content(data).length(data.length)
                             .contentType("image/jpeg")
                             .usageType(URI.create("https://example.com/attachments/greeting"))
-                            .addDisplay(Locale.ENGLISH, "JPG attachment"))
+                            .addDisplay(Locale.ENGLISH, "JPEG attachment"))
                         
                     )).block();
 
