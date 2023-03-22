@@ -53,7 +53,7 @@ class XapiClientAutoConfigurationBaseUrlTest {
 
     // Then BaseUrl Is Set (Request was sent to the proper url)
     assertThat(recordedRequest.getRequestUrl().toString(),
-        is("http://127.0.0.1:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
+        is("http://localhost:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"));
   }
 
 }
