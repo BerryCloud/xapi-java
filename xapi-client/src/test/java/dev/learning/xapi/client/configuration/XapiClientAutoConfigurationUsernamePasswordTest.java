@@ -69,7 +69,7 @@ class XapiClientAutoConfigurationUsernamePasswordTest {
 
     // Then Authorization Is Set
     assertThat(recordedRequest.getHeaders().get(HttpHeaders.AUTHORIZATION),
-        is("basic dXNlcm5hbWU6cGFzc3dvcmQ="));
+        is("Basic dXNlcm5hbWU6cGFzc3dvcmQ="));
   }
 
 }

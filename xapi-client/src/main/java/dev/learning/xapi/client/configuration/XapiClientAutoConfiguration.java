@@ -6,7 +6,6 @@ package dev.learning.xapi.client.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.client.XapiClient;
-import java.util.Base64;
 import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -36,9 +35,8 @@ public class XapiClientAutoConfiguration {
       builder.defaultHeader(HttpHeaders.AUTHORIZATION, properties.getAuthorization());
 
     } else if (properties.getUsername() != null && properties.getPassword() != null) {
-      final var auth = "basic " + Base64.getEncoder()
-          .encodeToString((properties.getUsername() + ":" + properties.getPassword()).getBytes());
-      builder.defaultHeader(HttpHeaders.AUTHORIZATION, auth);
+      builder
+          .defaultHeaders(h -> h.setBasicAuth(properties.getUsername(), properties.getPassword()));
     }
 
     if (properties.getBaseUrl() != null) {

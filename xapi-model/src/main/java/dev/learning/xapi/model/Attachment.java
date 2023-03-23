@@ -127,17 +127,17 @@ public class Attachment {
       return this;
 
     }
-    
+
     /**
      * <p>
      * Sets SHA-2 hash of the Attachment.
      * </p>
      * <p>
-     * The sha2 is set ONLY if the content property was not set yet. 
-     * (otherwise the sha2 is calculated automatically)
+     * The sha2 is set ONLY if the content property was not set yet. (otherwise the sha2 is
+     * calculated automatically)
      * </p>
      *
-     * @param sha2  The SHA-2 hash of the Attachment data.
+     * @param sha2 The SHA-2 hash of the Attachment data.
      *
      * @return This builder
      */
@@ -145,11 +145,11 @@ public class Attachment {
       if (this.content == null) {
         this.sha2 = sha2;
       }
-      
+
       return this;
 
     }
-    
+
     /**
      * <p>
      * Sets data of the Attachment.
@@ -166,12 +166,12 @@ public class Attachment {
       this.content = content;
       if (content != null) {
         this.sha2 = sha256Hex(content);
-      } 
-      
+      }
+
       return this;
 
     }
-  
+
     /**
      * <p>
      * Sets data of the Attachment as a String.
@@ -183,29 +183,33 @@ public class Attachment {
      * @param content The data of the Attachment as a String.
      *
      * @return This builder
-     * 
+     *
      * @see Builder#content(byte[])
      */
     public Builder content(String content) {
-      
-      return content(content.getBytes(StandardCharsets.UTF_8));
+
+      if (content != null) {
+        return content(content.getBytes(StandardCharsets.UTF_8));
+      }
+
+      return content((byte[]) null);
 
     }
-    
-    private static String sha256Hex(byte[] data) { 
+
+    private static String sha256Hex(byte[] data) {
       try {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(data);
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (int i = 0; i < hash.length; i++) {
-          String hex = Integer.toHexString(0xff & hash[i]);
+        final var digest = MessageDigest.getInstance("SHA-256");
+        final var hash = digest.digest(data);
+        final var hexString = new StringBuilder(2 * hash.length);
+        for (final byte element : hash) {
+          final var hex = Integer.toHexString(0xff & element);
           if (hex.length() == 1) {
             hexString.append('0');
           }
           hexString.append(hex);
         }
-        return hexString.toString();      
-      } catch (NoSuchAlgorithmException e) {
+        return hexString.toString();
+      } catch (final NoSuchAlgorithmException e) {
         throw new IllegalArgumentException(e);
       }
 
