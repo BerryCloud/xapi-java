@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Person;
@@ -25,7 +26,6 @@ import reactor.core.publisher.Mono;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *      communication resources</a>
@@ -33,20 +33,24 @@ import reactor.core.publisher.Mono;
 public class XapiClient {
 
   private final WebClient webClient;
+  private final MultipartService multipartService;
 
-  private static final ParameterizedTypeReference<List<UUID>> LIST_UUID_TYPE =
-      new ParameterizedTypeReference<>() {};
+  private static final ParameterizedTypeReference<
+      List<UUID>> LIST_UUID_TYPE = new ParameterizedTypeReference<>() {
+      };
 
-  private static final ParameterizedTypeReference<List<String>> LIST_STRING_TYPE =
-      new ParameterizedTypeReference<>() {};
+  private static final ParameterizedTypeReference<
+      List<String>> LIST_STRING_TYPE = new ParameterizedTypeReference<>() {
+      };
 
   /**
    * Default constructor for XapiClient.
    *
    * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
-   *        authorization header.
+   *                authorization header.
    */
-  public XapiClient(WebClient.Builder builder) {
+  public XapiClient(WebClient.Builder builder, ObjectMapper objectMapper) {
+    this.multipartService = new MultipartService(objectMapper);
     this.webClient = builder
 
         .defaultHeader("X-Experience-API-Version", "1.0.3")
@@ -111,15 +115,15 @@ public class XapiClient {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
-    return this.webClient
+    final var requestSpec = this.webClient
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build(queryParams))
+        .uri(u -> request.url(u, queryParams).build(queryParams));
 
-        .bodyValue(request.getStatement())
+    multipartService.addBody(requestSpec, request.getStatement());
 
-        .retrieve()
+    return requestSpec.retrieve()
 
         .toEntity(LIST_UUID_TYPE)
 
@@ -158,15 +162,15 @@ public class XapiClient {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
-    return this.webClient
+    final var requestSpec = this.webClient
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build(queryParams))
+        .uri(u -> request.url(u, queryParams).build(queryParams));
 
-        .bodyValue(request.getStatements())
+    multipartService.addBody(requestSpec, request.getStatements());
 
-        .retrieve()
+    return requestSpec.retrieve()
 
         .toEntity(LIST_UUID_TYPE);
 
@@ -257,7 +261,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the get statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getStatements(GetStatementsRequest request) {
@@ -284,7 +287,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getStatements(
@@ -306,7 +308,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the get more statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(GetMoreStatementsRequest request) {
@@ -333,7 +334,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get more statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(
@@ -357,7 +357,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the get state request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getState(GetStateRequest request, Class<T> bodyType) {
@@ -384,7 +383,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get state request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<?, ?>> request,
@@ -406,7 +404,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the post state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postState(PostStateRequest request) {
@@ -437,7 +434,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the post state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postState(Consumer<PostStateRequest.Builder<?, ?>> request) {
@@ -458,7 +454,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the put state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putState(PutStateRequest request) {
@@ -489,7 +484,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the put state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putState(Consumer<PutStateRequest.Builder<?, ?>> request) {
@@ -510,7 +504,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the delete state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteState(DeleteStateRequest request) {
@@ -537,7 +530,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the delete state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteState(
@@ -556,7 +548,6 @@ public class XapiClient {
    * parameters.
    *
    * @param request The parameters of the get states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getStates(GetStatesRequest request) {
@@ -583,7 +574,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getStates(
@@ -604,7 +594,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the delete states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteStates(DeleteStatesRequest request) {
@@ -630,7 +619,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the delete states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteStates(
@@ -652,7 +640,6 @@ public class XapiClient {
    * value, and it is legal to include multiple identifying properties.
    *
    * @param request The parameters of the get agents request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Person>> getAgents(GetAgentsRequest request) {
@@ -677,7 +664,6 @@ public class XapiClient {
    * value, and it is legal to include multiple identifying properties.
    *
    * @param request The Consumer Builder for the get agents request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
@@ -696,7 +682,6 @@ public class XapiClient {
    * Loads the complete Activity Object specified.
    *
    * @param request The parameters of the get activity request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Activity>> getActivity(GetActivityRequest request) {
@@ -719,7 +704,6 @@ public class XapiClient {
    * Loads the complete Activity Object specified.
    *
    * @param request The Consumer Builder for the get activity request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
@@ -741,7 +725,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the get agent profile request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getAgentProfile(GetAgentProfileRequest request,
@@ -768,7 +751,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get agent profile request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getAgentProfile(
@@ -789,7 +771,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the delete agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(DeleteAgentProfileRequest request) {
@@ -815,7 +796,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the delete agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(
@@ -836,7 +816,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the put agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putAgentProfile(PutAgentProfileRequest request) {
@@ -866,7 +845,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the put agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putAgentProfile(
@@ -887,7 +865,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the post agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postAgentProfile(PostAgentProfileRequest request) {
@@ -917,7 +894,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the post agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postAgentProfile(
@@ -937,7 +913,6 @@ public class XapiClient {
    * (exclusive).
    *
    * @param request The parameters of the get agent profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(GetAgentProfilesRequest request) {
@@ -962,7 +937,6 @@ public class XapiClient {
    * (exclusive).
    *
    * @param request The Consumer Builder for the get agent profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(
@@ -985,7 +959,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the get activity profile request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getActivityProfile(GetActivityProfileRequest request,
@@ -1012,7 +985,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get activity profile request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getActivityProfile(
@@ -1033,7 +1005,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the post activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postActivityProfile(PostActivityProfileRequest request) {
@@ -1063,7 +1034,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the post activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postActivityProfile(
@@ -1084,7 +1054,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the put activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putActivityProfile(PutActivityProfileRequest request) {
@@ -1114,7 +1083,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the put activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putActivityProfile(
@@ -1135,7 +1103,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the delete activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteActivityProfile(DeleteActivityProfileRequest request) {
@@ -1161,14 +1128,13 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the delete activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteActivityProfile(
       Consumer<DeleteActivityProfileRequest.Builder<?, ?>> request) {
 
-    final DeleteActivityProfileRequest.Builder<?, ?> builder =
-        DeleteActivityProfileRequest.builder();
+    final DeleteActivityProfileRequest.Builder<?,
+        ?> builder = DeleteActivityProfileRequest.builder();
 
     request.accept(builder);
 
@@ -1185,7 +1151,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The parameters of the get activity profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(
@@ -1214,7 +1179,6 @@ public class XapiClient {
    * </p>
    *
    * @param request The Consumer Builder for the get activity profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(

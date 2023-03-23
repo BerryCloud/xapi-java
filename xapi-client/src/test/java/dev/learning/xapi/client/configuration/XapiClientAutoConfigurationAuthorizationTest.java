@@ -16,6 +16,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
 @DisplayName("XapiClientAutoConfigurationAuthorization Test")
 @SpringBootTest(
     classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
-        XapiTestClientConfiguration2.class },
+        XapiTestClientConfiguration2.class, JacksonAutoConfiguration.class },
     properties = "xapi.client.authorization = bearer 1234")
 class XapiClientAutoConfigurationAuthorizationTest {
 

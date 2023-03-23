@@ -325,7 +325,21 @@ class SubStatementTests {
 
         .context(context)
 
-        .attachments(Collections.singletonList(attachment))
+        .addAttachment(attachment)
+        
+        .addAttachment(a->a.usageType(URI.create("http://example.com"))
+            
+            .fileUrl(URI.create("http://example.com"))
+
+            .addDisplay(Locale.ENGLISH, "value")
+
+            .addDescription(Locale.ENGLISH, "value")
+
+            .length(123)
+
+            .sha2("123")
+
+            .contentType("file"))
 
         .build();
 
@@ -352,7 +366,7 @@ class SubStatementTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "SubStatement(actor=Agent(super=Actor(name=null, mbox=mailto:agent@example.com, mboxSha1sum=null, openid=null, account=null)), verb=Verb(id=http://example.com/confirmed, display={en_US=confirmed}), object=StatementReference(id=9e13cefd-53d3-4eac-b5ed-2cf6693903bb), result=Result(score=Score(scaled=1.0, raw=1.0, min=0.0, max=5.0), success=true, completion=true, response=test, duration=P1D, extensions=null), context=Context(registration=6d969975-8d7e-4506-ac19-877c57f2921a, instructor=Agent(super=Actor(name=null, mbox=mailto:agent@example.com, mboxSha1sum=null, openid=null, account=null)), team=Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=null), member=null), contextActivities=ContextActivities(parent=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)], grouping=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)], category=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)], other=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)]), revision=revision, platform=platform, language=en_US, statement=StatementReference(id=9e13cefd-53d3-4eac-b5ed-2cf6693903bb), extensions={http://url=www.example.com}), timestamp=2015-11-18T11:17:00Z, attachments=[Attachment(usageType=http://example.com, display={en_US=value}, description={en_US=value}, contentType=file, length=123, sha2=123, fileUrl=http://example.com)])"));
+        "SubStatement(actor=Agent(super=Actor(name=null, mbox=mailto:agent@example.com, mboxSha1sum=null, openid=null, account=null)), verb=Verb(id=http://example.com/confirmed, display={en_US=confirmed}), object=StatementReference(id=9e13cefd-53d3-4eac-b5ed-2cf6693903bb), result=Result(score=Score(scaled=1.0, raw=1.0, min=0.0, max=5.0), success=true, completion=true, response=test, duration=P1D, extensions=null), context=Context(registration=6d969975-8d7e-4506-ac19-877c57f2921a, instructor=Agent(super=Actor(name=null, mbox=mailto:agent@example.com, mboxSha1sum=null, openid=null, account=null)), team=Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=null), member=null), contextActivities=ContextActivities(parent=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)], grouping=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)], category=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)], other=[Activity(id=http://www.example.co.uk/exampleactivity, definition=null)]), revision=revision, platform=platform, language=en_US, statement=StatementReference(id=9e13cefd-53d3-4eac-b5ed-2cf6693903bb), extensions={http://url=www.example.com}), timestamp=2015-11-18T11:17:00Z, attachments=[Attachment(usageType=http://example.com, display={en_US=value}, description={en_US=value}, contentType=file, length=123, sha2=123, fileUrl=http://example.com, content=null), Attachment(usageType=http://example.com, display={en=value}, description={en=value}, contentType=file, length=123, sha2=123, fileUrl=http://example.com, content=null)])"));
 
   }
 

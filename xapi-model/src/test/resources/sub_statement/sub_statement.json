@@ -78,5 +78,18 @@
     "length" : 123,
     "sha2" : "123",
     "fileUrl" : "http://example.com"
+  },
+  {
+    "usageType" : "http://example.com",
+    "display" : {
+      "en" : "value"
+    },
+    "description" : {
+      "en" : "value"
+    },
+    "contentType" : "file",
+    "length" : 123,
+    "sha2" : "123",
+    "fileUrl" : "http://example.com"
   } ]
 }

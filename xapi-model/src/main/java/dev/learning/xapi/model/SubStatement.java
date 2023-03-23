@@ -10,6 +10,7 @@ import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -159,6 +160,42 @@ public class SubStatement implements StatementObject, CoreStatement {
       return this;
     }
 
+    /**
+     * Consumer Builder for attachment.
+     *
+     * @param attachment The Consumer Builder for attachment
+     *
+     * @return This builder
+     *
+     * @see SubStatement#attachments
+     */
+    public Builder addAttachment(Consumer<Attachment.Builder> attachment) {
+
+      final Attachment.Builder builder = Attachment.builder();
+
+      attachment.accept(builder);
+
+      return addAttachment(builder.build());
+    }    
+    
+    /**
+     * Adds an attachment.
+     *
+     * @param attachment An {@link Attachment} object.
+     *
+     * @return This builder
+     * 
+     * @see SubStatement#attachments
+     */
+    public Builder addAttachment(Attachment attachment) {
+
+      if (this.attachments == null) {
+        this.attachments = new ArrayList<>();
+      }
+
+      this.attachments.add(attachment);
+      return this;
+    }
   }
 
 }

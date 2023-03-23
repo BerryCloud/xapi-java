@@ -103,6 +103,26 @@ client.postStatement(
     .block();
 ```
 
+### Posting a Statement with an attachment
+
+Example:
+
+```java
+client.postStatement(
+    r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+
+        .addAttachment(a -> a.content("Simple attachment").length(17).contentType("text/plain")
+            .usageType(URI.create("https://example.com/attachments/simplestatement"))
+            .addDisplay(Locale.ENGLISH, "text attachment"))
+
+    )).block();
+```
+
 ### Posting Statements
 
 Example:

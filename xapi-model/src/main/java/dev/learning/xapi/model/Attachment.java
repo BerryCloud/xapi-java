@@ -4,10 +4,14 @@
 
 package dev.learning.xapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.Value;
@@ -69,6 +73,12 @@ public class Attachment {
    */
   private URI fileUrl;
 
+  /**
+   * The data of the attachment as byte array.
+   */
+  @JsonIgnore
+  private byte[] content;
+
   // **Warning** do not add fields that are not required by the xAPI specification.
 
   /**
@@ -115,6 +125,93 @@ public class Attachment {
 
       this.description.put(key, value);
       return this;
+
+    }
+
+    /**
+     * <p>
+     * Sets SHA-2 hash of the Attachment.
+     * </p>
+     * <p>
+     * The sha2 is set ONLY if the content property was not set yet. (otherwise the sha2 is
+     * calculated automatically)
+     * </p>
+     *
+     * @param sha2 The SHA-2 hash of the Attachment data.
+     *
+     * @return This builder
+     */
+    public Builder sha2(String sha2) {
+      if (this.content == null) {
+        this.sha2 = sha2;
+      }
+
+      return this;
+
+    }
+
+    /**
+     * <p>
+     * Sets data of the Attachment.
+     * </p>
+     * <p>
+     * This method also automatically calculates the SHA-2 hash for the data.
+     * </p>
+     *
+     * @param content The data of the Attachment as a byte array.
+     *
+     * @return This builder
+     */
+    public Builder content(byte[] content) {
+      this.content = content;
+      if (content != null) {
+        this.sha2 = sha256Hex(content);
+      }
+
+      return this;
+
+    }
+
+    /**
+     * <p>
+     * Sets data of the Attachment as a String.
+     * </p>
+     * <p>
+     * This is a convenient method for creating text attachments.
+     * </p>
+     *
+     * @param content The data of the Attachment as a String.
+     *
+     * @return This builder
+     *
+     * @see Builder#content(byte[])
+     */
+    public Builder content(String content) {
+
+      if (content != null) {
+        return content(content.getBytes(StandardCharsets.UTF_8));
+      }
+
+      return content((byte[]) null);
+
+    }
+
+    private static String sha256Hex(byte[] data) {
+      try {
+        final var digest = MessageDigest.getInstance("SHA-256");
+        final var hash = digest.digest(data);
+        final var hexString = new StringBuilder(2 * hash.length);
+        for (final byte element : hash) {
+          final var hex = Integer.toHexString(0xff & element);
+          if (hex.length() == 1) {
+            hexString.append('0');
+          }
+          hexString.append(hex);
+        }
+        return hexString.toString();
+      } catch (final NoSuchAlgorithmException e) {
+        throw new IllegalArgumentException(e);
+      }
 
     }
   }
