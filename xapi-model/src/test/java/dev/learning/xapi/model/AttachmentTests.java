@@ -9,16 +9,17 @@ import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Locale;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,8 @@ import org.springframework.util.ResourceUtils;
  *
  * @author Lukáš Sahula
  * @author Martin Myslik
+ * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
 @DisplayName("Attachment tests")
 class AttachmentTests {
@@ -41,10 +44,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenResultIsInstanceOfAttachment() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then Result Is Instance Of Attachment
     assertThat(result, instanceOf(Attachment.class));
@@ -54,10 +57,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenUsageTypeIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then UsageType Is Expected
     assertThat(result.getUsageType(),
@@ -68,10 +71,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenDisplayIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then Display Is Expected
     assertThat(result.getDisplay().get(Locale.US), is("Signature"));
@@ -81,10 +84,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenDescriptionIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then Description Is Expected
     assertThat(result.getDescription().get(Locale.US), is("A test signature"));
@@ -94,10 +97,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenContentTypeIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then ContentType Is Expected
     assertThat(result.getContentType(), is("application/octet-stream"));
@@ -107,10 +110,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenLengthIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then Length Is Expected
     assertThat(result.getLength(), is(4235));
@@ -120,10 +123,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenSha2IsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then Sha2 Is Expected
     assertThat(result.getSha2(),
@@ -134,10 +137,10 @@ class AttachmentTests {
   @Test
   void whenDeserializingAttachmentThenFileUrlIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:attachment/attachment.json");
+    final var file = ResourceUtils.getFile("classpath:attachment/attachment.json");
 
     // When Deserializing Attachment
-    final Attachment result = objectMapper.readValue(file, Attachment.class);
+    final var result = objectMapper.readValue(file, Attachment.class);
 
     // Then FileUrl Is Expected
     assertThat(result.getFileUrl(), is(URI.create("https://example.com")));
@@ -147,7 +150,7 @@ class AttachmentTests {
   @Test
   void whenSerializingAttachmentThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -166,7 +169,7 @@ class AttachmentTests {
         .build();
 
     // When Serializing Attachment
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(attachment));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(attachment));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -178,11 +181,11 @@ class AttachmentTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Attachment attachment = objectMapper
+    final var attachment = objectMapper
         .readValue(ResourceUtils.getFile("classpath:attachment/attachment.json"), Attachment.class);
 
     // When Calling ToString
-    final String result = attachment.toString();
+    final var result = attachment.toString();
 
     // Then Result Is Expected
     assertThat(result, is(
@@ -198,7 +201,7 @@ class AttachmentTests {
   void whenBuildingAttachmentWithDataThenDataIsSet() {
 
     // When Building Attachment With Data
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
 
@@ -209,7 +212,7 @@ class AttachmentTests {
         .length(4)
 
         .content("text")
-        
+
         .fileUrl(URI.create("https://example.com"))
 
         .build();
@@ -218,37 +221,64 @@ class AttachmentTests {
     assertThat(new String(attachment.getContent(), StandardCharsets.UTF_8), is("text"));
 
   }
-  
+
   @Test
-  void whenBuildingAttachmentWithDataThenSha2IsSet() {
+  void givenAttachmentWithStringDataWhenGettingSHA2ThenResultIsExpected() {
 
-    // When Building Attachment With Data
-    final Attachment attachment = Attachment.builder()
+    // Given Attachment With String Data
+    final var attachment = Attachment.builder()
 
-        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+        .content("Simple attachment").length(17)
 
-        .addDisplay(Locale.US, "Text")
+        .contentType("text/plain")
 
-        .contentType("plain/text")
+        .usageType(URI.create("https://example.com/attachments/greeting"))
 
-        .length(4)
-
-        .content("text")
-        
-        .fileUrl(URI.create("https://example.com"))
+        .addDisplay(Locale.ENGLISH, "text attachment")
 
         .build();
 
-    // Then Sha2 Is Set
-    assertThat(attachment.getSha2(), is("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1"));
+    // When Getting SHA2
+    final var result = attachment.getSha2();
+
+    // Then Result Is Expected
+    assertThat(result, is("b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5"));
 
   }
-  
+
+  @Test
+  void givenAttachmentWithBinaryDataWhenGettingSHA2ThenResultIsExpected()
+      throws FileNotFoundException, IOException {
+
+    final var data =
+        Files.readAllBytes(ResourceUtils.getFile("classpath:attachment/example.jpg").toPath());
+
+    // Given Attachment With Binary Data
+    final var attachment = Attachment.builder()
+
+        .content(data).length(data.length)
+
+        .contentType("image/jpeg")
+
+        .usageType(URI.create("https://example.com/attachments/greeting"))
+
+        .addDisplay(Locale.ENGLISH, "JPEG attachment")
+
+        .build();
+
+    // When Getting SHA2
+    final var result = attachment.getSha2();
+
+    // Then Result Is Expected
+    assertThat(result, is("27c7a7c1e3d2ff43e4ee1a8915fef351d1ef75d5aeff873e9b2893f4589dcdcc"));
+
+  }
+
   @Test
   void whenBuildingAttachmentWithDataAndSha2ThenSha2IsTheCalculatedOne() {
 
     // When Building Attachment With Data And Sha2
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
 
@@ -259,23 +289,74 @@ class AttachmentTests {
         .length(4)
 
         .content("text")
-        
+
         .sha2("000000000000000000000000000000000000000000000")
-        
+
         .fileUrl(URI.create("https://example.com"))
 
         .build();
 
     // Then Sha2 Is Set Is The Calculated One
-    assertThat(attachment.getSha2(), is("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1"));
+    assertThat(attachment.getSha2(),
+        is("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1"));
 
   }
-  
+
+  @Test
+  void whenBuildingAttachmentWithNullByteArrayContentThenSha2IsNull() {
+
+    // When Building Attachment With Null Byte Array Content
+    final var attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+
+        .addDisplay(Locale.US, "Text")
+
+        .contentType("plain/text")
+
+        .length(4)
+
+        .content((byte[]) null)
+
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Sha2 Is Null
+    assertNull(attachment.getSha2());
+
+  }
+
+  @Test
+  void whenBuildingAttachmentWithNullStringContentThenSha2IsNull() {
+
+    // When Building Attachment With Null String Content
+    final var attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+
+        .addDisplay(Locale.US, "Text")
+
+        .contentType("plain/text")
+
+        .length(4)
+
+        .content((String) null)
+
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // Then Sha2 Is Null
+    assertNull(attachment.getSha2());
+
+  }
+
   @Test
   void whenBuildingAttachmentWithTwoDisplayValuesThenDisplayLanguageMapHasTwoEntries() {
 
     // When Building Attachment With Two Display Values
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -304,7 +385,7 @@ class AttachmentTests {
   void whenBuildingAttachmentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
 
     // When Building Attachment With Two Description Values
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -332,8 +413,7 @@ class AttachmentTests {
   @Test
   void whenValidatingAttachmentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
-
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -363,7 +443,7 @@ class AttachmentTests {
   @Test
   void whenValidatingAttachmentWithoutUsageTypeThenConstraintViolationsSizeIsOne() {
 
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .addDisplay(Locale.US, "Signature")
 
@@ -392,7 +472,7 @@ class AttachmentTests {
   void whenValidatingAttachmentWithoutDisplayThenConstraintViolationsSizeIsOne() {
 
 
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -420,7 +500,7 @@ class AttachmentTests {
   @Test
   void whenValidatingAttachmentWithoutContentTypeThenConstraintViolationsSizeIsOne() {
 
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -448,7 +528,7 @@ class AttachmentTests {
   @Test
   void whenValidatingAttachmentWithoutSha2ThenConstraintViolationsSizeIsOne() {
 
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
@@ -476,7 +556,7 @@ class AttachmentTests {
   @Test
   void whenValidatingAttachmentWithoutLengthThenConstraintViolationsSizeIsOne() {
 
-    final Attachment attachment = Attachment.builder()
+    final var attachment = Attachment.builder()
 
         .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 

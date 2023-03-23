@@ -40,7 +40,7 @@ public class PostStatementWithAttachmentApplication implements CommandLineRunner
   public void run(String... args) throws Exception {
     
     // Load jpg attachment from class-path
-    var data = Files.readAllBytes(ResourceUtils.getFile("classpath:Example.jpg").toPath());
+    var data = Files.readAllBytes(ResourceUtils.getFile("classpath:example.jpg").toPath());
 
     // Post a statement
     ResponseEntity<
