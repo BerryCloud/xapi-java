@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Person;
@@ -44,6 +45,9 @@ class XapiClientTests {
   @Autowired
   private WebClient.Builder webClientBuilder;
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
   private MockWebServer mockWebServer;
   private XapiClient client;
 
@@ -54,7 +58,7 @@ class XapiClientTests {
 
     webClientBuilder.baseUrl(mockWebServer.url("").toString());
 
-    client = new XapiClient(webClientBuilder);
+    client = new XapiClient(webClientBuilder, objectMapper);
 
   }
 
@@ -104,8 +108,8 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Statement
-    final var response =
-        client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+    final var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6"))
+        .block();
 
     // Then Body Is Instance Of Statement
     assertThat(response.getBody(), instanceOf(Statement.class));
@@ -176,7 +180,6 @@ class XapiClientTests {
     assertThat(recordedRequest.getMethod(), is("POST"));
   }
 
-  
   @Test
   void whenPostingStatementsThenBodyIsExpected() throws InterruptedException {
 
@@ -205,7 +208,6 @@ class XapiClientTests {
         "[{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
   }
 
-  
   @Test
   void whenPostingStatementsArrayThenBodyIsExpected() throws InterruptedException {
 
@@ -1798,8 +1800,8 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Agents
-    final var response =
-        client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
+    final var response = client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com")))
+        .block();
 
     // Then Body Is Instance Of Activity
     assertThat(response.getBody(), instanceOf(Person.class));

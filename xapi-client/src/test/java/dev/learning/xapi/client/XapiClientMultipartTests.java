@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.Statement;
@@ -37,6 +38,9 @@ class XapiClientMultipartTests {
   @Autowired
   private WebClient.Builder webClientBuilder;
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
   private MockWebServer mockWebServer;
   private XapiClient client;
 
@@ -47,7 +51,7 @@ class XapiClientMultipartTests {
 
     webClientBuilder.baseUrl(mockWebServer.url("").toString());
 
-    client = new XapiClient(webClientBuilder);
+    client = new XapiClient(webClientBuilder, objectMapper);
 
   }
 

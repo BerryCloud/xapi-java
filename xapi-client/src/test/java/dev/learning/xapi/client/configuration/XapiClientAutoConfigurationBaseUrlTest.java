@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,7 +25,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author István Rátkai (Selindek)
  */
 @DisplayName("XapiClientAutoConfigurationBaseUrl Test")
-@SpringBootTest(classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class },
+@SpringBootTest(
+    classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
+        JacksonAutoConfiguration.class },
     properties = { "xapi.client.baseUrl = http://127.0.0.1:55123/" })
 class XapiClientAutoConfigurationBaseUrlTest {
 

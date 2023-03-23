@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.client.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.client.XapiClient;
 import java.util.Base64;
 import java.util.List;
@@ -29,7 +30,7 @@ public class XapiClientAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public XapiClient xapiClient(XapiClientProperties properties, WebClient.Builder builder,
-      List<XapiClientConfigurer> configurers) {
+      List<XapiClientConfigurer> configurers, ObjectMapper objectMapper) {
 
     if (properties.getAuthorization() != null) {
       builder.defaultHeader(HttpHeaders.AUTHORIZATION, properties.getAuthorization());
@@ -46,7 +47,7 @@ public class XapiClientAutoConfiguration {
 
     configurers.forEach(c -> c.accept(builder));
 
-    return new XapiClient(builder);
+    return new XapiClient(builder, objectMapper);
 
   }
 

@@ -13,8 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,8 +26,8 @@ import org.springframework.web.reactive.function.client.WebClient.RequestBodySpe
  * @author István Rátkai (Selindek)
  */
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MultipartHelper {
+@RequiredArgsConstructor
+public final class MultipartService {
 
   private static final String MULTIPART_BOUNDARY = "xapi-learning-dev-boundary";
   private static final String MULTIPART_CONTENT_TYPE = "multipart/mixed; boundary="
@@ -52,7 +51,7 @@ public final class MultipartHelper {
 
   public static final MediaType MULTIPART_MEDIATYPE = MediaType.valueOf(MULTIPART_CONTENT_TYPE);
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper;
 
   /**
    * <p>
@@ -64,7 +63,7 @@ public final class MultipartHelper {
    * @param requestSpec a {@link RequestBodySpec} object.
    * @param statement   a {@link Statement} to add.
    */
-  public static void addBody(RequestBodySpec requestSpec, Statement statement) {
+  public void addBody(RequestBodySpec requestSpec, Statement statement) {
 
     addBody(requestSpec, statement, getRealAttachments(statement));
 
@@ -80,14 +79,13 @@ public final class MultipartHelper {
    * @param requestSpec a {@link RequestBodySpec} object.
    * @param statements  list of {@link Statement}s to add.
    */
-  public static void addBody(RequestBodySpec requestSpec, List<Statement> statements) {
+  public void addBody(RequestBodySpec requestSpec, List<Statement> statements) {
 
-    addBody(requestSpec, statements,
-        statements.stream().flatMap(MultipartHelper::getRealAttachments));
+    addBody(requestSpec, statements, statements.stream().flatMap(this::getRealAttachments));
 
   }
 
-  private static void addBody(RequestBodySpec requestSpec, Object statements,
+  private void addBody(RequestBodySpec requestSpec, Object statements,
       Stream<Attachment> attachments) {
 
     final var attachmentsBody = writeAttachments(attachments);
@@ -110,7 +108,7 @@ public final class MultipartHelper {
    * @param statement a {@link Statement} object
    * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
    */
-  private static Stream<Attachment> getRealAttachments(Statement statement) {
+  private Stream<Attachment> getRealAttachments(Statement statement) {
 
     // handle the rare scenario when a sub-statement has an attachment
     Stream<Attachment> stream = statement.getObject() instanceof final SubStatement substatement
@@ -124,7 +122,7 @@ public final class MultipartHelper {
     return stream.filter(a -> a.getContent() != null);
   }
 
-  private static byte[] createMultipartBody(Object statements, byte[] attachments) {
+  private byte[] createMultipartBody(Object statements, byte[] attachments) {
 
     try (var stream = new FastByteArrayOutputStream()) {
       // Multipart Boundary
