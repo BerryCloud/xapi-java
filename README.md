@@ -355,7 +355,9 @@ Statement statement = Statement.builder()
 
 Set<ConstraintViolation<Statement>> constraintViolations = validator.validate(statement);
 
-// Prints ConstraintViolationImpl{interpolatedMessage='must not be null', propertyPath=verb, rootBeanClass=class dev.learning.xapi.model.Statement, messageTemplate='{jakarta.validation.constraints.NotNull.message}'}
+System.out.println(constraintViolations)
+
+// Prints [ConstraintViolationImpl{interpolatedMessage='must not be null', propertyPath=verb, rootBeanClass=class dev.learning.xapi.model.Statement, messageTemplate='{jakarta.validation.constraints.NotNull.message}'}]
 
 ```
 
