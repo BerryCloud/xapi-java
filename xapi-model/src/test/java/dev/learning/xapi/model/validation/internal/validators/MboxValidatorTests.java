@@ -56,7 +56,7 @@ class MboxValidatorTests {
   void whenValueIsNullThenResultIsTrue() {
 
     // When Value Is Null
-    var result = validator.isValid(null, null);
+    final var result = validator.isValid(null, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -66,7 +66,7 @@ class MboxValidatorTests {
   void whenValueIsValidMboxThenResultIsTrue() {
 
     // When Value Is Valid Mbox
-    var result = validator.isValid("mailto:fred@example.com", null);
+    final var result = validator.isValid("mailto:fred@example.com", null);
 
     // Then Result Is True
     assertTrue(result);
@@ -77,7 +77,7 @@ class MboxValidatorTests {
   void whenValueIsInvalidThenResultIsFalse(String value) {
 
     // When Value Is Invalid
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);

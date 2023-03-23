@@ -31,7 +31,7 @@ class ActorValidatorTests {
   void whenValueIsNullThenResultIsTrue() {
 
     // When Value Is Null
-    var result = validator.isValid(null, null);
+    final var result = validator.isValid(null, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -41,9 +41,9 @@ class ActorValidatorTests {
   void whenValueIsActivityThenResultIsTrue() {
 
     // When Value Is Activity
-    var value = Activity.builder().build();
+    final var value = Activity.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -53,9 +53,9 @@ class ActorValidatorTests {
   void whenValueIsSubStatementThenResultIsTrue() {
 
     // When Value Is SubStatement
-    var value = SubStatement.builder().build();
+    final var value = SubStatement.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -65,9 +65,9 @@ class ActorValidatorTests {
   void whenValueIsStatementReferenceThenResultIsTrue() {
 
     // When Value Is StatementReference
-    var value = StatementReference.builder().build();
+    final var value = StatementReference.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -77,9 +77,9 @@ class ActorValidatorTests {
   void whenAgentValueHasNoIdentifierThenResultIsFalse() {
 
     // When Agent Value Has No Identifier
-    var value = Agent.builder().build();
+    final var value = Agent.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -89,9 +89,9 @@ class ActorValidatorTests {
   void whenAgentValueHasOnlyMboxThenResultIsTrue() {
 
     // When Agent Value Has Only Mbox
-    var value = Agent.builder().mbox("mailto:fred@example.com").build();
+    final var value = Agent.builder().mbox("mailto:fred@example.com").build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -101,9 +101,9 @@ class ActorValidatorTests {
   void whenAgentValueHasOnlyMboxSha1sumThenResultIsTrue() {
 
     // When Agent Value Has Only MboxSha1sum
-    var value = Agent.builder().mboxSha1sum("121212121212121212121212").build();
+    final var value = Agent.builder().mboxSha1sum("121212121212121212121212").build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -113,10 +113,10 @@ class ActorValidatorTests {
   void whenAgentValueHasOnlyOpenIdThenResultIsTrue() {
 
     // When Agent Value Has Only MboxSha1sum
-    var value =
+    final var value =
         Agent.builder().openid(URI.create("http://example.com/openid/121212121212121212")).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -126,10 +126,10 @@ class ActorValidatorTests {
   void whenAgentValueHasOnlyAccountThenResultIsTrue() {
 
     // When Agent Value Has Only Account
-    var value = Agent.builder()
+    final var value = Agent.builder()
         .account(a -> a.homePage(URI.create("http://example.com")).name("fred")).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -139,10 +139,10 @@ class ActorValidatorTests {
   void whenAgentValueHasMoreThanOneIdentifierThenResultIsFalse() {
 
     // When Agent Value Has More Than One Identifier
-    var value = Agent.builder().mbox("mailto:fred@example.com")
+    final var value = Agent.builder().mbox("mailto:fred@example.com")
         .mboxSha1sum("121212121212121212121212").build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -152,9 +152,9 @@ class ActorValidatorTests {
   void whenGroupValueHasNoIdentifierThenResultIsFalse() {
 
     // When Group Value Has No Identifier
-    var value = Group.builder().build();
+    final var value = Group.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -164,9 +164,9 @@ class ActorValidatorTests {
   void whenGroupValueHasNoIdentifierAndEmptyMembersThenResultIsFalse() {
 
     // When Group Value Has No Identifier And Empty Members
-    var value = Group.builder().member(new ArrayList<>()).build();
+    final var value = Group.builder().member(new ArrayList<>()).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -176,9 +176,9 @@ class ActorValidatorTests {
   void whenGroupValueHasNoIdentifierButHasMemberThenResultIsTrue() {
 
     // When Group Value Has No Identifier But Has Member
-    var value = Group.builder().addMember(a -> a.mbox("mailto:fred@example.com")).build();
+    final var value = Group.builder().addMember(a -> a.mbox("mailto:fred@example.com")).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -188,9 +188,9 @@ class ActorValidatorTests {
   void whenGroupValueHasOnlyMboxThenResultIsTrue() {
 
     // When Group Value Has Only Mbox
-    var value = Group.builder().mbox("mailto:fred@example.com").build();
+    final var value = Group.builder().mbox("mailto:fred@example.com").build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -200,9 +200,9 @@ class ActorValidatorTests {
   void whenGroupValueHasOnlyMboxSha1sumThenResultIsTrue() {
 
     // When Group Value Has Only MboxSha1sum
-    var value = Group.builder().mboxSha1sum("121212121212121212121212").build();
+    final var value = Group.builder().mboxSha1sum("121212121212121212121212").build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -212,10 +212,10 @@ class ActorValidatorTests {
   void whenGroupValueHasOnlyOpenIdThenResultIsTrue() {
 
     // When Group Value Has Only MboxSha1sum
-    var value =
+    final var value =
         Group.builder().openid(URI.create("http://example.com/openid/121212121212121212")).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -225,10 +225,10 @@ class ActorValidatorTests {
   void whenGroupValueHasOnlyAccountThenResultIsTrue() {
 
     // When Group Value Has Only Account
-    var value = Group.builder()
+    final var value = Group.builder()
         .account(a -> a.homePage(URI.create("http://example.com")).name("fred")).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -238,10 +238,10 @@ class ActorValidatorTests {
   void whenGroupValueHasMoreThanOneIdentifierThenResultIsFalse() {
 
     // When Group Value Has More Than One Identifier
-    var value = Group.builder().mbox("mailto:fred@example.com")
+    final var value = Group.builder().mbox("mailto:fred@example.com")
         .mboxSha1sum("121212121212121212121212").build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);

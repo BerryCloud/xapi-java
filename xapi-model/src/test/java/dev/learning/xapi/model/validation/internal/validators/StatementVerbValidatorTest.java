@@ -29,7 +29,7 @@ class StatementVerbValidatorTest {
   void whenValueIsNullThenResultIsTrue() {
 
     // When Value Is Null
-    var result = validator.isValid(null, null);
+    final var result = validator.isValid(null, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -39,9 +39,9 @@ class StatementVerbValidatorTest {
   void whenValueHasNoVerbThenResultIsTrue() {
 
     // When Value has No Verb
-    var value = Statement.builder().build();
+    final var value = Statement.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -51,9 +51,9 @@ class StatementVerbValidatorTest {
   void whenValueHasNonVoidedVerbThenResultIsTrue() {
 
     // When Value has Non-Voided Verb
-    var value = Statement.builder().verb(Verb.ANSWERED).build();
+    final var value = Statement.builder().verb(Verb.ANSWERED).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -63,9 +63,9 @@ class StatementVerbValidatorTest {
   void whenValueHasVoidedVerbButNoObjectThenResultIsFalse() {
 
     // When Value has Voided Verb But No Object
-    var value = Statement.builder().verb(Verb.VOIDED).build();
+    final var value = Statement.builder().verb(Verb.VOIDED).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -75,13 +75,13 @@ class StatementVerbValidatorTest {
   void whenValueHasVoidedVerbAndInvalidObjectThenResultIsFalse() {
 
     // When Value has Voided Verb And Invalid Object
-    var value = Statement.builder().verb(Verb.VOIDED)
+    final var value = Statement.builder().verb(Verb.VOIDED)
 
-        .activityObject(a->a.id(URI.create("http://example.com/activity")))
+        .activityObject(a -> a.id(URI.create("http://example.com/activity")))
 
         .build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -91,13 +91,13 @@ class StatementVerbValidatorTest {
   void whenValueHasVoidedVerbAndValidObjectThenResultIsTrue() {
 
     // When Value has Voided Verb And Valid Object
-    var value = Statement.builder().verb(Verb.VOIDED)
+    final var value = Statement.builder().verb(Verb.VOIDED)
 
-        .statementReferenceObject(sr->sr.id(UUID.randomUUID()))
+        .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
 
         .build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);

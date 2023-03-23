@@ -8,10 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>
  * This sample demonstrates how the xAPI model can be used in applications that receive statements.
- * </p>
- * 
  * <p>
  * The xapi-model package can be used on server side too. Most commercial xAPI LRS implementations
  * provide some kind of statement-forwarding feature. Using this feature you can easily implement

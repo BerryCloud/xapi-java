@@ -9,12 +9,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
@@ -39,10 +37,10 @@ class AccountTests {
   @Test
   void whenDeserializingAccountThenResultIsInstanceOfAccount() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:account/account.json");
+    final var file = ResourceUtils.getFile("classpath:account/account.json");
 
     // When Deserializing Account
-    final Account result = objectMapper.readValue(file, Account.class);
+    final var result = objectMapper.readValue(file, Account.class);
 
     // Then Result Is Instance Of Account
     assertThat(result, instanceOf(Account.class));
@@ -52,10 +50,10 @@ class AccountTests {
   @Test
   void whenDeserializingAccountThenHomePageIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:account/account.json");
+    final var file = ResourceUtils.getFile("classpath:account/account.json");
 
     // When Deserializing Account
-    final Account result = objectMapper.readValue(file, Account.class);
+    final var result = objectMapper.readValue(file, Account.class);
 
     // Then HomePage Is Expected
     assertThat(result.getHomePage().toString(), is("https://www.example.com"));
@@ -65,10 +63,10 @@ class AccountTests {
   @Test
   void whenDeserializingAccountThenNameIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:account/account.json");
+    final var file = ResourceUtils.getFile("classpath:account/account.json");
 
     // When Deserializing Account
-    final Account result = objectMapper.readValue(file, Account.class);
+    final var result = objectMapper.readValue(file, Account.class);
 
     // Then Name Is Expected
     assertThat(result.getName(), is("Example"));
@@ -78,7 +76,7 @@ class AccountTests {
   @Test
   void whenSerializingAccountThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .name("Example")
 
@@ -87,7 +85,7 @@ class AccountTests {
         .build();
 
     // When Serializing Account
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(account));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(account));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -98,7 +96,7 @@ class AccountTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .name("Example")
 
@@ -107,7 +105,7 @@ class AccountTests {
         .build();
 
     // When Calling ToString
-    final String result = account.toString();
+    final var result = account.toString();
 
     // Then Result Is Expected
     assertThat(result, is("Account(homePage=https://www.example.com, name=Example)"));
@@ -118,7 +116,7 @@ class AccountTests {
   void whenValidatingAccountWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .name("Example")
 
@@ -137,7 +135,7 @@ class AccountTests {
   @Test
   void whenValidatingAccountWithoutNameThenConstraintViolationsSizeIsOne() {
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://www.example.com"))
 
@@ -154,7 +152,7 @@ class AccountTests {
   @Test
   void whenValidatingAccountWithoutHomepageThenConstraintViolationsSizeIsOne() {
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .name("Example")
 
@@ -171,7 +169,7 @@ class AccountTests {
   @Test
   void whenValidatingAccountWithEmptyNameThenConstraintViolationsSizeIsOne() {
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .name("")
 

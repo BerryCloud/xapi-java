@@ -10,9 +10,7 @@ import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -37,11 +35,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionThenResultIsInstanceOfActivityDefinition()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Result Is Instance Of Activity Definition
     assertThat(result, instanceOf(ActivityDefinition.class));
@@ -51,11 +49,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenMoreInfoIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then MoreInfo Is Expected
     assertThat(result.getMoreInfo(), is(URI.create("http://example.com/more")));
@@ -65,11 +63,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenInteractionTypeIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then InteractionType Is Expected
     assertThat(result.getInteractionType(), is(InteractionType.TRUE_FALSE));
@@ -79,11 +77,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenCorrectResponsesPatternIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then CorrectResponsesPattern Is Expected
     assertThat(result.getCorrectResponsesPattern(), is(Collections.singletonList(
@@ -94,11 +92,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenExtensionsAreExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Extensions Are Expected
     assertThat(result.getExtensions().get(URI.create("http://url")), is("www.example.com"));
@@ -108,11 +106,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenNameIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Name Is Expected
     assertThat(result.getName().get(Locale.US),
@@ -123,11 +121,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenDescriptionIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Description Is Expected
     assertThat(result.getDescription().get(Locale.US), is("pong[.]1:[,]dg[.]:10[,]lunch[.]"));
@@ -137,11 +135,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionThenTypeIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Type Is Expected
     assertThat(result.getType(),
@@ -153,11 +151,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionWithoutTypeWhenDeserializedThenTypeIsNull()
       throws Exception {
 
-    final File file = ResourceUtils
+    final var file = ResourceUtils
         .getFile("classpath:activity_definition/activity_definition_without_type.json");
 
     // When Deserializing Activity Definition Without Type
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Type Is Null
     assertThat(result.getType(), nullValue());
@@ -167,11 +165,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionWithChoicesThenChoicesIDIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition With Choices
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Choices ID Is Expected
     assertThat(result.getChoices().get(0).getId(), is("1"));
@@ -182,11 +180,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionWithChoicesThenChoicesDescriptionIsExpected()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition With Choices
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Choices Description Is Expected
     assertThat(result.getChoices().get(0).getDescription().get(Locale.US),
@@ -197,11 +195,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionWithScaledThenScaleIDIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing ActivityDefinition With Scaled
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Scale ID Is Expected
     assertThat(result.getScale().get(0).getId(), is("1"));
@@ -212,11 +210,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionWithScaledThenScaleDescriptionIsExpected()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Scaled
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Scale Description Is Expected
     assertThat(result.getScale().get(0).getDescription().get(Locale.US),
@@ -227,11 +225,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionWithSourceThenSourceIDIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Source
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Source ID Is Expected
     assertThat(result.getSource().get(0).getId(), is("1"));
@@ -242,11 +240,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionWithSourceThenSourceDescriptionIsExpected()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Source
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Source Description Is Expected
     assertThat(result.getSource().get(0).getDescription().get(Locale.US),
@@ -257,11 +255,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionWithTargetThenTargetIDIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Target
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Target ID Is Expected
     assertThat(result.getTarget().get(0).getId(), is("1"));
@@ -272,11 +270,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionWithTargetThenTargetDescriptionIsExpected()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Target
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Target Description Is Expected
     assertThat(result.getTarget().get(0).getDescription().get(Locale.US),
@@ -287,11 +285,11 @@ class ActivityDefinitionTests {
   @Test
   void whenDeserializingActivityDefinitionWithStepsThenStepsIDIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Steps
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Steps ID Is Expected
     assertThat(result.getSteps().get(0).getId(), is("1"));
@@ -302,11 +300,11 @@ class ActivityDefinitionTests {
   void whenDeserializingActivityDefinitionWithStepsThenStepsDescriptionIsExpected()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
     // When Deserializing Activity Definition With Steps
-    final ActivityDefinition result = objectMapper.readValue(file, ActivityDefinition.class);
+    final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
     // Then Steps Description Is Expected
     assertThat(result.getSteps().get(0).getDescription().get(Locale.US),
@@ -318,7 +316,7 @@ class ActivityDefinitionTests {
   void whenSerializingActivityDefinitionOfInteractionTypeTrueFalseThenResultIsEqualToExpectedJson()
       throws IOException {
 
-    final ActivityDefinition activityDefinition = ActivityDefinition.builder()
+    final var activityDefinition = ActivityDefinition.builder()
 
         .addName(Locale.US, "True false question")
 
@@ -333,7 +331,7 @@ class ActivityDefinitionTests {
         .build();
 
     // When Serializing Activity Definition Of InteractionType True False
-    final JsonNode result =
+    final var result =
         objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
 
     // Then Result Is Equal To Expected Json
@@ -346,7 +344,7 @@ class ActivityDefinitionTests {
   void whenSerializingActivityDefinitionOfInteractionTypeChoiceThenResultIsEqualToExpectedJson()
       throws IOException {
 
-    final ActivityDefinition activityDefinition = ActivityDefinition.builder()
+    final var activityDefinition = ActivityDefinition.builder()
 
         .addName(Locale.US, "Choice")
 
@@ -369,7 +367,7 @@ class ActivityDefinitionTests {
         .build();
 
     // When Serializing Activity Definition Of InteractionType Choice
-    final JsonNode result =
+    final var result =
         objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
 
     // Then Result Is Equal To Expected Json
@@ -381,12 +379,12 @@ class ActivityDefinitionTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws Exception {
 
-    final ActivityDefinition activityDefinition = objectMapper.readValue(
+    final var activityDefinition = objectMapper.readValue(
         ResourceUtils.getFile("classpath:activity_definition/activity_definition.json"),
         ActivityDefinition.class);
 
     // When Calling ToString
-    final String result = activityDefinition.toString();
+    final var result = activityDefinition.toString();
 
     // Then Result Is Expected
     assertThat(result, is(
@@ -397,7 +395,7 @@ class ActivityDefinitionTests {
   void whenBuildingActivityDefinitionWithTwoNameValuesThenNameLanguageMapHasTwoEntries() {
 
     // When Building ActivityDefinition With Two Name Values
-    final ActivityDefinition activityDefinition = ActivityDefinition.builder()
+    final var activityDefinition = ActivityDefinition.builder()
 
         .addName(Locale.US, "True false question")
 
@@ -422,7 +420,7 @@ class ActivityDefinitionTests {
   void whenBuildingActivityDefinitionWithTwoDescriptionValuesThenDescriptionLanguageMapHasTwoEntries() {
 
     // When Building ActivityDefinition With Two Description Values
-    final ActivityDefinition activityDefinition = ActivityDefinition.builder()
+    final var activityDefinition = ActivityDefinition.builder()
 
         .addName(Locale.US, "True false question")
 

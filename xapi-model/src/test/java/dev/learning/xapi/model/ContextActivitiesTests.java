@@ -9,9 +9,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import org.junit.jupiter.api.DisplayName;
@@ -33,10 +31,10 @@ class ContextActivitiesTests {
   void whenDeserializingContextActivitiesThenResultIsInstanceOfContextActivities()
       throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
+    final var file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
 
     // When Deserializing ContextActivities
-    final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
+    final var result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Result Is Instance Of ContextActivities
     assertThat(result, instanceOf(ContextActivities.class));
@@ -46,10 +44,10 @@ class ContextActivitiesTests {
   @Test
   void whenDeserializingContextActivitiesThenParentIsInstanceOfActivity() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
+    final var file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
 
     // When Deserializing ContextActivities
-    final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
+    final var result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Parent Is Instance Of Activity
     assertThat(result.getParent().get(0), instanceOf(Activity.class));
@@ -59,10 +57,10 @@ class ContextActivitiesTests {
   @Test
   void whenDeserializingContextActivitiesThenGroupingIsInstanceOfActivity() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
+    final var file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
 
     // When Deserializing ContextActivities
-    final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
+    final var result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Grouping Is Instance Of Activity
     assertThat(result.getGrouping().get(0), instanceOf(Activity.class));
@@ -72,10 +70,10 @@ class ContextActivitiesTests {
   @Test
   void whenDeserializingContextActivitiesThenCategoryIsInstanceOfActivity() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
+    final var file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
 
     // When Deserializing ContextActivities
-    final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
+    final var result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Category Is Instance Of Activity
     assertThat(result.getCategory().get(0), instanceOf(Activity.class));
@@ -85,10 +83,10 @@ class ContextActivitiesTests {
   @Test
   void whenDeserializingContextActivitiesThenOtherIsInstanceOfActivity() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
+    final var file = ResourceUtils.getFile("classpath:context_activities/context_activities.json");
 
     // When Deserializing ContextActivities
-    final ContextActivities result = objectMapper.readValue(file, ContextActivities.class);
+    final var result = objectMapper.readValue(file, ContextActivities.class);
 
     // Then Other Is Instance Of Activity
     assertThat(result.getOther().get(0), instanceOf(Activity.class));
@@ -98,7 +96,7 @@ class ContextActivitiesTests {
   @Test
   void whenSerializingAttachmentThenResultIsEqualToExpectedJson() throws IOException {
 
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
@@ -111,7 +109,7 @@ class ContextActivitiesTests {
         .build();
 
     // When Serializing Attachment
-    final JsonNode result =
+    final var result =
         objectMapper.readTree(objectMapper.writeValueAsString(contextActivities));
 
     // Then Result Is Equal To Expected Json
@@ -123,12 +121,12 @@ class ContextActivitiesTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final ContextActivities contextActivities = objectMapper.readValue(
+    final var contextActivities = objectMapper.readValue(
         ResourceUtils.getFile("classpath:context_activities/context_activities.json"),
         ContextActivities.class);
 
     // When Calling ToString
-    final String result = contextActivities.toString();
+    final var result = contextActivities.toString();
 
     // Then Result Is Expected
     assertThat(result, is(
@@ -137,11 +135,10 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoParentsThenParentIshasSizeTwo()
-      throws IOException {
+  void whenBuildingContextActivitiesWithTwoParentsThenParentIshasSizeTwo() throws IOException {
 
     // When Building ContextActivities With Two Parents
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 
@@ -155,11 +152,10 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIshasSizeTwo()
-      throws IOException {
+  void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIshasSizeTwo() throws IOException {
 
     // When Building ContextActivities With Two Groupings
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .addGrouping(p -> p.id(URI.create("https://example.com/activity/1")))
 
@@ -176,7 +172,7 @@ class ContextActivitiesTests {
   void whenBuildingContextActivitiesWithTwoOtherThenOtherIshasSizeTwo() throws IOException {
 
     // When Building ContextActivities With Two Others
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .addOther(p -> p.id(URI.create("https://example.com/activity/1")))
 
@@ -190,11 +186,10 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIshasSizeTwo()
-      throws IOException {
+  void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIshasSizeTwo() throws IOException {
 
     // When Building ContextActivities With Two Categories
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .addCategory(p -> p.id(URI.create("https://example.com/activity/1")))
 
@@ -212,7 +207,7 @@ class ContextActivitiesTests {
       throws IOException {
 
     // When Building ContextActivities With Two Parents With Same Id
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
 

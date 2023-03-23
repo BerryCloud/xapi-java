@@ -15,7 +15,7 @@ class StatementFormatTests {
   void whenCallingToStringOnCanonicalEnumResultIsLowerCase() {
 
     // When Calling ToString On Canonical Enum
-    String result = StatementFormat.CANONICAL.toString();
+    final var result = StatementFormat.CANONICAL.toString();
 
     // Result Is Lower Case
     assertThat(result, is("canonical"));
@@ -25,7 +25,7 @@ class StatementFormatTests {
   void whenCallingGetFormatOnCanonicalEnumResultIsLowerCase() {
 
     // When Calling GetFormat On Canonical Enum
-    String result = StatementFormat.CANONICAL.getFormat();
+    final var result = StatementFormat.CANONICAL.getFormat();
 
     // Result Is Lower Case
     assertThat(result, is("canonical"));
@@ -35,7 +35,7 @@ class StatementFormatTests {
   void whenCallingToStringOnExactEnumResultIsLowerCase() {
 
     // When Calling ToString On Exact Enum
-    String result = StatementFormat.EXACT.toString();
+    final var result = StatementFormat.EXACT.toString();
 
     // Result Is Lower Case
     assertThat(result, is("exact"));
@@ -45,7 +45,7 @@ class StatementFormatTests {
   void whenCallingGetFormatOnExactEnumResultIsLowerCase() {
 
     // When Calling GetFormat On Exact Enum
-    String result = StatementFormat.EXACT.getFormat();
+    final var result = StatementFormat.EXACT.getFormat();
 
     // Result Is Lower Case
     assertThat(result, is("exact"));
@@ -55,7 +55,7 @@ class StatementFormatTests {
   void whenCallingToStringOnIdsEnumResultIsLowerCase() {
 
     // When Calling ToString On Ids Enum
-    String result = StatementFormat.IDS.toString();
+    final var result = StatementFormat.IDS.toString();
 
     // Result Is Lower Case
     assertThat(result, is("ids"));
@@ -65,7 +65,7 @@ class StatementFormatTests {
   void whenCallingGetFormatOnIdsEnumResultIsLowerCase() {
 
     // When Calling GetFormat On Ids Enum
-    String result = StatementFormat.IDS.getFormat();
+    final var result = StatementFormat.IDS.getFormat();
 
     // Result Is Lower Case
     assertThat(result, is("ids"));

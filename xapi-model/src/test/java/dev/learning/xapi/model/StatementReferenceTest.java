@@ -9,12 +9,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
@@ -39,11 +37,11 @@ class StatementReferenceTest {
   void whenDeserializingStatementReferenceThenResultIsInstanceOfStatementReference()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:statement_reference/statement_reference.json");
 
     // When Deserializing StatementReference
-    final StatementReference result = objectMapper.readValue(file, StatementReference.class);
+    final var result = objectMapper.readValue(file, StatementReference.class);
 
     // Then Result Is Instance Of StatementReference
     assertThat(result, instanceOf(StatementReference.class));
@@ -53,11 +51,11 @@ class StatementReferenceTest {
   @Test
   void whenDeserializingStatementReferenceThenIdIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:statement_reference/statement_reference.json");
 
     // When Deserializing StatementReference
-    final StatementReference result = objectMapper.readValue(file, StatementReference.class);
+    final var result = objectMapper.readValue(file, StatementReference.class);
 
     // Then Id Is Expected
     assertThat(result.getId(), is(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")));
@@ -67,11 +65,11 @@ class StatementReferenceTest {
   @Test
   void whenSerializingContextThenResultIsEqualToExpectedJson() throws IOException {
 
-    final StatementReference statementReference = StatementReference.builder()
+    final var statementReference = StatementReference.builder()
         .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")).build();
 
     // When Serializing Context
-    final JsonNode result =
+    final var result =
         objectMapper.readTree(objectMapper.writeValueAsString(statementReference));
 
     // Then Result Is Equal To Expected Json
@@ -83,23 +81,22 @@ class StatementReferenceTest {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final StatementReference statementReference = objectMapper.readValue(
+    final var statementReference = objectMapper.readValue(
         ResourceUtils.getFile("classpath:statement_reference/statement_reference.json"),
         StatementReference.class);
 
     // When Calling ToString
-    final String result = statementReference.toString();
+    final var result = statementReference.toString();
 
     // Then Result Is Expected
-    assertThat(result,
-        is("StatementReference(id=099bbde8-780e-483f-8181-128393db0f53)"));
+    assertThat(result, is("StatementReference(id=099bbde8-780e-483f-8181-128393db0f53)"));
 
   }
 
   @Test
   void whenValidatingStatementReferenceWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
-    final StatementReference statementReference = StatementReference.builder()
+    final var statementReference = StatementReference.builder()
         .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")).build();
 
     // When Validating Statement Reference With All Required Properties
@@ -114,7 +111,7 @@ class StatementReferenceTest {
   @Test
   void whenStatementReferenceIsBuiltWithoutIdThenNullPointerIsThrown() {
 
-    final StatementReference statementReference = StatementReference.builder().build();
+    final var statementReference = StatementReference.builder().build();
 
     // When Validating Statement Reference Without Id
     final Set<ConstraintViolation<StatementReference>> constraintViolations =

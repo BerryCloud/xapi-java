@@ -9,9 +9,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
@@ -38,10 +36,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenResultIsInstanceOfSubStatement() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Result Is Instance Of SubStatement
     assertThat(result, instanceOf(SubStatement.class));
@@ -51,10 +49,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenTimestampIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Timestamp Is Expected
     assertThat(result.getTimestamp(), is(Instant.parse("2015-11-18T11:17:00Z")));
@@ -64,10 +62,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenVerbIsInstanceOfVerb() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Verb Is Instance Of Verb
     assertThat(result.getVerb(), instanceOf(Verb.class));
@@ -77,10 +75,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenObjectIsInstanceOfStatementReference() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Object Is Instance Of StatementReference
     assertThat(result.getObject(), instanceOf(StatementReference.class));
@@ -90,10 +88,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenResultIsInstanceOfResult() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Result Is Instance Of Result
     assertThat(result.getResult(), instanceOf(Result.class));
@@ -103,10 +101,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenContextIsInstanceOfContext() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Context Is Instance Of Context
     assertThat(result.getContext(), instanceOf(Context.class));
@@ -116,10 +114,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenActorIsInstanceOfActor() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Actor Is Instance Of Actor
     assertThat(result.getActor(), instanceOf(Actor.class));
@@ -129,10 +127,10 @@ class SubStatementTests {
   @Test
   void whenDeserializingSubStatementThenAttachmentsIsInstanceOfAttachment() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
+    final var file = ResourceUtils.getFile("classpath:sub_statement/sub_statement.json");
 
     // When Deserializing SubStatement
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Attachments Is Instance Of Attachment
     assertThat(result.getAttachments().get(0), instanceOf(Attachment.class));
@@ -143,7 +141,7 @@ class SubStatementTests {
   void whenDeserializingSubStatementWithObjectOfTypeSubStatementThenExceptionIsThrown()
       throws IOException {
 
-    final File file = ResourceUtils
+    final var file = ResourceUtils
         .getFile("classpath:sub_statement/sub_statement_with_object_of_type_sub_statement.json");
 
     assertThrows(Exception.class, () -> {
@@ -160,11 +158,11 @@ class SubStatementTests {
   void whenDeserializingSubStatementWithObjectOfTypeActivityThenObjectIsInstanceOfActivity()
       throws IOException {
 
-    final File file = ResourceUtils
+    final var file = ResourceUtils
         .getFile("classpath:sub_statement/sub_statement_with_object_of_type_activity.json");
 
     // when Deserializing SubStatement With Object Of Type Activity
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Object Is Instance Of Activity
     assertThat(result.getObject(), instanceOf(Activity.class));
@@ -175,11 +173,11 @@ class SubStatementTests {
   void whenDeserializingSubStatementWithObjectOfTypeAgentThenObjectIsInstanceOfAgentThenObjectIsInstanceOfAgent()
       throws IOException {
 
-    final File file = ResourceUtils
+    final var file = ResourceUtils
         .getFile("classpath:sub_statement/sub_statement_with_object_of_type_agent.json");
 
     // When Deserializing SubStatement With Object Of Type Agent
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
     // Then Object Is Instance Of Agent
     assertThat(result.getObject(), instanceOf(Agent.class));
@@ -190,11 +188,11 @@ class SubStatementTests {
   void whenDeserializingSubStatementWithObjectOfTypeGroupThenObjectIsInstanceOfGroup()
       throws IOException {
 
-    final File file = ResourceUtils
+    final var file = ResourceUtils
         .getFile("classpath:sub_statement/sub_statement_with_object_of_type_group.json");
 
     // When Deserializing SubStatement With Object Of Type Group
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
 
     // Then Object Is Instance Of Group
@@ -207,11 +205,11 @@ class SubStatementTests {
   void whenDeserializingSubStatementWithObjectOfTypeStatementReferenceThenObjectIsInstanceOfStatementReference()
       throws IOException {
 
-    final File file = ResourceUtils.getFile(
+    final var file = ResourceUtils.getFile(
         "classpath:sub_statement/sub_statement_with_object_of_type_statement_reference.json");
 
     // When Deserializing SubStatement With Object Of Type StatementReference
-    final SubStatement result = objectMapper.readValue(file, SubStatement.class);
+    final var result = objectMapper.readValue(file, SubStatement.class);
 
 
     // Then Object Is Instance Of StatementReference
@@ -228,10 +226,10 @@ class SubStatementTests {
 
     final Group group = Group.builder().name("Example Group").build();
 
-    final StatementReference statementRef = StatementReference.builder()
+    final var statementRef = StatementReference.builder()
         .id(UUID.fromString("9e13cefd-53d3-4eac-b5ed-2cf6693903bb")).build();
 
-    final Score score = Score.builder()
+    final var score = Score.builder()
 
         .max(5.0f)
 
@@ -243,7 +241,7 @@ class SubStatementTests {
 
         .build();
 
-    final Result resultInstance = Result.builder()
+    final var resultInstance = Result.builder()
 
         .score(score)
 
@@ -257,10 +255,10 @@ class SubStatementTests {
 
         .build();
 
-    final Activity activity =
+    final var activity =
         Activity.builder().id(URI.create("http://www.example.co.uk/exampleactivity")).build();
 
-    final ContextActivities contextActivities = ContextActivities.builder()
+    final var contextActivities = ContextActivities.builder()
 
         .parent(Collections.singletonList(activity))
 
@@ -270,10 +268,10 @@ class SubStatementTests {
 
         .other(Collections.singletonList(activity)).build();
 
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://url"), "www.example.com");
 
-    final Context context = Context.builder()
+    final var context = Context.builder()
 
         .registration(UUID.fromString("6d969975-8d7e-4506-ac19-877c57f2921a"))
 
@@ -295,7 +293,7 @@ class SubStatementTests {
 
         .build();
 
-    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+    final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
         .addDisplay(Locale.US, "value")
@@ -310,7 +308,7 @@ class SubStatementTests {
 
         .build();
 
-    final SubStatement subStatement = SubStatement.builder()
+    final var subStatement = SubStatement.builder()
 
         .timestamp(Instant.parse("2015-11-18T11:17:00Z"))
 
@@ -326,9 +324,9 @@ class SubStatementTests {
         .context(context)
 
         .addAttachment(attachment)
-        
-        .addAttachment(a->a.usageType(URI.create("http://example.com"))
-            
+
+        .addAttachment(a -> a.usageType(URI.create("http://example.com"))
+
             .fileUrl(URI.create("http://example.com"))
 
             .addDisplay(Locale.ENGLISH, "value")
@@ -344,7 +342,7 @@ class SubStatementTests {
         .build();
 
     // When Serializing SubStatement
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(subStatement));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(subStatement));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -358,11 +356,11 @@ class SubStatementTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final SubStatement subStatement = objectMapper.readValue(
+    final var subStatement = objectMapper.readValue(
         ResourceUtils.getFile("classpath:sub_statement/sub_statement.json"), SubStatement.class);
 
     // When Calling ToString
-    final String result = subStatement.toString();
+    final var result = subStatement.toString();
 
     // Then Result Is Expected
     assertThat(result, is(

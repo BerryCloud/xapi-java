@@ -8,9 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -32,10 +30,10 @@ class PersonTests {
   @Test
   void whenDeserializingPersonWhenDeserializedThenResultIsInstanceOfPerson() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:person/person.json");
+    final var file = ResourceUtils.getFile("classpath:person/person.json");
 
     // When Deserializing Person
-    final Person result = objectMapper.readValue(file, Person.class);
+    final var result = objectMapper.readValue(file, Person.class);
 
     // Then Result Is Instance Of Person
     assertThat(result, instanceOf(Person.class));
@@ -45,10 +43,10 @@ class PersonTests {
   @Test
   void whenDeserializingPersonWhenDeserializedThenNameIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:person/person.json");
+    final var file = ResourceUtils.getFile("classpath:person/person.json");
 
     // When Deserializing Person
-    final Person result = objectMapper.readValue(file, Person.class);
+    final var result = objectMapper.readValue(file, Person.class);
 
     // Then Name Is Expected
     assertThat(result.getName(), is(Collections.singletonList("Normal Person")));
@@ -58,10 +56,10 @@ class PersonTests {
   @Test
   void whenDeserializingPersonWhenDeserializedThenMboxIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:person/person.json");
+    final var file = ResourceUtils.getFile("classpath:person/person.json");
 
     // When Deserializing Person
-    final Person result = objectMapper.readValue(file, Person.class);
+    final var result = objectMapper.readValue(file, Person.class);
 
     // Then Mbox Is Expected
     assertThat(result.getMbox(), is(Collections.singletonList("normal.person@normal.mail")));
@@ -71,10 +69,10 @@ class PersonTests {
   @Test
   void whenDeserializingPersonWhenDeserializedThenShaSumIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:person/person.json");
+    final var file = ResourceUtils.getFile("classpath:person/person.json");
 
     // When Deserializing Person
-    final Person result = objectMapper.readValue(file, Person.class);
+    final var result = objectMapper.readValue(file, Person.class);
 
     // Then ShaSum Is Expected
     assertThat(result.getMboxSha1sum(), is(Collections.singletonList("123")));
@@ -84,23 +82,24 @@ class PersonTests {
   @Test
   void whenDeserializingPersonWhenDeserializedThenOpenidIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:person/person.json");
+    final var file = ResourceUtils.getFile("classpath:person/person.json");
 
     // When Deserializing Person
-    final Person result = objectMapper.readValue(file, Person.class);
+    final var result = objectMapper.readValue(file, Person.class);
 
     // Then Openid Is Expected
-    assertThat(result.getOpenid(), is(Collections.singletonList(URI.create("https://example.com"))));
+    assertThat(result.getOpenid(),
+        is(Collections.singletonList(URI.create("https://example.com"))));
 
   }
 
   @Test
   void whenDeserializingPersonThenAccountIsInstanceOfAccount() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:person/person.json");
+    final var file = ResourceUtils.getFile("classpath:person/person.json");
 
     // When Deserializing Person
-    final Person result = objectMapper.readValue(file, Person.class);
+    final var result = objectMapper.readValue(file, Person.class);
 
     // Then Account Is Instance Of Account
     assertThat(result.getAccount().get(0), instanceOf(Account.class));
@@ -110,7 +109,7 @@ class PersonTests {
   @Test
   void whenSerializingPersonThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Person person = Person.builder()
+    final var person = Person.builder()
 
         .name(Collections.singletonList("Normal Person"))
 
@@ -127,7 +126,7 @@ class PersonTests {
         .build();
 
     // When Serializing Person
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(person));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(person));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -138,11 +137,11 @@ class PersonTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Person person =
+    final var person =
         objectMapper.readValue(ResourceUtils.getFile("classpath:person/person.json"), Person.class);
 
     // When Calling ToString
-    final String result = person.toString();
+    final var result = person.toString();
 
     // Then Result Is Expected
     assertThat(result, is(

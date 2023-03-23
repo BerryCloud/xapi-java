@@ -8,9 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,10 +28,10 @@ class ResultTests {
   @Test
   void whenDeserializingResultThenResultIsInstanceOfResult() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:result/result.json");
+    final var file = ResourceUtils.getFile("classpath:result/result.json");
 
     // When Deserializing Result
-    final Result result = objectMapper.readValue(file, Result.class);
+    final var result = objectMapper.readValue(file, Result.class);
 
     // Then Result Is Instance Of Result
     assertThat(result, instanceOf(Result.class));
@@ -43,10 +41,10 @@ class ResultTests {
   @Test
   void whenDeserializingResultThenScoreIsInstanceOfScore() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:result/result.json");
+    final var file = ResourceUtils.getFile("classpath:result/result.json");
 
     // When Deserializing Result
-    final Result result = objectMapper.readValue(file, Result.class);
+    final var result = objectMapper.readValue(file, Result.class);
 
     // Then Score Is Instance Of Score
     assertThat(result.getScore(), instanceOf(Score.class));
@@ -56,10 +54,10 @@ class ResultTests {
   @Test
   void whenDeserializingResultThenSuccessIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:result/result.json");
+    final var file = ResourceUtils.getFile("classpath:result/result.json");
 
     // When Deserializing Result
-    final Result result = objectMapper.readValue(file, Result.class);
+    final var result = objectMapper.readValue(file, Result.class);
 
     // Then Success Is Expected
     assertThat(result.getSuccess(), is(true));
@@ -69,10 +67,10 @@ class ResultTests {
   @Test
   void whenDeserializingResultThenCompletionIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:result/result.json");
+    final var file = ResourceUtils.getFile("classpath:result/result.json");
 
     // When Deserializing Result
-    final Result result = objectMapper.readValue(file, Result.class);
+    final var result = objectMapper.readValue(file, Result.class);
 
     // Then Completion Is Expected
     assertThat(result.getCompletion(), is(true));
@@ -82,10 +80,10 @@ class ResultTests {
   @Test
   void whenDeserializingResultThenResponseIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:result/result.json");
+    final var file = ResourceUtils.getFile("classpath:result/result.json");
 
     // When Deserializing Result
-    final Result result = objectMapper.readValue(file, Result.class);
+    final var result = objectMapper.readValue(file, Result.class);
 
     // Then Response Is Expected
     assertThat(result.getResponse(), is("test"));
@@ -95,10 +93,10 @@ class ResultTests {
   @Test
   void whenDeserializingResultThenDurationIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:result/result.json");
+    final var file = ResourceUtils.getFile("classpath:result/result.json");
 
     // When Deserializing Result
-    final Result result = objectMapper.readValue(file, Result.class);
+    final var result = objectMapper.readValue(file, Result.class);
 
     // Then Duration Is Expected
     assertThat(result.getDuration(), is("P1D"));
@@ -108,7 +106,7 @@ class ResultTests {
   @Test
   void whenSerializingResultThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Result resultInstance = Result.builder()
+    final var resultInstance = Result.builder()
 
         .score(s -> s.max(5.0f).min(0.0f).raw(1.0f).scaled(1.0f))
 
@@ -123,7 +121,7 @@ class ResultTests {
         .build();
 
     // When Serializing Result
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(resultInstance));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(resultInstance));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -134,7 +132,7 @@ class ResultTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Result resultInstance = Result.builder()
+    final var resultInstance = Result.builder()
 
         .score(s -> s.max(5.0f).min(0.0f).raw(1.0f).scaled(1.0f))
 
@@ -149,7 +147,7 @@ class ResultTests {
         .build();
 
     // When Calling ToString
-    final String result = resultInstance.toString();
+    final var result = resultInstance.toString();
 
     // Then Result Is Expected
     assertThat(result, is(

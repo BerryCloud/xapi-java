@@ -9,9 +9,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedHashMap;
@@ -35,10 +33,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenResultIsInstanceOfContext() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Result Is Instance Of Context
     assertThat(result, instanceOf(Context.class));
@@ -48,10 +46,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenRegistrationIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Registration Is Expected
     assertThat(result.getRegistration(),
@@ -62,10 +60,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenRevisionIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Revision Is Expected
     assertThat(result.getRevision(), is("revision"));
@@ -75,10 +73,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenPlatformIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Platform Is Expected
     assertThat(result.getPlatform(), is("platform"));
@@ -88,10 +86,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenLanguageIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Language Is Expected
     assertThat(result.getLanguage(), is(Locale.US));
@@ -101,10 +99,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenInstructorIsInstanceOfActor() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Instructor Is Instance Of Actor
     assertThat(result.getInstructor(), instanceOf(Actor.class));
@@ -114,10 +112,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenTeamIsInstanceOfGroup() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Team Is Instance Of Group
     assertThat(result.getTeam(), instanceOf(Group.class));
@@ -127,10 +125,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenStatementIsInstanceOfStatementReference() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Statement Is Instance Of StatementReference
     assertThat(result.getStatement(), instanceOf(StatementReference.class));
@@ -141,10 +139,10 @@ class ContextTests {
   void whenDeserializingContextThenContextActivitiesIsInstanceOfContextActivities()
       throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then ContextActivities Is Instance Of ContextActivities
     assertThat(result.getContextActivities(), instanceOf(ContextActivities.class));
@@ -154,10 +152,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextThenExtensionsAreExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context.json");
+    final var file = ResourceUtils.getFile("classpath:context/context.json");
 
     // When Deserializing Context
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Extensions Are Expected
     assertThat(result.getExtensions().get(URI.create("http://url")), is("www.example.com"));
@@ -166,10 +164,10 @@ class ContextTests {
   @Test
   void whenDeserializingContextWithoutRegistrationThenRegistrationIsNull() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:context/context_without_registration.json");
+    final var file = ResourceUtils.getFile("classpath:context/context_without_registration.json");
 
     // When Deserializing Context Without Registration
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Registration Is Null
     assertThat(result.getRegistration(), is(nullValue()));
@@ -178,11 +176,11 @@ class ContextTests {
   @Test
   void whenDeserializingContextWithEmptyRegistrationThenExtensionsAreExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:context/context_with_empty_registration.json");
 
     // When Deserializing Context With Empty Registration
-    final Context result = objectMapper.readValue(file, Context.class);
+    final var result = objectMapper.readValue(file, Context.class);
 
     // Then Registration Is Null
     assertThat(result.getRegistration(), is(nullValue()));
@@ -198,14 +196,14 @@ class ContextTests {
     final Agent leader2 =
         Agent.builder().name("Leader 2").mbox("mailto:leader2@example.com").build();
 
-    final Context context = Context.builder()
+    final var context = Context.builder()
 
         .groupInstructor(g -> g.addMember(leader1).addMember(leader2))
 
         .build();
 
     // When Serializing Context With Group Instructor
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(context));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(context));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(objectMapper
@@ -216,10 +214,10 @@ class ContextTests {
   @Test
   void whenSerializingContextThenResultIsEqualToExpectedJson() throws IOException {
 
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://url"), "www.example.com");
 
-    final Context context = Context.builder()
+    final var context = Context.builder()
 
         .registration(UUID.fromString("1d527164-ed0d-4b1d-9f9b-39aab0e4a089"))
 
@@ -250,7 +248,7 @@ class ContextTests {
         .build();
 
     // When Serializing Context
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(context));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(context));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -261,11 +259,11 @@ class ContextTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Context context = objectMapper
+    final var context = objectMapper
         .readValue(ResourceUtils.getFile("classpath:context/context.json"), Context.class);
 
     // When Calling ToString
-    final String result = context.toString();
+    final var result = context.toString();
 
     // Then Result Is Expected
     assertThat(result, is(

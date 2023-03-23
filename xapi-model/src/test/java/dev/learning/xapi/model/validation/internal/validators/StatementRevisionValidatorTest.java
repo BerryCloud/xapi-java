@@ -29,7 +29,7 @@ class StatementRevisionValidatorTest {
   void whenValueIsNullThenResultIsTrue() {
 
     // When Value Is Null
-    var result = validator.isValid(null, null);
+    final var result = validator.isValid(null, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -39,9 +39,9 @@ class StatementRevisionValidatorTest {
   void whenValueHasNoContextThenResultIsTrue() {
 
     // When Value has No Context
-    var value = Statement.builder().build();
+    final var value = Statement.builder().build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -51,9 +51,9 @@ class StatementRevisionValidatorTest {
   void whenValueHasNoContextRevisionThenResultIsTrue() {
 
     // When Value has No Context Revision
-    var value = Statement.builder().context(Context.builder().build()).build();
+    final var value = Statement.builder().context(Context.builder().build()).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -63,9 +63,9 @@ class StatementRevisionValidatorTest {
   void whenValueHasContextRevisionButNoObjectThenResultIsFalse() {
 
     // When Value has Context Revision But No Object
-    var value = Statement.builder().context(c->c.revision("revision")).build();
+    final var value = Statement.builder().context(c -> c.revision("revision")).build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -75,13 +75,13 @@ class StatementRevisionValidatorTest {
   void whenValueHasContextRevisionAndInvalidObjectThenResultIsFalse() {
 
     // When Value has Context Revision And Invalid Object
-    var value = Statement.builder().context(c->c.revision("revision"))
+    final var value = Statement.builder().context(c -> c.revision("revision"))
 
-        .statementReferenceObject(sr->sr.id(UUID.randomUUID()))
+        .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
 
         .build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -91,13 +91,13 @@ class StatementRevisionValidatorTest {
   void whenValueHasContextRevisionAndValidObjectThenResultIsTrue() {
 
     // When Value has Context Revision And Valid Object
-    var value = Statement.builder().context(c->c.revision("revision"))
+    final var value = Statement.builder().context(c -> c.revision("revision"))
 
-        .activityObject(a->a.id(URI.create("http://example.com/activity")))
+        .activityObject(a -> a.id(URI.create("http://example.com/activity")))
 
         .build();
 
-    var result = validator.isValid(value, null);
+    final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);

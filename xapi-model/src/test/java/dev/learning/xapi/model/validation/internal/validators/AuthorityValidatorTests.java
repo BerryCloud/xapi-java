@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 
 class AuthorityValidatorTests {
 
-  private AuthorityValidator constraintValidator = new AuthorityValidator();
+  private final AuthorityValidator constraintValidator = new AuthorityValidator();
 
   @Test
   void whenCallingIsValidWithNullThenResultIsTrue() {
 
     // When Calling Is Valid With Null
-    boolean result = constraintValidator.isValid(null, null);
+    final var result = constraintValidator.isValid(null, null);
 
     // Then Result Is True
     assertThat(result, is(true));
@@ -28,10 +28,11 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithAgentThenResultIsTrue() {
 
-    Agent agent = Agent.builder().name("A N Other").mbox("mailto:another@example.com").build();
+    final Agent agent =
+        Agent.builder().name("A N Other").mbox("mailto:another@example.com").build();
 
     // When Calling Is Valid With Agent
-    boolean result = constraintValidator.isValid(agent, null);
+    final var result = constraintValidator.isValid(agent, null);
 
     // Then Result Is True
     assertThat(result, is(true));
@@ -40,10 +41,11 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithIdentifiedGroupThenResultIsFalse() {
 
-    Group group = Group.builder().name("A N Other").mbox("mailto:another@example.com").build();
+    final Group group =
+        Group.builder().name("A N Other").mbox("mailto:another@example.com").build();
 
     // When Calling Is Valid With Identified Group
-    boolean result = constraintValidator.isValid(group, null);
+    final var result = constraintValidator.isValid(group, null);
 
     // Then Result Is False
     assertThat(result, is(false));
@@ -52,11 +54,11 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithIdentifiedGroupWithMembersThenResultIsFalse() {
 
-    Group group = Group.builder().name("A N Other").mbox("mailto:another@example.com")
+    final Group group = Group.builder().name("A N Other").mbox("mailto:another@example.com")
         .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com")).build();
 
     // When Calling Is Valid With Identified Group
-    boolean result = constraintValidator.isValid(group, null);
+    final var result = constraintValidator.isValid(group, null);
 
     // Then Result Is False
     assertThat(result, is(false));
@@ -65,11 +67,11 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithGroupWithOneMemberThenResultIsFalse() {
 
-    Group group = Group.builder()
+    final Group group = Group.builder()
         .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com")).build();
 
     // When Calling Is Valid With Group With One Member
-    boolean result = constraintValidator.isValid(group, null);
+    final var result = constraintValidator.isValid(group, null);
 
     // Then Result Is False
     assertThat(result, is(false));
@@ -78,12 +80,12 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithGroupWithTwoMembersThenResultIsTrue() {
 
-    Group group =
+    final Group group =
         Group.builder().addMember(m -> m.name("A N Other").mbox("mailto:another@example.com"))
             .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com")).build();
 
     // When Calling IsValid With Group With Two Members
-    boolean result = constraintValidator.isValid(group, null);
+    final var result = constraintValidator.isValid(group, null);
 
     // Then Result Is True
     assertThat(result, is(true));

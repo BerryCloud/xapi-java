@@ -10,9 +10,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -34,10 +32,10 @@ class GroupTests {
   @Test
   void whenDeserializingGroupThenResultIsInstanceOfGroup() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:group/group.json");
+    final var file = ResourceUtils.getFile("classpath:group/group.json");
 
     // When Deserializing Group
-    final Group result = objectMapper.readValue(file, Group.class);
+    final var result = objectMapper.readValue(file, Group.class);
 
     // Then Result Is Instance Of Group
     assertThat(result, instanceOf(Group.class));
@@ -48,11 +46,11 @@ class GroupTests {
   void whenDeserializingGroupWithMembersWithObjectTypeThenResultIsInstanceOfGroup()
       throws IOException {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:group/group_with_members_with_object_type.json");
 
     // When Deserializing Group With Members With Object Type
-    final Group result = objectMapper.readValue(file, Group.class);
+    final var result = objectMapper.readValue(file, Group.class);
 
     // Then Result Is Instance Of Group
     assertThat(result, instanceOf(Group.class));
@@ -62,10 +60,10 @@ class GroupTests {
   @Test
   void whenDeserializingGroupThenMemberIsInstanceOfAgent() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:group/group.json");
+    final var file = ResourceUtils.getFile("classpath:group/group.json");
 
     // When Deserializing Group
-    final Group result = objectMapper.readValue(file, Group.class);
+    final var result = objectMapper.readValue(file, Group.class);
 
     // Then Member Is Instance Of Agent
     assertThat(result.getMember().get(0), instanceOf(Agent.class));
@@ -87,7 +85,7 @@ class GroupTests {
         .build();
 
     // When Serializing Group
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(group));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(group));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -98,11 +96,11 @@ class GroupTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Group group =
+    final var group =
         objectMapper.readValue(ResourceUtils.getFile("classpath:group/group.json"), Group.class);
 
     // When Calling ToString
-    final String result = group.toString();
+    final var result = group.toString();
 
     // Then Result Is Expected
     assertThat(result, is(
@@ -125,7 +123,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is True
     assertTrue(result);
@@ -145,7 +143,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is False
     assertFalse(result);
@@ -166,7 +164,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is False
     assertFalse(result);
@@ -188,7 +186,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is False
     assertFalse(result);
@@ -211,7 +209,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is False
     assertFalse(result);
@@ -233,7 +231,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is False
     assertFalse(result);
@@ -257,7 +255,7 @@ class GroupTests {
         .build();
 
     // When Calling Is Anonymous
-    boolean result = group.isAnonymous();
+    final var result = group.isAnonymous();
 
     // Then Result Is False
     assertFalse(result);

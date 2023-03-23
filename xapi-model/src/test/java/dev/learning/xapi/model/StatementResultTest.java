@@ -9,9 +9,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
@@ -34,10 +32,10 @@ class StatementResultTest {
   @Test
   void whenDeserializingStatementResultThenResultIsInstanceOfStatementResult() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement_result/statement_result.json");
+    final var file = ResourceUtils.getFile("classpath:statement_result/statement_result.json");
 
     // When Deserializing StatementResult
-    final StatementResult result = objectMapper.readValue(file, StatementResult.class);
+    final var result = objectMapper.readValue(file, StatementResult.class);
 
     // Then Result Is Instance Of StatementResult
     assertThat(result, instanceOf(StatementResult.class));
@@ -47,10 +45,10 @@ class StatementResultTest {
   @Test
   void whenDeserializingStatementResultThenStatementsIsInstanceOfStatement() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement_result/statement_result.json");
+    final var file = ResourceUtils.getFile("classpath:statement_result/statement_result.json");
 
     // When Deserializing StatementResult
-    final StatementResult result = objectMapper.readValue(file, StatementResult.class);
+    final var result = objectMapper.readValue(file, StatementResult.class);
 
     // Then Statements Is Instance Of Statement
     assertThat(result.getStatements().get(0), instanceOf(Statement.class));
@@ -60,10 +58,10 @@ class StatementResultTest {
   @Test
   void whenDeserializingStatementResultThenMoreIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement_result/statement_result.json");
+    final var file = ResourceUtils.getFile("classpath:statement_result/statement_result.json");
 
     // When Deserializing StatementResult
-    final StatementResult result = objectMapper.readValue(file, StatementResult.class);
+    final var result = objectMapper.readValue(file, StatementResult.class);
 
     // Then More Is Expected
     assertThat(result.getMore(), is(URI.create("123")));
@@ -73,7 +71,7 @@ class StatementResultTest {
   @Test
   void whenSerializingStatementResultThenResultIsEqualToExpectedJson() throws IOException {
 
-    final StatementResult statementResult = StatementResult.builder()
+    final var statementResult = StatementResult.builder()
 
         .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
 
@@ -82,7 +80,7 @@ class StatementResultTest {
         .build();
 
     // When Serializing StatementResult
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statementResult));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(statementResult));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(objectMapper.readTree(
@@ -92,7 +90,7 @@ class StatementResultTest {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final StatementResult statementResult = StatementResult.builder()
+    final var statementResult = StatementResult.builder()
 
         .addStatement(s -> s
 
@@ -105,7 +103,7 @@ class StatementResultTest {
         .build();
 
     // When Calling To String
-    final String result = statementResult.toString();
+    final var result = statementResult.toString();
 
     // Then Result Is Expected
     assertThat(result, is(
@@ -118,7 +116,7 @@ class StatementResultTest {
   void whenBuildingStatementResultWithTwoStatementsThenStatmentsIsArrayWithSizeTwo() {
 
     // When Building StatementResult With Two Statements
-    final StatementResult statementResult = StatementResult.builder()
+    final var statementResult = StatementResult.builder()
 
         .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
 
@@ -137,7 +135,7 @@ class StatementResultTest {
   void whenBuildingStatementResultWithEmptyMoreThenHasMoreIsFalse() {
 
     // When Building StatementResult With Empty More
-    final StatementResult statementResult = StatementResult.builder()
+    final var statementResult = StatementResult.builder()
 
         .more(URI.create(""))
 
@@ -152,7 +150,7 @@ class StatementResultTest {
   void whenBuildingStatementResultWithNullMoreThenHasMoreIsFalse() {
 
     // When Building StatementResult With Null More
-    final StatementResult statementResult = StatementResult.builder()
+    final var statementResult = StatementResult.builder()
 
         .more(null)
 
@@ -167,7 +165,7 @@ class StatementResultTest {
   void whenBuildingStatementResultWithMoreThenHasMoreIsTrue() {
 
     // When Building StatementResult With More
-    final StatementResult statementResult = StatementResult.builder()
+    final var statementResult = StatementResult.builder()
 
         .more(URI.create("123"))
 

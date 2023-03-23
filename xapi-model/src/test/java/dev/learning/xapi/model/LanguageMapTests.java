@@ -24,20 +24,18 @@ import org.junit.jupiter.params.provider.CsvSource;
 class LanguageMapTests {
 
   @ParameterizedTest
-  @CsvSource({
-    "en-GB, Colour",
-    "en-US, Color",
-    "de, Colour"})
-  void givenUkAndUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected) throws Exception {
+  @CsvSource({"en-GB, Colour", "en-US, Color", "de, Colour"})
+  void givenUkAndUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected)
+      throws Exception {
 
-    final LanguageMap languageMap = new LanguageMap();
+    final var languageMap = new LanguageMap();
 
     // Given UK and US Key
     languageMap.put(Locale.UK, "Colour");
     languageMap.put(Locale.US, "Color");
 
     // When Getting Locale Value
-    final String value = languageMap.get(LanguageRange.parse(locale));
+    final var value = languageMap.get(LanguageRange.parse(locale));
 
     // Then Value Is Expected
     assertThat(value, is(expected));
@@ -47,7 +45,7 @@ class LanguageMapTests {
   @Test
   void givenFranceGermanyandUSKeyWhenGettingUKValueThenValueIsEnglish() throws Exception {
 
-    final LanguageMap languageMap = new LanguageMap();
+    final var languageMap = new LanguageMap();
 
     // Given France Germany and US Key
     languageMap.put(Locale.FRANCE, "Couleur");
@@ -55,7 +53,7 @@ class LanguageMapTests {
     languageMap.put(Locale.ENGLISH, "Color");
 
     // When Getting UK Value
-    final String value = languageMap.get(LanguageRange.parse("en-GB"));
+    final var value = languageMap.get(LanguageRange.parse("en-GB"));
 
     // Then Value Is English
     assertThat(value, is("Color"));
@@ -65,14 +63,14 @@ class LanguageMapTests {
   @Test
   void givenFrenchAndEnglishKeyWhenGettingUSValueThenValueIsEnglish() throws Exception {
 
-    final LanguageMap languageMap = new LanguageMap();
+    final var languageMap = new LanguageMap();
 
     // Given French And English Key
     languageMap.put(Locale.FRENCH, "Couleur");
     languageMap.put(Locale.US, "Color");
 
     // When Getting US Value
-    final String value = languageMap.get(LanguageRange.parse("en-US"));
+    final var value = languageMap.get(LanguageRange.parse("en-US"));
 
     // Then Value Is English
     assertThat(value, is("Color"));
@@ -82,14 +80,14 @@ class LanguageMapTests {
   @Test
   void givenFrenchAndUsKeyWhenGettingCanadaFrenchValueThenValueIsFrench() throws Exception {
 
-    final LanguageMap languageMap = new LanguageMap();
+    final var languageMap = new LanguageMap();
 
     // Given US Key And French
     languageMap.put(Locale.US, "Color");
     languageMap.put(Locale.FRENCH, "Couleur");
 
     // When Getting Canada French Value
-    final String value = languageMap.get(LanguageRange.parse("fr-ca"));
+    final var value = languageMap.get(LanguageRange.parse("fr-ca"));
 
     // Then Value Is French
     assertThat(value, is("Couleur"));
@@ -99,12 +97,12 @@ class LanguageMapTests {
   @Test
   void givenMapIsEmptyWhenGettingGermanValueThenValueIsNull() throws Exception {
 
-    final LanguageMap languageMap = new LanguageMap();
+    final var languageMap = new LanguageMap();
 
     // Given Map Is Empty
 
     // When Getting German Value
-    final String value = languageMap.get(LanguageRange.parse("de"));
+    final var value = languageMap.get(LanguageRange.parse("de"));
 
     // Then Value Is Null
     assertNull(value);
@@ -114,14 +112,14 @@ class LanguageMapTests {
   @Test
   void givenUsAndUndKeyWhenGettingGermanValueThenValueIsUnd() throws Exception {
 
-    final LanguageMap languageMap = new LanguageMap();
+    final var languageMap = new LanguageMap();
 
     // Given US And UND Key
     languageMap.put(Locale.US, "Color");
     languageMap.put(new Locale("und"), "Colour");
 
     // When Getting German Value
-    final String value = languageMap.get(LanguageRange.parse("de"));
+    final var value = languageMap.get(LanguageRange.parse("de"));
 
     // Then Value Is UND
     assertThat(value, is("Colour"));
@@ -137,10 +135,10 @@ class LanguageMapTests {
     map.put(Locale.US, "Color");
 
     // Given UK and US Key In Map Used To Construct LanguageMap
-    final LanguageMap languageMap = new LanguageMap(map);
+    final var languageMap = new LanguageMap(map);
 
     // When Getting UK Value
-    final String value = languageMap.get(LanguageRange.parse("en-GB"));
+    final var value = languageMap.get(LanguageRange.parse("en-GB"));
 
     // Then Value Is UK
     assertThat(value, is("Colour"));
