@@ -14,13 +14,13 @@ import org.junit.jupiter.api.Test;
 @DisplayName("HasSchemeValidatorForUri tests")
 class HasSchemeValidatorForUriTests {
 
-  private HasSchemeValidatorForUri constraintValidator = new HasSchemeValidatorForUri();
+  private final HasSchemeValidatorForUri constraintValidator = new HasSchemeValidatorForUri();
 
   @Test
   void whenCallingIsValidWithURIWithoutSchemeThenResultIsFalse() {
 
     // When Calling IsValid With URI Without Scheme
-    boolean valid = constraintValidator.isValid(URI.create("example.com"), null);
+    final var valid = constraintValidator.isValid(URI.create("example.com"), null);
 
     // Then Result Is False
     assertThat(valid, is(false));
@@ -30,7 +30,7 @@ class HasSchemeValidatorForUriTests {
   void whenCallingIsValidWithURIWithSchemeThenResultIsTrue() {
 
     // When Calling IsValid With URI With Scheme
-    boolean result = constraintValidator.isValid(URI.create("https://example.com"), null);
+    final var result = constraintValidator.isValid(URI.create("https://example.com"), null);
 
     // Then Result Is True
     assertThat(result, is(true));

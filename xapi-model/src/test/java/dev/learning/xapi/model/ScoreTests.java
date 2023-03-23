@@ -8,9 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,10 +28,10 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenResultIsInstanceOfScore() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:score/score.json");
+    final var file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
-    final Score result = objectMapper.readValue(file, Score.class);
+    final var result = objectMapper.readValue(file, Score.class);
 
     // Then Result Is Instance Of Score
     assertThat(result, instanceOf(Score.class));
@@ -43,10 +41,10 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenScaledIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:score/score.json");
+    final var file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
-    final Score result = objectMapper.readValue(file, Score.class);
+    final var result = objectMapper.readValue(file, Score.class);
 
     // Then Scaled Is Expected
     assertThat(result.getScaled(), is(1.0F));
@@ -56,10 +54,10 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenRawIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:score/score.json");
+    final var file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
-    final Score result = objectMapper.readValue(file, Score.class);
+    final var result = objectMapper.readValue(file, Score.class);
 
     // Then Raw Is Expected
     assertThat(result.getRaw(), is(1.0F));
@@ -69,10 +67,10 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenMinIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:score/score.json");
+    final var file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
-    final Score result = objectMapper.readValue(file, Score.class);
+    final var result = objectMapper.readValue(file, Score.class);
 
     // Then Min Is Expected
     assertThat(result.getMin(), is(0.0F));
@@ -82,10 +80,10 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenMaxIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:score/score.json");
+    final var file = ResourceUtils.getFile("classpath:score/score.json");
 
     // When Serializing Score
-    final Score result = objectMapper.readValue(file, Score.class);
+    final var result = objectMapper.readValue(file, Score.class);
 
     // Then Max Is Expected
     assertThat(result.getMax(), is(5.0F));
@@ -95,7 +93,7 @@ class ScoreTests {
   @Test
   void whenSerializingScoreThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Score score = Score.builder()
+    final var score = Score.builder()
 
         .max(5.0f)
 
@@ -108,7 +106,7 @@ class ScoreTests {
         .build();
 
     // When Serializing Score
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(score));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(score));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -119,11 +117,11 @@ class ScoreTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Score score =
+    final var score =
         objectMapper.readValue(ResourceUtils.getFile("classpath:score/score.json"), Score.class);
 
     // When Calling ToString
-    final String result = score.toString();
+    final var result = score.toString();
 
     // Then Result Is Expected
     assertThat(result, is("Score(scaled=1.0, raw=1.0, min=0.0, max=5.0)"));

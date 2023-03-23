@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *      resources</a>
- * 
+ *
  * @author István Rátkai (Selindek)
  */
 @Validated
@@ -46,9 +46,9 @@ public class StatementController {
    *
    * @param statementId the statementId of the statement
    * @param statement The statement to process
-   * 
+   *
    * @return the ResponseEntity
-   * 
+   *
    * @see <a href=
    *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#211-put-statements">PUT
    *      statements</a>
@@ -68,9 +68,9 @@ public class StatementController {
    * Post Statements.
    *
    * @param statements The statements to process.
-   * 
+   *
    * @return the ResponseEntity
-   * 
+   *
    * @see <a href=
    *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
    *      statements</a>

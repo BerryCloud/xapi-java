@@ -8,9 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
@@ -32,10 +30,10 @@ class ActivityTests {
   @Test
   void whenDeserializingActivityThenResultIsInstanceOfActivity() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:activity/activity.json");
+    final var file = ResourceUtils.getFile("classpath:activity/activity.json");
 
     // When Deserializing Activity
-    final Activity result = objectMapper.readValue(file, Activity.class);
+    final var result = objectMapper.readValue(file, Activity.class);
 
     // Then Result Is Instance Of Activity
     assertThat(result, instanceOf(Activity.class));
@@ -45,10 +43,10 @@ class ActivityTests {
   @Test
   void whenDeserializingActivityThenIdIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:activity/activity.json");
+    final var file = ResourceUtils.getFile("classpath:activity/activity.json");
 
     // When Deserializing Activity
-    final Activity result = objectMapper.readValue(file, Activity.class);
+    final var result = objectMapper.readValue(file, Activity.class);
 
     // Then Id Is Expected
     assertThat(result.getId(), is(URI.create("http://example.com/xapi/activity/simplestatement")));
@@ -58,10 +56,10 @@ class ActivityTests {
   @Test
   void whenDeserializingActivityThenDefinitionIsInstanceOfActivityDefinition() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:activity/activity.json");
+    final var file = ResourceUtils.getFile("classpath:activity/activity.json");
 
     // When Deserializing Activity
-    final Activity result = objectMapper.readValue(file, Activity.class);
+    final var result = objectMapper.readValue(file, Activity.class);
 
     // Then Definition Is Instance Of Activity Definition
     assertThat(result.getDefinition(), instanceOf(ActivityDefinition.class));
@@ -74,7 +72,7 @@ class ActivityTests {
     // This test uses the English locale because Jackson uses underscores instead of hyphens to
     // separate variants
 
-    final Activity activity = Activity.builder()
+    final var activity = Activity.builder()
 
         .id(URI.create("http://example.com/xapi/activity/simplestatement"))
 
@@ -88,7 +86,7 @@ class ActivityTests {
         .build();
 
     // When Serializing Activity
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(activity));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(activity));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is((objectMapper
@@ -99,7 +97,7 @@ class ActivityTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Activity activity = Activity.builder()
+    final var activity = Activity.builder()
 
         .id(URI.create("http://www.example.co.uk/exampleactivity"))
 
@@ -109,7 +107,7 @@ class ActivityTests {
         .build();
 
     // When Calling ToString
-    final String result = activity.toString();
+    final var result = activity.toString();
 
     // Then Result Is Expected
     assertThat(result, is(
@@ -125,7 +123,7 @@ class ActivityTests {
   void whenActivityIsConstructedWithIdThenIdIsExpected() {
 
     // When Activity Is Constructed With Id
-    final Activity activity = new Activity("http://www.example.co.uk/exampleactivity");
+    final var activity = new Activity("http://www.example.co.uk/exampleactivity");
 
     // Then Id Is Expected
     assertThat(activity.getId(), is(URI.create("http://www.example.co.uk/exampleactivity")));
@@ -140,7 +138,7 @@ class ActivityTests {
   void whenActivityIsBuiltWithStringIdThenIdIsExpected() {
 
     // When Activity Is Built With String Id
-    final Activity activity =
+    final var activity =
         Activity.builder().id("http://www.example.co.uk/exampleactivity").build();
 
     // Then Id Is Expected

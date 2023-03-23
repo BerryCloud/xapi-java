@@ -9,12 +9,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
@@ -48,10 +46,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementThenResultIsInstanceOfStatement() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Result Is Instance Of Statement
     assertThat(result, instanceOf(Statement.class));
@@ -61,10 +59,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithIdThenIdIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Id
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Id Is Expected
     assertThat(result.getId(), is(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1")));
@@ -74,10 +72,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithActorThenActorIsInstanceOfActor() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Actor
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Actor Is Instance Of Actor
     assertThat(result.getActor(), instanceOf(Actor.class));
@@ -87,10 +85,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithVerbThenVerbIsInstanceOfVerb() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Verb
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Verb Is Instance Of Verb
     assertThat(result.getVerb(), instanceOf(Verb.class));
@@ -101,10 +99,10 @@ class StatementTests {
   void whenDeserializingStatementWithObjectThenObjectIsInstanceOfStatementObject()
       throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Object
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Object Is Instance Of StatementObject
     assertThat(result.getObject(), instanceOf(StatementObject.class));
@@ -114,10 +112,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithResultThenResultIsInstanceOfResult() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Result
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Result Is Instance Of Result
     assertThat(result.getResult(), instanceOf(Result.class));
@@ -127,10 +125,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithContextThenContextIsInstanceOfContext() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Context
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Context Is Instance Of Context
     assertThat(result.getContext(), instanceOf(Context.class));
@@ -140,10 +138,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithTimestampThenTimestampIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Timestamp
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Timestamp Is Expected
     assertThat(result.getTimestamp().toString(), is("2013-05-18T05:32:34.804Z"));
@@ -153,10 +151,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithStoredThenStoredIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Stored
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Stored Is Expected
     assertThat(result.getStored().toString(), is("2013-05-18T05:32:34.804Z"));
@@ -166,10 +164,10 @@ class StatementTests {
   @Test
   void whenDeserializedStatementWithAuthorityThenAuthorityIsInstanceOfActor() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserialized Statement With Authority
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Authority Is Instance Of Actor
     assertThat(result.getAuthority(), instanceOf(Actor.class));
@@ -179,10 +177,10 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithVersionThenVersionIsExpected() throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Version
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Version Is Expected
     assertThat(result.getVersion(), is("1.0.0"));
@@ -193,10 +191,10 @@ class StatementTests {
   void whenDeserializingStatementWithAttachmentsThenAttachmentsIsInstanceOfAttachment()
       throws Exception {
 
-    final File file = ResourceUtils.getFile("classpath:statement/statement.json");
+    final var file = ResourceUtils.getFile("classpath:statement/statement.json");
 
     // When Deserializing Statement With Attachments
-    final Statement result = objectMapper.readValue(file, Statement.class);
+    final var result = objectMapper.readValue(file, Statement.class);
 
     // Then Attachments Is Instance Of Attachment
     assertThat(result.getAttachments().get(0), instanceOf(Attachment.class));
@@ -208,7 +206,7 @@ class StatementTests {
   void whenSerializingStatementWithAgentWithAccountThenResultIsEqualToExpectedJson()
       throws IOException {
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .actor(a -> a.account(
             acc -> acc.name("A N Other").homePage(URI.create("https://example.com/account/1234"))))
@@ -220,7 +218,7 @@ class StatementTests {
         .build();
 
     // when Serializing Statement With Agent With Account
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -233,11 +231,11 @@ class StatementTests {
   @Test
   void whenSerializingStatementThenResultIsEqualToExpectedJson() throws IOException {
 
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
 
-    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+    final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
         .addDisplay(Locale.US, "value")
@@ -252,7 +250,7 @@ class StatementTests {
 
         .build();
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -261,7 +259,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -315,7 +313,7 @@ class StatementTests {
         .build();
 
     // When Serializing Statement
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -327,10 +325,10 @@ class StatementTests {
   @Test
   void whenSerializingStatementWithEnLocaleThenResultIsEqualToExpectedJson() throws IOException {
 
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
-    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+    final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
         .addDisplay(Locale.ENGLISH, "value")
@@ -345,7 +343,7 @@ class StatementTests {
 
         .build();
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -354,7 +352,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -408,7 +406,7 @@ class StatementTests {
         .build();
 
     // When Serializing Statement With En Locale
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -422,7 +420,7 @@ class StatementTests {
   void givenStatementWithPassedVerbWhenCallingToBuilderAndSettingVerbToCompletedThenResultVerbIsCompleted() {
 
     // Given Statement With Passed Verb
-    final Statement passed = Statement.builder()
+    final var passed = Statement.builder()
 
         .actor(a -> a.name("A N Other"))
 
@@ -434,7 +432,7 @@ class StatementTests {
 
 
     // When Calling ToBuilder And Setting Verb To Completed
-    Statement result = passed.toBuilder()
+    final var result = passed.toBuilder()
 
         .verb(Verb.COMPLETED)
 
@@ -449,7 +447,7 @@ class StatementTests {
   void WhenCallingToBuilderAndSettingVerbToCompletedThenResultVerbIsCompleted() {
 
     // When Building Statement With Statement Reference Object
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .actor(a -> a.name("A N Other"))
 
@@ -468,7 +466,7 @@ class StatementTests {
   @Test
   void whenValidatingStatementWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -489,7 +487,7 @@ class StatementTests {
   @Test
   void whenValidatingStatementWithoutActorThenConstraintViolationsSizeIsOne() {
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .verb(Verb.EXPERIENCED)
 
@@ -508,7 +506,7 @@ class StatementTests {
   @Test
   void whenValidatingStatementWithoutAVerbThenConstraintViolationsSizeIsOne() {
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -527,7 +525,7 @@ class StatementTests {
   @Test
   void whenValidatingStatementWithoutAnActivityThenConstraintViolationsSizeIsOne() {
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -546,10 +544,10 @@ class StatementTests {
   @Test
   void whenValidatingStatementWithSubStatementWithStatementReferenceThenConstraintViolationsSizeIsZero() {
 
-    StatementReference statementRef = StatementReference.builder()
+    final var statementRef = StatementReference.builder()
         .id(UUID.fromString("9e13cefd-53d3-4eac-b5ed-2cf6693903bb")).build();
 
-    SubStatement subStatement = SubStatement.builder()
+    final var subStatement = SubStatement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -559,7 +557,7 @@ class StatementTests {
 
         .build();
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
@@ -579,12 +577,12 @@ class StatementTests {
 
   @Test
   void whenBuildingStatementWithTwoAttachmentsThenAttachmentsHasTwoEntries() {
-    
+
     // When Building Statement With Two Attachments
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
-    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+    final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
         .addDisplay(Locale.ENGLISH, "value")
@@ -599,7 +597,7 @@ class StatementTests {
 
         .build();
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -608,7 +606,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -657,8 +655,8 @@ class StatementTests {
 
         .addAttachment(attachment)
 
-        .addAttachment(a-> a.usageType(URI.create("http://example.com"))
-            
+        .addAttachment(a -> a.usageType(URI.create("http://example.com"))
+
             .fileUrl(URI.create("http://example.com/2"))
 
             .addDisplay(Locale.ENGLISH, "value2")
@@ -672,11 +670,11 @@ class StatementTests {
             .contentType("file")
 
         )
-        
+
         .version("1.0.0")
 
         .build();
-    
+
     // Then Attachments Has Two Entries
     assertThat(statement.getAttachments(), hasSize(2));
 

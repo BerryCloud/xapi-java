@@ -10,12 +10,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Set;
@@ -41,11 +39,11 @@ class InteractionComponentTests {
   void whenDeserializingInteractionComponentThenResultIsInstanceOfInteractionComponent()
       throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:interaction_component/interaction_component.json");
 
     // When Deserializing InteractionComponent
-    final InteractionComponent result = objectMapper.readValue(file, InteractionComponent.class);
+    final var result = objectMapper.readValue(file, InteractionComponent.class);
 
     // Then Result Is Instance Of InteractionComponent
     assertThat(result, instanceOf(InteractionComponent.class));
@@ -55,11 +53,11 @@ class InteractionComponentTests {
   @Test
   void whenDeserializingInteractionComponentThenIDIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:interaction_component/interaction_component.json");
 
     // When Deserializing InteractionComponent
-    final InteractionComponent result = objectMapper.readValue(file, InteractionComponent.class);
+    final var result = objectMapper.readValue(file, InteractionComponent.class);
 
     // Then ID Is Expected
     assertThat(result.getId(), is("1"));
@@ -69,11 +67,11 @@ class InteractionComponentTests {
   @Test
   void whenDeserializingInteractionComponentThenDescriptionIsExpected() throws Exception {
 
-    final File file =
+    final var file =
         ResourceUtils.getFile("classpath:interaction_component/interaction_component.json");
 
     // When Deserializing InteractionComponent
-    final InteractionComponent result = objectMapper.readValue(file, InteractionComponent.class);
+    final var result = objectMapper.readValue(file, InteractionComponent.class);
 
     // Then Description Is Expected
     assertThat(result.getDescription().get(Locale.US), is("value"));
@@ -83,7 +81,7 @@ class InteractionComponentTests {
   @Test
   void whenSerializingInteractionComponentThenResultIsEqualToExpectedJson() throws IOException {
 
-    final InteractionComponent interactionComponent = InteractionComponent.builder()
+    final var interactionComponent = InteractionComponent.builder()
 
         .id("1")
 
@@ -92,7 +90,7 @@ class InteractionComponentTests {
         .build();
 
     // When Serializing InteractionComponent
-    final JsonNode result =
+    final var result =
         objectMapper.readTree(objectMapper.writeValueAsString(interactionComponent));
 
     // Then Result Is Equal To Expected Json
@@ -104,12 +102,12 @@ class InteractionComponentTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final InteractionComponent interactionComponent = objectMapper.readValue(
+    final var interactionComponent = objectMapper.readValue(
         ResourceUtils.getFile("classpath:interaction_component/interaction_component.json"),
         InteractionComponent.class);
 
     // When Calling ToString
-    final String result = interactionComponent.toString();
+    final var result = interactionComponent.toString();
 
     // Then Result Is Expected
     assertThat(result, is("InteractionComponent(id=1, description={en_US=value})"));
@@ -120,7 +118,7 @@ class InteractionComponentTests {
   void whenBuildingInteractionComponentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
 
     // When Building InteractionComponent With Two Description Values
-    final InteractionComponent interactionComponent = InteractionComponent.builder().id("1")
+    final var interactionComponent = InteractionComponent.builder().id("1")
         .addDescription(Locale.US, "value").addDescription(Locale.GERMAN, "Wert").build();
 
     // Then Description Language Map Has Two Entries
@@ -131,7 +129,7 @@ class InteractionComponentTests {
   @Test
   void whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
-    final InteractionComponent interactionComponent =
+    final var interactionComponent =
         InteractionComponent.builder().id("1").addDescription(Locale.US, "value").build();
 
     // When Validating Interaction Component With All Required Properties
@@ -146,7 +144,7 @@ class InteractionComponentTests {
   @Test
   void whenValidatingInteractionComponentWithoutIdThenConstraintViolationsSizeIsOne() {
 
-    final InteractionComponent interactionComponent =
+    final var interactionComponent =
         InteractionComponent.builder().addDescription(Locale.US, "value").build();
 
     // When Validating Interaction Component Without Id

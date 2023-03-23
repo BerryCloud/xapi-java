@@ -24,7 +24,7 @@ class ScaledScoreValidatorTests {
   void whenValueIsNullThenResultIsTrue() {
 
     // When Value Is Null
-    var result = validator.isValid(null, null);
+    final var result = validator.isValid(null, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -34,7 +34,7 @@ class ScaledScoreValidatorTests {
   void whenValueIsValidScaledScoreThenResultIsTrue() {
 
     // When Value Is Valid Score
-    var result = validator.isValid(0F, null);
+    final var result = validator.isValid(0F, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -44,7 +44,7 @@ class ScaledScoreValidatorTests {
   void whenValueIsValidMinimumScoreThenResultIsTrue() {
 
     // When Value Is Valid Minimum Score
-    var result = validator.isValid(-1F, null);
+    final var result = validator.isValid(-1F, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -54,7 +54,7 @@ class ScaledScoreValidatorTests {
   void whenValueIsValidMaximumScoreThenResultIsTrue() {
 
     // When Value Is Valid Maximum Score
-    var result = validator.isValid(1F, null);
+    final var result = validator.isValid(1F, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -64,7 +64,7 @@ class ScaledScoreValidatorTests {
   void WhenValueIsOverMaximumScoreThenResultIsFalse() {
 
     // when Value Is Over Maximum Score
-    var result = validator.isValid(1.001F, null);
+    final var result = validator.isValid(1.001F, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -74,7 +74,7 @@ class ScaledScoreValidatorTests {
   void whenValueIsBelowMinimumScoreThenResultIsFalse() {
 
     // When Value Is Below Minimum Score
-    var result = validator.isValid(-1.001F, null);
+    final var result = validator.isValid(-1.001F, null);
 
     // Then Result Is False
     assertFalse(result);
@@ -84,7 +84,7 @@ class ScaledScoreValidatorTests {
   void whenValueIsNanThenResultIsFalse() {
 
     // When Value Is NaN
-    var result = validator.isValid(Float.NaN, null);
+    final var result = validator.isValid(Float.NaN, null);
 
     // Then Result Is False
     assertFalse(result);

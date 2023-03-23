@@ -21,7 +21,7 @@ import org.junit.platform.commons.util.AnnotationUtils;
 @DisplayName("VariantValidatorForUuidTest tests")
 class VariantValidatorForUuidTests {
 
-  private VariantValidatorForUuid constraintValidator = new VariantValidatorForUuid();
+  private final VariantValidatorForUuid constraintValidator = new VariantValidatorForUuid();
 
   @Variant(2)
   private UUID variant2;
@@ -33,7 +33,7 @@ class VariantValidatorForUuidTests {
   void whenIsValidIsCalledWithNullUUIDThenValidIsTrue() {
 
     // When IsValid Is Called With Null UUID
-    boolean valid = constraintValidator.isValid(null, null);
+    final var valid = constraintValidator.isValid(null, null);
 
     // Then Valid Is True
     assertTrue(valid);
@@ -48,7 +48,7 @@ class VariantValidatorForUuidTests {
         .findAnnotation(getClass().getDeclaredField("variant2"), Variant.class).get());
 
     // When IsValid Is Called With Version 4 Variant 2 UUID
-    boolean valid =
+    final var valid =
         constraintValidator.isValid(UUID.fromString("3441c47b-c098-4245-b22e-db3d1242098f"), null);
 
     // Then Valid Is True
@@ -64,7 +64,7 @@ class VariantValidatorForUuidTests {
         .findAnnotation(getClass().getDeclaredField("variant2"), Variant.class).get());
 
     // When IsValid Is Called With Version 4 Variant Microsoft GUID UUID
-    boolean valid =
+    final var valid =
         constraintValidator.isValid(UUID.fromString("4c30eeb1-15ac-4833-cb0d-88613ba65267"), null);
 
     // Then Valid Is False
@@ -81,7 +81,7 @@ class VariantValidatorForUuidTests {
         .findAnnotation(getClass().getDeclaredField("variant6"), Variant.class).get());
 
     // When IsValid Is Called With Version 4 Variant Microsoft GUID UUID
-    boolean valid =
+    final var valid =
         constraintValidator.isValid(UUID.fromString("4c30eeb1-15ac-4833-cb0d-88613ba65267"), null);
 
     // Then Valid Is False

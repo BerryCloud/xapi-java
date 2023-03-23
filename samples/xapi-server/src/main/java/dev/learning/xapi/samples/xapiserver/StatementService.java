@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StatementService {
 
-  private Logger log = LoggerFactory.getLogger(StatementController.class);
+  private final Logger log = LoggerFactory.getLogger(StatementController.class);
 
   /**
    * Processes a single Statement.
@@ -41,14 +41,14 @@ public class StatementService {
    * Processes multiple Statements.
    *
    * @param statements the Statements to process
-   * 
+   *
    * @return the statement id's that were processed
    */
   public Collection<UUID> processStatements(List<Statement> statements) {
 
-    List<Statement> processedStatements = new ArrayList<>();
+    final List<Statement> processedStatements = new ArrayList<>();
 
-    for (Statement statement : statements) {
+    for (final Statement statement : statements) {
       log.info("processing statement: {}", statement);
 
       if (statement.getId() == null) {

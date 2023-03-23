@@ -176,15 +176,15 @@ public class SubStatement implements StatementObject, CoreStatement {
       attachment.accept(builder);
 
       return addAttachment(builder.build());
-    }    
-    
+    }
+
     /**
      * Adds an attachment.
      *
      * @param attachment An {@link Attachment} object.
      *
      * @return This builder
-     * 
+     *
      * @see SubStatement#attachments
      */
     public Builder addAttachment(Attachment attachment) {

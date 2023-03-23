@@ -25,7 +25,7 @@ class NotUndeterminedValidatorTests {
   void whenValueIsNullThenResultIsTrue() {
 
     // When Value Is Null
-    var result = validator.isValid(null, null);
+    final var result = validator.isValid(null, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -36,7 +36,7 @@ class NotUndeterminedValidatorTests {
       throws NoSuchFieldException, SecurityException {
 
     // When Value Is Undetermined Locale
-    var result = validator.isValid(Locale.forLanguageTag("und"), null);
+    final var result = validator.isValid(Locale.forLanguageTag("und"), null);
 
     // Then Result Is False
     assertFalse(result);
@@ -47,7 +47,7 @@ class NotUndeterminedValidatorTests {
       throws NoSuchFieldException, SecurityException {
 
     // When Value Is Not Undetermined Locale
-    var result = validator.isValid(Locale.forLanguageTag("en-US"), null);
+    final var result = validator.isValid(Locale.forLanguageTag("en-US"), null);
 
     // Then Result Is True
     assertTrue(result);

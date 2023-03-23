@@ -11,12 +11,10 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
@@ -45,10 +43,10 @@ class VerbTests {
   @Test
   void whenDeserializingVerbThenResultIsInstanceOfVerb() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:verb/verb.json");
+    final var file = ResourceUtils.getFile("classpath:verb/verb.json");
 
     // When Deserializing Verb
-    final Verb result = objectMapper.readValue(file, Verb.class);
+    final var result = objectMapper.readValue(file, Verb.class);
 
     // Then Result Is Instance Of Verb
     assertThat(result, instanceOf(Verb.class));
@@ -58,10 +56,10 @@ class VerbTests {
   @Test
   void whenDeserializingVerbThenIdIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:verb/verb.json");
+    final var file = ResourceUtils.getFile("classpath:verb/verb.json");
 
     // When Deserializing Verb
-    final Verb result = objectMapper.readValue(file, Verb.class);
+    final var result = objectMapper.readValue(file, Verb.class);
 
     // Then Id Is Expected
     assertThat(result.getId(), is(URI.create("http://adlnet.gov/expapi/verbs/answered")));
@@ -75,7 +73,7 @@ class VerbTests {
   @Test
   void whenSerializingVerbThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Verb verb = Verb.builder()
+    final var verb = Verb.builder()
 
         .id(URI.create("http://adlnet.gov/expapi/verbs/answered"))
 
@@ -84,7 +82,7 @@ class VerbTests {
         .build();
 
     // When Serializing Verb
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(verb));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(verb));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -97,14 +95,14 @@ class VerbTests {
   @Test
   void whenSerializingVerbWithoutDisplayThenResultIsEqualToExpectedJson() throws IOException {
 
-    final Verb verb = Verb.builder()
+    final var verb = Verb.builder()
 
         .id(URI.create("http://adlnet.gov/expapi/verbs/answered"))
 
         .build();
 
     // When Serializing Verb Without Display
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(verb));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(verb));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(
@@ -121,11 +119,11 @@ class VerbTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final Verb verb =
+    final var verb =
         objectMapper.readValue(ResourceUtils.getFile("classpath:verb/verb.json"), Verb.class);
 
     // When Calling ToString
-    final String result = verb.toString();
+    final var result = verb.toString();
 
     // Then Result Is Expected
     assertThat(result,
@@ -141,7 +139,7 @@ class VerbTests {
   void givenVerbIsConstructedWithIdAndNameWhenGettingDisplayForLocaleUNDThenResultIsExpected() {
 
     // Given Verb Is Constructed With Id And Name
-    final Verb verb = new Verb("http://adlnet.gov/expapi/verbs/answered", "answered");
+    final var verb = new Verb("http://adlnet.gov/expapi/verbs/answered", "answered");
 
     // When Getting Display For Locale UND
     final var result = verb.getDisplay().get(Locale.forLanguageTag("UND"));
@@ -154,7 +152,7 @@ class VerbTests {
   void givenVerbIsConstructedWithIdAndNameWhenGettingIdThenIdIsExpected() {
 
     // Given Verb Is Constructed With Id And Name
-    final Verb verb = new Verb("http://adlnet.gov/expapi/verbs/answered", "answered");
+    final var verb = new Verb("http://adlnet.gov/expapi/verbs/answered", "answered");
 
     // When Getting Id
     final var result = verb.getId();
@@ -167,7 +165,7 @@ class VerbTests {
   void givenVerbIsConstructedWithIdWhenGettingIdThenIdIsExpected() {
 
     // Given Verb Is Constructed With Id
-    final Verb verb = new Verb("http://adlnet.gov/expapi/verbs/answered");
+    final var verb = new Verb("http://adlnet.gov/expapi/verbs/answered");
 
     // When Getting Id
     final var result = verb.getId();
@@ -184,7 +182,7 @@ class VerbTests {
   void whenBuildingVerbWithTwoDisplayValuesThenDisplayLanguageMapHasTwoEntries() {
 
     // When Building Verb With Two Display Values
-    final Verb verb = Verb.builder()
+    final var verb = Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
@@ -207,14 +205,14 @@ class VerbTests {
   void givenVerbWithoutDisplayPropertyWhenTestingEqualityWithVerbWithDisplayPropertyThenVerbsAreEqual() {
 
     // Given Verb Without Display Property
-    final Verb verb = Verb.builder()
+    final var verb = Verb.builder()
 
         .id(URI.create("http://adlnet.gov/expapi/verbs/answered"))
 
         .build();
 
     // When Testing Equality With Verb With Display Property
-    final boolean result = verb.equals(Verb.builder()
+    final var result = verb.equals(Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
@@ -231,7 +229,7 @@ class VerbTests {
   void givenVerbWithGermanDisplayPropertyWhenTestingEqualityWithVerbWithEnglishDisplayPropertyThenVerbsAreEqual() {
 
     // Given Verb With German Display Property
-    final Verb verb = Verb.builder()
+    final var verb = Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
@@ -240,7 +238,7 @@ class VerbTests {
         .build();
 
     // When Testing Equality With Verb With English Display Property
-    final boolean result = verb.equals(Verb.builder()
+    final var result = verb.equals(Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
@@ -257,14 +255,14 @@ class VerbTests {
   void givenVerbWithIdWhenTestingEqualityWithVerbWithDifferentIdThenVerbsAreNotEqual() {
 
     // Given Verb With Id
-    final Verb verb = Verb.builder()
+    final var verb = Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
         .build();
 
     // When Testing Equality With Verb With Different Id
-    final boolean result = verb.equals(Verb.builder()
+    final var result = verb.equals(Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/interacted")
 
@@ -283,14 +281,14 @@ class VerbTests {
   void givenVerbHasIdVoidedWhenCallingIsVoidedThenResultIsTrue() {
 
     // Given Verb Has Id Voided
-    final Verb verb = (Verb.builder()
+    final var verb = (Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/voided")
 
         .build());
 
     // When Calling isVoided
-    final boolean result = verb.isVoided();
+    final var result = verb.isVoided();
 
     // Then Result Is True
     assertThat(result, is(true));
@@ -301,14 +299,14 @@ class VerbTests {
   void givenVerbDoesNotHaveIdVoidedWhenCallingIsVoidedThenResultIsFalse() {
 
     // Given Verb Does Not Have Id Voided
-    final Verb verb = (Verb.builder()
+    final var verb = (Verb.builder()
 
         .id("http://adlnet.gov/expapi/verbs/answered")
 
         .build());
 
     // When Calling isVoided
-    final boolean result = verb.isVoided();
+    final var result = verb.isVoided();
 
     // Then Result Is False
     assertThat(result, is(false));
@@ -318,7 +316,7 @@ class VerbTests {
   @Test
   void whenValidatingVerbWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
-    final Verb verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/answered")
+    final var verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/answered")
         .addDisplay(Locale.US, "answered").build();
 
     // When Validating Interaction Component With All Required Properties
@@ -332,7 +330,7 @@ class VerbTests {
   @Test
   void whenValidatingVerbWithoutIdThenConstraintViolationsSizeIsOne() {
 
-    final Verb verb = Verb.builder().addDisplay(Locale.US, "answered").build();
+    final var verb = Verb.builder().addDisplay(Locale.US, "answered").build();
 
     // When Validating Interaction Component Without Id
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);

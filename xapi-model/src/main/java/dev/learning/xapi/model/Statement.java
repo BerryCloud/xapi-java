@@ -325,7 +325,7 @@ public class Statement implements CoreStatement {
      * @param attachment An {@link Attachment} object.
      *
      * @return This builder
-     * 
+     *
      * @see Statement#attachments
      */
     public Builder addAttachment(Attachment attachment) {
@@ -337,7 +337,7 @@ public class Statement implements CoreStatement {
       this.attachments.add(attachment);
       return this;
     }
-    
+
     /**
      * Consumer Builder for attachment.
      *

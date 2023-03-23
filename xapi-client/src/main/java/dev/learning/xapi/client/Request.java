@@ -24,5 +24,4 @@ interface Request {
    */
   HttpMethod getMethod();
 
-
 }

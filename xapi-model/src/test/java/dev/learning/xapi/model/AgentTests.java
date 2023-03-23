@@ -8,9 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import org.junit.jupiter.api.DisplayName;
@@ -32,15 +30,15 @@ class AgentTests {
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
   @ParameterizedTest
-  @ValueSource(strings = {"classpath:agent/agent.json",
-      "classpath:agent/agent_without_object_type.json",
-      "classpath:agent/agent_with_object_type.json"})
+  @ValueSource(
+      strings = {"classpath:agent/agent.json", "classpath:agent/agent_without_object_type.json",
+          "classpath:agent/agent_with_object_type.json"})
   void whenDeserializingAgentThenResultIsInstanceOfAgent(String fileName) throws IOException {
 
-    final File file = ResourceUtils.getFile(fileName);
+    final var file = ResourceUtils.getFile(fileName);
 
     // When Deserializing Agent
-    final Agent result = objectMapper.readValue(file, Agent.class);
+    final var result = objectMapper.readValue(file, Agent.class);
 
     // Then Result Is Instance Of Agent
     assertThat(result, instanceOf(Agent.class));
@@ -50,10 +48,10 @@ class AgentTests {
   @Test
   void whenDeserializingAgentWithNameThenNameIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:agent/agent_with_name.json");
+    final var file = ResourceUtils.getFile("classpath:agent/agent_with_name.json");
 
     // When Deserializing Agent With Name
-    final Agent result = objectMapper.readValue(file, Agent.class);
+    final var result = objectMapper.readValue(file, Agent.class);
 
     // Then Name Is Expected
     assertThat(result.getName(), is("A N Other"));
@@ -63,10 +61,10 @@ class AgentTests {
   @Test
   void whenDeserializingAgentWithMboxThenMboxIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:agent/agent_with_mbox.json");
+    final var file = ResourceUtils.getFile("classpath:agent/agent_with_mbox.json");
 
     // When Deserializing Agent With Mbox
-    final Agent result = objectMapper.readValue(file, Agent.class);
+    final var result = objectMapper.readValue(file, Agent.class);
 
     // Then Mbox Is Expected
     assertThat(result.getMbox(), is("mailto:other@example.com"));
@@ -76,10 +74,10 @@ class AgentTests {
   @Test
   void whenDeserializingAgentWithMboxSha1sumThenMboxSha1sumIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:agent/agent_with_mbox_sha1sum.json");
+    final var file = ResourceUtils.getFile("classpath:agent/agent_with_mbox_sha1sum.json");
 
     // When Deserializing Agent With MboxSha1sum
-    final Agent result = objectMapper.readValue(file, Agent.class);
+    final var result = objectMapper.readValue(file, Agent.class);
 
     // Then MboxSha1sum Is Expected
     assertThat(result.getMboxSha1sum(), is("1234"));
@@ -89,10 +87,10 @@ class AgentTests {
   @Test
   void whenDeserializingAgentWithOpenIdThenOpenIdIsExpected() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:agent/agent_with_openid.json");
+    final var file = ResourceUtils.getFile("classpath:agent/agent_with_openid.json");
 
     // When Deserializing Agent With OpenId
-    final Agent result = objectMapper.readValue(file, Agent.class);
+    final var result = objectMapper.readValue(file, Agent.class);
 
     // Then OpenId Is Expected
     assertThat(result.getOpenid(), is(URI.create("1234")));
@@ -102,10 +100,10 @@ class AgentTests {
   @Test
   void whenDeserializingAgentWithAccountThenAccountIsInstanceOfAccount() throws IOException {
 
-    final File file = ResourceUtils.getFile("classpath:agent/agent_with_account.json");
+    final var file = ResourceUtils.getFile("classpath:agent/agent_with_account.json");
 
     // When Deserializing Agent With Account
-    final Agent result = objectMapper.readValue(file, Agent.class);
+    final var result = objectMapper.readValue(file, Agent.class);
 
     // Then Account Is Instance Of Account
     assertThat(result.getAccount(), instanceOf(Account.class));
@@ -124,7 +122,7 @@ class AgentTests {
         .build();
 
     // When Serializing Agent With Name
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -144,7 +142,7 @@ class AgentTests {
         .build();
 
     // When Serializing Agent With Mbox
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -164,7 +162,7 @@ class AgentTests {
         .build();
 
     // When Serializing Agent With MboxSha1sum
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(objectMapper
@@ -184,7 +182,7 @@ class AgentTests {
         .build();
 
     // When Serializing Agent With OpenId
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
 
     // Then Result Is Equal To Expected Json
     assertThat(result,
@@ -204,7 +202,7 @@ class AgentTests {
         .build();
 
     // when Serializing Agent With Account
-    final JsonNode result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(agent));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(
