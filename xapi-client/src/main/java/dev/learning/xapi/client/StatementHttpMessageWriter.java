@@ -51,36 +51,21 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
   private static final Map<String, Object> DEFAULT_HINTS =
       Hints.from(Hints.SUPPRESS_LOGGING_HINT, true);
 
-  private final Supplier<List<HttpMessageWriter<?>>> partWritersSupplier;
+  private final List<HttpMessageWriter<?>> partWritersSupplier;
   private final HttpMessageWriter<Object> defaultWriter;
 
   public StatementHttpMessageWriter() {
 
     super(List.of(MediaType.MULTIPART_MIXED, MediaType.APPLICATION_JSON));
-    // TODO: create partwriters for Attachment and Statement / StatementList
-    this.partWritersSupplier = () -> Arrays.asList(new AttachmentHttpMessageWriter(),
+    this.partWritersSupplier = Arrays.asList(new AttachmentHttpMessageWriter(),
         new EncoderHttpMessageWriter<>(new Jackson2JsonEncoder()));
     this.defaultWriter = new EncoderHttpMessageWriter<>(new Jackson2JsonEncoder());
   }
 
   @Override
   public boolean canWrite(ResolvableType elementType, @Nullable MediaType mediaType) {
-    // System.err.println(elementType.toClass());
-    if (Statement.class.equals(elementType.toClass())
-        || StatementList.class.isAssignableFrom(elementType.toClass())) {
-      // TODO: test if catches correct types
-      System.err.println("***" + elementType.resolve());
-      return true;
-      // if (mediaType == null) {
-      // return true;
-      // }
-      // for (final MediaType supportedMediaType : getWritableMediaTypes()) {
-      // if (supportedMediaType.isCompatibleWith(mediaType)) {
-      // return true;
-      // }
-      // }
-    }
-    return false;
+    return Statement.class.equals(elementType.toClass())
+        || StatementList.class.isAssignableFrom(elementType.toClass());
   }
 
   @Override
@@ -101,8 +86,6 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     });
   }
 
-
-
   private Mono<Void> writeMultipart(List<Object> list, ReactiveHttpOutputMessage outputMessage,
       Map<String, Object> hints) {
 
@@ -113,14 +96,10 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var bufferFactory = outputMessage.bufferFactory();
 
-    Flux<DataBuffer> body =
+    final Flux<DataBuffer> body =
         Flux.fromIterable(list).concatMap(element -> encodePart(boundary, element, bufferFactory))
             .concatWith(generateLastLine(boundary, bufferFactory))
             .doOnDiscard(DataBuffer.class, DataBufferUtils::release);
-
-    if (logger.isDebugEnabled()) {
-      body = body.doOnNext(buffer -> Hints.touchDataBuffer(buffer, hints, logger));
-    }
 
     return outputMessage.writeWith(body);
   }
@@ -132,13 +111,10 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var resolvableType = ResolvableType.forClass(body.getClass());
 
-
     final var contentType = headers.getContentType();
 
-    final var finalBodyType = resolvableType;
-
-    final var writer = this.partWritersSupplier.get().stream()
-        .filter(partWriter -> partWriter.canWrite(finalBodyType, contentType)).findFirst();
+    final var writer = this.partWritersSupplier.stream()
+        .filter(partWriter -> partWriter.canWrite(resolvableType, contentType)).findFirst();
 
     if (!writer.isPresent()) {
       return Flux.error(
