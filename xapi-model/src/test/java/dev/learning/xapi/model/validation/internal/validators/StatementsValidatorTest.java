@@ -17,7 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * StatementVerbValidator Tests.
+ * StatementsValidator Tests.
  *
  * @author István Rátkai (Selindek)
  */
