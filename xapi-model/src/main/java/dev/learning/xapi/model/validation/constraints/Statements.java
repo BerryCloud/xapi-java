@@ -27,7 +27,7 @@ public @interface Statements {
   /**
    * The default message.
    */
-  String message() default "All statements must have a unique id";
+  String message() default "all statements must have a unique id";
 
   /**
    * Groups.
