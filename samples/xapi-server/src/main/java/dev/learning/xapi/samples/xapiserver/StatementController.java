@@ -5,6 +5,7 @@
 package dev.learning.xapi.samples.xapiserver;
 
 import dev.learning.xapi.model.Statement;
+import dev.learning.xapi.model.validation.constraints.Statements;
 import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
@@ -77,7 +78,7 @@ public class StatementController {
    */
   @PostMapping(consumes = {"application/json"})
   public ResponseEntity<Collection<UUID>> postStatements(
-      @RequestBody List<@Valid Statement> statements) {
+      @RequestBody @Statements List<@Valid Statement> statements) {
 
     log.debug("POST statements");
 

@@ -9,3 +9,4 @@ dev.learning.xapi.model.validation.internal.validators.ActorValidator
 dev.learning.xapi.model.validation.internal.validators.StatementRevisionValidator
 dev.learning.xapi.model.validation.internal.validators.StatementPlatformValidator
 dev.learning.xapi.model.validation.internal.validators.StatementVerbValidator
+dev.learning.xapi.model.validation.internal.validators.StatementsValidator
