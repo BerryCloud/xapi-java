@@ -160,7 +160,7 @@ class StatementsValidatorTest {
 
         .build();
 
-    // When Validating Two Statements Without Id
+    // When Validating Two Statements With Same Id
     final var valid = validator.isValid(Arrays.asList(statement1, statement2), null);
 
     // Then Valid Is False
