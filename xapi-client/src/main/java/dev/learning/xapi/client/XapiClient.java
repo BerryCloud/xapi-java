@@ -54,7 +54,13 @@ public class XapiClient {
 
         .defaultHeader("X-Experience-API-Version", "1.0.3")
 
-        .build();
+        .codecs(configurer -> {
+
+          // configurer.defaultCodecs();
+
+          configurer.customCodecs().register(new StatementHttpMessageWriter());
+
+        }).build();
   }
 
   // Statement Resource
@@ -114,15 +120,15 @@ public class XapiClient {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
-    final var requestSpec = this.webClient
+    return this.webClient
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build(queryParams));
+        .uri(u -> request.url(u, queryParams).build(queryParams))
 
-    multipartService.addBody(requestSpec, request.getStatement());
+        .bodyValue(request.getStatement())
 
-    return requestSpec.retrieve()
+        .retrieve()
 
         .toEntity(LIST_UUID_TYPE)
 
@@ -161,15 +167,15 @@ public class XapiClient {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
-    final var requestSpec = this.webClient
+    return this.webClient
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build(queryParams));
+        .uri(u -> request.url(u, queryParams).build(queryParams))
 
-    multipartService.addBody(requestSpec, request.getStatements());
+        .bodyValue(request.getStatements())
 
-    return requestSpec.retrieve()
+        .retrieve()
 
         .toEntity(LIST_UUID_TYPE);
 
