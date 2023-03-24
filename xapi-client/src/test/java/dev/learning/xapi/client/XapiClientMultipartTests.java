@@ -8,7 +8,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.Statement;
@@ -39,9 +38,6 @@ class XapiClientMultipartTests {
   @Autowired
   private WebClient.Builder webClientBuilder;
 
-  @Autowired
-  private ObjectMapper objectMapper;
-
   private MockWebServer mockWebServer;
   private XapiClient client;
 
@@ -52,7 +48,7 @@ class XapiClientMultipartTests {
 
     webClientBuilder.baseUrl(mockWebServer.url("").toString());
 
-    client = new XapiClient(webClientBuilder, objectMapper);
+    client = new XapiClient(webClientBuilder);
 
   }
 
@@ -265,8 +261,6 @@ class XapiClientMultipartTests {
     assertThat(recordedRequest.getBody().readUtf8(), is(
         "--xapi-learning-dev-boundary\r\nContent-Type:application/json\r\n\r\n[{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}},\"attachments\":[{\"usageType\":\"http://adlnet.gov/expapi/attachments/code\",\"display\":{\"en\":\"binary attachment\"},\"contentType\":\"application/octet-stream\",\"length\":6,\"sha2\":\"0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef\"}]},{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}},\"attachments\":[{\"usageType\":\"http://adlnet.gov/expapi/attachments/code\",\"display\":{\"en\":\"binary attachment\"},\"contentType\":\"application/octet-stream\",\"length\":6,\"sha2\":\"0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef\"},{\"usageType\":\"http://adlnet.gov/expapi/attachments/text\",\"display\":{\"en\":\"text attachment\"},\"contentType\":\"text/plain\",\"length\":17,\"sha2\":\"b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5\"}]}]\r\n--xapi-learning-dev-boundary\r\nContent-Type:text/plain\r\nContent-Transfer-Encoding:binary\r\nX-Experience-API-Hash:b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5\r\n\r\nSimple attachment\r\n--xapi-learning-dev-boundary\r\nContent-Type:application/octet-stream\r\nContent-Transfer-Encoding:binary\r\nX-Experience-API-Hash:0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef\r\n\r\n@ABCDE\r\n--xapi-learning-dev-boundary--"));
   }
-
-
 
   @Test
   void whenPostingStatementsWithTimestampAndAttachmentThenNoExceptionIsThrown()

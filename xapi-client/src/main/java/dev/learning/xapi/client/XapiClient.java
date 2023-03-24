@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Person;
@@ -34,7 +33,6 @@ import reactor.core.publisher.Mono;
 public class XapiClient {
 
   private final WebClient webClient;
-  private final MultipartService multipartService;
 
   private static final ParameterizedTypeReference<List<UUID>> LIST_UUID_TYPE =
       new ParameterizedTypeReference<>() {};
@@ -48,19 +46,16 @@ public class XapiClient {
    * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
    *        authorization header.
    */
-  public XapiClient(WebClient.Builder builder, ObjectMapper objectMapper) {
-    this.multipartService = new MultipartService(objectMapper);
+  public XapiClient(WebClient.Builder builder) {
     this.webClient = builder
 
         .defaultHeader("X-Experience-API-Version", "1.0.3")
 
-        .codecs(configurer -> {
+        .codecs(configurer ->
 
-          // configurer.defaultCodecs();
+        configurer.customCodecs().register(new StatementHttpMessageWriter())
 
-          configurer.customCodecs().register(new StatementHttpMessageWriter());
-
-        }).build();
+        ).build();
   }
 
   // Statement Resource

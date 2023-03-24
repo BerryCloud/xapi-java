@@ -5,7 +5,9 @@
 package dev.learning.xapi.client;
 
 import dev.learning.xapi.model.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -26,7 +28,7 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 public class PostStatementsRequest implements Request {
 
-  private final List<Statement> statements;
+  private final StatementList statements;
 
   @Override
   public HttpMethod getMethod() {
@@ -57,7 +59,7 @@ public class PostStatementsRequest implements Request {
      * @see PostStatementsRequest#statements
      */
     public Builder statements(List<Statement> statements) {
-      this.statements = statements;
+      this.statements = new StatementList(statements);
       return this;
     }
 
@@ -71,10 +73,18 @@ public class PostStatementsRequest implements Request {
      * @see PostStatementsRequest#statements
      */
     public Builder statements(Statement... statements) {
-      this.statements = Arrays.asList(statements);
+      this.statements = new StatementList(Arrays.asList(statements));
       return this;
     }
 
   }
 
+  public static final class StatementList extends ArrayList<Statement> {
+
+    private static final long serialVersionUID = 1013923414137485168L;
+
+    public StatementList(Collection<? extends Statement> statements) {
+      super(statements);
+    }
+  }
 }

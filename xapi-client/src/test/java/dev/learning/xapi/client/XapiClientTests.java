@@ -7,7 +7,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Person;
@@ -23,7 +22,6 @@ import java.util.UUID;
 import lombok.Getter;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,9 +43,6 @@ class XapiClientTests {
   @Autowired
   private WebClient.Builder webClientBuilder;
 
-  @Autowired
-  private ObjectMapper objectMapper;
-
   private MockWebServer mockWebServer;
   private XapiClient client;
 
@@ -58,7 +53,7 @@ class XapiClientTests {
 
     webClientBuilder.baseUrl(mockWebServer.url("").toString());
 
-    client = new XapiClient(webClientBuilder, objectMapper);
+    client = new XapiClient(webClientBuilder);
 
   }
 
@@ -77,7 +72,7 @@ class XapiClientTests {
     // When Getting Statements
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -91,7 +86,7 @@ class XapiClientTests {
     // When Getting Statement
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -108,8 +103,8 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Statement
-    final var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6"))
-        .block();
+    final var response =
+        client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
     // Then Body Is Instance Of Statement
     assertThat(response.getBody(), instanceOf(Statement.class));
@@ -124,7 +119,7 @@ class XapiClientTests {
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -142,7 +137,7 @@ class XapiClientTests {
             r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").format(StatementFormat.CANONICAL))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -174,7 +169,7 @@ class XapiClientTests {
     // When posting Statements
     client.postStatements(r -> r.statements(statements)).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("POST"));
@@ -201,7 +196,7 @@ class XapiClientTests {
     // When Posting Statements
     client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
@@ -231,7 +226,7 @@ class XapiClientTests {
     // When Posting Statements Array
     client.postStatements(r -> r.statements(statements)).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
@@ -261,7 +256,7 @@ class XapiClientTests {
     // When Posting Statements
     client.postStatements(r -> r.statements(statements)).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -316,7 +311,7 @@ class XapiClientTests {
                 .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("POST"));
@@ -339,7 +334,7 @@ class XapiClientTests {
                 .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
@@ -363,7 +358,7 @@ class XapiClientTests {
                 .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -380,7 +375,7 @@ class XapiClientTests {
     client.getVoidedStatement(
         r -> r.voidedId(UUID.fromString("4df42866-40e7-45b6-bf7c-8d5fccbdccd6"))).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -394,7 +389,7 @@ class XapiClientTests {
     // When Getting Voided Statement
     client.getVoidedStatement(r -> r.voidedId("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -410,7 +405,7 @@ class XapiClientTests {
     client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -429,7 +424,7 @@ class XapiClientTests {
             r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").format(StatementFormat.CANONICAL))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -446,7 +441,7 @@ class XapiClientTests {
     // When Getting Statements
     client.getStatements().block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -460,7 +455,7 @@ class XapiClientTests {
     // When Getting Statements
     client.getStatements().block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is("/statements"));
@@ -500,7 +495,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -519,7 +514,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -538,7 +533,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -557,7 +552,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -576,7 +571,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -594,7 +589,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Request URL Is Expected
     assertThat(recordedRequest.getRequestUrl(),
@@ -617,7 +612,7 @@ class XapiClientTests {
 
         .stateId("bookmark"), String.class).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -637,7 +632,7 @@ class XapiClientTests {
 
         .stateId("bookmark"), String.class).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -658,7 +653,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -678,7 +673,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -751,7 +746,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("POST"));
@@ -775,7 +770,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -803,7 +798,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Text Plain
     assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
@@ -828,7 +823,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -850,7 +845,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("POST"));
@@ -872,7 +867,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -899,7 +894,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("PUT"));
@@ -923,7 +918,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -951,7 +946,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Text Plain
     assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
@@ -976,7 +971,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -998,7 +993,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("PUT"));
@@ -1020,7 +1015,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1043,7 +1038,7 @@ class XapiClientTests {
 
         .stateId("bookmark")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Delete
     assertThat(recordedRequest.getMethod(), is("DELETE"));
@@ -1063,7 +1058,7 @@ class XapiClientTests {
 
         .stateId("bookmark")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1082,7 +1077,7 @@ class XapiClientTests {
 
         .stateId("bookmark")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Delete
     assertThat(recordedRequest.getMethod(), is("DELETE"));
@@ -1102,7 +1097,7 @@ class XapiClientTests {
 
         .stateId("bookmark")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1127,7 +1122,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1149,7 +1144,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1170,7 +1165,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1191,7 +1186,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1258,7 +1253,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Delete
     assertThat(recordedRequest.getMethod(), is("DELETE"));
@@ -1278,7 +1273,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1298,7 +1293,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Delete
     assertThat(recordedRequest.getMethod(), is("DELETE"));
@@ -1317,7 +1312,7 @@ class XapiClientTests {
 
     ).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1336,7 +1331,7 @@ class XapiClientTests {
 
         .profileId("greeting"), String.class).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1356,7 +1351,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1379,7 +1374,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Delete
     assertThat(recordedRequest.getMethod(), is("DELETE"));
@@ -1397,7 +1392,7 @@ class XapiClientTests {
             .profileId("greeting"))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1420,7 +1415,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Put
     assertThat(recordedRequest.getMethod(), is("PUT"));
@@ -1440,7 +1435,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1464,7 +1459,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Text Plain
     assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
@@ -1485,7 +1480,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -1508,7 +1503,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(),
@@ -1532,7 +1527,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("POST"));
@@ -1553,7 +1548,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1578,7 +1573,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Text Plain
     assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
@@ -1600,7 +1595,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -1624,7 +1619,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(),
@@ -1644,7 +1639,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1663,7 +1658,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1685,7 +1680,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1704,7 +1699,7 @@ class XapiClientTests {
         .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1718,7 +1713,7 @@ class XapiClientTests {
     // When Getting Activity By String
     client.getActivity(r -> r.activityId("https://example.com/activity/simplestatement")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1734,7 +1729,7 @@ class XapiClientTests {
         .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
@@ -1769,7 +1764,7 @@ class XapiClientTests {
     // When Getting Agents
     client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1783,7 +1778,7 @@ class XapiClientTests {
     // When Getting Agents
     client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1800,8 +1795,8 @@ class XapiClientTests {
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Agents
-    final var response = client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com")))
-        .block();
+    final var response =
+        client.getAgents(r -> r.agent(a -> a.mbox("mailto:another@example.com"))).block();
 
     // Then Body Is Instance Of Activity
     assertThat(response.getBody(), instanceOf(Person.class));
@@ -1821,7 +1816,7 @@ class XapiClientTests {
     // When Getting About
     client.getAbout().block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1839,7 +1834,7 @@ class XapiClientTests {
     // When Getting About
     client.getAbout().block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is("/about"));
@@ -1873,7 +1868,7 @@ class XapiClientTests {
 
         .profileId("bookmark"), String.class).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -1889,7 +1884,7 @@ class XapiClientTests {
 
         .profileId("bookmark"), String.class).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1952,7 +1947,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("POST"));
@@ -1972,7 +1967,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -1996,7 +1991,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Text Plain
     assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
@@ -2017,7 +2012,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -2039,7 +2034,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Post
     assertThat(recordedRequest.getMethod(), is("PUT"));
@@ -2059,7 +2054,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -2083,7 +2078,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Text Plain
     assertThat(recordedRequest.getHeader("content-type"), is("text/plain"));
@@ -2104,7 +2099,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
@@ -2122,7 +2117,7 @@ class XapiClientTests {
 
         .profileId("bookmark")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Delete
     assertThat(recordedRequest.getMethod(), is("DELETE"));
@@ -2138,7 +2133,7 @@ class XapiClientTests {
 
         .profileId("bookmark")).block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -2158,7 +2153,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Method Is Get
     assertThat(recordedRequest.getMethod(), is("GET"));
@@ -2178,7 +2173,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
@@ -2197,7 +2192,7 @@ class XapiClientTests {
 
         .block();
 
-    final RecordedRequest recordedRequest = mockWebServer.takeRequest();
+    final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
