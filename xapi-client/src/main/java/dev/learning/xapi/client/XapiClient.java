@@ -53,7 +53,7 @@ public class XapiClient {
 
         .codecs(configurer ->
 
-        configurer.customCodecs().register(new StatementHttpMessageWriter())
+        configurer.customCodecs().register(new StatementHttpMessageWriter(configurer.getWriters()))
 
         ).build();
   }

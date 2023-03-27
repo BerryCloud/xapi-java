@@ -4,12 +4,10 @@
 
 package dev.learning.xapi.client;
 
-import dev.learning.xapi.client.PostStatementsRequest.StatementList;
 import dev.learning.xapi.model.Attachment;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.SubStatement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,16 +16,14 @@ import java.util.stream.Stream;
 import org.reactivestreams.Publisher;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.codec.CodecException;
-import org.springframework.core.codec.Hints;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
-import org.springframework.http.codec.EncoderHttpMessageWriter;
 import org.springframework.http.codec.HttpMessageWriter;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.http.codec.multipart.MultipartHttpMessageWriter;
 import org.springframework.http.codec.multipart.MultipartWriterSupport;
 import org.springframework.lang.Nullable;
 import reactor.core.publisher.Flux;
@@ -39,6 +35,12 @@ import reactor.core.publisher.Mono;
  * If any of the provided statements contains an {@link Attachment} with real data, then this writer
  * creates a multipart/mixed output otherwise it writes the data as application/json.
  * </p>
+ * <p>
+ * This message-writer accepts <strong>ALL</strong> objects, so all the default (and any other
+ * custom) {@link HttpMessageWriter} must be passed to its constructor. If the object to be written
+ * is not a {@link Statement} or List of Statements with real {@link Attachment}s, then this list of
+ * writers will be used.
+ * </p>
  *
  * @author István Rátkai (Selindek)
  *
@@ -47,28 +49,33 @@ import reactor.core.publisher.Mono;
 public class StatementHttpMessageWriter extends MultipartWriterSupport
     implements HttpMessageWriter<Object> {
 
-  /** Suppress logging from individual part writers (full map logged at this level). */
-  private static final Map<String, Object> DEFAULT_HINTS =
-      Hints.from(Hints.SUPPRESS_LOGGING_HINT, true);
+  private final List<HttpMessageWriter<?>> writers = new ArrayList<>();
 
-  private final List<HttpMessageWriter<?>> partWritersSupplier;
-  private final HttpMessageWriter<Object> defaultWriter;
-
-  public StatementHttpMessageWriter() {
+  /**
+   * Constructor.
+   *
+   * @param list list of the original {@link HttpMessageWriter}s. This list is used if the object to
+   *        write is not a {@link Statement} or list of statements or there are no any
+   *        {@link Attachment}s with real data in the statements.
+   */
+  public StatementHttpMessageWriter(List<HttpMessageWriter<?>> list) {
 
     super(List.of(MediaType.MULTIPART_MIXED, MediaType.APPLICATION_JSON));
-    this.partWritersSupplier = Arrays.asList(new AttachmentHttpMessageWriter(),
-        new EncoderHttpMessageWriter<>(new Jackson2JsonEncoder()));
-    this.defaultWriter = new EncoderHttpMessageWriter<>(new Jackson2JsonEncoder());
+
+    // Add special writer for attachments
+    this.writers.add(new AttachmentHttpMessageWriter());
+    // ... but otherwise use the default list of writers
+    this.writers.addAll(list);
+
   }
 
   @Override
   public boolean canWrite(ResolvableType elementType, @Nullable MediaType mediaType) {
-    return Statement.class.equals(elementType.toClass())
-        || StatementList.class.isAssignableFrom(elementType.toClass());
+    return true;
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public Mono<Void> write(Publisher<? extends Object> inputStream, ResolvableType elementType,
       @Nullable MediaType mediaType, ReactiveHttpOutputMessage outputMessage,
       Map<String, Object> hints) {
@@ -76,12 +83,16 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     return Mono.from(inputStream).flatMap(object -> {
       final var list = getParts(object);
       if (list.size() > 1) {
-        // Has attachments
+        // Has attachments -> process as multipart
         return writeMultipart(list, outputMessage, hints);
+
       } else {
-        // No attachments
-        final Mono<Object> input = Mono.just(list.get(0));
-        return this.defaultWriter.write(input, elementType, mediaType, outputMessage, hints);
+        // No attachments -> pass the original object to the default list of writers
+
+        return ((HttpMessageWriter<Object>) writers.stream()
+            .filter(partWriter -> partWriter.canWrite(elementType, mediaType)).findFirst().get())
+                .write(inputStream, elementType, mediaType, outputMessage, hints);
+
       }
     });
   }
@@ -96,16 +107,17 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var bufferFactory = outputMessage.bufferFactory();
 
-    final Flux<DataBuffer> body =
-        Flux.fromIterable(list).concatMap(element -> encodePart(boundary, element, bufferFactory))
-            .concatWith(generateLastLine(boundary, bufferFactory))
-            .doOnDiscard(DataBuffer.class, DataBufferUtils::release);
+    final Flux<DataBuffer> body = Flux.fromIterable(list)
+        .concatMap(element -> encodePart(boundary, element, bufferFactory, hints))
+        .concatWith(generateLastLine(boundary, bufferFactory))
+        .doOnDiscard(DataBuffer.class, DataBufferUtils::release);
 
     return outputMessage.writeWith(body);
   }
 
   @SuppressWarnings("unchecked")
-  private <T> Flux<DataBuffer> encodePart(byte[] boundary, Object body, DataBufferFactory factory) {
+  private <T> Flux<DataBuffer> encodePart(byte[] boundary, Object body, DataBufferFactory factory,
+      Map<String, Object> hints) {
     final var message = new MultipartHttpOutputMessage(factory);
     final var headers = message.getHeaders();
 
@@ -113,7 +125,7 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var contentType = headers.getContentType();
 
-    final var writer = this.partWritersSupplier.stream()
+    final var writer = this.writers.stream()
         .filter(partWriter -> partWriter.canWrite(resolvableType, contentType)).findFirst();
 
     if (!writer.isPresent()) {
@@ -127,7 +139,7 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     // but only stores the body Flux and returns Mono.empty().
 
     final var partContentReady = ((HttpMessageWriter<Object>) writer.get()).write(bodyPublisher,
-        resolvableType, contentType, message, DEFAULT_HINTS);
+        resolvableType, contentType, message, hints);
 
     // After partContentReady, we can access the part content from MultipartHttpOutputMessage
     // and use it for writing to the actual request body
@@ -138,6 +150,55 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
         generateNewLine(factory));
   }
 
+
+  @SuppressWarnings("unchecked")
+  private List<Object> getParts(Object object) {
+
+    final var list = new ArrayList<>();
+
+    Stream<Attachment> attachments;
+    if (object instanceof final Statement statement) {
+      attachments = getRealAttachments(statement);
+    } else if (object instanceof final List<?> statements && !statements.isEmpty()
+        && statements.get(0) instanceof Statement) {
+      attachments = ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
+    } else {
+      // The object is not a statement or list of statements
+      return list;
+    }
+
+    // first part is the statement / list of statements
+    list.add(object);
+
+    list.addAll(attachments.distinct().toList());
+    return list;
+  }
+
+  /**
+   * Gets {@link Attachment}s of a {@link Statement} which has data property as a {@link Stream}.
+   *
+   * @param statement a {@link Statement} object
+   *
+   * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
+   */
+  private Stream<Attachment> getRealAttachments(Statement statement) {
+
+    // handle the rare scenario when a sub-statement has an attachment
+    var stream = statement.getObject() instanceof final SubStatement substatement
+        && substatement.getAttachments() != null ? substatement.getAttachments().stream()
+            : Stream.<Attachment>empty();
+
+    if (statement.getAttachments() != null) {
+      stream = Stream.concat(stream, statement.getAttachments().stream());
+    }
+
+    return stream.filter(a -> a.getContent() != null);
+  }
+
+  /**
+   * This class was copied from the {@link MultipartHttpMessageWriter} class. Unfortunately it's a
+   * private class, so I cannot use it directly.
+   */
   private class MultipartHttpOutputMessage implements ReactiveHttpOutputMessage {
 
     private final DataBufferFactory bufferFactory;
@@ -198,44 +259,6 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     public Mono<Void> setComplete() {
       return Mono.error(new UnsupportedOperationException());
     }
-  }
-
-  private List<Object> getParts(Object object) {
-    final var list = new ArrayList<>();
-
-    // first part is the statement / list of statements
-    list.add(object);
-
-    Stream<Attachment> attachments;
-    if (object instanceof final Statement statement) {
-      attachments = getRealAttachments(statement);
-    } else {
-      attachments = ((StatementList) object).stream().flatMap(this::getRealAttachments);
-    }
-
-    list.addAll(attachments.distinct().toList());
-    return list;
-  }
-
-  /**
-   * Gets {@link Attachment}s of a {@link Statement} which has data property as a {@link Stream}.
-   *
-   * @param statement a {@link Statement} object
-   *
-   * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
-   */
-  private Stream<Attachment> getRealAttachments(Statement statement) {
-
-    // handle the rare scenario when a sub-statement has an attachment
-    var stream = statement.getObject() instanceof final SubStatement substatement
-        && substatement.getAttachments() != null ? substatement.getAttachments().stream()
-            : Stream.<Attachment>empty();
-
-    if (statement.getAttachments() != null) {
-      stream = Stream.concat(stream, statement.getAttachments().stream());
-    }
-
-    return stream.filter(a -> a.getContent() != null);
   }
 
 }
