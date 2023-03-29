@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import dev.learning.xapi.model.validation.constraints.ValidLanguageMap;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.Locale;
@@ -351,6 +352,7 @@ public class Verb {
    * impact on the meaning of the Statement, but serves to give a human-readable display of the
    * meaning already determined by the chosen Verb.
    */
+  @ValidLanguageMap
   private LanguageMap display;
 
   // **Warning** do not add fields that are not required by the xAPI specification.

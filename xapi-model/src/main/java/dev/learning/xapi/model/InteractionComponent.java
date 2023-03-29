@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.ValidLanguageMap;
 import jakarta.validation.constraints.NotNull;
 import java.util.Locale;
 import lombok.Builder;
@@ -36,6 +37,7 @@ public class InteractionComponent {
   /**
    * A description of the interaction component.
    */
+  @ValidLanguageMap
   private LanguageMap description;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
