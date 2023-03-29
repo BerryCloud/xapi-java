@@ -16,6 +16,7 @@ import java.util.Locale;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 /**
  * This class represents the xAPI Attachment object.
@@ -79,6 +80,7 @@ public class Attachment {
    * The data of the attachment as byte array.
    */
   @JsonIgnore
+  @With
   private byte[] content;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
