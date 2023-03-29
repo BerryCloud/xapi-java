@@ -74,11 +74,10 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
       Map<String, Object> hints) {
 
     return this.partReader.read(elementType, inputMessage, hints).collectList()
-        .flatMap(list -> toStatement(elementType, list, hints));
+        .flatMap(list -> toStatement(elementType, list));
   }
 
-  private Mono<Object> toStatement(ResolvableType elementType, List<Part> parts,
-      Map<String, Object> hints) {
+  private Mono<Object> toStatement(ResolvableType elementType, List<Part> parts) {
 
     if (parts.isEmpty()) {
       return null;
