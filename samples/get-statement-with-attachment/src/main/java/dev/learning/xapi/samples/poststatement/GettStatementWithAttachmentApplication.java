@@ -7,7 +7,6 @@ package dev.learning.xapi.samples.poststatement;
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.Verb;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
