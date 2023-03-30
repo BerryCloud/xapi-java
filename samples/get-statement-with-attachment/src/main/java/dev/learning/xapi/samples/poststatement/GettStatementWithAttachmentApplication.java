@@ -47,7 +47,8 @@ public class GettStatementWithAttachmentApplication implements CommandLineRunner
     var id = postStatement();
     
     // Get Statement
-    ResponseEntity<Statement> response = client.getStatement(r -> r.id(id).attachments(true)).block();
+    ResponseEntity<Statement> response = 
+        client.getStatement(r -> r.id(id).attachments(true)).block();
 
     // If the attachment parameter is set to true in a getStatement (or a getStatements) request
     // then the server will send the response in a multipart/mixed format (even if the 
