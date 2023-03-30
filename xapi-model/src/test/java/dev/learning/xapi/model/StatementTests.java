@@ -6,13 +6,12 @@ package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.ConstraintViolation;
@@ -693,15 +692,15 @@ class StatementTests {
   @Test
   void whenSigningStatementThenSignatureIsAddedAsAttachment() throws NoSuchAlgorithmException {
 
-    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+    final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    
+    final var keyPair = keyPairGenerator.generateKeyPair();
+
     // When Signing Statement
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -710,7 +709,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -760,24 +759,25 @@ class StatementTests {
         .version("1.0.0")
 
         .sign(keyPair.getPrivate());
-    
+
     // Then Signature is Added As Attachment
     assertThat(statement.getAttachments(), hasSize(1));
 
   }
-  
-  @Test
-  void whenSigningStatementWithAttachmentThenSignatureIsAddedAsAttachment() throws NoSuchAlgorithmException {
 
-    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+  @Test
+  void whenSigningStatementWithAttachmentThenSignatureIsAddedAsAttachment()
+      throws NoSuchAlgorithmException {
+
+    final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    
+    final var keyPair = keyPairGenerator.generateKeyPair();
+
     // When Signing Statement
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
-    final Attachment attachment = Attachment.builder().usageType(URI.create("http://example.com"))
+    final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
         .fileUrl(URI.create("http://example.com"))
 
         .addDisplay(Locale.ENGLISH, "value")
@@ -792,7 +792,7 @@ class StatementTests {
 
         .build();
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -801,7 +801,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -853,7 +853,7 @@ class StatementTests {
         .version("1.0.0")
 
         .sign(keyPair.getPrivate());
-    
+
     // Then Signature is Added As Attachment
     assertThat(statement.getAttachments(), hasSize(2));
 
@@ -862,15 +862,15 @@ class StatementTests {
   @Test
   void whenSigningStatementThenSignatureIsExpected() throws NoSuchAlgorithmException {
 
-    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+    final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    
+    final var keyPair = keyPairGenerator.generateKeyPair();
+
     // When Signing Statement
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -879,7 +879,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -929,24 +929,26 @@ class StatementTests {
         .version("1.0.0")
 
         .sign(keyPair.getPrivate());
-    
+
     // Then Signature is Expected
-    assertThat(statement.getAttachments().get(0).getData(), startsWith("eyJhbGciOiJSUzUxMiJ9.eyJhY3RvciI6eyJuYW1lIjoiQSBOIE90aGVyIn0sInJlc3VsdCI6eyJzdWNjZXNzIjp0cnVlLCJjb21wbGV0aW9uIjp0cnVlLCJyZXNwb25zZSI6IlJlc3BvbnNlIiwiZHVyYXRpb24iOiJQMUQifSwidmVyYiI6eyJpZCI6Imh0dHA6Ly9leGFtcGxlLmNvbS94YXBpL3ZlcmJzI3NlbnQtYS1zdGF0ZW1lbnQiLCJkaXNwbGF5Ijp7ImVuX1VTIjoiYXR0ZW5kZWQifX0sImNvbnRleHQiOnsicmVnaXN0cmF0aW9uIjoiZWM1MzEyNzctYjU3Yi00YzE1LThkOTEtZDI5MmM1YjJiOGY3IiwiaW5zdHJ1Y3RvciI6eyJvYmplY3RUeXBlIjoiQWdlbnQiLCJuYW1lIjoiQSBOIE90aGVyIiwiYWNjb3VudCI6eyJob21lUGFnZSI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJuYW1lIjoiMTM5MzY3NDkifX0sInRlYW0iOnsib2JqZWN0VHlwZSI6Ikdyb3VwIiwibmFtZSI6IlRlYW0iLCJtYm94IjoibWFpbHRvOnRlYW1AZXhhbXBsZS5jb20ifSwicGxhdGZvcm0iOiJFeGFtcGxlIHZpcnR1YWwgbWVldGluZyBzb2Z0d2FyZSIsImxhbmd1YWdlIjoiZW4iLCJzdGF0ZW1lbnQiOnsib2JqZWN0VHlwZSI6IlN0YXRlbWVudFJlZiIsImlkIjoiNjY5MGU2YzktM2VmMC00ZWQzLThiMzctN2YzOTY0NzMwYmVlIn19LCJvYmplY3QiOnsiaWQiOiJodHRwOi8vd3d3LmV4YW1wbGUuY29tL21lZXRpbmdzL29jY3VyYW5jZXMvMzQ1MzQiLCJkZWZpbml0aW9uIjp7Im5hbWUiOnsiZW5fR0IiOiJBIHNpbXBsZSBFeHBlcmllbmNlIEFQSSBzdGF0ZW1lbnQuIE5vdGUgdGhhdCB0aGUgTFJTIGRvZXMgbm90IG5lZWQgdG8gaGF2ZSBhbnkgcHJpb3IgaW5mb3JtYXRpb24gYWJvdXQgdGhlIEFjdG9yIChsZWFybmVyKSwgdGhlIHZlcmIsIG9yIHRoZSBBY3Rpdml0eS9vYmplY3QuIn0sImRlc2NyaXB0aW9uIjp7ImVuX0dCIjoiQSBzaW1wbGUgRXhwZXJpZW5jZSBBUEkgc3RhdGVtZW50LiBOb3RlIHRoYXQgdGhlIExSUyBkb2VzIG5vdCBuZWVkIHRvIGhhdmUgYW55IHByaW9yIGluZm9ybWF0aW9uIGFib3V0IHRoZSBBY3RvciAobGVhcm5lciksIHRoZSB2ZXJiLCBvciB0aGUgQWN0aXZpdHkvb2JqZWN0LiJ9LCJ0eXBlIjoiaHR0cDovL2FkbG5ldC5nb3YvZXhwYXBpL2FjdGl2aXRpZXMvbWVldGluZyIsIm1vcmVJbmZvIjoiaHR0cDovL3ZpcnR1YWxtZWV0aW5nLmV4YW1wbGUuY29tLzM0NTI1NiIsImV4dGVuc2lvbnMiOnsiaHR0cDovL25hbWUiOiJLaWxieSJ9fX19."));
+    assertThat(statement.getAttachments().get(0).getData(), startsWith(
+        "eyJhbGciOiJSUzUxMiJ9.eyJhY3RvciI6eyJuYW1lIjoiQSBOIE90aGVyIn0sInJlc3VsdCI6eyJzdWNjZXNzIjp0cnVlLCJjb21wbGV0aW9uIjp0cnVlLCJyZXNwb25zZSI6IlJlc3BvbnNlIiwiZHVyYXRpb24iOiJQMUQifSwidmVyYiI6eyJpZCI6Imh0dHA6Ly9leGFtcGxlLmNvbS94YXBpL3ZlcmJzI3NlbnQtYS1zdGF0ZW1lbnQiLCJkaXNwbGF5Ijp7ImVuLVVTIjoiYXR0ZW5kZWQifX0sImNvbnRleHQiOnsicmVnaXN0cmF0aW9uIjoiZWM1MzEyNzctYjU3Yi00YzE1LThkOTEtZDI5MmM1YjJiOGY3IiwiaW5zdHJ1Y3RvciI6eyJvYmplY3RUeXBlIjoiQWdlbnQiLCJuYW1lIjoiQSBOIE90aGVyIiwiYWNjb3VudCI6eyJob21lUGFnZSI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJuYW1lIjoiMTM5MzY3NDkifX0sInRlYW0iOnsib2JqZWN0VHlwZSI6Ikdyb3VwIiwibmFtZSI6IlRlYW0iLCJtYm94IjoibWFpbHRvOnRlYW1AZXhhbXBsZS5jb20ifSwicGxhdGZvcm0iOiJFeGFtcGxlIHZpcnR1YWwgbWVldGluZyBzb2Z0d2FyZSIsImxhbmd1YWdlIjoiZW4iLCJzdGF0ZW1lbnQiOnsib2JqZWN0VHlwZSI6IlN0YXRlbWVudFJlZiIsImlkIjoiNjY5MGU2YzktM2VmMC00ZWQzLThiMzctN2YzOTY0NzMwYmVlIn19LCJvYmplY3QiOnsiaWQiOiJodHRwOi8vd3d3LmV4YW1wbGUuY29tL21lZXRpbmdzL29jY3VyYW5jZXMvMzQ1MzQiLCJkZWZpbml0aW9uIjp7Im5hbWUiOnsiZW4tR0IiOiJBIHNpbXBsZSBFeHBlcmllbmNlIEFQSSBzdGF0ZW1lbnQuIE5vdGUgdGhhdCB0aGUgTFJTIGRvZXMgbm90IG5lZWQgdG8gaGF2ZSBhbnkgcHJpb3IgaW5mb3JtYXRpb24gYWJvdXQgdGhlIEFjdG9yIChsZWFybmVyKSwgdGhlIHZlcmIsIG9yIHRoZSBBY3Rpdml0eS9vYmplY3QuIn0sImRlc2NyaXB0aW9uIjp7ImVuLUdCIjoiQSBzaW1wbGUgRXhwZXJpZW5jZSBBUEkgc3RhdGVtZW50LiBOb3RlIHRoYXQgdGhlIExSUyBkb2VzIG5vdCBuZWVkIHRvIGhhdmUgYW55IHByaW9yIGluZm9ybWF0aW9uIGFib3V0IHRoZSBBY3RvciAobGVhcm5lciksIHRoZSB2ZXJiLCBvciB0aGUgQWN0aXZpdHkvb2JqZWN0LiJ9LCJ0eXBlIjoiaHR0cDovL2FkbG5ldC5nb3YvZXhwYXBpL2FjdGl2aXRpZXMvbWVldGluZyIsIm1vcmVJbmZvIjoiaHR0cDovL3ZpcnR1YWxtZWV0aW5nLmV4YW1wbGUuY29tLzM0NTI1NiIsImV4dGVuc2lvbnMiOnsiaHR0cDovL25hbWUiOiJLaWxieSJ9fX19."));
 
   }
-  
-  @Test
-  void whenSigningStatementThenSignatureIsValid() throws NoSuchAlgorithmException, JsonMappingException, JsonProcessingException {
 
-    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+  @Test
+  void whenSigningStatementThenSignatureIsValid()
+      throws NoSuchAlgorithmException, JsonMappingException, JsonProcessingException {
+
+    final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    
+    final var keyPair = keyPairGenerator.generateKeyPair();
+
     // When Signing Statement
-    final LinkedHashMap<URI, Object> extensions = new LinkedHashMap<>();
+    final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://name"), "Kilby");
 
-    final Account account = Account.builder()
+    final var account = Account.builder()
 
         .homePage(URI.create("https://example.com"))
 
@@ -955,7 +957,7 @@ class StatementTests {
         .build();
 
 
-    final Statement statement = Statement.builder()
+    final var statement = Statement.builder()
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
@@ -1005,12 +1007,13 @@ class StatementTests {
         .version("1.0.0")
 
         .sign(keyPair.getPrivate());
-    
+
     // Then Signature is Valid
-    var body = Jwts.parserBuilder().setSigningKey(keyPair.getPublic()).build()
+    final var body = Jwts.parserBuilder().setSigningKey(keyPair.getPublic()).build()
         .parseClaimsJws(statement.getAttachments().get(0).getData()).getBody();
 
-    var bodyStatement = objectMapper.readValue(objectMapper.writeValueAsString(body), Statement.class);
+    final var bodyStatement =
+        objectMapper.readValue(objectMapper.writeValueAsString(body), Statement.class);
 
     assertThat(bodyStatement, is(statement));
 
