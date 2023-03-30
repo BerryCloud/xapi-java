@@ -5,9 +5,14 @@
 package dev.learning.xapi.samples.poststatement;
 
 import dev.learning.xapi.client.XapiClient;
+import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.Verb;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +23,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 
 /**
- * Sample using xAPI client to post a statement with attachments.
+ * Sample using xAPI client to get a statement with attachments.
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
 @SpringBootApplication
-public class PostStatementWithAttachmentApplication implements CommandLineRunner {
+public class GettStatementWithAttachmentApplication implements CommandLineRunner {
 
   /**
    * Default xAPI client. Properties are picked automatically from application.properties.
@@ -33,15 +38,36 @@ public class PostStatementWithAttachmentApplication implements CommandLineRunner
   private XapiClient client;
 
   public static void main(String[] args) {
-    SpringApplication.run(PostStatementWithAttachmentApplication.class, args).close();
+    SpringApplication.run(GettStatementWithAttachmentApplication.class, args).close();
   }
 
   @Override
   public void run(String... args) throws Exception {
     
+    // Post a test statement with attachments
+    var id = postStatement();
+    
+    // Get Statement
+    ResponseEntity<Statement> response = client.getStatement(r -> r.id(id).attachments(true)).block();
+
+    // If the attachment parameter is set to true in a getStatement (or a getStatements) request
+    // then the server will send the response in a multipart/mixed format (even if the 
+    // Statement doesn't have attachments.) The xApi client automatically converts these responses
+    // back to the regular Statement / StatementResponse format and populate the returned 
+    // statement's or statements' attachments' content from the additional parts from the response.
+    
+    // Print the returned statement's attachments to the console
+    System.out.println(new String(response.getBody().getAttachments().get(0).getContent()));
+    
+    System.out.println(Arrays.toString(response.getBody().getAttachments().get(1).getContent()));
+
+  }
+  
+  private UUID postStatement() throws FileNotFoundException, IOException {
+
     // Load jpg attachment from class-path
     var data = Files.readAllBytes(ResourceUtils.getFile("classpath:example.jpg").toPath());
-
+    
     // Post a statement
     ResponseEntity<
         UUID> response =
@@ -68,11 +94,7 @@ public class PostStatementWithAttachmentApplication implements CommandLineRunner
                         
                     )).block();
 
-    // If any attachment with actual data was added to any statement in a request, then it is sent
-    // as a multipart/mixed request automatically instead of the standard application/json format
-    
-    // Print the statementId of the newly created statement to the console
-    System.out.println("StatementId " + response.getBody());
+    return response.getBody();
   }
 
 }

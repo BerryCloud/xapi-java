@@ -7,7 +7,7 @@
     <version>1.1.2-SNAPSHOT</version>
   </parent>
   <artifactId>get-statement-with-attachment</artifactId>
-  <name>Post xAPI Statement With Attachment Sample</name>
+  <name>Get xAPI Statement With Attachment Sample</name>
   <description>Get xAPI Statement With Attachment</description>
   <dependencies>
     <dependency>
