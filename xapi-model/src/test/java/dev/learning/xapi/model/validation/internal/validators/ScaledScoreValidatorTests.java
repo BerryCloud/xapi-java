@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author István Rátkai (Selindek)
  */
-@DisplayName("ScaledSoreValidator tests")
+@DisplayName("ScaledScoreValidator tests")
 class ScaledScoreValidatorTests {
 
   private static final ScaledScoreValidator validator = new ScaledScoreValidator();
