@@ -12,6 +12,11 @@ import java.util.MissingResourceException;
 
 /**
  * The Locale being validated must have a ISO3 Language and Country.
+ * <p>
+ * There is no way to reliably test a locale that was instantiated with
+ * {@link Locale.forLanguageTag}. {@link Locale.forLanguageTag} treats most invalid locales as
+ * undetermined (und).
+ * </p>
  *
  * @author István Rátkai (Selindek)
  * @author Thomas Turrell-Croft
@@ -36,10 +41,7 @@ public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale>
       final var blar = Locale.forLanguageTag(locale.toString());
 
       try {
-        blar.getISO3Language();
-        blar.getISO3Country();
-
-        return true;
+        return !blar.getISO3Language().equals("");
       } catch (final MissingResourceException e2) {
 
         return false;
