@@ -12,7 +12,7 @@ import jakarta.validation.ConstraintValidatorContext;
 /**
  * The raw score must be greater or equal to min and less or equal to max.
  *
- * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
 public class ScoreValidator implements ConstraintValidator<VaildScore, Score> {
 
