@@ -28,7 +28,7 @@ import org.springframework.util.ResourceUtils;
  * @author István Rátkai (Selindek)
  */
 @SpringBootApplication
-public class GettStatementWithAttachmentApplication implements CommandLineRunner {
+public class GetStatementWithAttachmentApplication implements CommandLineRunner {
 
   /**
    * Default xAPI client. Properties are picked automatically from application.properties.
@@ -37,7 +37,7 @@ public class GettStatementWithAttachmentApplication implements CommandLineRunner
   private XapiClient client;
 
   public static void main(String[] args) {
-    SpringApplication.run(GettStatementWithAttachmentApplication.class, args).close();
+    SpringApplication.run(GetStatementWithAttachmentApplication.class, args).close();
   }
 
   @Override
