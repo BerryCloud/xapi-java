@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import dev.learning.xapi.model.validation.constraints.ValidLocale;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,13 @@ public class ActivityDefinition {
   /**
    * The human readable/visual name of the Activity.
    */
+  @ValidLocale
   private LanguageMap name;
 
   /**
    * A description of the Activity.
    */
+  @ValidLocale
   private LanguageMap description;
 
   /**
@@ -92,7 +95,8 @@ public class ActivityDefinition {
    */
   private Map<@HasScheme URI, Object> extensions;
 
-  // **Warning** do not add fields that are not required by the xAPI specification.
+  // **Warning** do not add fields that are not required by the xAPI
+  // specification.
 
   /**
    * Builder for ActivityDefinition.
