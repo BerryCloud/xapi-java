@@ -11,3 +11,4 @@ dev.learning.xapi.model.validation.internal.validators.StatementPlatformValidato
 dev.learning.xapi.model.validation.internal.validators.StatementVerbValidator
 dev.learning.xapi.model.validation.internal.validators.StatementsValidator
 dev.learning.xapi.model.validation.internal.validators.LanguageMapValidator
+dev.learning.xapi.model.validation.internal.validators.ScoreValidator
