@@ -4,8 +4,7 @@
 
 package dev.learning.xapi.model.validation.internal.validators;
 
-import dev.learning.xapi.model.LanguageMap;
-import dev.learning.xapi.model.validation.constraints.ValidLanguageMap;
+import dev.learning.xapi.model.validation.constraints.ValidLocale;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Locale;
@@ -17,20 +16,14 @@ import java.util.MissingResourceException;
  * @author István Rátkai (Selindek)
  * @author Thomas Turrell-Croft
  */
-public class LanguageMapValidator implements ConstraintValidator<ValidLanguageMap, LanguageMap> {
+public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale> {
 
   @Override
-  public boolean isValid(LanguageMap value, ConstraintValidatorContext context) {
+  public boolean isValid(Locale locale, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (locale == null) {
       return true;
     }
-
-    return value.keySet().stream().allMatch(this::valid);
-
-  }
-
-  private boolean valid(Locale locale) {
 
     try {
       locale.getISO3Language();

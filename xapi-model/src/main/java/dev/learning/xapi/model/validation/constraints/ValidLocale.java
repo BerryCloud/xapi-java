@@ -19,7 +19,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * All of the keys in the annotated LanguageMap must have a ISO3 Language and Country.
+ * The annotated Locale must have a ISO3 Language and Country.
  *
  * @author István Rátkai (Selindek)
  */
@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-public @interface ValidLanguageMap {
+public @interface ValidLocale {
 
   /**
    * Error Message.

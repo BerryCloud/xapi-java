@@ -10,4 +10,4 @@ dev.learning.xapi.model.validation.internal.validators.StatementRevisionValidato
 dev.learning.xapi.model.validation.internal.validators.StatementPlatformValidator
 dev.learning.xapi.model.validation.internal.validators.StatementVerbValidator
 dev.learning.xapi.model.validation.internal.validators.StatementsValidator
-dev.learning.xapi.model.validation.internal.validators.LanguageMapValidator
+dev.learning.xapi.model.validation.internal.validators.LocaleValidator

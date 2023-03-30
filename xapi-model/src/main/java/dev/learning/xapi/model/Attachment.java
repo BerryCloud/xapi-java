@@ -7,8 +7,9 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import dev.learning.xapi.model.validation.constraints.ValidLanguageMap;
+import dev.learning.xapi.model.validation.constraints.ValidLocale;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.valueextraction.Unwrapping;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -41,14 +42,14 @@ public class Attachment {
   /**
    * Display name of this Attachment.
    */
-  @NotNull
-  @ValidLanguageMap
+  @NotNull(payload = Unwrapping.Skip.class)
+  @ValidLocale
   private LanguageMap display;
 
   /**
    * A description of the Attachment.
    */
-  @ValidLanguageMap
+  @ValidLocale
   private LanguageMap description;
 
   /**
