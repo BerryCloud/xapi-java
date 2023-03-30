@@ -5,13 +5,18 @@
 package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -26,6 +31,8 @@ import org.springframework.util.ResourceUtils;
 class ActivityTests {
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+
+  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void whenDeserializingActivityThenResultIsInstanceOfActivity() throws Exception {
@@ -138,11 +145,30 @@ class ActivityTests {
   void whenActivityIsBuiltWithStringIdThenIdIsExpected() {
 
     // When Activity Is Built With String Id
-    final var activity =
-        Activity.builder().id("http://www.example.co.uk/exampleactivity").build();
+    final var activity = Activity.builder().id("http://www.example.co.uk/exampleactivity").build();
 
     // Then Id Is Expected
     assertThat(activity.getId(), is(URI.create("http://www.example.co.uk/exampleactivity")));
+
+  }
+
+  @Test
+  void whenValidatingActivityWithInvalidDisplayThenConstraintViolationsSizeIsOne()
+      throws Exception {
+
+    // This test uses Jackson to read the JSON because we need to test that Jackson does not use
+    // Locale.forLanguageTag. Currently forLanguageTag is very permissive and will treat most
+    // invalid strings as und.
+    final var json =
+        "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";
+
+    final var activity = objectMapper.readValue(json, Activity.class);
+
+    // When Validating Activity With Invalid Display
+    final Set<ConstraintViolation<Activity>> constraintViolations = validator.validate(activity);
+
+    // Then ConstraintViolations Size Is One
+    assertThat(constraintViolations, hasSize(1));
 
   }
 
