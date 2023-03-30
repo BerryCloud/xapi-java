@@ -100,6 +100,7 @@ public class Statement implements CoreStatement {
   /**
    * Agent or Group who is asserting this Statement is true.
    */
+  @Valid
   @ValidActor
   @ValidAuthority
   private Actor authority;
@@ -113,6 +114,7 @@ public class Statement implements CoreStatement {
   /**
    * Headers for Attachments to the Statement.
    */
+  @Valid
   @JsonFormat(without = {JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY})
   private List<Attachment> attachments;
 
@@ -349,7 +351,7 @@ public class Statement implements CoreStatement {
      */
     public Builder addAttachment(Consumer<Attachment.Builder> attachment) {
 
-      final Attachment.Builder builder = Attachment.builder();
+      final var builder = Attachment.builder();
 
       attachment.accept(builder);
 

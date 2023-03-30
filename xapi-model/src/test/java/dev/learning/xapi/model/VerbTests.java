@@ -319,7 +319,7 @@ class VerbTests {
     final var verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/answered")
         .addDisplay(Locale.US, "answered").build();
 
-    // When Validating Interaction Component With All Required Properties
+    // When Validating Verb with All Required Properties
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);
 
     // Then ConstraintViolations Size Is Zero
@@ -332,7 +332,21 @@ class VerbTests {
 
     final var verb = Verb.builder().addDisplay(Locale.US, "answered").build();
 
-    // When Validating Interaction Component Without Id
+    // When Validating Verb Component Without Id
+    final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);
+
+    // Then ConstraintViolations Size Is One
+    assertThat(constraintViolations, hasSize(1));
+
+  }
+
+  @Test
+  void whenValidatingVerbWithInvalidDisplayIdThenConstraintViolationsSizeIsOne() {
+
+    final var verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/asked")
+        .addDisplay(new Locale("unknown"), "answered").build();
+
+    // When Validating Verb With invalid Display
     final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);
 
     // Then ConstraintViolations Size Is One
