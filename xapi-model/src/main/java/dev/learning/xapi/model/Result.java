@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import dev.learning.xapi.model.validation.constraints.VaildScore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import java.net.URI;
@@ -32,6 +33,7 @@ public class Result {
    * The score of the Agent in relation to the success or quality of the experience.
    */
   @Valid
+  @VaildScore
   private Score score;
 
   /**
