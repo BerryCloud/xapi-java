@@ -7,6 +7,8 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import dev.learning.xapi.jackson.TimestampDeserializer;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidAuthority;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
@@ -90,11 +92,13 @@ public class Statement implements CoreStatement {
   /**
    * Timestamp of when the events described within this Statement occurred.
    */
+  @JsonDeserialize(using = TimestampDeserializer.class)
   private Instant timestamp;
 
   /**
    * Timestamp of when this Statement was recorded.
    */
+  @JsonDeserialize(using = TimestampDeserializer.class)
   private Instant stored;
 
   /**
