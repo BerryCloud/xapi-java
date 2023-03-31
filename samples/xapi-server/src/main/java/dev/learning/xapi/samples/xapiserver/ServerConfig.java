@@ -24,14 +24,21 @@ public class ServerConfig {
   public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
 
-      objectMapper.coercionConfigFor(LogicalType.Boolean).setCoercion(CoercionInputShape.String,
-          CoercionAction.Fail);
+      objectMapper.coercionConfigFor(LogicalType.Boolean)
+          .setCoercion(CoercionInputShape.String, CoercionAction.Fail)
+          .setCoercion(CoercionInputShape.EmptyObject, CoercionAction.Fail);
 
-      objectMapper.coercionConfigFor(LogicalType.Textual).setCoercion(CoercionInputShape.Integer,
-          CoercionAction.Fail);
+      objectMapper.coercionConfigFor(LogicalType.Textual)
+          .setCoercion(CoercionInputShape.Integer, CoercionAction.Fail)
+          .setCoercion(CoercionInputShape.EmptyObject, CoercionAction.Fail);
 
-      objectMapper.coercionConfigFor(LogicalType.Float).setCoercion(CoercionInputShape.String,
-          CoercionAction.Fail);
+      objectMapper.coercionConfigFor(LogicalType.Float)
+          .setCoercion(CoercionInputShape.String, CoercionAction.Fail)
+          .setCoercion(CoercionInputShape.EmptyObject, CoercionAction.Fail);
+
+      objectMapper.coercionConfigFor(LogicalType.Integer)
+          .setCoercion(CoercionInputShape.String, CoercionAction.Fail)
+          .setCoercion(CoercionInputShape.EmptyObject, CoercionAction.Fail);
 
     });
 
