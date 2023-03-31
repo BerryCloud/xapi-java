@@ -164,7 +164,7 @@ public class Statement implements CoreStatement {
 
           .addDisplay(Locale.ENGLISH, "JSW signature")
 
-          .data(token)
+          .content(token)
         
           .length(token.length())
 
