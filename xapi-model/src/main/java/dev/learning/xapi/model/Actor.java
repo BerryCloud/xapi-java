@@ -30,16 +30,18 @@ import lombok.experimental.SuperBuilder;
  */
 @Getter
 @SuperBuilder
-@ToString
+@ToString(exclude = "objectType")
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "name")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", defaultImpl = Agent.class,
-    include = As.PROPERTY)
+    include = As.PROPERTY, visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value = Agent.class, name = "Agent"),
     @JsonSubTypes.Type(value = Agent.class, name = "Person"),
     @JsonSubTypes.Type(value = Group.class, name = "Group")})
 @JsonInclude(Include.NON_EMPTY)
 public abstract class Actor implements StatementObject, SubStatementObject {
+
+  ObjectType objectType;
 
   /**
    * Full name.
@@ -75,6 +77,11 @@ public abstract class Actor implements StatementObject, SubStatementObject {
    * Builder for Actor.
    */
   public abstract static class Builder<C extends Actor, B extends Builder<C, B>> {
+
+    // used by only jackson
+    protected void objectType(ObjectType objectType) {
+      this.objectType = objectType;
+    }
 
     /**
      * Consumer Builder for account.

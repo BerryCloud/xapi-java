@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -677,6 +679,18 @@ class StatementTests {
 
     // Then Attachments Has Two Entries
     assertThat(statement.getAttachments(), hasSize(2));
+
+  }
+
+  @Test
+  void whenDeserializingStatementWithInvalidActorObjectTypeThenResultIsExpected()
+      throws IOException {
+
+    Assertions.assertThrows(InvalidFormatException.class, () -> {
+      final var s = objectMapper.readValue(
+          "{\"actor\":{\"objectType\":\"group\",\"name\":\"xAPI mbox\",\"mbox\":\"mailto:xapi@adlnet.gov\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attended\",\"display\":{\"en-GB\":\"attended\",\"en-US\":\"attended\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"http://www.example.com/meetings/occurances/34534\"}}",
+          Statement.class);
+    });
 
   }
 

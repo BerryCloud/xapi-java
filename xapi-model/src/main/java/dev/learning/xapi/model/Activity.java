@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.Value;
 
 /**
@@ -25,9 +26,12 @@ import lombok.Value;
  */
 @Value
 @Builder
+@ToString(exclude = "objectType")
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
+
+  private ObjectType objectType;
 
   /**
    * An identifier for a single unique Activity.
@@ -50,7 +54,7 @@ public class Activity implements StatementObject, SubStatementObject {
    * @param id The identifier of the Activity.
    */
   public Activity(String id) {
-
+    this.objectType = ObjectType.ACTIVITY;
     this.id = URI.create(id);
     this.definition = null;
   }
@@ -61,6 +65,11 @@ public class Activity implements StatementObject, SubStatementObject {
   public static class Builder {
 
     // This static class extends the lombok builder.
+
+    // used by only jackson
+    protected void objectType(ObjectType objectType) {
+      this.objectType = objectType;
+    }
 
     /**
      * Sets the identifier.
