@@ -34,9 +34,9 @@ class LocaleValidatorTests {
   }
 
   @Test
-  void whenCallingIsValidOnLocaleWithUKKeyThenResultIsTrue() {
+  void whenCallingIsValidOnUKLocaleThenResultIsTrue() {
 
-    // When Calling Is Valid On Locale With UK Key
+    // When Calling Is Valid On UK Locale
     final var result = validator.isValid(Locale.UK, null);
 
     // Then Result Is True
@@ -44,9 +44,9 @@ class LocaleValidatorTests {
   }
 
   @Test
-  void whenCallingIsValidOnLocaleWithENKeyThenResultIsTrue() {
+  void whenCallingIsValidOnENLocaleThenResultIsTrue() {
 
-    // When Calling Is Valid On Locale With EN Key
+    // When Calling Is Valid On EN Locale
     final var result = validator.isValid(Locale.ENGLISH, null);
 
     // Then Result Is True
@@ -54,30 +54,10 @@ class LocaleValidatorTests {
   }
 
   @Test
-  void whenCallingIsValidOnLocaleWithENAndUKKeysThenResultIsTrue() {
+  void whenCallingIsValidOnUSLocaleThenResultIsTrue() {
 
-    // When Calling Is Valid On Locale With EN And UK Keys
-    final var result = validator.isValid(Locale.UK, null);
-
-    // Then Result Is True
-    assertTrue(result);
-  }
-
-  @Test
-  void whenCallingIsValidOnLocaleWithENAndUnknownKeysThenResultIsFalse() {
-
-    // When Calling Is Valid On Locale With EN And Unknown Keys
-    final var result = validator.isValid(Locale.forLanguageTag("unknown"), null);
-
-    // Then Result Is False
-    assertFalse(result);
-  }
-
-  @Test
-  void whenCallingIsValidOnLocaleWithChineseSimplifiedKeyUsingForLangugeTagThenResultIsTrue() {
-
-    // When Calling Is Valid On Locale With Chinese Simplified Key
-    final var result = validator.isValid(Locale.forLanguageTag("zh-CHS"), null);
+    // When Calling Is Valid On US Locale
+    final var result = validator.isValid(Locale.US, null);
 
     // Then Result Is True
     assertTrue(result);
@@ -85,20 +65,43 @@ class LocaleValidatorTests {
 
   @ParameterizedTest
   @ValueSource(strings = {"und", "zh-CHS", "zh-CN", "zh-Hans", "zh-Hant", "zh-HK"})
-  void whenCallingIsValidOnLocaleWithValidKeyThenResultIsTrue(String arg) {
+  void whenCallingIsValidOnLocaleWithValidLanguageTagThenResultIsTrue(String arg) {
 
-    // When Calling Is Valid On Locale With Valid Key
+    // When Calling Is Valid On Locale With Valid Language Tag
+    final var result = validator.isValid(Locale.forLanguageTag(arg), null);
+
+    // Then Result Is True
+    assertTrue(result);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"unknown"})
+  void whenCallingIsValidOnLocaleWithInvalidLanguageTagThenResultIsFalse(String arg) {
+
+    // When Calling Is Valid On Locale With Invalid Language Tag
+    final var result = validator.isValid(Locale.forLanguageTag(arg), null);
+
+    // Then Result Is False
+    assertFalse(result);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"und", "zh-CHS", "zh-CN", "zh-Hans", "zh-Hant", "zh-HK"})
+  void whenCallingIsValidOnLocaleWithValidLanguageThenResultIsTrue(String arg) {
+
+    // when Calling Is Valid On Locale With Valid Language
     final var result = validator.isValid(new Locale(arg), null);
 
     // Then Result Is True
     assertTrue(result);
   }
 
-  @Test
-  void whenCallingIsValidOnLocaleWithUnknownKeyThenResultIsFalse() {
+  @ParameterizedTest
+  @ValueSource(strings = {"unknown", "a12345678", "123456789", "12345678", "1234567"})
+  void whenCallingIsValidOnLocaleWithInvalidLanguageThenResultIsFalse(String arg) {
 
-    // When Calling Is Valid On Locale With Unknown Key
-    final var result = validator.isValid(new Locale("unknown"), null);
+    // When Calling Is Valid On Locale With Invalid Language
+    final var result = validator.isValid(new Locale(arg), null);
 
     // Then Result Is False
     assertFalse(result);
