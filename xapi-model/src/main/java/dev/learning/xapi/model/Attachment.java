@@ -16,7 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import lombok.Builder;
-import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
@@ -30,7 +30,7 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-@ToString(exclude = "data")
+@EqualsAndHashCode(of = "sha2")
 public class Attachment {
 
   /**
@@ -86,15 +86,6 @@ public class Attachment {
   private byte[] content;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
-
-  /**
-   * The data of the attachment.
-   * <p>
-   * This is the actual String representation of the attachment as it appears in the http message.
-   * </p>
-   */
-  @JsonIgnore
-  private String data;
 
   /**
    * Builder for Attachment.
@@ -229,7 +220,6 @@ public class Attachment {
       }
 
     }
-
   }
 
 }

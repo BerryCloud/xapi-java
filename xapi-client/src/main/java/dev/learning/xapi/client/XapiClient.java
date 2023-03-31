@@ -115,15 +115,15 @@ public class XapiClient {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
-    final var requestSpec = this.webClient
+    return this.webClient
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build(queryParams));
+        .uri(u -> request.url(u, queryParams).build(queryParams))
 
-    MultipartHelper.addBody(requestSpec, request.getStatement());
+        .bodyValue(request.getStatement())
 
-    return requestSpec.retrieve()
+        .retrieve()
 
         .toEntity(LIST_UUID_TYPE)
 
@@ -162,15 +162,15 @@ public class XapiClient {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
-    final var requestSpec = this.webClient
+    return this.webClient
 
         .method(request.getMethod())
 
-        .uri(u -> request.url(u, queryParams).build(queryParams));
+        .uri(u -> request.url(u, queryParams).build(queryParams))
 
-    MultipartHelper.addBody(requestSpec, request.getStatements());
+        .bodyValue(request.getStatements())
 
-    return requestSpec.retrieve()
+        .retrieve()
 
         .toEntity(LIST_UUID_TYPE);
 
