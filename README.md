@@ -61,6 +61,16 @@ var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdcc
 Statement statement = response.getBody();
 ```
 
+### Getting a Statement with attachments
+
+Example:
+
+```java
+var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true).block();
+    
+Statement statement = response.getBody();
+```
+
 ### Getting Statements
 
 Example:
