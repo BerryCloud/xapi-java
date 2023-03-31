@@ -32,7 +32,6 @@ public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale>
 
     try {
       locale.getISO3Language();
-      locale.getISO3Country();
 
       return true;
     } catch (final MissingResourceException e1) {
