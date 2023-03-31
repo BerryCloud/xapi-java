@@ -24,28 +24,29 @@ import java.util.MissingResourceException;
 public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale> {
 
   @Override
-  public boolean isValid(Locale locale, ConstraintValidatorContext context) {
+  public boolean isValid(Locale originalLocale, ConstraintValidatorContext context) {
 
-    if (locale == null) {
+    if (originalLocale == null) {
       return true;
     }
 
+    var localeString = originalLocale.toString().replace("_", "-");
+
+    // The only language-code I've found which is actually an alias
+    if (localeString.equalsIgnoreCase("zh-CHS")) {
+      localeString = "chs";
+    }
+
+    var locale = Locale.forLanguageTag(localeString);
     try {
+      // test validity of language and country codes (throws exception)
       locale.getISO3Language();
-
-      return true;
-    } catch (final MissingResourceException e1) {
-
-      // Handle locale instantiated with Locale#Locale(String)
-      final var blar = Locale.forLanguageTag(locale.toString());
-
-      try {
-        return !blar.getISO3Language().equals("");
-      } catch (final MissingResourceException e2) {
-
-        return false;
-      }
+      locale.getISO3Country();
+    } catch (final MissingResourceException e) {
+      locale = null;
     }
+    // test the validity of the whole key
+    return locale != null && locale.toLanguageTag().equalsIgnoreCase(localeString);
   }
 
 }

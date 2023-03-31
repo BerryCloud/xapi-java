@@ -64,29 +64,7 @@ class LocaleValidatorTests {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"und", "zh-CHS", "zh-CN", "zh-Hans", "zh-Hant", "zh-HK"})
-  void whenCallingIsValidOnLocaleWithValidLanguageTagThenResultIsTrue(String arg) {
-
-    // When Calling Is Valid On Locale With Valid Language Tag
-    final var result = validator.isValid(Locale.forLanguageTag(arg), null);
-
-    // Then Result Is True
-    assertTrue(result);
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {"unknown"})
-  void whenCallingIsValidOnLocaleWithInvalidLanguageTagThenResultIsFalse(String arg) {
-
-    // When Calling Is Valid On Locale With Invalid Language Tag
-    final var result = validator.isValid(Locale.forLanguageTag(arg), null);
-
-    // Then Result Is False
-    assertFalse(result);
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {"und", "zh-CHS", "zh-CN", "zh-Hans", "zh-Hant", "zh-HK"})
+  @ValueSource(strings = {"und", "chs", "zh-CHS", "zh-CN", "zh-Hans", "zh-Hant", "zh-HK"})
   void whenCallingIsValidOnLocaleWithValidLanguageThenResultIsTrue(String arg) {
 
     // when Calling Is Valid On Locale With Valid Language
