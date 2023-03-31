@@ -72,7 +72,7 @@ public class StatementService {
 
     // add custom logic here...
 
-    final var statements = StreamSupport.stream(repository.findAll().spliterator(), false)
+    final var statements = StreamSupport.stream(repository.findAll().spliterator(), false).limit(10)
         .map(e -> convertToStatement(e)).toList();
 
     return StatementResult.builder().statements(statements).more(URI.create("")).build();
