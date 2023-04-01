@@ -14,8 +14,8 @@ import java.util.MissingResourceException;
  * The Locale being validated must have a ISO3 Language and Country.
  * <p>
  * There is no way to reliably test a locale that was instantiated with
- * {@link Locale.forLanguageTag}. {@link Locale.forLanguageTag} treats most invalid locales as
- * undetermined (und).
+ * {@link Locale#forLanguageTag(String)} because it treats most invalid locales as undetermined
+ * (und).
  * </p>
  *
  * @author István Rátkai (Selindek)
