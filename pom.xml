@@ -80,7 +80,7 @@
     <module>xapi-model</module>
     <module>xapi-client</module>
     <module>samples</module>
-    <module>xapi-jackson-modules</module>
+    <module>xapi-jackson</module>
   </modules>
   <build>
     <pluginManagement>

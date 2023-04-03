@@ -1,8 +1,8 @@
 /*
- * Copyright 2016-2019 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
-package dev.learning.jackson.datatype;
+package dev.learning.xapi.jackson.deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
