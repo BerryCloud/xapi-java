@@ -30,7 +30,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * {@link HttpMessageWriter} for writing a {@link Statement} or {@link StatementList}.
+ * {@link HttpMessageWriter} for writing a {@link Statement} or list of Statements.
  * <p>
  * If any of the provided statements contains an {@link Attachment} with real data, then this writer
  * creates a multipart/mixed output otherwise it writes the data as application/json.
