@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.is;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import dev.learning.xapi.jackson.XapiStrictTimestampModule;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -720,7 +721,7 @@ class StatementTests {
       throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
-      objectMapper.readValue("""
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
           {
             "timestamp":"2015-11-18T12:17:00-00:00",
             "actor": {

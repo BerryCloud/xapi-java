@@ -28,6 +28,10 @@
       <artifactId>xapi-model</artifactId>
     </dependency>
     <dependency>
+      <groupId>dev.learning.xapi</groupId>
+      <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>

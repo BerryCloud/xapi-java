@@ -11,7 +11,6 @@ import dev.learning.xapi.jackson.LocaleSerializer;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.NotUndetermined;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
-import dev.learning.xapi.model.validation.constraints.ValidLocale;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -77,7 +76,6 @@ public class Context {
    */
   @NotUndetermined
   @JsonSerialize(using = LocaleSerializer.class)
-  @ValidLocale
   private Locale language;
 
   /**

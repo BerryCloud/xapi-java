@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2019 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
 package dev.learning.xapi.jackson;
@@ -15,15 +15,22 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
-public class TimestampDeserializer extends StdDeserializer<Instant> {
+/**
+ * <p>
+ * Strict Timestamp deserializer.
+ * </p>
+ *
+ * @author István Rátkai (Selindek)
+ */
+public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
 
   private static final long serialVersionUID = -2025907823340425934L;
 
-  public TimestampDeserializer() {
+  public StrictTimestampDeserializer() {
     this(null);
   }
 
-  protected TimestampDeserializer(Class<?> vc) {
+  protected StrictTimestampDeserializer(Class<?> vc) {
     super(vc);
   }
 
