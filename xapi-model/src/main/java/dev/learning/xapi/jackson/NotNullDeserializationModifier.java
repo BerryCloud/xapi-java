@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2019 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
 package dev.learning.xapi.jackson;
@@ -57,17 +57,26 @@ public class NotNullDeserializationModifier extends BeanDeserializerModifier {
       return defaultDeserializer.deserialize(p, ctxt);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
       throw ctxt.instantiationException(defaultDeserializer.handledType(),
           "null literal is not allowed");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T getAbsentValue(DeserializationContext ctxt) throws JsonMappingException {
       return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
       if (defaultDeserializer instanceof ResolvableDeserializer) {

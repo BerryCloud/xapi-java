@@ -16,9 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 /**
- * <p>
  * Strict Timestamp deserializer.
- * </p>
  *
  * @author István Rátkai (Selindek)
  */
@@ -35,9 +33,7 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
   }
 
   /**
-   * {@inheritDoc} Converts text to {@link java.time.Instant} using {@link Timestamp}.
-   *
-   * @return {@link java.time.Instant} of text input
+   * {@inheritDoc}
    */
   @Override
   public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {

@@ -685,7 +685,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithInvalidActorObjectTypeThenResultIsExpected()
+  void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown()
       throws IOException {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
@@ -717,7 +717,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNegativeTimestampOffsetThenResultIsExpected()
+  void whenDeserializingStatementWithNegativeTimestampOffsetThenExceptionIsThrown()
       throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {

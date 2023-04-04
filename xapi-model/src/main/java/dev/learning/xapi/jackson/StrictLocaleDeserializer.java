@@ -16,9 +16,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 
 /**
- * <p>
  * Strict Locale deserializer.
- * </p>
  *
  * @author István Rátkai (Selindek)
  */
@@ -30,6 +28,9 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
     super(String.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Locale deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
       throws IOException {
@@ -70,6 +71,9 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
    */
   public static class StrictLocaleKeyDeserializer extends KeyDeserializer {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object deserializeKey(String key, DeserializationContext deserializationContext)
         throws IOException {

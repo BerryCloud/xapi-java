@@ -21,7 +21,7 @@ public class XapiStrictTimestampModule extends SimpleModule {
    * ObjectMapper.
    */
   public XapiStrictTimestampModule() {
-    super("Xapi Strict Timestamp Module");
+    super("xApi Strict Timestamp Module");
 
     addDeserializer(Instant.class, new StrictTimestampDeserializer());
 

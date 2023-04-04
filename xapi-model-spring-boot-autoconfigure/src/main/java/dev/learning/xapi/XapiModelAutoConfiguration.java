@@ -41,7 +41,8 @@ public class XapiModelAutoConfiguration {
    * StrictLocaleCustomizer.
    */
   @Bean
-  @ConditionalOnProperty("xApi.model.strictLocale")
+  @ConditionalOnProperty(name = "xApi.model.strictLocale", havingValue = "true",
+      matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictLocaleCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
       objectMapper.registerModule(new XapiStrictLocaleModule());
@@ -52,7 +53,8 @@ public class XapiModelAutoConfiguration {
    * StrictTimestampCustomizer.
    */
   @Bean
-  @ConditionalOnProperty("xApi.model.strictTimestamp")
+  @ConditionalOnProperty(name = "xApi.model.strictTimestamp", havingValue = "true",
+      matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictTimestampCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
       objectMapper.registerModule(new XapiStrictTimestampModule());
@@ -63,7 +65,8 @@ public class XapiModelAutoConfiguration {
    * StrictNullValuesCustomizer.
    */
   @Bean
-  @ConditionalOnProperty("xApi.model.strictNullValues")
+  @ConditionalOnProperty(name = "xApi.model.strictNullValues", havingValue = "true",
+      matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictNullValuesCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
       objectMapper.registerModule(new XapiStrictNullValuesModule());
@@ -74,7 +77,8 @@ public class XapiModelAutoConfiguration {
    * SstrictPropertiesCustomizer.
    */
   @Bean
-  @ConditionalOnProperty("xApi.model.strictProperties")
+  @ConditionalOnProperty(name = "xApi.model.strictProperties", havingValue = "true",
+      matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictPropertiesCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -85,7 +89,8 @@ public class XapiModelAutoConfiguration {
    * StrictJsonCustomizer.
    */
   @Bean
-  @ConditionalOnProperty("xApi.model.strictJson")
+  @ConditionalOnProperty(name = "xApi.model.strictJson", havingValue = "true",
+      matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictJsonCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
       objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true);
@@ -96,7 +101,8 @@ public class XapiModelAutoConfiguration {
    * StrictLiteralsCustomizer.
    */
   @Bean
-  @ConditionalOnProperty("xApi.model.strictLiterals")
+  @ConditionalOnProperty(name = "xApi.model.strictLiterals", havingValue = "true",
+      matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictLiteralsCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
 

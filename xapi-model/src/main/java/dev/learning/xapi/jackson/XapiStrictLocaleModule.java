@@ -22,7 +22,7 @@ public class XapiStrictLocaleModule extends SimpleModule {
    * ObjectMapper.
    */
   public XapiStrictLocaleModule() {
-    super("Xapi Strict Locale Module");
+    super("xApi Strict Locale Module");
 
     addDeserializer(Locale.class, new StrictLocaleDeserializer());
     addKeyDeserializer(Locale.class, new StrictLocaleKeyDeserializer());

@@ -90,13 +90,11 @@ public class Statement implements CoreStatement {
   /**
    * Timestamp of when the events described within this Statement occurred.
    */
-  // @JsonDeserialize(using = TimestampDeserializer.class)
   private Instant timestamp;
 
   /**
    * Timestamp of when this Statement was recorded.
    */
-  // @JsonDeserialize(using = TimestampDeserializer.class)
   private Instant stored;
 
   /**
