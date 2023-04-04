@@ -11,6 +11,7 @@ import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -888,6 +889,38 @@ class StatementTests {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
           {
             "timestamp":"2015-11-18T12:17:00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
+  @Test
+  void whenDeserializingStatementNullTimestampThenExceptionIsThrown() throws IOException {
+
+    Assertions.assertThrows(ValueInstantiationException.class, () -> {
+      objectMapper.registerModule(new XapiStrictNullValuesModule()).readValue("""
+          {
+            "timestamp":null,
             "actor": {
               "objectType": "Agent",
               "name": "A N Other",
