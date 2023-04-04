@@ -32,9 +32,9 @@ public class XapiModelAutoConfiguration {
    */
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer singleValueArrayCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
-      objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-    });
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+    );
   }
 
   /**
@@ -44,9 +44,9 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xApi.model.strictLocale", havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictLocaleCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
-      objectMapper.registerModule(new XapiStrictLocaleModule());
-    });
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.registerModule(new XapiStrictLocaleModule())
+    );
   }
 
   /**
@@ -56,9 +56,9 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xApi.model.strictTimestamp", havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictTimestampCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
-      objectMapper.registerModule(new XapiStrictTimestampModule());
-    });
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.registerModule(new XapiStrictTimestampModule())
+    );
   }
 
   /**
@@ -68,9 +68,9 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xApi.model.strictNullValues", havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictNullValuesCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
-      objectMapper.registerModule(new XapiStrictNullValuesModule());
-    });
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.registerModule(new XapiStrictNullValuesModule())
+    );
   }
   
   /**
@@ -80,9 +80,9 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xApi.model.strictProperties", havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictPropertiesCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
-      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-    });
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
+    );
   }
 
   /**
@@ -92,9 +92,9 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xApi.model.strictJson", havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer strictJsonCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
-      objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true);
-    });
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true)
+    );
   }
   
   /**

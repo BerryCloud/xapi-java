@@ -79,8 +79,8 @@ public class NotNullDeserializationModifier extends BeanDeserializerModifier {
      */
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-      if (defaultDeserializer instanceof ResolvableDeserializer) {
-        ((ResolvableDeserializer) defaultDeserializer).resolve(ctxt);
+      if (defaultDeserializer instanceof final ResolvableDeserializer resolvableDeserializer) {
+        resolvableDeserializer.resolve(ctxt);
       }
     }
 
