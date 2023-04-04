@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.Value;
 
 /**
@@ -28,13 +27,10 @@ import lombok.Value;
  */
 @Value
 @Builder
-@ToString(exclude = "objectType")
 @ValidStatementPlatform
 @ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject, CoreStatement {
-
-  private ObjectType objectType;
 
   /**
    * {@inheritDoc}
@@ -93,11 +89,6 @@ public class SubStatement implements StatementObject, CoreStatement {
   public static class Builder {
 
     // This static class extends the lombok builder.
-
-    // used by only jackson
-    protected void objectType(ObjectType objectType) {
-      this.objectType = objectType;
-    }
 
     /**
      * Consumer Builder for agent.
@@ -180,7 +171,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      */
     public Builder addAttachment(Consumer<Attachment.Builder> attachment) {
 
-      final var builder = Attachment.builder();
+      final Attachment.Builder builder = Attachment.builder();
 
       attachment.accept(builder);
 

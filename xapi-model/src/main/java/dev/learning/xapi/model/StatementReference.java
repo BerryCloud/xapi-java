@@ -8,7 +8,6 @@ import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.ToString;
 import lombok.Value;
 
 /**
@@ -22,10 +21,7 @@ import lombok.Value;
  */
 @Value
 @Builder
-@ToString(exclude = "objectType")
 public class StatementReference implements StatementObject, SubStatementObject {
-
-  private ObjectType objectType;
 
   /**
    * The UUID of a Statement.
@@ -44,10 +40,6 @@ public class StatementReference implements StatementObject, SubStatementObject {
 
     // This static class extends the lombok builder.
 
-    // used by only jackson
-    protected void objectType(ObjectType objectType) {
-      this.objectType = objectType;
-    }
   }
 
 

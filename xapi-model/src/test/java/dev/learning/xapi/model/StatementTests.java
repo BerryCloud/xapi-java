@@ -10,7 +10,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
 import jakarta.validation.ConstraintViolation;
@@ -681,38 +680,6 @@ class StatementTests {
 
     // Then Attachments Has Two Entries
     assertThat(statement.getAttachments(), hasSize(2));
-
-  }
-
-  @Test
-  void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown()
-      throws IOException {
-
-    Assertions.assertThrows(InvalidFormatException.class, () -> {
-      objectMapper.readValue("""
-          {
-            "actor": {
-              "objectType": "agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""", Statement.class);
-    });
 
   }
 
