@@ -5,6 +5,8 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
+import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
+@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public class Agent extends Actor {
 
   // **Warning** do not add fields that are not required by the xAPI specification.

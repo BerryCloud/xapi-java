@@ -5,6 +5,8 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * This enumeration class represents all valid xAPI object types.
@@ -17,13 +19,13 @@ public enum ObjectType {
    * Activity object type.
    */
   @JsonProperty("Activity")
-  ACTIVITY,
+  ACTIVITY("Activity"),
 
   /**
    * Agent object type.
    */
   @JsonProperty("Agent")
-  AGENT,
+  AGENT("Agent"),
 
   /**
    * Person object type.
@@ -36,25 +38,35 @@ public enum ObjectType {
    *      Statements to 1.0.0</a>
    */
   @JsonProperty("Person")
-  PERSON,
+  PERSON("Person"),
 
   /**
    * Group object type.
    */
   @JsonProperty("Group")
-  GROUP,
+  GROUP("Group"),
 
   /**
    * SubStatement object type.
    */
   @JsonProperty("SubStatement")
-  SUBSTATEMENT,
+  SUBSTATEMENT("SubStatement"),
 
   /**
    * StatementRef object type.
    */
   @JsonProperty("StatementRef")
-  STATEMENTREF;
+  STATEMENTREF("StatementRef");
+
+  private String value;
+
+  ObjectType(String value) {
+    this.value = value;
+  }
+
+  public static Optional<ObjectType> getByValue(String url) {
+    return Arrays.stream(ObjectType.values()).filter(env -> env.value.equals(url)).findFirst();
+  }
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 }

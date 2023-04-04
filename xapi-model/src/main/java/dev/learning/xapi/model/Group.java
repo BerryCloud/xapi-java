@@ -6,6 +6,8 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
+import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public class Group extends Actor {
 
   /**
