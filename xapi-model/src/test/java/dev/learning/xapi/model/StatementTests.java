@@ -716,4 +716,238 @@ class StatementTests {
 
   }
 
+
+
+  @Test
+  void test() throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00+00:00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
+
+
+  @Test
+  void test1() throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00+0000",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+  }
+
+  @Test
+  void test3() throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00+00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+
+  }
+
+
+
+  @Test
+  void test5() throws IOException {
+
+    Assertions.assertThrows(ValueInstantiationException.class, () -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00-00:00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
+
+  @Test
+  void test50() throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
+
+
+  @Test
+  void test6() throws IOException {
+
+    Assertions.assertThrows(ValueInstantiationException.class, () -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00-0000",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+  }
+
+  @Test
+  void test7() throws IOException {
+
+    Assertions.assertThrows(ValueInstantiationException.class, () -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00-00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+
+  }
+
+
 }
