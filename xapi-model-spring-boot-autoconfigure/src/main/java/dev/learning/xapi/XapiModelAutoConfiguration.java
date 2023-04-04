@@ -8,11 +8,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.type.LogicalType;
-
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
-
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -29,13 +27,19 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureBefore(value = JacksonProperties.class)
 public class XapiModelAutoConfiguration {
 
+  /**
+   * SingleValueArrayCustomizer.
+   */
   @Bean
-  public Jackson2ObjectMapperBuilderCustomizer Customizer() {
+  public Jackson2ObjectMapperBuilderCustomizer singleValueArrayCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
       objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     });
   }
 
+  /**
+   * StrictLocaleCustomizer.
+   */
   @Bean
   @ConditionalOnProperty("xApi.model.strictLocale")
   public Jackson2ObjectMapperBuilderCustomizer strictLocaleCustomizer() {
@@ -44,6 +48,9 @@ public class XapiModelAutoConfiguration {
     });
   }
 
+  /**
+   * StrictTimestampCustomizer.
+   */
   @Bean
   @ConditionalOnProperty("xApi.model.strictTimestamp")
   public Jackson2ObjectMapperBuilderCustomizer strictTimestampCustomizer() {
@@ -52,6 +59,9 @@ public class XapiModelAutoConfiguration {
     });
   }
 
+  /**
+   * StrictNullValuesCustomizer.
+   */
   @Bean
   @ConditionalOnProperty("xApi.model.strictNullValues")
   public Jackson2ObjectMapperBuilderCustomizer strictNullValuesCustomizer() {
@@ -59,7 +69,10 @@ public class XapiModelAutoConfiguration {
       objectMapper.registerModule(new XapiStrictNullValuesModule());
     });
   }
-
+  
+  /**
+   * SstrictPropertiesCustomizer.
+   */
   @Bean
   @ConditionalOnProperty("xApi.model.strictProperties")
   public Jackson2ObjectMapperBuilderCustomizer strictPropertiesCustomizer() {
@@ -68,6 +81,9 @@ public class XapiModelAutoConfiguration {
     });
   }
 
+  /**
+   * StrictJsonCustomizer.
+   */
   @Bean
   @ConditionalOnProperty("xApi.model.strictJson")
   public Jackson2ObjectMapperBuilderCustomizer strictJsonCustomizer() {
@@ -75,7 +91,10 @@ public class XapiModelAutoConfiguration {
       objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true);
     });
   }
-
+  
+  /**
+   * StrictLiteralsCustomizer.
+   */
   @Bean
   @ConditionalOnProperty("xApi.model.strictLiterals")
   public Jackson2ObjectMapperBuilderCustomizer strictLiteralsCustomizer() {
