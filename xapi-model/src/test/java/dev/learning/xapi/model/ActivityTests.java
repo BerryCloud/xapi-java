@@ -5,18 +5,16 @@
 package dev.learning.xapi.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
-import java.util.Set;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -31,8 +29,6 @@ import org.springframework.util.ResourceUtils;
 class ActivityTests {
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void whenDeserializingActivityThenResultIsInstanceOfActivity() throws Exception {
@@ -153,22 +149,13 @@ class ActivityTests {
   }
 
   @Test
-  void whenValidatingActivityWithInvalidDisplayThenConstraintViolationsSizeIsOne()
-      throws Exception {
+  void whenDeserializingActivityWithInvalidDisplayThenResultIsExpected() throws Exception {
 
-    // This test uses Jackson to read the JSON because we need to test that Jackson does not use
-    // Locale.forLanguageTag. Currently forLanguageTag is very permissive and will treat most
-    // invalid strings as und.
     final var json =
         "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";
 
-    final var activity = objectMapper.readValue(json, Activity.class);
-
-    // When Validating Activity With Invalid Display
-    final Set<ConstraintViolation<Activity>> constraintViolations = validator.validate(activity);
-
-    // Then ConstraintViolations Size Is One
-    assertThat(constraintViolations, hasSize(1));
+    Assertions.assertThrows(InvalidFormatException.class, () -> objectMapper
+        .registerModule(new XapiStrictLocaleModule()).readValue(json, Activity.class));
 
   }
 

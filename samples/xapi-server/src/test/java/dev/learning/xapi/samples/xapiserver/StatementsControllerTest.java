@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2019 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
 package dev.learning.xapi.samples.xapiserver;
@@ -7,6 +7,7 @@ package dev.learning.xapi.samples.xapiserver;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,7 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
-@WebMvcTest(value = StatementController.class)
+@WebMvcTest(value = {StatementController.class},
+    properties = "spring.jackson.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
 class StatementControllerTest {
 
   @Autowired

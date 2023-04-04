@@ -7,7 +7,6 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import dev.learning.xapi.model.validation.constraints.ValidLocale;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.valueextraction.Unwrapping;
 import java.net.URI;
@@ -44,13 +43,11 @@ public class Attachment {
    * Display name of this Attachment.
    */
   @NotNull(payload = Unwrapping.Skip.class)
-  @ValidLocale
   private LanguageMap display;
 
   /**
    * A description of the Attachment.
    */
-  @ValidLocale
   private LanguageMap description;
 
   /**
