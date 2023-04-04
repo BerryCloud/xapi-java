@@ -26,7 +26,7 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
         </dependency>
     </dependencies>
 </project>
@@ -57,6 +57,16 @@ Example:
 
 ```java
 var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6")).block();
+    
+Statement statement = response.getBody();
+```
+
+### Getting a Statement with attachments
+
+Example:
+
+```java
+var response = client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true).block();
     
 Statement statement = response.getBody();
 ```
@@ -245,7 +255,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
         </dependency>
     </dependencies>
 </project>

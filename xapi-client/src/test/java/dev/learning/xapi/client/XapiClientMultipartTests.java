@@ -5,12 +5,14 @@ package dev.learning.xapi.client;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.Statement;
+import dev.learning.xapi.model.StatementResult;
 import dev.learning.xapi.model.SubStatement;
 import dev.learning.xapi.model.Verb;
 import java.net.URI;
@@ -318,6 +320,85 @@ class XapiClientMultipartTests {
 
   }
 
+  @Test
+  void whenGettingStatementWithAttachmentThenResponseIsExpected() throws InterruptedException {
 
+    // single statement with two attachments
+    final var body =
+        """
+            ---------314159265358979323846
+            Content-Type:application/json
+
+            {"id":"183aabbe-ef9e-49c9-82a3-16ce5135b25b","actor":{"name":"A N Other","mbox":"mailto:another@example.com","objectType":"Agent"},"verb":{"id":"http://adlnet.gov/expapi/verbs/attempted","display":{"und":"attempted"}},"object":{"objectType":"Activity","id":"https://example.com/activity/simplestatement","definition":{"name":{"en":"Simple Statement"}}},"timestamp":"2023-03-29T12:42:27.923571Z","stored":"2023-03-29T12:42:27.923571Z","authority":{"account":{"homePage":"http://localhost","name":"admin"},"objectType":"Agent"},"attachments":[{"usageType":"http://adlnet.gov/expapi/attachments/code","display":{"en":"binary attachment"},"contentType":"application/octet-stream","length":6,"sha2":"0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef"},{"usageType":"http://adlnet.gov/expapi/attachments/text","display":{"en":"text attachment"},"contentType":"text/plain","length":17,"sha2":"b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5"}]}
+            ---------314159265358979323846
+            Content-Type:application/octet-stream
+            Content-Transfer-Encoding:binary
+            X-Experience-API-Hash:0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef
+
+            @ABCDE
+            ---------314159265358979323846
+            Content-Type:text/plain
+            Content-Transfer-Encoding:binary
+            X-Experience-API-Hash:b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5
+
+            Simple attachment
+            ---------314159265358979323846--"""
+            .replace("\n", "\r\n");
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(body)
+
+        .addHeader("Content-Type", "multipart/mixed; boundary=-------314159265358979323846"));
+
+    // When Getting Statement With Attachment
+    final var response = client
+        .getStatement(r -> r.id("183aabbe-ef9e-49c9-82a3-16ce5135b25b").attachments(true)).block();
+
+    // Then Response Is Expected
+    assertThat(response.getBody(), instanceOf(Statement.class));
+    assertThat(response.getBody().toString(), is(
+        "Statement(id=183aabbe-ef9e-49c9-82a3-16ce5135b25b, actor=Agent(super=Actor(name=A N Other, mbox=mailto:another@example.com, mboxSha1sum=null, openid=null, account=null)), verb=Verb(id=http://adlnet.gov/expapi/verbs/attempted, display={und=attempted}), object=Activity(id=https://example.com/activity/simplestatement, definition=ActivityDefinition(name={en=Simple Statement}, description=null, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null)), result=null, context=null, timestamp=2023-03-29T12:42:27.923571Z, stored=2023-03-29T12:42:27.923571Z, authority=Agent(super=Actor(name=null, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://localhost, name=admin))), version=null, attachments=[Attachment(usageType=http://adlnet.gov/expapi/attachments/code, display={en=binary attachment}, description=null, contentType=application/octet-stream, length=6, sha2=0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef, fileUrl=null, content=[64, 65, 66, 67, 68, 69]), Attachment(usageType=http://adlnet.gov/expapi/attachments/text, display={en=text attachment}, description=null, contentType=text/plain, length=17, sha2=b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5, fileUrl=null, content=[83, 105, 109, 112, 108, 101, 32, 97, 116, 116, 97, 99, 104, 109, 101, 110, 116])])"));
+  }
+
+  @Test
+  void whenGettingStatementsWithAttachmentsThenResponseIsExpected() throws InterruptedException {
+
+    // two statements with overlapping attachments
+    final var body =
+        """
+            ---------314159265358979323846
+            Content-Type:application/json
+
+            {"statements":[{"id":"183aabbe-ef9e-49c9-82a3-16ce5135b25b","actor":{"name":"A N Other","mbox":"mailto:another@example.com","objectType":"Agent"},"verb":{"id":"http://adlnet.gov/expapi/verbs/attempted","display":{"und":"attempted"}},"object":{"objectType":"Activity","id":"https://example.com/activity/simplestatement","definition":{"name":{"en":"Simple Statement"}}},"timestamp":"2023-03-29T12:42:27.923571Z","stored":"2023-03-29T12:42:27.923571Z","authority":{"account":{"homePage":"http://localhost","name":"admin"},"objectType":"Agent"},"attachments":[{"usageType":"http://adlnet.gov/expapi/attachments/code","display":{"en":"binary attachment"},"contentType":"application/octet-stream","length":6,"sha2":"0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef"},{"usageType":"http://adlnet.gov/expapi/attachments/text","display":{"en":"text attachment"},"contentType":"text/plain","length":17,"sha2":"b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5"}]},{"id":"bbd3babf-61bf-4038-81fe-8342a4cea9bf","actor":{"name":"A N Other","mbox":"mailto:another@example.com","objectType":"Agent"},"verb":{"id":"http://adlnet.gov/expapi/verbs/attempted","display":{"und":"attempted"}},"object":{"objectType":"Activity","id":"https://example.com/activity/simplestatement","definition":{"name":{"en":"Simple Statement"}}},"timestamp":"2023-03-29T12:42:27.923571Z","stored":"2023-03-29T12:42:27.923571Z","authority":{"account":{"homePage":"http://localhost","name":"admin"},"objectType":"Agent"},"attachments":[{"usageType":"http://adlnet.gov/expapi/attachments/code","display":{"en":"binary attachment"},"contentType":"application/octet-stream","length":6,"sha2":"0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef"}]}]}
+            ---------314159265358979323846
+            Content-Type:application/octet-stream
+            Content-Transfer-Encoding:binary
+            X-Experience-API-Hash:0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef
+
+            @ABCDE
+            ---------314159265358979323846
+            Content-Type:text/plain
+            Content-Transfer-Encoding:binary
+            X-Experience-API-Hash:b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5
+
+            Simple attachment
+            ---------314159265358979323846--"""
+            .replace("\n", "\r\n");
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+
+        .setBody(body)
+
+        .addHeader("Content-Type", "multipart/mixed; boundary=-------314159265358979323846"));
+
+    // When Getting Statements With Attachment
+    final var response = client.getStatements(r -> r.attachments(true)).block();
+
+    // Then Response Is Expected
+    assertThat(response.getBody(), instanceOf(StatementResult.class));
+    assertThat(response.getBody().toString(), is(
+        "StatementResult(statements=[Statement(id=183aabbe-ef9e-49c9-82a3-16ce5135b25b, actor=Agent(super=Actor(name=A N Other, mbox=mailto:another@example.com, mboxSha1sum=null, openid=null, account=null)), verb=Verb(id=http://adlnet.gov/expapi/verbs/attempted, display={und=attempted}), object=Activity(id=https://example.com/activity/simplestatement, definition=ActivityDefinition(name={en=Simple Statement}, description=null, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null)), result=null, context=null, timestamp=2023-03-29T12:42:27.923571Z, stored=2023-03-29T12:42:27.923571Z, authority=Agent(super=Actor(name=null, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://localhost, name=admin))), version=null, attachments=[Attachment(usageType=http://adlnet.gov/expapi/attachments/code, display={en=binary attachment}, description=null, contentType=application/octet-stream, length=6, sha2=0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef, fileUrl=null, content=[64, 65, 66, 67, 68, 69]), Attachment(usageType=http://adlnet.gov/expapi/attachments/text, display={en=text attachment}, description=null, contentType=text/plain, length=17, sha2=b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5, fileUrl=null, content=[83, 105, 109, 112, 108, 101, 32, 97, 116, 116, 97, 99, 104, 109, 101, 110, 116])]), Statement(id=bbd3babf-61bf-4038-81fe-8342a4cea9bf, actor=Agent(super=Actor(name=A N Other, mbox=mailto:another@example.com, mboxSha1sum=null, openid=null, account=null)), verb=Verb(id=http://adlnet.gov/expapi/verbs/attempted, display={und=attempted}), object=Activity(id=https://example.com/activity/simplestatement, definition=ActivityDefinition(name={en=Simple Statement}, description=null, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null)), result=null, context=null, timestamp=2023-03-29T12:42:27.923571Z, stored=2023-03-29T12:42:27.923571Z, authority=Agent(super=Actor(name=null, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://localhost, name=admin))), version=null, attachments=[Attachment(usageType=http://adlnet.gov/expapi/attachments/code, display={en=binary attachment}, description=null, contentType=application/octet-stream, length=6, sha2=0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef, fileUrl=null, content=[64, 65, 66, 67, 68, 69])])], more=null)"));
+
+  }
 
 }
