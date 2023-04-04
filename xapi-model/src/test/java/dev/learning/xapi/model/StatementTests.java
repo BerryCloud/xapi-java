@@ -204,7 +204,6 @@ class StatementTests {
 
   }
 
-
   @Test
   void whenSerializingStatementWithAgentWithAccountThenResultIsEqualToExpectedJson()
       throws IOException {
@@ -684,42 +683,8 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNegativeTimestampOffsetThenExceptionIsThrown()
+  void whenDeserializingStatementWithPositiveZeroHoursAndMinutesTimestampOffsetThenNoExceptionIsThrown()
       throws IOException {
-
-    Assertions.assertThrows(ValueInstantiationException.class, () -> {
-      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
-          {
-            "timestamp":"2015-11-18T12:17:00-00:00",
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""", Statement.class);
-    });
-
-  }
-
-
-
-  @Test
-  void test() throws IOException {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -750,10 +715,9 @@ class StatementTests {
 
   }
 
-
-
   @Test
-  void test1() throws IOException {
+  void whenDeserializingStatementWithPositiveFourZerosTimestampOffsetThenNoExceptionIsThrown()
+      throws IOException {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -784,7 +748,8 @@ class StatementTests {
   }
 
   @Test
-  void test3() throws IOException {
+  void whenDeserializingStatementWithPositiveTwoZerosTimestampOffsetThenNoExceptionIsThrown()
+      throws IOException {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -816,10 +781,9 @@ class StatementTests {
 
   }
 
-
-
   @Test
-  void test5() throws IOException {
+  void whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown()
+      throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -850,43 +814,9 @@ class StatementTests {
 
   }
 
-
   @Test
-  void test50() throws IOException {
-
-    Assertions.assertDoesNotThrow(() -> {
-      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
-          {
-            "timestamp":"2015-11-18T12:17:00",
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""", Statement.class);
-    });
-
-  }
-
-
-
-  @Test
-  void test6() throws IOException {
+  void whenDeserializingStatementWithNegativeFourZerosTimestampOffsetThenExceptionIsThrown()
+      throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -917,7 +847,8 @@ class StatementTests {
   }
 
   @Test
-  void test7() throws IOException {
+  void whenDeserializingStatementWithNegativeTwoZerosTimestampOffsetThenExceptionIsThrown()
+      throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -949,5 +880,37 @@ class StatementTests {
 
   }
 
+  @Test
+  void whenDeserializingStatementWithoutTimestampOffsetThenNoExceptionIsThrown()
+      throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+      objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+          {
+            "timestamp":"2015-11-18T12:17:00",
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
 
 }
