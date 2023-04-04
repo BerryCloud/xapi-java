@@ -9,7 +9,7 @@ import dev.learning.xapi.jackson.StrictLocaleDeserializer.StrictLocaleKeyDeseria
 import java.util.Locale;
 
 /**
- * XAPI Json Module for registering custom deserializer {@link Locale} objects.
+ * xAPI JSON module for registering custom deserializer {@link Locale} objects.
  *
  * @author István Rátkai (Selindek)
  */

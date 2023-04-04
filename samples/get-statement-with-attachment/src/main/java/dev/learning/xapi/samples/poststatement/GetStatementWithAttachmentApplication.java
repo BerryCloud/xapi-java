@@ -52,7 +52,7 @@ public class GetStatementWithAttachmentApplication implements CommandLineRunner 
 
     // If the attachment parameter is set to true in a getStatement (or a getStatements) request
     // then the server will send the response in a multipart/mixed format (even if the 
-    // Statement doesn't have attachments.) The xApi client automatically converts these responses
+    // Statement doesn't have attachments.) The xAPI client automatically converts these responses
     // back to the regular Statement / StatementResponse format and populate the returned 
     // statement's or statements' attachments' content from the additional parts from the response.
     
