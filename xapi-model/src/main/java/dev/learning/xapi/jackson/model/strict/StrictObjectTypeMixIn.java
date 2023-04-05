@@ -13,5 +13,5 @@ import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
  * @author Thomas Turrell-Croft
  */
 @JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
-public abstract class StrictObjectTypeMixIn {
+public interface StrictObjectTypeMixIn {
 }
