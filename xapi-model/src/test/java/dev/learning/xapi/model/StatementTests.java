@@ -788,82 +788,6 @@ class StatementTests {
 
   @Test
   void whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown()
-  void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
-      throws IOException {
-
-    final var statement = objectMapper
-
-        .registerModule(new XapiStrictTimestampModule())
-
-        .registerModule(new XapiStrictNullValuesModule())
-
-        .registerModule(new XapiStrictLocaleModule())
-
-        .readValue("""
-            {
-              "timestamp": "2015-11-18T12:17:00+00",
-              "context": {
-                "language": "en-US"
-              },
-              "actor": {
-                "objectType": "Agent",
-                "name": "A N Other",
-                "mbox": "mailto:another@example.com"
-              },
-              "verb": {
-                "id": "http://adlnet.gov/expapi/verbs/attempted",
-                "display": {
-                  "und": "attempted"
-                }
-              },
-              "object": {
-                "objectType": "Activity",
-                "id": "https://example.com/activity/simplestatement",
-                "definition": {
-                  "name": {
-                    "en": "Simple Statement"
-                  }
-                }
-              }
-            }""", Statement.class);
-
-    assertThat(statement, notNullValue());
-  }
-
-  @Test
-  void whenDeserializingStatementWithTimestampWithoutOffsetThenResultisExpected()
-      throws IOException {
-
-    final var statement = objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
-        {
-          "timestamp": "2015-11-18T12:17:00",
-          "actor": {
-            "objectType": "Agent",
-            "name": "A N Other",
-            "mbox": "mailto:another@example.com"
-          },
-          "verb": {
-            "id": "http://adlnet.gov/expapi/verbs/attempted",
-            "display": {
-              "und": "attempted"
-            }
-          },
-          "object": {
-            "objectType": "Activity",
-            "id": "https://example.com/activity/simplestatement",
-            "definition": {
-              "name": {
-                "en": "Simple Statement"
-              }
-            }
-          }
-        }""", Statement.class);
-
-    assertThat(statement.getTimestamp().toString(), is("2015-11-18T12:17:00Z"));
-  }
-
-  @Test
-  void whenDeserializingStatementWithNegativeTimestampOffsetThenExceptionIsThrown()
       throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
@@ -969,6 +893,33 @@ class StatementTests {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
           {
             "timestamp":"2015-11-18T12:17:00",
+                "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
+
+
   void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() throws IOException {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
@@ -1004,6 +955,36 @@ class StatementTests {
 
   @Test
   void whenDeserializingStatementNullTimestampThenExceptionIsThrown() throws IOException {
+
+    Assertions.assertThrows(ValueInstantiationException.class, () -> {
+      objectMapper.registerModule(new XapiStrictNullValuesModule()).readValue("""
+          {
+            "timestamp":null,
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
   void whenDeserializingStatementWithInvalidLocaleStringThenExceptionIsThrown() throws IOException {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
@@ -1077,7 +1058,6 @@ class StatementTests {
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictNullValuesModule()).readValue("""
           {
-            "timestamp":null,
             "context": null,
             "actor": {
               "objectType": "Agent",
@@ -1115,4 +1095,81 @@ class StatementTests {
     });
 
   }
+
+
+
+  void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
+      throws IOException {
+
+    final var statement = objectMapper
+
+        .registerModule(new XapiStrictTimestampModule())
+
+        .registerModule(new XapiStrictNullValuesModule())
+
+        .registerModule(new XapiStrictLocaleModule())
+
+        .readValue("""
+            {
+              "timestamp": "2015-11-18T12:17:00+00",
+              "context": {
+                "language": "en-US"
+              },
+              "actor": {
+                "objectType": "Agent",
+                "name": "A N Other",
+                "mbox": "mailto:another@example.com"
+              },
+              "verb": {
+                "id": "http://adlnet.gov/expapi/verbs/attempted",
+                "display": {
+                  "und": "attempted"
+                }
+              },
+              "object": {
+                "objectType": "Activity",
+                "id": "https://example.com/activity/simplestatement",
+                "definition": {
+                  "name": {
+                    "en": "Simple Statement"
+                  }
+                }
+              }
+            }""", Statement.class);
+
+    assertThat(statement, notNullValue());
+  }
+
+  @Test
+  void whenDeserializingStatementWithTimestampWithoutOffsetThenResultisExpected()
+      throws IOException {
+
+    final var statement = objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
+        {
+          "timestamp": "2015-11-18T12:17:00",
+          "actor": {
+            "objectType": "Agent",
+            "name": "A N Other",
+            "mbox": "mailto:another@example.com"
+          },
+          "verb": {
+            "id": "http://adlnet.gov/expapi/verbs/attempted",
+            "display": {
+              "und": "attempted"
+            }
+          },
+          "object": {
+            "objectType": "Activity",
+            "id": "https://example.com/activity/simplestatement",
+            "definition": {
+              "name": {
+                "en": "Simple Statement"
+              }
+            }
+          }
+        }""", Statement.class);
+
+    assertThat(statement.getTimestamp().toString(), is("2015-11-18T12:17:00Z"));
+  }
+
 }
