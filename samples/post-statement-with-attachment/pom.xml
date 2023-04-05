@@ -4,7 +4,7 @@
   <parent>
     <groupId>dev.learning.xapi.samples</groupId>
     <artifactId>xapi-samples-build</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4-SNAPSHOT</version>
   </parent>
   <artifactId>post-statement-with-attachment</artifactId>
   <name>Post xAPI Statement With Attachment Sample</name>
