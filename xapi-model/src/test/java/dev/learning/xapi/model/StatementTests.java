@@ -918,41 +918,6 @@ class StatementTests {
 
   }
 
-
-
-  void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() throws IOException {
-
-    Assertions.assertThrows(InvalidFormatException.class, () -> {
-      objectMapper.registerModule(new XapiStrictLocaleModule()).readValue("""
-          {
-            "context":{
-              "language": "a-b-c"
-            },
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""", Statement.class);
-    });
-
-  }
-
   @Test
   void whenDeserializingStatementNullTimestampThenExceptionIsThrown() throws IOException {
 
@@ -1171,5 +1136,39 @@ class StatementTests {
 
     assertThat(statement.getTimestamp().toString(), is("2015-11-18T12:17:00Z"));
   }
+
+  void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() throws IOException {
+
+    Assertions.assertThrows(InvalidFormatException.class, () -> {
+      objectMapper.registerModule(new XapiStrictLocaleModule()).readValue("""
+          {
+            "context":{
+              "language": "a-b-c"
+            },
+            "actor": {
+              "objectType": "Agent",
+              "name": "A N Other",
+              "mbox": "mailto:another@example.com"
+            },
+            "verb": {
+              "id": "http://adlnet.gov/expapi/verbs/attempted",
+              "display": {
+                "und": "attempted"
+              }
+            },
+            "object": {
+              "objectType": "Activity",
+              "id": "https://example.com/activity/simplestatement",
+              "definition": {
+                "name": {
+                  "en": "Simple Statement"
+                }
+              }
+            }
+          }""", Statement.class);
+    });
+
+  }
+
 
 }
