@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
+import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.model.validation.constraints.ValidActivityDefinition;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +29,7 @@ import lombok.Value;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "definition")
+@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public class Activity implements StatementObject, SubStatementObject {
 
   /**
