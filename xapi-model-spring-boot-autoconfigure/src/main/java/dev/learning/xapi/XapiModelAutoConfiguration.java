@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.type.LogicalType;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
+import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,6 +38,18 @@ public class XapiModelAutoConfiguration {
     );
   }
 
+  /**
+   * StrictObjectTypeCustomizer.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xApi.model.strictObjectType", havingValue = "true",
+      matchIfMissing = true)
+  public Jackson2ObjectMapperBuilderCustomizer strictObjectTypeCustomizer() {
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.registerModule(new XapiStrictObjectTypeModule())
+    );
+  }
+  
   /**
    * StrictLocaleCustomizer.
    */

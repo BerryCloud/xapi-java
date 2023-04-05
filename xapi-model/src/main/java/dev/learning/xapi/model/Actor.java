@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -41,7 +39,6 @@ import lombok.experimental.SuperBuilder;
     @JsonSubTypes.Type(value = Agent.class, name = "Person"),
     @JsonSubTypes.Type(value = Group.class, name = "Group")})
 @JsonInclude(Include.NON_EMPTY)
-@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public abstract class Actor implements StatementObject, SubStatementObject {
 
   /**

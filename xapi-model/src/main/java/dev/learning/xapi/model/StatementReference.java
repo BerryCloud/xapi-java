@@ -4,8 +4,6 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
@@ -23,7 +21,6 @@ import lombok.Value;
  */
 @Value
 @Builder
-@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public class StatementReference implements StatementObject, SubStatementObject {
 
   /**

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
@@ -68,7 +69,7 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
       // This is the actual custom logic.
       if (ObjectType.getByValue(typeId).isEmpty()) {
-        throw ctxt.instantiationException(null, "Invalid objectType: " + typeId);
+        throw new InvalidTypeIdException(p, "Invalid objectType", _baseType, typeId);
       }
       // Everything else is just unavoidable duplication of the original code.
 

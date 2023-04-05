@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 
 /**
  * This interface represents the xAPI SubStatement object.
@@ -30,7 +28,6 @@ import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
     @JsonSubTypes.Type(value = Agent.class, name = "Agent"),
     @JsonSubTypes.Type(value = Group.class, name = "Group"),
     @JsonSubTypes.Type(value = StatementReference.class, name = "StatementRef")})
-@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public interface SubStatementObject {
 
   // TODO create custom TypeIdResolver to throw suitable exception when objectType is SubStatement.

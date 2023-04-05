@@ -12,10 +12,12 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
+import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -1054,26 +1056,62 @@ class StatementTests {
   void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown()
       throws IOException {
 
-    Assertions.assertThrows(ValueInstantiationException.class, () -> {
-      objectMapper.readValue("""
-          {
-            "actor":{
-              "objectType":"group",
-              "name":"xAPI mbox",
-              "mbox":"mailto:xapi@adlnet.gov"
-            },
-            "verb":{
-              "id":"http://adlnet.gov/expapi/verbs/attended",
-              "display":{
-                "en-GB":"attended",
-                "en-US":"attended"
-              }
-            },
-            "object":{
-              "objectType":"Activity",
-              "id":"http://www.example.com/meetings/occurances/34534"
-            }
-          }""", Statement.class);
+    Assertions.assertThrows(InvalidTypeIdException.class, () -> {
+      objectMapper
+
+          .registerModule(new XapiStrictObjectTypeModule())
+
+          .readValue("""
+              {
+                "actor":{
+                  "objectType":"group",
+                  "name":"xAPI mbox",
+                  "mbox":"mailto:xapi@adlnet.gov"
+                },
+                "verb":{
+                  "id":"http://adlnet.gov/expapi/verbs/attended",
+                  "display":{
+                    "en-GB":"attended",
+                    "en-US":"attended"
+                  }
+                },
+                "object":{
+                  "objectType":"Activity",
+                  "id":"http://www.example.com/meetings/occurances/34534"
+                }
+              }""", Statement.class);
+    });
+
+  }
+
+  @Test
+  void whenDeserializingStatementWithLowercaseActivityObjectTypeThenExceptionIsThrown()
+      throws IOException {
+
+    Assertions.assertThrows(InvalidTypeIdException.class, () -> {
+      objectMapper
+
+          .registerModule(new XapiStrictObjectTypeModule())
+
+          .readValue("""
+              {
+                "actor":{
+                  "objectType":"Agent",
+                  "name":"xAPI mbox",
+                  "mbox":"mailto:xapi@adlnet.gov"
+                },
+                "verb":{
+                  "id":"http://adlnet.gov/expapi/verbs/attended",
+                  "display":{
+                    "en-GB":"attended",
+                    "en-US":"attended"
+                  }
+                },
+                "object":{
+                  "objectType":"activity",
+                  "id":"http://www.example.com/meetings/occurances/34534"
+                }
+              }""", Statement.class);
     });
 
   }
@@ -1116,6 +1154,8 @@ class StatementTests {
         .registerModule(new XapiStrictNullValuesModule())
 
         .registerModule(new XapiStrictLocaleModule())
+
+        .registerModule(new XapiStrictObjectTypeModule())
 
         .readValue("""
             {
@@ -1227,6 +1267,8 @@ class StatementTests {
           .registerModule(new XapiStrictNullValuesModule())
 
           .registerModule(new XapiStrictLocaleModule())
+
+          .registerModule(new XapiStrictObjectTypeModule())
 
           .readValue("""
                 {
