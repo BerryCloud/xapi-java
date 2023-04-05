@@ -4,8 +4,6 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
 import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
@@ -32,7 +30,6 @@ import lombok.Value;
 @ValidStatementPlatform
 @ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
-@JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public class SubStatement implements StatementObject, CoreStatement {
 
   /**

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.type.LogicalType;
+
+import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
@@ -26,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AutoConfigureBefore(value = JacksonProperties.class)
 public class XapiModelAutoConfiguration {
-
+	
   /**
    * SingleValueArrayCustomizer.
    */
@@ -37,6 +39,19 @@ public class XapiModelAutoConfiguration {
     );
   }
 
+  /**
+   * StrictObjectTypeCustomizer.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xApi.model.strictObjectType", havingValue = "true",
+      matchIfMissing = true)
+  public Jackson2ObjectMapperBuilderCustomizer strictObjectTypeCustomizer() {
+	  
+    return builder -> builder.postConfigurer(objectMapper -> 
+      objectMapper.setDefaultTyping(new StrictObjectTypeResolverBuilder())
+    );
+  }
+  
   /**
    * StrictLocaleCustomizer.
    */
