@@ -1214,4 +1214,34 @@ class StatementTests {
 
   }
 
+  @Test
+  void whenDeserializingMinimalStatementWithAllTheModulesThenNoExceptionIsThrown()
+      throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+
+      objectMapper
+
+          .registerModule(new XapiStrictTimestampModule())
+
+          .registerModule(new XapiStrictNullValuesModule())
+
+          .registerModule(new XapiStrictLocaleModule())
+
+          .readValue("""
+                {
+                "actor":{
+                  "mbox": "mailto:another@example.com"
+                },
+                "verb": {
+                  "id": "http://adlnet.gov/expapi/verbs/attempted"
+                },
+                "object":{
+                  "id": "https://example.com/activity/simplestatement"
+                }
+              }""", Statement.class);
+    });
+
+  }
+
 }
