@@ -1054,14 +1054,28 @@ class StatementTests {
       throws IOException {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
-      objectMapper.readValue(
-          "{\"actor\":{\"objectType\":\"group\",\"name\":\"xAPI mbox\",\"mbox\":\"mailto:xapi@adlnet.gov\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attended\",\"display\":{\"en-GB\":\"attended\",\"en-US\":\"attended\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"http://www.example.com/meetings/occurances/34534\"}}",
-          Statement.class);
+      objectMapper.readValue("""
+          {
+            "actor":{
+              "objectType":"group",
+              "name":"xAPI mbox",
+              "mbox":"mailto:xapi@adlnet.gov"
+            },
+            "verb":{
+              "id":"http://adlnet.gov/expapi/verbs/attended",
+              "display":{
+                "en-GB":"attended",
+                "en-US":"attended"
+              }
+            },
+            "object":{
+              "objectType":"Activity",
+              "id":"http://www.example.com/meetings/occurances/34534"
+            }
+          }""", Statement.class);
     });
 
   }
-
-
 
   void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
       throws IOException {
@@ -1169,6 +1183,5 @@ class StatementTests {
     });
 
   }
-
 
 }
