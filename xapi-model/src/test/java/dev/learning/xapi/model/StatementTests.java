@@ -950,6 +950,7 @@ class StatementTests {
 
   }
 
+  @Test
   void whenDeserializingStatementWithInvalidLocaleStringThenExceptionIsThrown() throws IOException {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
@@ -1104,6 +1105,7 @@ class StatementTests {
 
   }
 
+  @Test
   void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
       throws IOException {
 
@@ -1178,6 +1180,7 @@ class StatementTests {
     assertThat(statement.getTimestamp().toString(), is("2015-11-18T12:17:00Z"));
   }
 
+  @Test
   void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() throws IOException {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
