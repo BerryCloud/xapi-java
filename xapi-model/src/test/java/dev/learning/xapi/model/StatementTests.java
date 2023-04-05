@@ -15,9 +15,9 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
+import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -1059,7 +1059,7 @@ class StatementTests {
     Assertions.assertThrows(InvalidTypeIdException.class, () -> {
       objectMapper
 
-          .setDefaultTyping(new StrictObjectTypeResolverBuilder())
+          .registerModule(new XapiStrictObjectTypeModule())
 
           .readValue("""
               {
@@ -1091,8 +1091,7 @@ class StatementTests {
     Assertions.assertThrows(InvalidTypeIdException.class, () -> {
       objectMapper
 
-
-          .setDefaultTyping(new StrictObjectTypeResolverBuilder())
+          .registerModule(new XapiStrictObjectTypeModule())
 
           .readValue("""
               {
@@ -1156,7 +1155,7 @@ class StatementTests {
 
         .registerModule(new XapiStrictLocaleModule())
 
-        .setDefaultTyping(new StrictObjectTypeResolverBuilder())
+        .registerModule(new XapiStrictObjectTypeModule())
 
         .readValue("""
             {
@@ -1269,7 +1268,7 @@ class StatementTests {
 
           .registerModule(new XapiStrictLocaleModule())
 
-          .setDefaultTyping(new StrictObjectTypeResolverBuilder())
+          .registerModule(new XapiStrictObjectTypeModule())
 
           .readValue("""
                 {
