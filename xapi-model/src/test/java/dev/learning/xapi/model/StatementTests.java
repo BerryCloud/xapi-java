@@ -1077,6 +1077,33 @@ class StatementTests {
 
   }
 
+  @Test
+  void whenDeserializingStatementWithActorWithoutObjectTypeThenNoExceptionIsThrown()
+      throws IOException {
+
+    Assertions.assertDoesNotThrow(() -> {
+      objectMapper.readValue("""
+          {
+            "actor":{
+              "name":"xAPI mbox",
+              "mbox":"mailto:xapi@adlnet.gov"
+            },
+            "verb":{
+              "id":"http://adlnet.gov/expapi/verbs/attended",
+              "display":{
+                "en-GB":"attended",
+                "en-US":"attended"
+              }
+            },
+            "object":{
+              "objectType":"Activity",
+              "id":"http://www.example.com/meetings/occurances/34534"
+            }
+          }""", Statement.class);
+    });
+
+  }
+
   void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
       throws IOException {
 
