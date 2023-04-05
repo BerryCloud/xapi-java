@@ -893,7 +893,7 @@ class StatementTests {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
           {
             "timestamp":"2015-11-18T12:17:00",
-                "actor": {
+            "actor": {
               "objectType": "Agent",
               "name": "A N Other",
               "mbox": "mailto:another@example.com"
