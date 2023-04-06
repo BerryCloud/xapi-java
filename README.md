@@ -8,6 +8,10 @@ Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedi
 
 [CheckStyle](https://checkstyle.sourceforge.io) is used to enforce the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html). Sonar performs automatic pull request reviews. [CodeQL](https://codeql.github.com) scans for vulnerabilities. The number of bugs, code smells and vulnerabilities in the codebase can be viewed in SonarCloud. The code coverage and code duplication percentages can also be viewed in SonarCloud. Over three-hundred unit tests ensure conformance with the xAPI specification.
 
+## Requirements
+
+xAPI Java requires Java 17 or newer.
+
 ## xAPI Java Client
 
 The xAPI Java Client can be used by learning record providers (LRP) to communicate with learning record stores (LRS) or a system which follows the LRS requirements of one or more of the xAPI resources.
@@ -384,7 +388,3 @@ public ResponseEntity<Collection<UUID>> postStatements(
 }
 
 ```
-
-## Requirements
-
-xAPI Java requires Java 17 or newer.
