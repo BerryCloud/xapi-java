@@ -9,7 +9,7 @@
   </parent>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-build</artifactId>
-  <version>1.1.3-SNAPSHOT</version>
+  <version>1.1.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>xAPI Build</name>
   <description>learning.dev xAPI Build</description>
@@ -80,6 +80,7 @@
     <module>xapi-model</module>
     <module>xapi-client</module>
     <module>samples</module>
+    <module>xapi-model-spring-boot-autoconfigure</module>    
     <module>xapi-jackson</module>
   </modules>
   <build>
@@ -261,12 +262,17 @@
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-model</artifactId>
-        <version>1.1.3-SNAPSHOT</version>
+        <version>1.1.4-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>dev.learning.xapi</groupId>
+        <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+        <version>1.1.4-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-client</artifactId>
-        <version>1.1.3-SNAPSHOT</version>
+        <version>1.1.4-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

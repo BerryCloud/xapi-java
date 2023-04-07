@@ -7,16 +7,15 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import dev.learning.xapi.model.validation.constraints.ValidLocale;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.valueextraction.Unwrapping;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.With;
 
@@ -44,13 +43,11 @@ public class Attachment {
    * Display name of this Attachment.
    */
   @NotNull(payload = Unwrapping.Skip.class)
-  @ValidLocale
   private LanguageMap display;
 
   /**
    * A description of the Attachment.
    */
-  @ValidLocale
   private LanguageMap description;
 
   /**
@@ -204,23 +201,19 @@ public class Attachment {
 
     }
 
+    @SneakyThrows
     private static String sha256Hex(byte[] data) {
-      try {
-        final var digest = MessageDigest.getInstance("SHA-256");
-        final var hash = digest.digest(data);
-        final var hexString = new StringBuilder(2 * hash.length);
-        for (final byte element : hash) {
-          final var hex = Integer.toHexString(0xff & element);
-          if (hex.length() == 1) {
-            hexString.append('0');
-          }
-          hexString.append(hex);
+      final var digest = MessageDigest.getInstance("SHA-256");
+      final var hash = digest.digest(data);
+      final var hexString = new StringBuilder(2 * hash.length);
+      for (final byte element : hash) {
+        final var hex = Integer.toHexString(0xff & element);
+        if (hex.length() == 1) {
+          hexString.append('0');
         }
-        return hexString.toString();
-      } catch (final NoSuchAlgorithmException e) {
-        throw new IllegalArgumentException(e);
+        hexString.append(hex);
       }
-
+      return hexString.toString();
     }
   }
 
