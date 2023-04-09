@@ -5,6 +5,7 @@
 package dev.learning.xapi.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import dev.learning.xapi.jackson.deserializers.StrictTimestampDeserializer;
 import java.time.Instant;
 
 /**

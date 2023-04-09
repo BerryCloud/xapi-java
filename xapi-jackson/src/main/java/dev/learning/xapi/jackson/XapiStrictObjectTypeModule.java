@@ -5,7 +5,6 @@
 package dev.learning.xapi.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import dev.learning.xapi.jackson.model.strict.StrictObjectTypeMixIn;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Actor;
 import dev.learning.xapi.model.Agent;

@@ -21,7 +21,7 @@
     </dependency>
     <dependency>
       <groupId>dev.learning.xapi</groupId>
-      <artifactId>xapi-model</artifactId>
+      <artifactId>xapi-jackson</artifactId>
     </dependency>
   </dependencies>
 

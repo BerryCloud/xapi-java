@@ -2,19 +2,26 @@
  * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
-package dev.learning.xapi.model;
+package dev.learning.xapi.jackson;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
+import dev.learning.xapi.model.Activity;
+import dev.learning.xapi.model.ActivityDefinition;
 
 /**
  * Activity Tests.
@@ -142,6 +149,17 @@ class ActivityTests {
 
     // Then Id Is Expected
     assertThat(activity.getId(), is(URI.create("http://www.example.co.uk/exampleactivity")));
+
+  }
+
+  @Test
+  void whenDeserializingActivityWithInvalidDisplayThenResultIsExpected() throws Exception {
+
+    final var json =
+        "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";
+
+    Assertions.assertThrows(InvalidFormatException.class, () -> objectMapper
+        .registerModule(new XapiStrictLocaleModule()).readValue(json, Activity.class));
 
   }
 

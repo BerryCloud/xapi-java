@@ -2,7 +2,7 @@
  * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
-package dev.learning.xapi.jackson;
+package dev.learning.xapi.jackson.deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
