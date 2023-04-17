@@ -1363,7 +1363,7 @@ class StatementTests {
 
         .version("1.0.0")
 
-        .sign(keyPair.getPrivate());
+        .signAndBuild(keyPair.getPrivate());
 
     // Then Signature is Added As Attachment
     assertThat(statement.getAttachments(), hasSize(1));
@@ -1457,7 +1457,7 @@ class StatementTests {
 
         .version("1.0.0")
 
-        .sign(keyPair.getPrivate());
+        .signAndBuild(keyPair.getPrivate());
 
     // Then Signature is Added As Attachment
     assertThat(statement.getAttachments(), hasSize(2));
@@ -1533,7 +1533,7 @@ class StatementTests {
 
         .version("1.0.0")
 
-        .sign(keyPair.getPrivate());
+        .signAndBuild(keyPair.getPrivate());
 
     // Then Signature is Expected
     assertThat(new String(statement.getAttachments().get(0).getContent(), StandardCharsets.UTF_8),
@@ -1612,7 +1612,7 @@ class StatementTests {
 
         .version("1.0.0")
 
-        .sign(keyPair.getPrivate());
+        .signAndBuild(keyPair.getPrivate());
 
     // Then Signature is Valid
     final var body = Jwts.parserBuilder().setSigningKey(keyPair.getPublic()).build()

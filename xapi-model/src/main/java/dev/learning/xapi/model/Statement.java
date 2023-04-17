@@ -146,7 +146,7 @@ public class Statement implements CoreStatement {
      *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#26-signed-statements">
      *      Signed Statements</a>
      */
-    public Statement sign(PrivateKey privateKey) {
+    public Statement signAndBuild(PrivateKey privateKey) {
       Map<String, Object> claims = new HashMap<>();
 
       // Put only the significant properties into the signature payload
