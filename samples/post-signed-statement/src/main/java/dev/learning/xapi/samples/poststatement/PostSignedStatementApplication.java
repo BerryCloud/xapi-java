@@ -6,7 +6,6 @@ package dev.learning.xapi.samples.poststatement;
 
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.model.Verb;
-
 import java.security.KeyPairGenerator;
 import java.util.Locale;
 import java.util.UUID;
@@ -18,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 
 /**
  * Sample using xAPI client to post a statement.
- *
+ * <p>
+ * See <code>pom.xml</code> for extra dependencies.
+ * </p>
+ * 
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
