@@ -5,6 +5,7 @@
 package dev.learning.xapi.client;
 
 import dev.learning.xapi.model.Statement;
+import java.security.PrivateKey;
 import java.util.Map;
 import java.util.function.Consumer;
 import lombok.Builder;
@@ -80,6 +81,25 @@ public class PostStatementRequest implements Request {
       return this;
     }
 
+    /**
+     * Consumer Builder for signed statement.
+     *
+     * @param statement The Consumer Builder for signed-statement
+     *
+     * @paraam privateKey a PrivateKey for signing the Statement
+     *
+     * @return This builder
+     *
+     * @see PostStatementRequest#statement
+     */
+    public Builder signedStatement(Consumer<Statement.Builder> statement, PrivateKey privateKey) {
+
+      final var builder = Statement.builder();
+
+      statement.accept(builder);
+
+      return statement(builder.signAndBuild(privateKey));
+    }
   }
 
 }

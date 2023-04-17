@@ -137,6 +137,23 @@ client.postStatement(
     )).block();
 ```
 
+### Posting a Signed Statement
+
+Example:
+
+```java
+client.postStatement(
+    r -> r.signedStatement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement"))),
+            
+        keyPair.getPrivate()))            
+    .block();
+```
+
 ### Posting Statements
 
 Example:

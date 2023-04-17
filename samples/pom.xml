@@ -37,6 +37,7 @@
     <module>get-statement</module>
     <module>get-statement-with-attachment</module>
     <module>post-statement</module>
+    <module>post-signed-statement</module>
     <module>post-statement-with-attachment</module>
     <module>get-statements</module>
     <module>get-more-statements</module>
