@@ -28,12 +28,12 @@ jobs:
         run: mvn -B verify --file pom.xml
       - name: Scan with Sonar
         run: |
-          if [ $OWNER = "BerryCloud" ]
+          if [ $FORK = false]
           then
             mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berry-cloud -Dsonar.host.url=https://sonarcloud.io --file pom.xml
           fi
         env:
-          OWNER: ${{ github.repository_owner }}
+          FORK: ${{ github.event.pull_request.head.repo.fork }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
