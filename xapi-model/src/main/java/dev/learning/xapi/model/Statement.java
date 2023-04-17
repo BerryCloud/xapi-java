@@ -15,6 +15,7 @@ import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.lang.UnknownClassException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -141,13 +142,15 @@ public class Statement implements CoreStatement {
      * </p>
      *
      * @param privateKey a {@link PrivateKey} for signing the {@link Statement}.
+     *
      * @return an immutable, signed {@link Statement} object.
+     *
      * @see <a href=
      *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#26-signed-statements">
      *      Signed Statements</a>
      */
     public Statement signAndBuild(PrivateKey privateKey) {
-      Map<String, Object> claims = new HashMap<>();
+      final Map<String, Object> claims = new HashMap<>();
 
       // Put only the significant properties into the signature payload
       // https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-comparision-requirements
@@ -157,22 +160,40 @@ public class Statement implements CoreStatement {
       claims.put("result", this.result);
       claims.put("context", this.context);
 
-      String token = Jwts.builder().setClaims(claims).signWith(privateKey, SignatureAlgorithm.RS512)
-          .compact();
+      try {
+        final var token = Jwts.builder().setClaims(claims)
+            .signWith(privateKey, SignatureAlgorithm.RS512).compact();
 
-      addAttachment(a -> a.usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
+        addAttachment(a -> a.usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 
-          .addDisplay(Locale.ENGLISH, "JSW signature")
+            .addDisplay(Locale.ENGLISH, "JSW signature")
 
-          .content(token)
-        
-          .length(token.length())
+            .content(token)
 
-          .contentType("application/octet-stream"));
-      
+            .length(token.length())
+
+            .contentType("application/octet-stream"));
+
+      } catch (final UnknownClassException e) {
+        throw new IllegalStateException("""
+
+            Statement cannot be signed, because an optional dependency was NOT provided.
+            Please add the following dependencies into your project:
+
+            <dependency>
+              <groupId>io.jsonwebtoken</groupId>
+              <artifactId>jjwt-impl</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>io.jsonwebtoken</groupId>
+              <artifactId>jjwt-jackson</artifactId>
+            </dependency>
+            """, e);
+      }
+
       return build();
     }
-    
+
     /**
      * Consumer Builder for agent.
      *
