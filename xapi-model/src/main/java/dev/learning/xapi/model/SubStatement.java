@@ -171,7 +171,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      */
     public Builder addAttachment(Consumer<Attachment.Builder> attachment) {
 
-      final Attachment.Builder builder = Attachment.builder();
+      final var builder = Attachment.builder();
 
       attachment.accept(builder);
 

@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Xapi client properties.
+ * XapiClient properties.
  *
  * @author István Rátkai (Selindek)
  */

@@ -51,11 +51,14 @@ public class XapiClient {
 
         .defaultHeader("X-Experience-API-Version", "1.0.3")
 
-        .codecs(configurer ->
+        .codecs(configurer -> {
 
-        configurer.customCodecs().register(new StatementHttpMessageWriter(configurer.getWriters()))
+          configurer.customCodecs()
+              .register(new StatementHttpMessageWriter(configurer.getWriters()));
 
-        ).build();
+          configurer.customCodecs().register(new StatementHttpMessageReader());
+
+        }).build();
   }
 
   // Statement Resource

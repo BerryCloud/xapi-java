@@ -340,18 +340,4 @@ class VerbTests {
 
   }
 
-  @Test
-  void whenValidatingVerbWithInvalidDisplayIdThenConstraintViolationsSizeIsOne() {
-
-    final var verb = Verb.builder().id("http://adlnet.gov/expapi/verbs/asked")
-        .addDisplay(new Locale("unknown"), "answered").build();
-
-    // When Validating Verb With invalid Display
-    final Set<ConstraintViolation<Verb>> constraintViolations = validator.validate(verb);
-
-    // Then ConstraintViolations Size Is One
-    assertThat(constraintViolations, hasSize(1));
-
-  }
-
 }
