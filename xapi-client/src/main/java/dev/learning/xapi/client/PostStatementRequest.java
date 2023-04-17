@@ -66,6 +66,22 @@ public class PostStatementRequest implements Request {
     }
 
     /**
+     * Sets the statement.
+     *
+     * @param statement The Statement to post
+     *
+     * @return This builder
+     *
+     * @see PostStatementRequest#statement
+     */
+    public Builder statement(Statement statement) {
+
+      this.statement = statement;
+
+      return this;
+    }
+
+    /**
      * Consumer Builder for signed statement.
      *
      * @param statement The Consumer Builder for signed-statement
@@ -84,23 +100,6 @@ public class PostStatementRequest implements Request {
 
       return statement(builder.signAndBuild(privateKey));
     }
-
-    /**
-     * Sets the statement.
-     *
-     * @param statement The Statement to post
-     *
-     * @return This builder
-     *
-     * @see PostStatementRequest#statement
-     */
-    public Builder statement(Statement statement) {
-
-      this.statement = statement;
-
-      return this;
-    }
-
   }
 
 }
