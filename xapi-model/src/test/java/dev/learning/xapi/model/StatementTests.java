@@ -695,7 +695,7 @@ class StatementTests {
               "id":"http://adlnet.gov/expapi/verbs/attended",
               "display":{
                 "en-GB":"attended",
-                "en-US":"attended"
+                "en_US":"attended"
               }
             },
             "object":{

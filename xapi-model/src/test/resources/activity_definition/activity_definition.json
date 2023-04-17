@@ -6,40 +6,40 @@
     "http://url" : "www.example.com"
   },
   "name" : {
-    "en-US" : "Does the xAPI include the concept of statements?"
+    "en_US" : "Does the xAPI include the concept of statements?"
   },
   "description" : {
-    "en-US" : "pong[.]1:[,]dg[.]:10[,]lunch[.]"
+    "en_US" : "pong[.]1:[,]dg[.]:10[,]lunch[.]"
   },
   "type" : "http://adlnet.gov/expapi/activities/cmi.interaction",
   "choices" : [ {
     "id" : "1",
     "description" : {
-      "en-US" : "Does the xAPI include the concept of statements?"
+      "en_US" : "Does the xAPI include the concept of statements?"
     }
   } ],
   "scale" : [ {
     "id" : "1",
     "description" : {
-      "en-US" : "Does the xAPI include the concept of statements?"
+      "en_US" : "Does the xAPI include the concept of statements?"
     }
   } ],
   "source" : [ {
     "id" : "1",
     "description" : {
-      "en-US" : "Does the xAPI include the concept of statements?"
+      "en_US" : "Does the xAPI include the concept of statements?"
     }
   } ],
   "target" : [ {
     "id" : "1",
     "description" : {
-      "en-US" : "Does the xAPI include the concept of statements?"
+      "en_US" : "Does the xAPI include the concept of statements?"
     }
   } ],
   "steps" : [ {
     "id" : "1",
     "description" : {
-      "en-US" : "Does the xAPI include the concept of statements?"
+      "en_US" : "Does the xAPI include the concept of statements?"
     }
   } ]
 }

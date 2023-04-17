@@ -1,10 +1,10 @@
 {
    "usageType":"http://adlnet.gov/expapi/attachments/signature",
    "display":{
-      "en-US":"Signature"
+      "en_US":"Signature"
    },
    "description":{
-      "en-US":"A test signature"
+      "en_US":"A test signature"
    },
    "contentType":"application/octet-stream",
    "length":4235,

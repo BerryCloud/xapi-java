@@ -7,7 +7,7 @@
 	"verb": {
 		"id": "http://example.com/xapi/verbs#sent-a-statement",
 		"display": {
-			"en-US": "attended"
+			"en_US": "attended"
 		}
 	},
 	"result": {
@@ -32,7 +32,7 @@
 			"objectType": "Group"
 		},
 		"platform": "Example virtual meeting software",
-		"language": "en-US",
+		"language": "en_US",
 		"statement": {
 			"objectType": "StatementRef",
 			"id": "6690e6c9-3ef0-4ed3-8b37-7f3964730bee"
@@ -55,10 +55,10 @@
 				"http://name": "Kilby"
 			},
 			"name": {
-				"en-US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
+				"en_US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
 			},
 			"description": {
-				"en-US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
+				"en_US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
 			},
 			"type": "http://adlnet.gov/expapi/activities/meeting",
 			"moreInfo": "http://virtualmeeting.example.com/345256"
@@ -69,10 +69,10 @@
 		{
 			"usageType": "http://example.com",
 			"display": {
-				"en-US": "value"
+				"en_US": "value"
 			},
 			"description": {
-				"en-US": "value"
+				"en_US": "value"
 			},
 			"contentType": "file",
 			"length": 123,

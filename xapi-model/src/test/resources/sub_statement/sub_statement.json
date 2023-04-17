@@ -4,7 +4,7 @@
   "verb" : {
     "id" : "http://example.com/confirmed",
     "display" : {
-      "en-US" : "confirmed"
+      "en_US" : "confirmed"
     }
   },
   "actor" : {
@@ -31,7 +31,7 @@
     "registration" : "6d969975-8d7e-4506-ac19-877c57f2921a",
     "revision" : "revision",
     "platform" : "platform",
-    "language" : "en-US",
+    "language" : "en_US",
     "instructor" : {
       "objectType" : "Agent",
       "mbox" : "mailto:agent@example.com"
@@ -69,10 +69,10 @@
   "attachments" : [ {
     "usageType" : "http://example.com",
     "display" : {
-      "en-US" : "value"
+      "en_US" : "value"
     },
     "description" : {
-      "en-US" : "value"
+      "en_US" : "value"
     },
     "contentType" : "file",
     "length" : 123,

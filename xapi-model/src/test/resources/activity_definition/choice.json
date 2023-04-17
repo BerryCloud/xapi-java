@@ -1,9 +1,9 @@
 {
 	"name": {
-		"en-US": "Choice"
+		"en_US": "Choice"
 	},
 	"description": {
-		"en-US": "Which of these prototypes are available at the beta site?"
+		"en_US": "Which of these prototypes are available at the beta site?"
 	},
 	"type": "http://adlnet.gov/expapi/activities/cmi.interaction",
 	"interactionType": "choice",
@@ -14,25 +14,25 @@
 		{
 			"id": "golf", 
 			"description": {
-				"en-US": "Golf Example"
+				"en_US": "Golf Example"
 			}
 		},
 		{
 			"id": "facebook", 
 			"description": {
-				"en-US": "Facebook App"
+				"en_US": "Facebook App"
 			}
 		},
 		{
 			"id": "tetris", 
 			"description": {
-				"en-US": "Tetris Example"
+				"en_US": "Tetris Example"
 			}
 		},
 		{
 			"id": "scrabble", 
 			"description": {
-				"en-US": "Scrabble Example"
+				"en_US": "Scrabble Example"
 			}
 		}
 	]

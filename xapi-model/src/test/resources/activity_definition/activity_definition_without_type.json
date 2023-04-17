@@ -1,6 +1,6 @@
 {
 	"description": {
-		"en-US": "Does the xAPI include the concept of statements?"
+		"en_US": "Does the xAPI include the concept of statements?"
 	},
 	"interactionType": "fill-in",
 	"correctResponsesPattern": [

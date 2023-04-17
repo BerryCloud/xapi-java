@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
  * StrictObjectTypeMixIn which adds StrictObjectTypeResolverBuilder.
  *
  * @author Thomas Turrell-Croft
- */ 
+ */
 @JsonTypeResolver(StrictObjectTypeResolverBuilder.class)
 public interface StrictObjectTypeMixIn {
 }

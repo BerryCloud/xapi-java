@@ -7,7 +7,7 @@
    "verb":{
       "id":"http://example.com/visited",
       "display":{
-         "en-US":"will visit"
+         "en_US":"will visit"
       }
    },
    "object":{
@@ -15,7 +15,7 @@
       "id":"http://example.com/website",
       "definition":{
          "name":{
-            "en-US":"Some Awesome Website"
+            "en_US":"Some Awesome Website"
          }
       }
    }

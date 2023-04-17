@@ -1,7 +1,7 @@
 {
 	"revision": "revision",
 	"platform": "platform",
-	"language": "en-US",
+	"language": "en_US",
 	"instructor": {
 		"name": "Andrew Downes",
 		"mbox": "mailto:andrew@example.co.uk"

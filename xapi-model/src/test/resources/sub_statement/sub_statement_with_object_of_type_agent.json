@@ -7,7 +7,7 @@
    "verb":{
       "id":"http://example.com/visited",
       "display":{
-         "en-US":"will visit"
+         "en_US":"will visit"
       }
    },
    "object":{
