@@ -6,6 +6,7 @@ package dev.learning.xapi.client;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import dev.learning.xapi.model.About;
 import dev.learning.xapi.model.Activity;
@@ -14,6 +15,8 @@ import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementFormat;
 import dev.learning.xapi.model.Verb;
 import java.net.URI;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -362,6 +365,38 @@ class XapiClientTests {
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  // Posting a Signed Statement
+
+  @Test
+  void whenPostingSignedStatementThenExceptionIsThrown() throws NoSuchAlgorithmException {
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
+        .setBody("[\"19a74a3f-7354-4254-aa4a-1c39ab4f2ca7\"]")
+        .setHeader("Content-Type", "application/json"));
+
+    final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+    keyPairGenerator.initialize(2048);
+    final var keyPair = keyPairGenerator.generateKeyPair();
+
+    // When posting Signed Statement Then Exception Is Thrown
+    // ( Signing statements requires additional dependencies which are
+    // NOT included in these tests by default. )
+    assertThrows(IllegalStateException.class,
+        () -> client.postStatement(r -> r
+            .signedStatement(
+                s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+                    .verb(Verb.ATTEMPTED)
+
+                    .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement"))),
+
+                keyPair.getPrivate())
+
+            .build()).block());
+
   }
 
   // Get Voided Statement
