@@ -395,7 +395,7 @@ class XapiClientTests {
 
                 keyPair.getPrivate())
 
-            .build()).block());
+            .build()));
 
   }
 
