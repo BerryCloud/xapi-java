@@ -85,8 +85,7 @@ public class PostStatementRequest implements Request {
      * Consumer Builder for signed statement.
      *
      * @param statement The Consumer Builder for signed-statement
-     *
-     * @paraam privateKey a PrivateKey for signing the Statement
+     * @param privateKey a PrivateKey for signing the Statement
      *
      * @return This builder
      *
