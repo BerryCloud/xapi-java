@@ -30,7 +30,7 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.1.3</version>
+            <version>1.1.4</version>
         </dependency>
     </dependencies>
 </project>
@@ -276,7 +276,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.1.3</version>
+            <version>1.1.4</version>
         </dependency>
     </dependencies>
 </project>
