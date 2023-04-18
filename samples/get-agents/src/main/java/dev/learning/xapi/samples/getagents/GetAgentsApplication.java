@@ -55,7 +55,7 @@ public class GetAgentsApplication implements CommandLineRunner {
         UUID> response =
             client
                 .postStatement(r -> r.statement(
-                    s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
                         .verb(Verb.ATTEMPTED)
 

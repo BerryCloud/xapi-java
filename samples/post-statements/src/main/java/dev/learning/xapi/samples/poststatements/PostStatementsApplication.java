@@ -35,7 +35,8 @@ public class PostStatementsApplication implements CommandLineRunner {
   public void run(String... args) throws Exception {
 
     Statement attemptedStatement = Statement.builder()
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .verb(Verb.ATTEMPTED)
         .activityObject(o -> o.id("https://example.com/activity/simplestatement")
             .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
         .build();

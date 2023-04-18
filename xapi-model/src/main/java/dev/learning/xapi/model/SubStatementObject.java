@@ -30,9 +30,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
     @JsonSubTypes.Type(value = StatementReference.class, name = "StatementRef")})
 public interface SubStatementObject {
 
-  // TODO create custom TypeIdResolver to throw suitable exception when objectType is SubStatement.
-
-  // If the objectType is missing or unknown the default implementation is Activity. If the
-  // objectType is 'SubStatement' the exception thrown is an UnregonizedPropertyException.
-
 }

@@ -108,7 +108,7 @@ Example:
 
 ```java
 client.postStatement(
-    r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    r -> r.statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -123,7 +123,7 @@ Example:
 
 ```java
 client.postStatement(
-    r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    r -> r.statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -143,7 +143,7 @@ Example:
 
 ```java
 client.postStatement(
-    r -> r.signedStatement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    r -> r.signedStatement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -160,7 +160,7 @@ Example:
 
 ```java
 Statement attemptedStatement = Statement.builder()
-    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
+    .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
         .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
     .build();
@@ -289,7 +289,7 @@ Example:
 ```java
 Statement statement = Statement.builder()
 
-    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     .verb(Verb.ATTEMPTED)
 
@@ -342,7 +342,7 @@ Example:
 ```java
 
 Statement statement = Statement.builder()
-    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
+    .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.ATTEMPTED)
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
         .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
     .build();
@@ -358,7 +358,7 @@ Example:
 ```java
 
 Statement passed = Statement.builder()
-    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.PASSED)
+    .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com")).verb(Verb.PASSED)
     .activityObject(o -> o.id("https://example.com/activity/simplestatement")
         .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
     .build();
@@ -378,7 +378,7 @@ Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 Statement statement = Statement.builder()
 
-    .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
     .activityObject(o -> o.id("https://example.com/xapi/activity/simplestatement"))
 

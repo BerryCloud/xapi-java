@@ -99,9 +99,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      *
      * @see SubStatement#actor
      */
-    public Builder actor(Consumer<Agent.Builder<?, ?>> agent) {
-
-      // TODO Handle a Group Builder
+    public Builder agentActor(Consumer<Agent.Builder<?, ?>> agent) {
 
       final Agent.Builder<?, ?> builder = Agent.builder();
 
@@ -111,19 +109,21 @@ public class SubStatement implements StatementObject, CoreStatement {
     }
 
     /**
-     * Sets the agent.
+     * Consumer Builder for group.
      *
-     * @param actor The actor of the Statement
+     * @param group The Consumer Builder for group
      *
      * @return This builder
      *
      * @see SubStatement#actor
      */
-    public Builder actor(Actor actor) {
+    public Builder groupActor(Consumer<Group.Builder<?, ?>> group) {
 
-      this.actor = actor;
+      final Group.Builder<?, ?> builder = Group.builder();
 
-      return this;
+      group.accept(builder);
+
+      return actor(builder.build());
     }
 
     /**
