@@ -69,11 +69,17 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean canWrite(ResolvableType elementType, @Nullable MediaType mediaType) {
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @SuppressWarnings("unchecked")
   public Mono<Void> write(Publisher<? extends Object> inputStream, ResolvableType elementType,
@@ -149,7 +155,6 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     return Flux.concat(generateBoundaryLine(boundary, factory), partContent,
         generateNewLine(factory));
   }
-
 
   @SuppressWarnings("unchecked")
   private List<Object> getParts(Object object) {

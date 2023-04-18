@@ -27,15 +27,24 @@ import reactor.core.publisher.Mono;
 public class AttachmentHttpMessageWriter extends MultipartWriterSupport
     implements HttpMessageWriter<Attachment> {
 
+  /**
+   * Default constructor.
+   */
   public AttachmentHttpMessageWriter() {
     super(List.of(MediaType.MULTIPART_MIXED));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean canWrite(ResolvableType elementType, @Nullable MediaType mediaType) {
     return Attachment.class.isAssignableFrom(elementType.toClass());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Mono<Void> write(Publisher<? extends Attachment> parts, ResolvableType elementType,
       @Nullable MediaType mediaType, ReactiveHttpOutputMessage outputMessage,
