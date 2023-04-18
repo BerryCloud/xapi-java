@@ -38,12 +38,17 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
 
   private final HttpMessageReader<Part> partReader = new DefaultPartHttpMessageReader();
 
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<MediaType> getReadableMediaTypes() {
     return MIME_TYPES;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean canRead(ResolvableType elementType, @Nullable MediaType mediaType) {
     if (Statement.class.equals(elementType.toClass())
@@ -60,7 +65,9 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
     return false;
   }
 
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Flux<Object> read(ResolvableType elementType, ReactiveHttpInputMessage message,
       Map<String, Object> hints) {
@@ -68,7 +75,9 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
     return Flux.from(readMono(elementType, message, hints));
   }
 
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Mono<Object> readMono(ResolvableType elementType, ReactiveHttpInputMessage inputMessage,
       Map<String, Object> hints) {
