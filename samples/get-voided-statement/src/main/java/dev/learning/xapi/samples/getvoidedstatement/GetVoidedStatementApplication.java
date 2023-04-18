@@ -49,7 +49,8 @@ public class GetVoidedStatementApplication implements CommandLineRunner {
     // Post a statement
     ResponseEntity<UUID> response = client
         .postStatement(r -> r
-            .statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+            .statement(s -> s.agentActor(a -> a.name("A N Other")
+                .mbox("mailto:another@example.com"))
 
                 .verb(Verb.ATTEMPTED)
 
@@ -61,7 +62,8 @@ public class GetVoidedStatementApplication implements CommandLineRunner {
     // Void the statement
     client
         .postStatement(r -> r
-            .statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+            .statement(s -> s.agentActor(a -> a.name("A N Other")
+                .mbox("mailto:another@example.com"))
 
                 .verb(Verb.VOIDED)
 

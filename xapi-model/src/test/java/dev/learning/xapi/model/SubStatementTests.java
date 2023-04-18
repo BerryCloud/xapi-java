@@ -312,7 +312,7 @@ class SubStatementTests {
 
         .timestamp(Instant.parse("2015-11-18T11:17:00Z"))
 
-        .actor(agent)
+        .agentActor(a -> a.mbox("mailto:agent@example.com"))
 
         .verb(v -> v.id(URI.create("http://example.com/confirmed")).addDisplay(Locale.US,
             "confirmed"))

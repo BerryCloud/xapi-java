@@ -156,7 +156,7 @@ class XapiClientTests {
 
     final var attemptedStatement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -185,7 +185,7 @@ class XapiClientTests {
 
     final var attemptedStatement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -213,7 +213,7 @@ class XapiClientTests {
 
     final var attemptedStatement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -243,7 +243,7 @@ class XapiClientTests {
 
     final var attemptedStatement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -275,7 +275,7 @@ class XapiClientTests {
 
     final var attemptedStatement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -305,13 +305,16 @@ class XapiClientTests {
         .setHeader("Content-Type", "application/json"));
 
     // When posting Statement
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client
+        .postStatement(
+            r -> r
+                .statement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .verb(Verb.ATTEMPTED)
+                        .verb(Verb.ATTEMPTED)
 
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
     final var recordedRequest = mockWebServer.takeRequest();
@@ -328,13 +331,16 @@ class XapiClientTests {
         .setHeader("Content-Type", "application/json"));
 
     // When Posting Statement
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client
+        .postStatement(
+            r -> r
+                .statement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .verb(Verb.ATTEMPTED)
+                        .verb(Verb.ATTEMPTED)
 
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
     final var recordedRequest = mockWebServer.takeRequest();
@@ -352,13 +358,16 @@ class XapiClientTests {
         .setHeader("Content-Type", "application/json"));
 
     // When Posting Statement
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client
+        .postStatement(
+            r -> r
+                .statement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .verb(Verb.ATTEMPTED)
+                        .verb(Verb.ATTEMPTED)
 
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
     final var recordedRequest = mockWebServer.takeRequest();
@@ -386,7 +395,7 @@ class XapiClientTests {
     assertThrows(IllegalStateException.class,
         () -> client.postStatement(r -> r
             .signedStatement(
-                s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+                s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
                     .verb(Verb.ATTEMPTED)
 

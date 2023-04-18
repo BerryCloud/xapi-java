@@ -68,8 +68,8 @@ class XapiClientMultipartTests {
         .setHeader("Content-Type", "application/json"));
 
     // When Posting Statement With Attachment
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
             .addAttachment(a -> a.content("Simple attachment").length(17).contentType("text/plain")
                 .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
@@ -95,8 +95,8 @@ class XapiClientMultipartTests {
         .setHeader("Content-Type", "application/json"));
 
     // When Posting Statement With Text Attachment
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
             .addAttachment(a -> a.content("Simple attachment").length(17).contentType("text/plain")
                 .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
@@ -128,18 +128,21 @@ class XapiClientMultipartTests {
         .setHeader("Content-Type", "application/json"));
 
     // When Posting Statement With Binary Attachment
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client
+        .postStatement(
+            r -> r
+                .statement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .addAttachment(a -> a.content(new byte[] {64, 65, 66, 67, 68, (byte) 255}).length(6)
-                .contentType("application/octet-stream")
-                .usageType(URI.create("http://adlnet.gov/expapi/attachments/code"))
-                .addDisplay(Locale.ENGLISH, "binary attachment"))
+                        .addAttachment(a -> a.content(new byte[] {64, 65, 66, 67, 68, (byte) 255})
+                            .length(6).contentType("application/octet-stream")
+                            .usageType(URI.create("http://adlnet.gov/expapi/attachments/code"))
+                            .addDisplay(Locale.ENGLISH, "binary attachment"))
 
-            .verb(Verb.ATTEMPTED)
+                        .verb(Verb.ATTEMPTED)
 
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
     final var recordedRequest = mockWebServer.takeRequest();
@@ -162,18 +165,21 @@ class XapiClientMultipartTests {
         .setHeader("Content-Type", "application/json"));
 
     // When Posting Statement Without Attachment Data
-    client.postStatement(
-        r -> r.statement(s -> s.actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+    client
+        .postStatement(
+            r -> r
+                .statement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-            .addAttachment(a -> a.length(6).contentType("application/octet-stream")
-                .usageType(URI.create("http://adlnet.gov/expapi/attachments/code"))
-                .fileUrl(URI.create("example.com/attachment"))
-                .addDisplay(Locale.ENGLISH, "binary attachment"))
+                        .addAttachment(a -> a.length(6).contentType("application/octet-stream")
+                            .usageType(URI.create("http://adlnet.gov/expapi/attachments/code"))
+                            .fileUrl(URI.create("example.com/attachment"))
+                            .addDisplay(Locale.ENGLISH, "binary attachment"))
 
-            .verb(Verb.ATTEMPTED)
+                        .verb(Verb.ATTEMPTED)
 
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
         .block();
 
     final var recordedRequest = mockWebServer.takeRequest();
@@ -192,7 +198,7 @@ class XapiClientMultipartTests {
 
     // When Posting SubStatement With Text Attachment
     client.postStatement(r -> r.statement(s -> s
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ABANDONED)
 
@@ -235,7 +241,7 @@ class XapiClientMultipartTests {
     // When Posting Statements With Attachments
     final var statement1 = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .addAttachment(a -> a.content(new byte[] {64, 65, 66, 67, 68, (byte) 255}).length(6)
             .contentType("application/octet-stream")
@@ -251,7 +257,7 @@ class XapiClientMultipartTests {
 
     final var statement2 = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .addAttachment(a -> a.content(new byte[] {64, 65, 66, 67, 68, (byte) 255}).length(6)
             .contentType("application/octet-stream")
@@ -298,7 +304,7 @@ class XapiClientMultipartTests {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 

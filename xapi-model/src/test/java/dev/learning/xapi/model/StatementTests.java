@@ -225,7 +225,7 @@ class StatementTests {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.account(
+        .agentActor(a -> a.account(
             acc -> acc.name("A N Other").homePage(URI.create("https://example.com/account/1234"))))
 
         .verb(Verb.EXPERIENCED)
@@ -280,7 +280,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.US, "attended"))
@@ -373,7 +373,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.ENGLISH, "attended"))
@@ -439,7 +439,7 @@ class StatementTests {
     // Given Statement With Passed Verb
     final var passed = Statement.builder()
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(Verb.PASSED)
 
@@ -466,7 +466,7 @@ class StatementTests {
     // When Building Statement With Statement Reference Object
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(Verb.VOIDED)
 
@@ -485,7 +485,7 @@ class StatementTests {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.EXPERIENCED)
 
@@ -525,7 +525,7 @@ class StatementTests {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .activityObject(o -> o.id("https://example.com/xapi/activity/simplestatement"))
 
@@ -544,7 +544,7 @@ class StatementTests {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.EXPERIENCED)
 
@@ -566,7 +566,7 @@ class StatementTests {
 
     final var subStatement = SubStatement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .groupActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.EXPERIENCED)
 
@@ -576,7 +576,7 @@ class StatementTests {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.EXPERIENCED)
 
@@ -627,7 +627,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.US, "attended"))
@@ -1318,7 +1318,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.US, "attended"))
@@ -1410,7 +1410,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.US, "attended"))
@@ -1488,7 +1488,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.US, "attended"))
@@ -1567,7 +1567,7 @@ class StatementTests {
 
         .id(UUID.fromString("4b9175ba-367d-4b93-990b-34d4180039f1"))
 
-        .actor(a -> a.name("A N Other"))
+        .agentActor(a -> a.name("A N Other"))
 
         .verb(v -> v.id(URI.create("http://example.com/xapi/verbs#sent-a-statement"))
             .addDisplay(Locale.US, "attended"))

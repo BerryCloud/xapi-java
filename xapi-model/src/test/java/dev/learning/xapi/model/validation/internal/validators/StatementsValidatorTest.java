@@ -51,7 +51,7 @@ class StatementsValidatorTest {
 
     final var statement = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -71,7 +71,7 @@ class StatementsValidatorTest {
 
     final var statement1 = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -81,7 +81,7 @@ class StatementsValidatorTest {
 
     final var statement2 = Statement.builder()
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -104,7 +104,7 @@ class StatementsValidatorTest {
 
         .id(UUID.randomUUID())
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .groupActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -116,7 +116,7 @@ class StatementsValidatorTest {
 
         .id(UUID.randomUUID())
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -140,7 +140,7 @@ class StatementsValidatorTest {
 
         .id(UUID.fromString("b79a5a9b-d9f5-470b-afba-97228e26a031"))
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
@@ -152,7 +152,7 @@ class StatementsValidatorTest {
 
         .id(UUID.fromString("b79a5a9b-d9f5-470b-afba-97228e26a031"))
 
-        .actor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
         .verb(Verb.ATTEMPTED)
 
