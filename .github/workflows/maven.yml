@@ -38,6 +38,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-      # - name: Update dependency graph
-      #   uses: advanced-security/maven-dependency-submission-action@multi-module
-      # seems to cause issues with dependabot
+      - name: Update dependency graph
+        uses: advanced-security/maven-dependency-submission-action@v3
