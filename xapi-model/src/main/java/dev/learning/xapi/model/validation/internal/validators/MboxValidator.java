@@ -8,6 +8,7 @@ import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The String being validated must be a valid mbox.
@@ -21,6 +22,9 @@ public class MboxValidator implements ConstraintValidator<Mbox, String> {
 
   public static final String PREFIX = "mailto:";
 
+  @Value("#{!${xApi.model.validateMbox:true}}")
+  private boolean disabled;
+
   EmailValidator emailValidator;
 
   @Override
@@ -31,8 +35,7 @@ public class MboxValidator implements ConstraintValidator<Mbox, String> {
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
-
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

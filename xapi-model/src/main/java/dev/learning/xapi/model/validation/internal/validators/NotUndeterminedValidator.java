@@ -8,6 +8,7 @@ import dev.learning.xapi.model.validation.constraints.NotUndetermined;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The Locale being validated must be a non undetermined {@link Locale}.
@@ -16,10 +17,13 @@ import java.util.Locale;
  */
 public class NotUndeterminedValidator implements ConstraintValidator<NotUndetermined, Locale> {
 
+  @Value("#{!${xApi.model.validateLocaleNotUndetermined:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(Locale value, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

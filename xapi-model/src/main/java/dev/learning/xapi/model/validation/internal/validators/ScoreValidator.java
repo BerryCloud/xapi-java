@@ -8,6 +8,7 @@ import dev.learning.xapi.model.Score;
 import dev.learning.xapi.model.validation.constraints.VaildScore;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The raw score must be greater or equal to min and less or equal to max.
@@ -16,10 +17,13 @@ import jakarta.validation.ConstraintValidatorContext;
  */
 public class ScoreValidator implements ConstraintValidator<VaildScore, Score> {
 
+  @Value("#{!${xApi.model.validateScore:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(Score value, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

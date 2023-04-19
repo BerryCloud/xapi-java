@@ -8,6 +8,7 @@ import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The UUID being validated must have the specified variant.
@@ -15,6 +16,9 @@ import java.util.UUID;
  * @author Thomas Turrell-Croft
  */
 public class VariantValidatorForUuid implements ConstraintValidator<Variant, UUID> {
+
+  @Value("#{!${xApi.model.validateUuidVariant:true}}")
+  private boolean disabled;
 
   private int variant;
 
@@ -27,7 +31,7 @@ public class VariantValidatorForUuid implements ConstraintValidator<Variant, UUI
   @Override
   public boolean isValid(UUID value, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

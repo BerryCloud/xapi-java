@@ -10,6 +10,7 @@ import dev.learning.xapi.model.Group;
 import dev.learning.xapi.model.validation.constraints.ValidAuthority;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The Actor being validated must be null, an agent or an anonymous group with two agents.
@@ -19,11 +20,14 @@ import jakarta.validation.ConstraintValidatorContext;
  */
 public class AuthorityValidator implements ConstraintValidator<ValidAuthority, Actor> {
 
+  @Value("#{!${xApi.model.validateAuthority:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(Actor value, ConstraintValidatorContext context) {
 
     // can be null or Agent
-    if (value == null || value instanceof Agent) {
+    if (disabled || value == null || value instanceof Agent) {
       return true;
     }
 

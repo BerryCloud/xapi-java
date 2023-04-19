@@ -8,6 +8,7 @@ import dev.learning.xapi.model.ActivityDefinition;
 import dev.learning.xapi.model.validation.constraints.ValidActivityDefinition;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The {@link ActivityDefinition} being validated must be valid.
@@ -21,10 +22,13 @@ import jakarta.validation.ConstraintValidatorContext;
 public class ActivityDefinitionValidator
     implements ConstraintValidator<ValidActivityDefinition, ActivityDefinition> {
 
+  @Value("#{!${xApi.model.validateActivityDefinition:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(ActivityDefinition value, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

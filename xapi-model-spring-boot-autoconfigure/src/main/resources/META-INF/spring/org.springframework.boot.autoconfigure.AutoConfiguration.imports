@@ -1,1 +1,2 @@
 dev.learning.xapi.XapiModelAutoConfiguration
+dev.learning.xapi.model.validation.internal.validators.MboxValidator

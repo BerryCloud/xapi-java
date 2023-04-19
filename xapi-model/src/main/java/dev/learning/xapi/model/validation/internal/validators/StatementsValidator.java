@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Validates a list of statements.
@@ -20,13 +21,16 @@ import java.util.UUID;
  */
 public class StatementsValidator implements ConstraintValidator<Statements, List<Statement>> {
 
+  @Value("#{!${xApi.model.validateStatementListIds:true}}")
+  private boolean disabled;
+
   /**
    * {@inheritDoc}
    */
   @Override
   public boolean isValid(List<Statement> values, ConstraintValidatorContext context) {
 
-    if (values == null) {
+    if (disabled || values == null) {
       return true;
     }
 

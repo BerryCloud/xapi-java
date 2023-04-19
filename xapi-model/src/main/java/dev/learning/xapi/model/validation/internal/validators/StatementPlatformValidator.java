@@ -9,6 +9,7 @@ import dev.learning.xapi.model.CoreStatement;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The Statement being validated must have a valid platform.
@@ -25,11 +26,14 @@ import jakarta.validation.ConstraintValidatorContext;
 public class StatementPlatformValidator
     implements ConstraintValidator<ValidStatementPlatform, CoreStatement> {
 
+  @Value("#{!${xApi.model.validateStatementPlatform:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
 
-    return value == null || value.getContext() == null || value.getContext().getPlatform() == null
-        || value.getObject() instanceof Activity;
+    return disabled || value == null || value.getContext() == null
+        || value.getContext().getPlatform() == null || value.getObject() instanceof Activity;
   }
 
 }

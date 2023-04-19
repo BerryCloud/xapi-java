@@ -9,11 +9,12 @@ import dev.learning.xapi.model.StatementReference;
 import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
- * The Statement being validated must have a valid revision.
+ * The Statement being validated must have a valid verb.
  * <p>
- * if verb is 'voided' then object must be a {@link StatementReference}.
+ * If the verb is 'voided' then the object must be a {@link StatementReference}.
  * </p>
  *
  * @author Thomas Turrell-Croft
@@ -25,10 +26,13 @@ import jakarta.validation.ConstraintValidatorContext;
 public class StatementVerbValidator
     implements ConstraintValidator<ValidStatementVerb, CoreStatement> {
 
+  @Value("#{!${xApi.model.validateStatementVerb:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
 
-    return value == null || value.getVerb() == null || !value.getVerb().isVoided()
+    return disabled || value == null || value.getVerb() == null || !value.getVerb().isVoided()
         || value.getObject() instanceof StatementReference;
 
   }

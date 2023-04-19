@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
  * @author István Rátkai (Selindek)
  */
 @Configuration
-@AutoConfigureBefore(value = JacksonProperties.class)
+@AutoConfigureBefore(JacksonProperties.class)
 public class XapiModelAutoConfiguration {
 
   /**
@@ -39,84 +39,84 @@ public class XapiModelAutoConfiguration {
   }
 
   /**
-   * StrictObjectTypeCustomizer.
+   * ValidateObjectTypeCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictObjectType", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateObjectType", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictObjectTypeCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateObjectTypeCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictObjectTypeModule())
     );
   }
   
   /**
-   * StrictLocaleCustomizer.
+   * ValidateLocaleCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictLocale", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateLocale", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictLocaleCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateLocaleCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictLocaleModule())
     );
   }
 
   /**
-   * StrictTimestampCustomizer.
+   * ValidateTimestampCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictTimestamp", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateTimestamp", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictTimestampCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateTimestampCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictTimestampModule())
     );
   }
 
   /**
-   * StrictNullValuesCustomizer.
+   * ValidateNullValuesCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictNullValues", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateNullValues", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictNullValuesCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateNullValuesCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictNullValuesModule())
     );
   }
   
   /**
-   * SstrictPropertiesCustomizer.
+   * ValidatePropertiesCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictProperties", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateProperties", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictPropertiesCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validatePropertiesCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
     );
   }
 
   /**
-   * StrictJsonCustomizer.
+   * ValidateJsonCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictJson", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateJson", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictJsonCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateJsonCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true)
     );
   }
   
   /**
-   * StrictLiteralsCustomizer.
+   * ValidateLiteralsCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictLiterals", havingValue = "true",
+  @ConditionalOnProperty(name = "xApi.model.validateLiterals", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictLiteralsCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateLiteralsCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
 
       objectMapper.coercionConfigFor(LogicalType.Boolean)

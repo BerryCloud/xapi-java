@@ -7,6 +7,7 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.validation.constraints.ScaledScore;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The Float being validated must be a valid scaled score.
@@ -18,10 +19,13 @@ import jakarta.validation.ConstraintValidatorContext;
  */
 public class ScaledScoreValidator implements ConstraintValidator<ScaledScore, Float> {
 
+  @Value("#{!${xApi.model.validateScaledScore:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(Float value, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

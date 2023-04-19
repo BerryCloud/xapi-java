@@ -8,6 +8,7 @@ import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.net.URI;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The URI being validated must have a schema.
@@ -16,10 +17,13 @@ import java.net.URI;
  */
 public class HasSchemeValidatorForUri implements ConstraintValidator<HasScheme, URI> {
 
+  @Value("#{!${xApi.model.validateUriScheme:true}}")
+  private boolean disabled;
+
   @Override
   public boolean isValid(URI value, ConstraintValidatorContext context) {
 
-    if (value == null) {
+    if (disabled || value == null) {
       return true;
     }
 

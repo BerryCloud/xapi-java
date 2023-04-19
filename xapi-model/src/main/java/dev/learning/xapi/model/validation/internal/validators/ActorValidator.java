@@ -11,6 +11,7 @@ import dev.learning.xapi.model.StatementObject;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The {@link StatementObject} being validated must be valid.
@@ -21,6 +22,9 @@ import jakarta.validation.ConstraintValidatorContext;
  */
 public class ActorValidator implements ConstraintValidator<ValidActor, Object> {
 
+  @Value("#{!${xApi.model.validateActor:true}}")
+  private boolean disabled;
+
   /**
    * Checks if this {@link Actor} contains exactly one identifier.
    *
@@ -28,6 +32,10 @@ public class ActorValidator implements ConstraintValidator<ValidActor, Object> {
    */
   @Override
   public boolean isValid(Object value, ConstraintValidatorContext context) {
+
+    if (disabled) {
+      return true;
+    }
 
     if (value instanceof final Group group) {
       return group.getAccount() == null && group.getMbox() == null && group.getMboxSha1sum() == null

@@ -7,6 +7,7 @@ package dev.learning.xapi.model.validation.constraints;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import dev.learning.xapi.model.validation.internal.validators.StatementVerbValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
@@ -19,7 +20,7 @@ import java.lang.annotation.Target;
  * @author István Rátkai (Selindek)
  */
 @Documented
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = {StatementVerbValidator.class})
 @Target({TYPE})
 @Retention(RUNTIME)
 public @interface ValidStatementVerb {
