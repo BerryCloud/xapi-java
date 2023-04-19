@@ -254,6 +254,14 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
     .block();
 ```
 
+## xAPI Model Spring Boot Autoconfigure
+
+The xAPI Model Spring Boot AutoConfigure uses picks up the following properties:
+
+| Property                      | Description                                                        |
+| ----------------------------- | ------------------------------------------------------------------ |
+| xapi.xxx                      |                                                                    |
+
 ### Samples
 
 The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
