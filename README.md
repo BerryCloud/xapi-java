@@ -271,7 +271,7 @@ If you use Spring Boot framework, simply add the following dependency into your 
 <dependency>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
-  <version>...</version>
+  <version>1.1.5</version>
 </dependency>
 ```
 
