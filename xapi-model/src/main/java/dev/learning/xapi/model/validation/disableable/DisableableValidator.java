@@ -33,15 +33,19 @@ public abstract class DisableableValidator<A extends Annotation, T>
 
   /**
    * <p>
-   * Convenient method for completely removing the disabled/enabled logic from subclasses.
+   * Convenient method for implementing the validation logic independently from the disabled/enabled
+   * logic.
    * </p>
-   * By adding the validator logic into this method a subclass can contain only the actual validator
-   * logic. But if some more complex validation logic is needed (eg. some partial validation is
-   * needed even if the validator is disabled), then the {@link #isDisabled()} method can be used
-   * directly from the {@link ConstraintValidator#isValid(Object, ConstraintValidatorContext)}
-   * method.
+   * If some more complex validation logic is needed (eg. some partial validation is needed even if
+   * the validator is disabled), then the {@link #isDisabled()} method can be used directly from the
+   * {@link ConstraintValidator#isValid(Object, ConstraintValidatorContext)} method.
+   *
+   * @param value object to validate
+   * @param context context in which the constraint is evaluated
+   *
+   * @return {@code false} if {@code value} does not pass the constraint
    */
-  public boolean isValidIfEnabled(T value, ConstraintValidatorContext context) {
+  protected boolean isValidIfEnabled(T value, ConstraintValidatorContext context) {
     return true;
   }
 

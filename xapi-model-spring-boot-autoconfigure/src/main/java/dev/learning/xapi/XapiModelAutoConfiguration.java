@@ -161,6 +161,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateActivityDefinition", havingValue = "false")
   public BeanPostProcessor validateActivityDefinitionPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof ActivityDefinitionValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -177,6 +178,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateActor", havingValue = "false")
   public BeanPostProcessor validateActorPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof ActorValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -193,6 +195,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateAuthority", havingValue = "false")
   public BeanPostProcessor validateAuthorityPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof AuthorityValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -209,6 +212,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateUriScheme", havingValue = "false")
   public BeanPostProcessor validateUriSchemePostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof HasSchemeValidatorForUri validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -225,6 +229,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateMbox", havingValue = "false")
   public BeanPostProcessor validateMboxPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof MboxValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -241,6 +246,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateLocaleNotUndetermined", havingValue = "false")
   public BeanPostProcessor validateLocaleNotUndeterminedPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof NotUndeterminedValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -257,6 +263,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateScaledScore", havingValue = "false")
   public BeanPostProcessor validateScaledScorePostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof ScaledScoreValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -273,6 +280,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateScore", havingValue = "false")
   public BeanPostProcessor validateScorePostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof ScoreValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -289,6 +297,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateStatementPlatform", havingValue = "false")
   public BeanPostProcessor validateStatementPlatformPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof StatementPlatformValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -305,6 +314,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateStatementRevision", havingValue = "false")
   public BeanPostProcessor validateStatementRevisionPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof StatementRevisionValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -321,6 +331,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateStatementListIds", havingValue = "false")
   public BeanPostProcessor validateStatementListIdsPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof StatementsValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -337,6 +348,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateStatementVerb", havingValue = "false")
   public BeanPostProcessor validateStatementVerbPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof StatementVerbValidator validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
@@ -353,6 +365,7 @@ public class XapiModelAutoConfiguration {
   @ConditionalOnProperty(name = "xapi.model.validateUuidVariant", havingValue = "false")
   public BeanPostProcessor validateUuidVariantPostProcessor() {
     return new BeanPostProcessor() {
+      @Override
       public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof VariantValidatorForUuid validator) {
           validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
