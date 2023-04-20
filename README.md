@@ -275,16 +275,31 @@ If you use Spring boor framework, simply add the following dependency into your 
 </dependency>
 ```
 
-... and you can customize the rules using the following properties:
+... and you can customize the validation rules using the following properties:
  
 
-| Property                                  | Description                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------ |
-| xapi.model.validateProperties             | Fail on unknown properties                                         |
-
-| xapi.model.validateLocaleNotUndetermined  | Fail on undetermined Locale objects                                |
-
-*todo: add other properties*
+| Property                                  | Description                                                                |
+| ----------------------------------------- | -------------------------------------------------------------------------- |
+| xapi.model.validateJson                   | Fail on trailing JSON tokens                                               |
+| xapi.model.validateProperties             | Fail on unknown JSON properties                                            |
+| xapi.model.validateNullValues             | Fail on null JSON properties                                               |
+| xapi.model.validateLiterals               | Fail on number and boolean JSON properties defined as string               |
+| xapi.model.validateObjectType             | Fail on invalid JSON objectType property                                   |
+| xapi.model.validateLocale                 | Fail on invalid Locale strings                                             |
+| xapi.model.validateTimestamp              | Fail on negative zero timezone offsets                                     |
+| xapi.model.validateActivityDefinition     | Fail on invalid xAPI ActivityDefinition (missing properties)               |
+| xapi.model.validateActor                  | Fail on invalid xAPI Actor (missing or multiple identifiers)               |
+| xapi.model.validateAuthority              | Fail on invalid xAPI Authority object                                      |
+| xapi.model.validateUriScheme              | Fail on invalid xAPI URI property (missing scheme)                         |
+| xapi.model.validateMbox                   | Fail on invalid xAPI mbox property (missing 'mailto:' prefix)              |
+| xapi.model.validateLocaleNotUndetermined  | Fail on invalid xAPI locale property (locale is undetermined)              |
+| xapi.model.validateScaledScore            | Fail on invalid xAPI scaledScore property (out of -1 - 1 range)            |
+| xapi.model.validateScore                  | Fail on invalid xAPI Score (raw score is out of min/max range)             |
+| xapi.model.validateStatementPlatform      | Fail on invalid xAPI context.platform (if present object must be Activity) |
+| xapi.model.validateStatementRevision      | Fail on invalid xAPI context.revision (if present object must be Activity) |
+| xapi.model.validateStatementListIds       | Fail on invalid xAPI statement List (conflicting statement ids)            |
+| xapi.model.validateStatementVerb          | Fail on invalid xAPI voided statement (object must be StatemnetReference)  |
+| xapi.model.validateUuidVariant            | Fail on invalid xAPI UUID property (must be UUID variant 4)                |
 
 
 The default value is **TRUE** for all of the above properties.
