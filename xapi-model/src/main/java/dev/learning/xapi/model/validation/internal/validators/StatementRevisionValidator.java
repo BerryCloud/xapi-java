@@ -7,9 +7,8 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.CoreStatement;
 import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The Statement being validated must have a valid revision.
@@ -24,16 +23,13 @@ import org.springframework.beans.factory.annotation.Value;
  *      Statement Context Requirements</a>
  */
 public class StatementRevisionValidator
-    implements ConstraintValidator<ValidStatementRevision, CoreStatement> {
-
-  @Value("#{!${xApi.model.validateStatementRevision:true}}")
-  private boolean disabled;
+    extends DisableableValidator<ValidStatementRevision, CoreStatement> {
 
   @Override
-  public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(CoreStatement value, ConstraintValidatorContext context) {
 
-    return disabled || value == null || value.getContext() == null
-        || value.getContext().getRevision() == null || value.getObject() instanceof Activity;
+    return value == null || value.getContext() == null || value.getContext().getRevision() == null
+        || value.getObject() instanceof Activity;
   }
 
 }

@@ -256,11 +256,38 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
 ## xAPI Model Spring Boot Autoconfigure
 
-The xAPI Model Spring Boot AutoConfigure uses picks up the following properties:
+The xAPI specification has extremely strict rules for API requests/responses formatting.
+The xAPI Model has inbuilt validation for all of these rules.
 
-| Property                      | Description                                                        |
-| ----------------------------- | ------------------------------------------------------------------ |
-| xapi.xxx                      |                                                                    |
+But if you plan to use the xAPI Model on a server side, you should keep in mind that some activity providers do not fully conform to these rules. 
+
+In some cases it may be desirable to turn off some or all of the rules in order to be compatible with a wider range of xAPI activity providers. However, doing this is in violation of the xAPI specification.
+
+The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules one by one.
+
+If you use Spring boor framework, simply add the following dependency into your pom.xml...
+
+```
+<dependency>
+  <groupId>dev.learning.xapi</groupId>
+  <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+  <version>...</version>
+</dependency>
+```
+
+... and you can customize the rules using the following properties:
+ 
+
+| Property                                  | Description                                                        |
+| ----------------------------------------- | ------------------------------------------------------------------ |
+| xapi.model.validateProperties             | Fail on unknown properties                                         |
+
+| xapi.model.validateLocaleNotUndetermined  | Fail on undetermined Locale objects                                |
+
+*todo: add other properties*
+
+
+The default value is **TRUE** for all of the above properties.
 
 ### Samples
 

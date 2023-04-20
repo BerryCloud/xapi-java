@@ -7,9 +7,8 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.CoreStatement;
 import dev.learning.xapi.model.StatementReference;
 import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * The Statement being validated must have a valid verb.
@@ -24,15 +23,12 @@ import org.springframework.beans.factory.annotation.Value;
  *      Voiding Statement Requirements</a>
  */
 public class StatementVerbValidator
-    implements ConstraintValidator<ValidStatementVerb, CoreStatement> {
-
-  @Value("#{!${xApi.model.validateStatementVerb:true}}")
-  private boolean disabled;
+    extends DisableableValidator<ValidStatementVerb, CoreStatement> {
 
   @Override
-  public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(CoreStatement value, ConstraintValidatorContext context) {
 
-    return disabled || value == null || value.getVerb() == null || !value.getVerb().isVoided()
+    return value == null || value.getVerb() == null || !value.getVerb().isVoided()
         || value.getObject() instanceof StatementReference;
 
   }

@@ -6,31 +6,27 @@ package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.validation.constraints.Statements;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Validates a list of statements.
  *
  * @author Thomas Turrell-Croft
  */
-public class StatementsValidator implements ConstraintValidator<Statements, List<Statement>> {
-
-  @Value("#{!${xApi.model.validateStatementListIds:true}}")
-  private boolean disabled;
+public class StatementsValidator extends DisableableValidator<Statements, List<Statement>> {
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public boolean isValid(List<Statement> values, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(List<Statement> values, ConstraintValidatorContext context) {
 
-    if (disabled || values == null) {
+    if (values == null) {
       return true;
     }
 
