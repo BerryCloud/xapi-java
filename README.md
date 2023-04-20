@@ -265,7 +265,7 @@ In some cases it may be desirable to turn off some or all of the rules in order 
 
 The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules one by one.
 
-If you use Spring boor framework, simply add the following dependency into your pom.xml...
+If you use Spring Boot framework, simply add the following dependency into your pom.xml...
 
 ```
 <dependency>
@@ -275,7 +275,7 @@ If you use Spring boor framework, simply add the following dependency into your 
 </dependency>
 ```
 
-... and you can customize the validation rules using the following properties:
+... and you can customize the validation rules using the following boolean properties:
  
 
 | Property                                  | Description                                                                |
@@ -291,7 +291,7 @@ If you use Spring boor framework, simply add the following dependency into your 
 | xapi.model.validateActor                  | Fail on invalid xAPI Actor (missing or multiple identifiers)               |
 | xapi.model.validateAuthority              | Fail on invalid xAPI Authority object                                      |
 | xapi.model.validateUriScheme              | Fail on invalid xAPI URI property (missing scheme)                         |
-| xapi.model.validateMbox                   | Fail on invalid xAPI mbox property (missing 'mailto:' prefix)              |
+| xapi.model.validateMbox                   | Fail on invalid xAPI mbox property (invalid email or missing prefix)       |
 | xapi.model.validateLocaleNotUndetermined  | Fail on invalid xAPI locale property (locale is undetermined)              |
 | xapi.model.validateScaledScore            | Fail on invalid xAPI scaledScore property (out of -1 - 1 range)            |
 | xapi.model.validateScore                  | Fail on invalid xAPI Score (raw score is out of min/max range)             |
