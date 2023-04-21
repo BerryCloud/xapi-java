@@ -254,18 +254,60 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
     .block();
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Samples
+
+The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
+
 ## xAPI Model Spring Boot Autoconfigure
 
-The xAPI specification has extremely strict rules for API requests/responses formatting.
-The xAPI Model has inbuilt validation for all of these rules.
+The xAPI specification has strict rules for API requests/responses formatting. The xAPI Model has inbuilt validation for all of these rules. However, if you plan to use the xAPI Model, you should keep in mind that some activity providers do not fully conform to these rules.
 
-But if you plan to use the xAPI Model on a server side, you should keep in mind that some activity providers do not fully conform to these rules. 
-
-In some cases it may be desirable to turn off some or all of the rules in order to be compatible with a wider range of xAPI activity providers. However, doing this is in violation of the xAPI specification.
+In some cases it may be desirable to turn off some or all of the rules in order to be compatible with a wider range of xAPI activity providers. However, it should be noted that doing this is in violation of the xAPI specification.
 
 The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules one by one.
 
-If you use Spring Boot framework, simply add the following dependency into your pom.xml...
+### Getting started
+
+To use the xAPI Model Spring Boot Autoconfigure include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
 
 ```
 <dependency>
@@ -275,8 +317,9 @@ If you use Spring Boot framework, simply add the following dependency into your 
 </dependency>
 ```
 
-... and you can customize the validation rules using the following boolean properties:
- 
+### Configuration
+
+The xAPI Model Spring Boot Autoconfigure has a Spring AutoConfiguration bean which picks up the following properties: 
 
 | Property                                  | Description                                                                |
 | ----------------------------------------- | -------------------------------------------------------------------------- |
@@ -304,9 +347,6 @@ If you use Spring Boot framework, simply add the following dependency into your 
 
 The default value is **TRUE** for all of the above properties.
 
-### Samples
-
-The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
 
 ## xAPI Java Model
 
