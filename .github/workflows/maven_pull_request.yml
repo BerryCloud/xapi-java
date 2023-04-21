@@ -1,15 +1,13 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Java CI with Maven on Pull Request
 
 # The API requires write permission on the repository to submit dependencies
 permissions:
   contents: write
   
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -28,16 +26,11 @@ jobs:
         run: mvn -B verify --file pom.xml
       - name: Scan with Sonar
         run: |
-          if [ $FORK = false ] || [ "$PUSH_REF" = "refs/heads/main" ]
+          if [ $FORK = false ]
           then
             mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berry-cloud -Dsonar.host.url=https://sonarcloud.io --file pom.xml
           fi
         env:
           FORK: ${{ github.event.pull_request.head.repo.fork }}
-          PUSH_REF: ${{ github.event.ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-      - name: Update dependency graph
-        uses: advanced-security/maven-dependency-submission-action@v3
