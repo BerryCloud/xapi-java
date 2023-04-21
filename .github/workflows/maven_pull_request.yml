@@ -2,7 +2,6 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
 name: Java CI with Maven on Pull Request
-
   
 on:
   pull_request:
