@@ -101,6 +101,18 @@ StatementResult moreStatementResult = moreResponse.getBody();
 Statement[] statements = moreStatementResult.getStatements();
 ```
 
+### Getting Statements as Iterator (and processing them as a Stream)
+
+Example:
+
+```java
+var statements = client.getStatementIterator().block();
+
+// process the first 100 Statements
+statements.toStream().limit(100).forEach(s -> {
+    // add logic here...
+  });
+```
 
 ### Posting a Statement
 
