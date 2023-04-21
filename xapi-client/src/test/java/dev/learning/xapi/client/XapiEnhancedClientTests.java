@@ -6,10 +6,12 @@ package dev.learning.xapi.client;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.Verb;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import okhttp3.mockwebserver.MockResponse;
@@ -192,6 +194,30 @@ class XapiEnhancedClientTests {
 
     // Then HasNext Is False
     assertThat(iterator.hasNext(), is(false));
+
+  }
+
+  @Test
+  void givenEmptyResponseWhenGettingStatementIteratorThenNextThrowsAnException()
+      throws InterruptedException {
+
+    // Given Empty Response
+    final var body = """
+        {
+          "statements" : [
+          ],
+          "more" : ""
+        }
+        """;
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody(body)
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting StatementIterator
+    final var iterator = client.getStatementIterator().block();
+
+    // Then Next Throws An Exception
+    assertThrows(NoSuchElementException.class, () -> iterator.next());
 
   }
 
