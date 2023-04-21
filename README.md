@@ -254,45 +254,6 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
     .block();
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Samples
 
 The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
