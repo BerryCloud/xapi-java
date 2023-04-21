@@ -88,8 +88,10 @@ class XapiEnhancedClientTests {
     final var iterator = client.getStatementIterator().block();
 
     // Then Result Is Expected
+    assertThat(iterator.hasNext(), is(true));
     assertThat(iterator.next().getId(),
         is(UUID.fromString("c0aaea0b-252b-4d9d-b7ad-46c541572570")));
+    assertThat(iterator.hasNext(), is(true));
     assertThat(iterator.next().getId(),
         is(UUID.fromString("4ed0209a-f50f-4f57-8602-ba5f981d211a")));
     assertThat(iterator.hasNext(), is(false));
@@ -174,10 +176,10 @@ class XapiEnhancedClientTests {
   }
 
   @Test
-  void givenEmptyResponseWhenGettingStatementIteratorThenHasNextIsFalse()
+  void givenEmptyStatementResultWhenGettingStatementIteratorThenHasNextIsFalse()
       throws InterruptedException {
 
-    // Given Empty Response
+    // Given Empty StatementResult
     final var body = """
         {
           "statements" : [
@@ -185,6 +187,26 @@ class XapiEnhancedClientTests {
           "more" : ""
         }
         """;
+
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody(body)
+        .addHeader("Content-Type", "application/json; charset=utf-8"));
+
+    // When Getting StatementIterator
+    final var iterator = client.getStatementIterator().block();
+
+    // Then HasNext Is False
+    assertThat(iterator.hasNext(), is(false));
+
+  }
+
+  @Test
+  void givenEmptyResponseWhenGettingStatementIteratorThenHasNextIsFalse()
+      throws InterruptedException {
+
+    // Given Empty Response
+    // This response is technically invalid by the xApi specification, but we cannot trust the xApi
+    // conformance of the commercial LRSs.
+    final var body = "{}";
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody(body)
         .addHeader("Content-Type", "application/json; charset=utf-8"));

@@ -117,7 +117,7 @@ public class XapiEnhancedClient extends XapiClient {
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> voidStatement(Statement targetStatement) {
-    return voidStatement(targetStatement.getId(), targetStatement.getActor());
+    return voidStatement(targetStatement, targetStatement.getActor());
   }
 
   /**
@@ -133,7 +133,7 @@ public class XapiEnhancedClient extends XapiClient {
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> voidStatement(Statement targetStatement, Actor actor) {
-    return voidStatement(targetStatement, actor);
+    return voidStatement(targetStatement.getId(), actor);
   }
 
   /**
