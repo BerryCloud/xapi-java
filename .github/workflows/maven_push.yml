@@ -3,7 +3,6 @@
 
 name: Java CI with Maven on Push
 
-  contents: write
   
 on:
   push:
