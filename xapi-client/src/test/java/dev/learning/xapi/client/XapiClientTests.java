@@ -2440,7 +2440,7 @@ class XapiClientTests {
       throws InterruptedException {
 
     // Given Empty Response
-    // This response is technically invalid by the xApi specification, but we cannot trust the xApi
+    // This response is technically invalid by the xAPI specification, but we cannot assume conformance.
     // conformance of the commercial LRSs.
     final var body = "{}";
 
