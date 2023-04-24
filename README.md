@@ -292,7 +292,7 @@ The xAPI specification has strict rules for API requests/responses formatting. T
 
 In some cases it may be desirable to turn off some or all of the rules in order to be compatible with a wider range of xAPI activity providers. However, it should be noted that doing this is in violation of the xAPI specification.
 
-The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules one by one.
+The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules.
 
 ### Getting started
 
