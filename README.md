@@ -117,7 +117,7 @@ Statement[] statements = moreStatementResult.getStatements();
 
 ### Getting Statements as Iterator (and processing them as a Stream)
 
-`getStatementIterator()` is convenient method a which combines the functionality of `getStatments()` and `getMoreStatements()`. In most cases it is preferable to use getStatementIterator() instead of `getStatments()` and `getMoreStatements()`.
+In most cases it is preferable to use `getStatementIterator()` instead of `getStatments()` and `getMoreStatements()`.
 
 Example:
 
