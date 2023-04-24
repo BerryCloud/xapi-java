@@ -47,9 +47,23 @@ The xAPI Java Client has a Spring AutoConfiguration bean which picks up the foll
 | xapi.client.password          | Password for basic authorization header                            |
 | xapi.client.authorization     | Authorization header (has precedence over the username and password properties)    |
 
-Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/3.0.4/reference/htmlsingle/#features.external-config.files) method supported by Spring Boot.
+Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/3.0.6/reference/htmlsingle/#features.external-config.files) method supported by Spring Boot.
 
 If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
+
+### Advanced Configuration
+
+The xAPI Java Client uses the Spring WebClient. Spring WebClient has default memory limit of 256KB for buffering data. If this limit is exceeded then a DataBufferLimitException will be thrown.
+
+The default memory limit of 256KB for buffering data could be exceeded if the LRS returns a large number of Statements or if the Statements contain attachments. 
+
+It is possible to set the memory limit for buffering data with the `spring.codec.max-in-memory-size` property.
+
+Example:
+
+```
+spring.codec.max-in-memory-size=1MB
+```
 
 ### Statement Resource
 
@@ -101,6 +115,20 @@ StatementResult moreStatementResult = moreResponse.getBody();
 Statement[] statements = moreStatementResult.getStatements();
 ```
 
+### Getting Statements as Iterator (and processing them as a Stream)
+
+`getStatementIterator()` is convenient method a which combines the functionality of `getStatments()` and `getMoreStatements()`. In most cases it is preferable to use getStatementIterator() instead of `getStatments()` and `getMoreStatements()`.
+
+Example:
+
+```java
+var statements = client.getStatementIterator().block();
+
+// process the first 100 Statements
+statements.toStream().limit(100).forEach(s -> {
+    // add logic here...
+  });
+```
 
 ### Posting a Statement
 
