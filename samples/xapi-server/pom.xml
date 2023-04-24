@@ -12,7 +12,7 @@
   <dependencies>
     <dependency>
       <groupId>dev.learning.xapi</groupId>
-      <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+      <artifactId>xapi-model-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

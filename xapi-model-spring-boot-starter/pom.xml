@@ -6,9 +6,9 @@
     <artifactId>xapi-build</artifactId>
     <version>1.1.5-SNAPSHOT</version>
   </parent>
-  <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
-  <name>xAPI Spring Boot Autoconfigure</name>
-  <description>learning.dev Spring Boot Autoconfigure</description>
+  <artifactId>xapi-model-spring-boot-starter</artifactId>
+  <name>xAPI Spring Boot Starter</name>
+  <description>learning.dev Spring Boot Starter</description>
 
   <dependencies>
     <dependency>

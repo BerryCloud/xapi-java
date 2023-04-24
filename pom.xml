@@ -81,7 +81,7 @@
     <module>xapi-model</module>
     <module>xapi-client</module>
     <module>samples</module>
-    <module>xapi-model-spring-boot-autoconfigure</module>
+    <module>xapi-model-spring-boot-starter</module>
   </modules>
   <build>
     <pluginManagement>
@@ -266,7 +266,7 @@
       </dependency>
       <dependency>
         <groupId>dev.learning.xapi</groupId>
-        <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+        <artifactId>xapi-model-spring-boot-starter</artifactId>
         <version>1.1.5-SNAPSHOT</version>
       </dependency>
       <dependency>
