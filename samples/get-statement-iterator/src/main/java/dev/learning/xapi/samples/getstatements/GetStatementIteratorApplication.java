@@ -41,7 +41,7 @@ public class GetStatementIteratorApplication implements CommandLineRunner {
 
     // Get Statements with Verb filter as StatementIterator
     var filteredStatements =
-        client.getStatementIterator(r -> r.verb(Verb.ATTEMPTED.getId())).block();
+        client.getStatementIterator(r -> r.verb(Verb.ATTEMPTED)).block();
 
     // Print the returned statements to the console
     filteredStatements.toStream().forEach(s -> System.out.println(s));
