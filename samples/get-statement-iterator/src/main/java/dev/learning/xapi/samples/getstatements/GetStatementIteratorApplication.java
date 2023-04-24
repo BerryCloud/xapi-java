@@ -35,10 +35,10 @@ public class GetStatementIteratorApplication implements CommandLineRunner {
   public void run(String... args) throws Exception {
 
     // Get Statements as StatementIterator
-    var iterator = client.getStatementIterator().block();
+    var statements = client.getStatementIterator().block();
 
     // Print the returned statements to the console
-    iterator.toStream().forEach(s -> System.out.println(s));
+    statements.toStream().forEach(s -> System.out.println(s));
 
     // Get Statements with Verb filter as StatementIterator
     var filteredStatements =

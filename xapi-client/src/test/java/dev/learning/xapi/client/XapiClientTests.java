@@ -518,7 +518,7 @@ class XapiClientTests {
 
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
 
-        .verb("http://adlnet.gov/expapi/verbs/answered")
+        .verb(Verb.ANSWERED)
 
         .activity("https://example.com/activity/1")
 
@@ -2440,7 +2440,8 @@ class XapiClientTests {
       throws InterruptedException {
 
     // Given Empty Response
-    // This response is technically invalid by the xAPI specification, but we cannot assume conformance.
+    // This response is technically invalid by the xAPI specification, but we cannot assume
+    // conformance.
     // conformance of the commercial LRSs.
     final var body = "{}";
 

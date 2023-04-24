@@ -51,6 +51,18 @@ Properties can be set using any [external configuration](https://docs.spring.io/
 
 If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
 
+### Advanced Configuration
+
+The xAPI Java Client is basically an extension of the Spring WebClient which configures the default memory limit for buffering data in-memory to 256KB. If this limit is exceeded in any case then we will encounter DataBufferLimitException error.
+
+It could happen if you use attachments or load a lot of statements from an LRS in one requests.
+
+To increase the memory limit, use the below property in application.properties file:
+
+```
+spring.codec.max-in-memory-size=1MB
+```
+
 ### Statement Resource
 
 The xAPI Java Client allows applications to store and fetch xAPI [Statements](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statements).
