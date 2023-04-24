@@ -37,7 +37,6 @@ public class GetMoreStatementsRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    // TODO this seems unclear in the spec
     return uriBuilder.replacePath(more.getPath()).replaceQuery(more.getQuery());
 
   }
