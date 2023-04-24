@@ -4,13 +4,12 @@
 
 package dev.learning.xapi.samples.getstatements;
 
+import dev.learning.xapi.client.XapiClient;
+import dev.learning.xapi.model.Verb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import dev.learning.xapi.client.XapiClient;
-import dev.learning.xapi.model.Verb;
  
 /**
  * Sample using xAPI client to get multiple statements as StatementIterator.
