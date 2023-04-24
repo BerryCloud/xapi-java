@@ -7,6 +7,7 @@ package dev.learning.xapi.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.StatementFormat;
+import dev.learning.xapi.model.Verb;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
@@ -176,6 +177,20 @@ public class GetStatementsRequest implements Request {
      */
     public Builder verb(String verb) {
       this.verb = URI.create(verb);
+      return this;
+    }
+
+    /**
+     * Sets the verb.
+     *
+     * @param verb The verb of the GetStatementRequest.
+     *
+     * @return This builder
+     *
+     * @see GetStatementsRequest#verb
+     */
+    public Builder verb(Verb verb) {
+      this.verb = verb.getId();
       return this;
     }
 

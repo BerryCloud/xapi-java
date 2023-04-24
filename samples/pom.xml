@@ -35,6 +35,7 @@
     <module>core</module>
     <!-- Statements Resource -->
     <module>get-statement</module>
+    <module>get-statement-iterator</module>
     <module>get-statement-with-attachment</module>
     <module>post-statement</module>
     <module>post-signed-statement</module>

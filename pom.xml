@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.5</version>
+    <version>3.0.6</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>dev.learning.xapi</groupId>
@@ -17,7 +17,7 @@
   <properties>
     <java.version>17</java.version>
     <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
-    <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
+    <maven-checkstyle-plugin.version>3.2.2</maven-checkstyle-plugin.version>
     <checkstyle.version>10.6.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.11.5</jjwt.version>
