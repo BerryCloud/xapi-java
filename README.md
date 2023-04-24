@@ -47,17 +47,19 @@ The xAPI Java Client has a Spring AutoConfiguration bean which picks up the foll
 | xapi.client.password          | Password for basic authorization header                            |
 | xapi.client.authorization     | Authorization header (has precedence over the username and password properties)    |
 
-Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/3.0.4/reference/htmlsingle/#features.external-config.files) method supported by Spring Boot.
+Properties can be set using any [external configuration](https://docs.spring.io/spring-boot/docs/3.0.6/reference/htmlsingle/#features.external-config.files) method supported by Spring Boot.
 
 If you need more specific customization (eg. your LRS needs specific headers, or you want to set the authorization header dynamically) you can create a custom configurer by implementing the `XapiClientConfigurer` interface.
 
 ### Advanced Configuration
 
-The xAPI Java Client is basically an extension of the Spring WebClient which configures the default memory limit for buffering data in-memory to 256KB. If this limit is exceeded in any case then we will encounter DataBufferLimitException error.
+The xAPI Java Client uses the Spring WebClient. Spring WebClient has default memory limit of 256KB for buffering data. If this limit is exceeded then a DataBufferLimitException will be thrown.
 
-It could happen if you use attachments or load a lot of statements from an LRS in one requests.
+The default memory limit of 256KB for buffering data could be exceeded if the LRS returns a large number of Statements or if the Statements contain attachments. 
 
-To increase the memory limit, use the below property in application.properties file:
+It is possible to set the memory limit for buffering data with the `spring.codec.max-in-memory-size` property.
+
+Example:
 
 ```
 spring.codec.max-in-memory-size=1MB
