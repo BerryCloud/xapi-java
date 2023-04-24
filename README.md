@@ -286,29 +286,29 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
 The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
 
-## xAPI Model Spring Boot Autoconfigure
+## xAPI Model Spring Boot Starter
 
 The xAPI specification has strict rules for API requests/responses formatting. The xAPI Model has inbuilt validation for all of these rules. However, if you plan to use the xAPI Model, you should keep in mind that some activity providers do not fully conform to these rules.
 
 In some cases it may be desirable to turn off some or all of the rules in order to be compatible with a wider range of xAPI activity providers. However, it should be noted that doing this is in violation of the xAPI specification.
 
-The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules.
+The xAPI Model Spring Boot Starter package provides an easy way to turn on/off these validation rules.
 
 ### Getting started
 
-To use the xAPI Model Spring Boot Autoconfigure include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
+To use the xAPI Model Spring Boot Starter include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
 
 ```
 <dependency>
   <groupId>dev.learning.xapi</groupId>
-  <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+  <artifactId>xapi-model-spring-boot-starter</artifactId>
   <version>1.1.5</version>
 </dependency>
 ```
 
 ### Configuration
 
-The xAPI Model Spring Boot Autoconfigure has a Spring AutoConfiguration bean which picks up the following properties: 
+The xAPI Model Spring Boot Starter has a Spring AutoConfiguration bean which picks up the following properties: 
 
 | Property                                  | Description                                                                |
 | ----------------------------------------- | -------------------------------------------------------------------------- |
