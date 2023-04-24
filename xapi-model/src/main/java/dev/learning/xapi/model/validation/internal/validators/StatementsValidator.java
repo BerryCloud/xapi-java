@@ -6,7 +6,7 @@ package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.validation.constraints.Statements;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.HashSet;
 import java.util.List;
@@ -18,13 +18,13 @@ import java.util.UUID;
  *
  * @author Thomas Turrell-Croft
  */
-public class StatementsValidator implements ConstraintValidator<Statements, List<Statement>> {
+public class StatementsValidator extends DisableableValidator<Statements, List<Statement>> {
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public boolean isValid(List<Statement> values, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(List<Statement> values, ConstraintValidatorContext context) {
 
     if (values == null) {
       return true;

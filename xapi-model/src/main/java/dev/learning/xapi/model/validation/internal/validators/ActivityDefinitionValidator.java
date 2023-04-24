@@ -6,7 +6,7 @@ package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.ActivityDefinition;
 import dev.learning.xapi.model.validation.constraints.ValidActivityDefinition;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
@@ -19,10 +19,10 @@ import jakarta.validation.ConstraintValidatorContext;
  *      Definition</a>
  */
 public class ActivityDefinitionValidator
-    implements ConstraintValidator<ValidActivityDefinition, ActivityDefinition> {
+    extends DisableableValidator<ValidActivityDefinition, ActivityDefinition> {
 
   @Override
-  public boolean isValid(ActivityDefinition value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(ActivityDefinition value, ConstraintValidatorContext context) {
 
     if (value == null) {
       return true;

@@ -13,6 +13,7 @@ import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import dev.learning.xapi.model.Actor;
+import dev.learning.xapi.model.validation.internal.validators.ActorValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
@@ -28,7 +29,7 @@ import java.lang.annotation.Target;
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">Actor</a>
  */
 @Documented
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = {ActorValidator.class})
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 public @interface ValidActor {

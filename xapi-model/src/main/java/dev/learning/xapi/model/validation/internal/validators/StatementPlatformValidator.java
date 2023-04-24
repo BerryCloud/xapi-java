@@ -7,7 +7,7 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.CoreStatement;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
@@ -23,10 +23,10 @@ import jakarta.validation.ConstraintValidatorContext;
  *      Statement Context Requirements</a>
  */
 public class StatementPlatformValidator
-    implements ConstraintValidator<ValidStatementPlatform, CoreStatement> {
+    extends DisableableValidator<ValidStatementPlatform, CoreStatement> {
 
   @Override
-  public boolean isValid(CoreStatement value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(CoreStatement value, ConstraintValidatorContext context) {
 
     return value == null || value.getContext() == null || value.getContext().getPlatform() == null
         || value.getObject() instanceof Activity;

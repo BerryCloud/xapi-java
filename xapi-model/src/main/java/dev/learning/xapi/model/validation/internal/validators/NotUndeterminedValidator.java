@@ -5,7 +5,7 @@
 package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.validation.constraints.NotUndetermined;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Locale;
 
@@ -14,10 +14,10 @@ import java.util.Locale;
  *
  * @author István Rátkai (Selindek)
  */
-public class NotUndeterminedValidator implements ConstraintValidator<NotUndetermined, Locale> {
+public class NotUndeterminedValidator extends DisableableValidator<NotUndetermined, Locale> {
 
   @Override
-  public boolean isValid(Locale value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(Locale value, ConstraintValidatorContext context) {
 
     if (value == null) {
       return true;

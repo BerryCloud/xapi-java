@@ -8,7 +8,7 @@ import dev.learning.xapi.model.Actor;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.Group;
 import dev.learning.xapi.model.validation.constraints.ValidAuthority;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
@@ -17,10 +17,10 @@ import jakarta.validation.ConstraintValidatorContext;
  * @author István Rátkai (Selindek)
  * @author Thomas Turrell-Croft
  */
-public class AuthorityValidator implements ConstraintValidator<ValidAuthority, Actor> {
+public class AuthorityValidator extends DisableableValidator<ValidAuthority, Actor> {
 
   @Override
-  public boolean isValid(Actor value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(Actor value, ConstraintValidatorContext context) {
 
     // can be null or Agent
     if (value == null || value instanceof Agent) {

@@ -286,6 +286,57 @@ client.deleteState(r -> r.activityId("https://example.com/activity/1")
 
 The samples folder in this repository contains [sample applications](samples) that use the xAPI client. 
 
+## xAPI Model Spring Boot Autoconfigure
+
+The xAPI specification has strict rules for API requests/responses formatting. The xAPI Model has inbuilt validation for all of these rules. However, if you plan to use the xAPI Model, you should keep in mind that some activity providers do not fully conform to these rules.
+
+In some cases it may be desirable to turn off some or all of the rules in order to be compatible with a wider range of xAPI activity providers. However, it should be noted that doing this is in violation of the xAPI specification.
+
+The xAPI Model Spring Boot Autoconfigure package provides an easy way to turn on/off these validation rules.
+
+### Getting started
+
+To use the xAPI Model Spring Boot Autoconfigure include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
+
+```
+<dependency>
+  <groupId>dev.learning.xapi</groupId>
+  <artifactId>xapi-model-spring-boot-autoconfigure</artifactId>
+  <version>1.1.5</version>
+</dependency>
+```
+
+### Configuration
+
+The xAPI Model Spring Boot Autoconfigure has a Spring AutoConfiguration bean which picks up the following properties: 
+
+| Property                                  | Description                                                                |
+| ----------------------------------------- | -------------------------------------------------------------------------- |
+| xapi.model.validateJson                   | Fail on trailing JSON tokens                                               |
+| xapi.model.validateProperties             | Fail on unknown JSON properties                                            |
+| xapi.model.validateNullValues             | Fail on null JSON properties                                               |
+| xapi.model.validateLiterals               | Fail on number and boolean JSON properties defined as string               |
+| xapi.model.validateObjectType             | Fail on invalid JSON objectType property                                   |
+| xapi.model.validateLocale                 | Fail on invalid Locale strings                                             |
+| xapi.model.validateTimestamp              | Fail on negative zero timezone offsets                                     |
+| xapi.model.validateActivityDefinition     | Fail on invalid xAPI ActivityDefinition (missing properties)               |
+| xapi.model.validateActor                  | Fail on invalid xAPI Actor (missing or multiple identifiers)               |
+| xapi.model.validateAuthority              | Fail on invalid xAPI Authority object                                      |
+| xapi.model.validateUriScheme              | Fail on invalid xAPI URI property (missing scheme)                         |
+| xapi.model.validateMbox                   | Fail on invalid xAPI mbox property (invalid email or missing prefix)       |
+| xapi.model.validateLocaleNotUndetermined  | Fail on invalid xAPI locale property (locale is undetermined)              |
+| xapi.model.validateScaledScore            | Fail on invalid xAPI scaledScore property (out of -1 - 1 range)            |
+| xapi.model.validateScore                  | Fail on invalid xAPI Score (raw score is out of min/max range)             |
+| xapi.model.validateStatementPlatform      | Fail on invalid xAPI context.platform (if present object must be Activity) |
+| xapi.model.validateStatementRevision      | Fail on invalid xAPI context.revision (if present object must be Activity) |
+| xapi.model.validateStatementListIds       | Fail on invalid xAPI statement List (conflicting statement ids)            |
+| xapi.model.validateStatementVerb          | Fail on invalid xAPI voided statement (object must be StatemnetReference)  |
+| xapi.model.validateUuidVariant            | Fail on invalid xAPI UUID property (must be UUID variant 4)                |
+
+
+The default value is **TRUE** for all of the above properties.
+
+
 ## xAPI Java Model
 
 The xAPI model can be used by clients that send xAPI data or by servers that receive xAPI data.

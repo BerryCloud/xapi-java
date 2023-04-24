@@ -5,7 +5,7 @@
 package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.validation.constraints.Variant;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.UUID;
 
@@ -13,8 +13,9 @@ import java.util.UUID;
  * The UUID being validated must have the specified variant.
  *
  * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  */
-public class VariantValidatorForUuid implements ConstraintValidator<Variant, UUID> {
+public class VariantValidatorForUuid extends DisableableValidator<Variant, UUID> {
 
   private int variant;
 
@@ -25,7 +26,7 @@ public class VariantValidatorForUuid implements ConstraintValidator<Variant, UUI
   }
 
   @Override
-  public boolean isValid(UUID value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(UUID value, ConstraintValidatorContext context) {
 
     if (value == null) {
       return true;

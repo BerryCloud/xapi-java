@@ -5,7 +5,7 @@
 package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.validation.constraints.Mbox;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 
@@ -17,7 +17,7 @@ import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
  *
  * @see <a href="http://xmlns.com/foaf/0.1/#term_mbox">Mbox</a>
  */
-public class MboxValidator implements ConstraintValidator<Mbox, String> {
+public class MboxValidator extends DisableableValidator<Mbox, String> {
 
   public static final String PREFIX = "mailto:";
 
@@ -30,8 +30,7 @@ public class MboxValidator implements ConstraintValidator<Mbox, String> {
   }
 
   @Override
-  public boolean isValid(String value, ConstraintValidatorContext context) {
-
+  public boolean isValidIfEnabled(String value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
     }

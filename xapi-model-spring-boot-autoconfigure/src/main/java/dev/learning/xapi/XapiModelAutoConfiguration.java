@@ -12,6 +12,21 @@ import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
+import dev.learning.xapi.model.validation.disableable.ValidatorDisabler;
+import dev.learning.xapi.model.validation.internal.validators.ActivityDefinitionValidator;
+import dev.learning.xapi.model.validation.internal.validators.ActorValidator;
+import dev.learning.xapi.model.validation.internal.validators.AuthorityValidator;
+import dev.learning.xapi.model.validation.internal.validators.HasSchemeValidatorForUri;
+import dev.learning.xapi.model.validation.internal.validators.MboxValidator;
+import dev.learning.xapi.model.validation.internal.validators.NotUndeterminedValidator;
+import dev.learning.xapi.model.validation.internal.validators.ScaledScoreValidator;
+import dev.learning.xapi.model.validation.internal.validators.ScoreValidator;
+import dev.learning.xapi.model.validation.internal.validators.StatementPlatformValidator;
+import dev.learning.xapi.model.validation.internal.validators.StatementRevisionValidator;
+import dev.learning.xapi.model.validation.internal.validators.StatementVerbValidator;
+import dev.learning.xapi.model.validation.internal.validators.StatementsValidator;
+import dev.learning.xapi.model.validation.internal.validators.VariantValidatorForUuid;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -25,7 +40,7 @@ import org.springframework.context.annotation.Configuration;
  * @author István Rátkai (Selindek)
  */
 @Configuration
-@AutoConfigureBefore(value = JacksonProperties.class)
+@AutoConfigureBefore(JacksonProperties.class)
 public class XapiModelAutoConfiguration {
 
   /**
@@ -39,84 +54,84 @@ public class XapiModelAutoConfiguration {
   }
 
   /**
-   * StrictObjectTypeCustomizer.
+   * ValidateObjectTypeCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictObjectType", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateObjectType", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictObjectTypeCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateObjectTypeCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictObjectTypeModule())
     );
   }
   
   /**
-   * StrictLocaleCustomizer.
+   * ValidateLocaleCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictLocale", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateLocale", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictLocaleCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateLocaleCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictLocaleModule())
     );
   }
 
   /**
-   * StrictTimestampCustomizer.
+   * ValidateTimestampCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictTimestamp", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateTimestamp", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictTimestampCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateTimestampCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictTimestampModule())
     );
   }
 
   /**
-   * StrictNullValuesCustomizer.
+   * ValidateNullValuesCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictNullValues", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateNullValues", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictNullValuesCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateNullValuesCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.registerModule(new XapiStrictNullValuesModule())
     );
   }
   
   /**
-   * SstrictPropertiesCustomizer.
+   * ValidatePropertiesCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictProperties", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateProperties", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictPropertiesCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validatePropertiesCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
     );
   }
 
   /**
-   * StrictJsonCustomizer.
+   * ValidateJsonCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictJson", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateJson", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictJsonCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateJsonCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> 
       objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true)
     );
   }
   
   /**
-   * StrictLiteralsCustomizer.
+   * ValidateLiteralsCustomizer.
    */
   @Bean
-  @ConditionalOnProperty(name = "xApi.model.strictLiterals", havingValue = "true",
+  @ConditionalOnProperty(name = "xapi.model.validateLiterals", havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer strictLiteralsCustomizer() {
+  public Jackson2ObjectMapperBuilderCustomizer validateLiteralsCustomizer() {
     return builder -> builder.postConfigurer(objectMapper -> {
 
       objectMapper.coercionConfigFor(LogicalType.Boolean)
@@ -137,5 +152,226 @@ public class XapiModelAutoConfiguration {
 
     });
 
+  }
+
+  /**
+   * ValidateActivityDefinitionPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateActivityDefinition", havingValue = "false")
+  public BeanPostProcessor validateActivityDefinitionPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof ActivityDefinitionValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateActorPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateActor", havingValue = "false")
+  public BeanPostProcessor validateActorPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof ActorValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateAuthorityPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateAuthority", havingValue = "false")
+  public BeanPostProcessor validateAuthorityPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof AuthorityValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateUriSchemePostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateUriScheme", havingValue = "false")
+  public BeanPostProcessor validateUriSchemePostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof HasSchemeValidatorForUri validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateMboxPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateMbox", havingValue = "false")
+  public BeanPostProcessor validateMboxPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof MboxValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+
+  /**
+   * ValidateLocaleNotUndeterminedPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateLocaleNotUndetermined", havingValue = "false")
+  public BeanPostProcessor validateLocaleNotUndeterminedPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof NotUndeterminedValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateScaledScorePostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateScaledScore", havingValue = "false")
+  public BeanPostProcessor validateScaledScorePostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof ScaledScoreValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateScorePostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateScore", havingValue = "false")
+  public BeanPostProcessor validateScorePostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof ScoreValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+
+  /**
+   * ValidateStatementPlatformPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateStatementPlatform", havingValue = "false")
+  public BeanPostProcessor validateStatementPlatformPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof StatementPlatformValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateStatementRevisionPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateStatementRevision", havingValue = "false")
+  public BeanPostProcessor validateStatementRevisionPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof StatementRevisionValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateStatementListIdsPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateStatementListIds", havingValue = "false")
+  public BeanPostProcessor validateStatementListIdsPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof StatementsValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateStatementVerbPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateStatementVerb", havingValue = "false")
+  public BeanPostProcessor validateStatementVerbPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof StatementVerbValidator validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
+  }
+  
+  /**
+   * ValidateUuidVariantPostProcessor.
+   */
+  @Bean
+  @ConditionalOnProperty(name = "xapi.model.validateUuidVariant", havingValue = "false")
+  public BeanPostProcessor validateUuidVariantPostProcessor() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (bean instanceof VariantValidatorForUuid validator) {
+          validator.setDisabler(ValidatorDisabler.DEFAULT_DISABLER);
+        }
+        return bean;
+      }
+    };
   }
 }

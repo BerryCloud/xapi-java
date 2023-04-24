@@ -6,7 +6,7 @@ package dev.learning.xapi.model.validation.internal.validators;
 
 import dev.learning.xapi.model.Score;
 import dev.learning.xapi.model.validation.constraints.VaildScore;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
@@ -14,10 +14,10 @@ import jakarta.validation.ConstraintValidatorContext;
  *
  * @author István Rátkai (Selindek)
  */
-public class ScoreValidator implements ConstraintValidator<VaildScore, Score> {
+public class ScoreValidator extends DisableableValidator<VaildScore, Score> {
 
   @Override
-  public boolean isValid(Score value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(Score value, ConstraintValidatorContext context) {
 
     if (value == null) {
       return true;

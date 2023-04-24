@@ -9,7 +9,7 @@ import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.Group;
 import dev.learning.xapi.model.StatementObject;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
-import jakarta.validation.ConstraintValidator;
+import dev.learning.xapi.model.validation.disableable.DisableableValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
@@ -19,7 +19,7 @@ import jakarta.validation.ConstraintValidatorContext;
  *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">Actor</a>
  */
-public class ActorValidator implements ConstraintValidator<ValidActor, Object> {
+public class ActorValidator extends DisableableValidator<ValidActor, Object> {
 
   /**
    * Checks if this {@link Actor} contains exactly one identifier.
@@ -27,7 +27,7 @@ public class ActorValidator implements ConstraintValidator<ValidActor, Object> {
    * @return true if this object is valid.
    */
   @Override
-  public boolean isValid(Object value, ConstraintValidatorContext context) {
+  public boolean isValidIfEnabled(Object value, ConstraintValidatorContext context) {
 
     if (value instanceof final Group group) {
       return group.getAccount() == null && group.getMbox() == null && group.getMboxSha1sum() == null

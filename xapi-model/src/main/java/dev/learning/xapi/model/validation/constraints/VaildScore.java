@@ -8,6 +8,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import dev.learning.xapi.model.validation.internal.validators.ScoreValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
@@ -18,11 +19,12 @@ import java.lang.annotation.Target;
  * The annotated element must be a valid score.
  *
  * @author Thomas Turrell-Croft
+ * @author István Rátkai (Selindek)
  *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#Score">Score</a>
  */
 @Documented
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = {ScoreValidator.class})
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface VaildScore {
