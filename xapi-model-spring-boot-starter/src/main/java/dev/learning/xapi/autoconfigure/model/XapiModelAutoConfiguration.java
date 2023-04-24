@@ -2,7 +2,7 @@
  * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
  */
 
-package dev.learning.xapi;
+package dev.learning.xapi.autoconfigure.model;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
