@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StatementService {
 
-  private final Logger log = LoggerFactory.getLogger(StatementController.class);
+  private final Logger log = LoggerFactory.getLogger(StatementService.class);
 
   private final StatementRepository repository;
   private final ObjectMapper mapper;
