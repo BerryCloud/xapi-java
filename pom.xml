@@ -16,7 +16,7 @@
   <url>https://github.com/BerryCloud/xapi-java</url>
   <properties>
     <java.version>17</java.version>
-    <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.2.2</maven-checkstyle-plugin.version>
     <checkstyle.version>10.6.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
