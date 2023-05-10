@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonMerge;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,11 +34,13 @@ public class ActivityDefinition {
   /**
    * The human readable/visual name of the Activity.
    */
+  @JsonMerge
   private LanguageMap name;
 
   /**
    * A description of the Activity.
    */
+  @JsonMerge
   private LanguageMap description;
 
   /**
@@ -90,6 +93,7 @@ public class ActivityDefinition {
   /**
    * A map of other properties as needed.
    */
+  @JsonMerge
   private Map<@HasScheme URI, Object> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI

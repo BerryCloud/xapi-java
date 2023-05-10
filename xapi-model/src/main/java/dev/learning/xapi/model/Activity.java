@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import com.fasterxml.jackson.annotation.JsonMerge;
 import dev.learning.xapi.model.validation.constraints.ValidActivityDefinition;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -40,6 +41,7 @@ public class Activity implements StatementObject, SubStatementObject {
    */
   @Valid
   @ValidActivityDefinition
+  @JsonMerge
   private ActivityDefinition definition;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
