@@ -198,11 +198,6 @@ class ActivityTests {
 
     ).build();
 
-    final var a = objectMapper.writeValueAsString(activity1);
-    System.err.println(activity1);
-    System.err.println(objectMapper.readValue(a, Activity.class));
-    System.err.println(a);
-
     final var updater = objectMapper.readerForUpdating(activity1);
     final var merged = (Activity) updater.readValue(objectMapper.writeValueAsString(activity2));
 
