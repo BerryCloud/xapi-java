@@ -207,8 +207,8 @@ class ActivityTests {
         )).build());
 
     final var expected = new LanguageMap();
-    expected.put(Locale.UK, "flavor");
-    expected.put(Locale.US, "flavour");
+    expected.put(Locale.UK, "flavour");
+    expected.put(Locale.US, "flavor");
 
     // When Merging Activities With ActivityDefinitions With Descriptions
     final var merged = (Activity) objectMapper.readerForUpdating(activity1).readValue(x);
