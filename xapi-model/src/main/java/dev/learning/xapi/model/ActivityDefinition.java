@@ -19,12 +19,23 @@ import lombok.Value;
 
 /**
  * This class represents the xAPI Activity Definition object.
+ * <p>
+ * Upon receiving a Statement with an Activity Definition that differs from the one stored, an LRS
+ * SHOULD ... change the definition and SHOULD update the stored Activity Definition.
+ * </p>
+ * <p>
+ * When two ActivityDefinitions are merged, the properties and lists are replaced and the maps are
+ * merged.
+ * </p>
  *
  * @author Thomas Turrell-Croft
  *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">xAPI
  *      Activity Definition</a>
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lrs-requirements-1">LRS
+ *      Requirements</a>
  */
 @Value
 @Builder

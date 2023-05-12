@@ -8,7 +8,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
@@ -17,7 +16,6 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -166,58 +164,45 @@ class ActivityTests {
   @Test
   void whenTwoActivitiesAreMergedThenResultIsExpected() throws IOException {
 
-    final var uriA = URI.create("http://example.com/aaa");
-    final var uriB = URI.create("http://example.com/bbb");
-    final var uriMap = URI.create("http://example.com/map");
-
-    // When Two Activities Are Merged
-    final var map1 = new HashMap<URI, Object>();
-    map1.put(uriA, "aaa");
-    map1.put(uriMap, new HashMap<>(Collections.singletonMap("aaa", "aaa")));
-
     final var activity1 = Activity.builder().definition(d -> d
 
-        .addName(Locale.US, "name-US")
+        .addName(Locale.US, "Color")
 
-        .addDescription(Locale.US, "description-US")
+        .addDescription(Locale.US, "flavor")
 
-        .extensions(map1)
-
-    ).build();
-
-    final var map2 = new HashMap<URI, Object>();
-    map2.put(uriB, "bbb");
-    map2.put(uriMap, new HashMap<>(Collections.singletonMap("bbb", "bbb")));
-
-    final var activity2 = Activity.builder().definition(d -> d
-
-        .addName(Locale.UK, "name-UK")
-
-        .addDescription(Locale.UK, "description-UK")
-
-        .extensions(map2)
+        .extensions(new HashMap<>(
+            Collections.singletonMap(URI.create("https://example.com/extensions/a"), "a")))
 
     ).build();
 
-    final var updater = objectMapper.readerForUpdating(activity1)
-        .without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    final var merged = (Activity) updater.readValue(objectMapper.writeValueAsString(activity2));
+    final var x = objectMapper.valueToTree(Activity.builder().definition(d -> d
+
+        .addName(Locale.UK, "Colour")
+
+        .addDescription(Locale.UK, "flavour")
+
+        .extensions(new HashMap<>(
+            Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))
+
+        )).build());
+
+    // When Merging Activities With ActivityDefinitions
+    final var merged = (Activity) objectMapper.readerForUpdating(activity1).readValue(x);
 
     // Then Result Is Expected
-    assertThat(merged.getDefinition().getName().get(Locale.US), is("name-US"));
-    assertThat(merged.getDefinition().getName().get(Locale.UK), is("name-UK"));
+    assertThat(merged.getDefinition().getName().get(Locale.US), is("Color"));
+    assertThat(merged.getDefinition().getName().get(Locale.UK), is("Colour"));
 
-    assertThat(merged.getDefinition().getDescription().get(Locale.US), is("description-US"));
-    assertThat(merged.getDefinition().getDescription().get(Locale.UK), is("description-UK"));
+    assertThat(merged.getDefinition().getDescription().get(Locale.US), is("flavor"));
+    assertThat(merged.getDefinition().getDescription().get(Locale.UK), is("flavour"));
 
-    assertThat(merged.getDefinition().getExtensions().get(uriA), is("aaa"));
-    assertThat(merged.getDefinition().getExtensions().get(uriB), is("bbb"));
+    assertThat(
+        merged.getDefinition().getExtensions().get(URI.create("https://example.com/extensions/a")),
+        is("a"));
+    assertThat(
+        merged.getDefinition().getExtensions().get(URI.create("https://example.com/extensions/b")),
+        is("b"));
 
-    @SuppressWarnings("unchecked")
-    final var deepMap = (Map<String, Object>) merged.getDefinition().getExtensions().get(uriMap);
-
-    assertThat(deepMap.get("aaa"), is("aaa"));
-    assertThat(deepMap.get("bbb"), is("bbb"));
 
   }
 
