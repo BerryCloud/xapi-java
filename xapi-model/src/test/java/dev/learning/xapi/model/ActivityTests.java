@@ -7,15 +7,18 @@ package dev.learning.xapi.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -164,9 +167,28 @@ class ActivityTests {
   @Test
   void whenTwoActivitiesAreMergedThenResultIsExpected() throws IOException {
 
-    final var activity1 = Activity.builder().definition(d -> d
+    final var activity1 = Activity.builder().definition(d -> d.addName(Locale.US, "Color")).build();
 
-        .addName(Locale.US, "Color")
+    final var x = objectMapper
+        .valueToTree(Activity.builder().definition(d -> d.addName(Locale.UK, "Colour")).build());
+
+    final var expected = new LanguageMap();
+    expected.put(Locale.UK, "Colour");
+    expected.put(Locale.US, "Color");
+
+    // When Merging Activities With ActivityDefinitions With Names
+    final var merged = (Activity) objectMapper.readerForUpdating(activity1).readValue(x);
+
+    // Then Merged Name Is Expected
+    assertThat(merged.getDefinition().getName(), hasAllEntries(expected));
+
+  }
+
+  @Test
+  void whenMergingActivitiesWithActivityDefinitionsWithDescriptionsThenMergedDefinitionIsExpected()
+      throws IOException {
+
+    final var activity1 = Activity.builder().definition(d -> d
 
         .addDescription(Locale.US, "flavor")
 
@@ -177,7 +199,39 @@ class ActivityTests {
 
     final var x = objectMapper.valueToTree(Activity.builder().definition(d -> d
 
-        .addName(Locale.UK, "Colour")
+        .addDescription(Locale.UK, "flavour")
+
+        .extensions(new HashMap<>(
+            Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))
+
+        )).build());
+
+    final var expected = new LanguageMap();
+    expected.put(Locale.UK, "flavor");
+    expected.put(Locale.US, "flavour");
+
+    // When Merging Activities With ActivityDefinitions With Descriptions
+    final var merged = (Activity) objectMapper.readerForUpdating(activity1).readValue(x);
+
+    // Then Merged Definition Is Expected
+    assertThat(merged.getDefinition().getDescription(), hasAllEntries(expected));
+
+  }
+
+  @Test
+  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionIsExpected()
+      throws IOException {
+
+    final var activity1 = Activity.builder().definition(d -> d
+
+        .addDescription(Locale.US, "flavor")
+
+        .extensions(new HashMap<>(
+            Collections.singletonMap(URI.create("https://example.com/extensions/a"), "a")))
+
+    ).build();
+
+    final var x = objectMapper.valueToTree(Activity.builder().definition(d -> d
 
         .addDescription(Locale.UK, "flavour")
 
@@ -186,24 +240,17 @@ class ActivityTests {
 
         )).build());
 
-    // When Merging Activities With ActivityDefinitions
+    final Map<@HasScheme URI, Object> expected = new HashMap<>();
+    expected.put(URI.create("https://example.com/extensions/a"), "a");
+    expected.put(URI.create("https://example.com/extensions/b"), "b");
+
+    // When Merging Activities With ActivityDefinitions With Extensions
     final var merged = (Activity) objectMapper.readerForUpdating(activity1).readValue(x);
 
-    // Then Result Is Expected
-    assertThat(merged.getDefinition().getName().get(Locale.US), is("Color"));
-    assertThat(merged.getDefinition().getName().get(Locale.UK), is("Colour"));
-
-    assertThat(merged.getDefinition().getDescription().get(Locale.US), is("flavor"));
-    assertThat(merged.getDefinition().getDescription().get(Locale.UK), is("flavour"));
-
-    assertThat(
-        merged.getDefinition().getExtensions().get(URI.create("https://example.com/extensions/a")),
-        is("a"));
-    assertThat(
-        merged.getDefinition().getExtensions().get(URI.create("https://example.com/extensions/b")),
-        is("b"));
-
+    // Then Merged Extension Is Expected
+    assertThat(merged.getDefinition().getExtensions(), hasAllEntries(expected));
 
   }
+
 
 }
