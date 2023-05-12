@@ -8,7 +8,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
@@ -199,8 +198,12 @@ class ActivityTests {
 
     ).build();
 
-    final var updater = objectMapper.readerForUpdating(activity1)
-        .without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    final var a = objectMapper.writeValueAsString(activity1);
+    System.err.println(activity1);
+    System.err.println(objectMapper.readValue(a, Activity.class));
+    System.err.println(a);
+
+    final var updater = objectMapper.readerForUpdating(activity1);
     final var merged = (Activity) updater.readValue(objectMapper.writeValueAsString(activity2));
 
     // Then Result Is Expected
