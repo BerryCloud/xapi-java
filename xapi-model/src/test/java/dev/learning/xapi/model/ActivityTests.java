@@ -165,7 +165,8 @@ class ActivityTests {
   }
 
   @Test
-  void whenTwoActivitiesAreMergedThenResultIsExpected() throws IOException {
+  void whenMergingActivitiesWithActivityDefinitionsWithNamesThenMergedNameIsExpected()
+      throws IOException {
 
     final var activity1 = Activity.builder().definition(d -> d.addName(Locale.US, "Color")).build();
 
@@ -188,23 +189,11 @@ class ActivityTests {
   void whenMergingActivitiesWithActivityDefinitionsWithDescriptionsThenMergedDefinitionIsExpected()
       throws IOException {
 
-    final var activity1 = Activity.builder().definition(d -> d
+    final var activity1 =
+        Activity.builder().definition(d -> d.addDescription(Locale.US, "flavor")).build();
 
-        .addDescription(Locale.US, "flavor")
-
-        .extensions(new HashMap<>(
-            Collections.singletonMap(URI.create("https://example.com/extensions/a"), "a")))
-
-    ).build();
-
-    final var x = objectMapper.valueToTree(Activity.builder().definition(d -> d
-
-        .addDescription(Locale.UK, "flavour")
-
-        .extensions(new HashMap<>(
-            Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))
-
-        )).build());
+    final var x = objectMapper.valueToTree(
+        Activity.builder().definition(d -> d.addDescription(Locale.UK, "flavour")).build());
 
     final var expected = new LanguageMap();
     expected.put(Locale.UK, "flavour");
@@ -219,26 +208,18 @@ class ActivityTests {
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionIsExpected()
+  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
       throws IOException {
 
-    final var activity1 = Activity.builder().definition(d -> d
-
-        .addDescription(Locale.US, "flavor")
-
-        .extensions(new HashMap<>(
-            Collections.singletonMap(URI.create("https://example.com/extensions/a"), "a")))
+    final var activity1 = Activity.builder().definition(d -> d.extensions(new HashMap<>(
+        Collections.singletonMap(URI.create("https://example.com/extensions/a"), "a")))
 
     ).build();
 
-    final var x = objectMapper.valueToTree(Activity.builder().definition(d -> d
-
-        .addDescription(Locale.UK, "flavour")
-
-        .extensions(new HashMap<>(
-            Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))
-
-        )).build());
+    final var x = objectMapper.valueToTree(Activity.builder()
+        .definition(d -> d.extensions(new HashMap<>(
+            Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))))
+        .build());
 
     final Map<@HasScheme URI, Object> expected = new HashMap<>();
     expected.put(URI.create("https://example.com/extensions/a"), "a");
@@ -247,7 +228,7 @@ class ActivityTests {
     // When Merging Activities With ActivityDefinitions With Extensions
     final var merged = (Activity) objectMapper.readerForUpdating(activity1).readValue(x);
 
-    // Then Merged Extension Is Expected
+    // Then Merged Extensions Are Expected
     assertThat(merged.getDefinition().getExtensions(), hasAllEntries(expected));
 
   }
