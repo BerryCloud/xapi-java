@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonMerge;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import java.net.URI;
 import java.util.ArrayList;
@@ -18,12 +19,23 @@ import lombok.Value;
 
 /**
  * This class represents the xAPI Activity Definition object.
+ * <p>
+ * Upon receiving a Statement with an Activity Definition that differs from the one stored, an LRS
+ * SHOULD ... change the definition and SHOULD update the stored Activity Definition.
+ * </p>
+ * <p>
+ * When two ActivityDefinitions are merged, the properties and lists are replaced and the maps are
+ * merged.
+ * </p>
  *
  * @author Thomas Turrell-Croft
  *
  * @see <a href=
  *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">xAPI
  *      Activity Definition</a>
+ * @see <a href=
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lrs-requirements-1">LRS
+ *      Requirements</a>
  */
 @Value
 @Builder
@@ -33,11 +45,13 @@ public class ActivityDefinition {
   /**
    * The human readable/visual name of the Activity.
    */
+  @JsonMerge
   private LanguageMap name;
 
   /**
    * A description of the Activity.
    */
+  @JsonMerge
   private LanguageMap description;
 
   /**
@@ -90,6 +104,7 @@ public class ActivityDefinition {
   /**
    * A map of other properties as needed.
    */
+  @JsonMerge
   private Map<@HasScheme URI, Object> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI

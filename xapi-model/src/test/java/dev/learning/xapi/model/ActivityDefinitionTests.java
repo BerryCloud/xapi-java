@@ -9,15 +9,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+
 
 /**
  * Activity Definition Tests.
@@ -331,8 +336,7 @@ class ActivityDefinitionTests {
         .build();
 
     // When Serializing Activity Definition Of InteractionType True False
-    final var result =
-        objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(objectMapper
@@ -367,8 +371,7 @@ class ActivityDefinitionTests {
         .build();
 
     // When Serializing Activity Definition Of InteractionType Choice
-    final var result =
-        objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(
@@ -438,6 +441,114 @@ class ActivityDefinitionTests {
 
     // Then Description Language Map Has Two Entries
     assertThat(activityDefinition.getDescription(), aMapWithSize(2));
+
+  }
+
+  @Test
+  void whenMergingActivityDefinitionsWithNamesThenMergedNameIsExpected() throws IOException {
+
+    final var activityDefinition1 =
+        ActivityDefinition.builder().addName(Locale.UK, "Colour").build();
+
+    final var x =
+        objectMapper.valueToTree(ActivityDefinition.builder().addName(Locale.US, "Color").build());
+
+    final var expected = new LanguageMap();
+    expected.put(Locale.UK, "Colour");
+    expected.put(Locale.US, "Color");
+
+    // When Merging ActivityDefinitions With Names
+    final var merged =
+        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+
+    // Then Merged Name Is Expected
+    assertThat(merged.getName(), hasAllEntries(expected));
+
+  }
+
+  @Test
+  void whenMergingActivityDefinitionsWithDescriptionsThenMergedDescriptionIsExpected()
+      throws IOException {
+
+    final var activityDefinition1 =
+        ActivityDefinition.builder().addDescription(Locale.UK, "flavour").build();
+
+    final var x = objectMapper
+        .valueToTree(ActivityDefinition.builder().addDescription(Locale.US, "flavor").build());
+
+    final var expected = new LanguageMap();
+    expected.put(Locale.UK, "flavour");
+    expected.put(Locale.US, "flavor");
+
+    // When Merging ActivityDefinitions With Descriptions
+    final var merged =
+        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+
+    // Then Merged Description Is Expected
+    assertThat(merged.getDescription(), hasAllEntries(expected));
+
+  }
+
+  @Test
+  void whenMergingActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
+      throws IOException {
+
+    final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
+    extensions1.put(URI.create("https://example.com/extensions/1"), "1");
+
+    final var activityDefinition1 = ActivityDefinition.builder().addName(Locale.UK, "Colour")
+        .addDescription(Locale.UK, "flavour").extensions(extensions1).build();
+
+    final Map<@HasScheme URI, Object> extensions2 = new HashMap<>();
+    extensions2.put(URI.create("https://example.com/extensions/2"), "2");
+
+    final var x = objectMapper.valueToTree(ActivityDefinition.builder().addName(Locale.US, "Color")
+        .addDescription(Locale.US, "flavor").extensions(extensions2).build());
+
+    final Map<@HasScheme URI, Object> expected = new HashMap<>();
+    expected.put(URI.create("https://example.com/extensions/1"), "1");
+    expected.put(URI.create("https://example.com/extensions/2"), "2");
+
+    // When Merging ActivityDefinitions With Extensions
+    final var merged =
+        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+
+    // Then Merged Extensions Are Expected
+    assertThat(merged.getExtensions(), hasAllEntries(expected));
+
+  }
+
+  @Test
+  void whenMergingActivityDefinitionsWithNestedExtensionsThenMergedExtensionsAreExpected()
+      throws IOException {
+
+    final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
+    extensions1.put(URI.create("https://example.com/extensions/map"),
+        new HashMap<>(Collections.singletonMap("a", "y")));
+
+    final var activityDefinition1 = ActivityDefinition.builder().extensions(extensions1).build();
+
+    final Map<@HasScheme URI, Object> extensions2 = new HashMap<>();
+    extensions2.put(URI.create("https://example.com/extensions/map"),
+        new HashMap<>(Collections.singletonMap("b", "z")));
+
+    final var x =
+        objectMapper.valueToTree(ActivityDefinition.builder().extensions(extensions2).build());
+
+    final Map<String, String> expected = new HashMap<>();
+    expected.put("a", "y");
+    expected.put("b", "z");
+
+    // When Merging ActivityDefinitions With Nested Extensions
+    final var merged =
+        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+
+    @SuppressWarnings("unchecked")
+    final var po = (Map<String, String>) merged.getExtensions()
+        .get(URI.create("https://example.com/extensions/map"));
+
+    // Then Merged Extensions Are Expected
+    assertThat(po, hasAllEntries(expected));
 
   }
 
