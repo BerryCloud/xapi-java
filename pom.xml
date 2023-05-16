@@ -21,7 +21,6 @@
     <checkstyle.version>10.6.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.11.5</jjwt.version>
-    <jackson.version>${jackson-bom.version}</jackson.version>
   </properties>
   <organization>
     <name>Berry Cloud Ltd</name>
