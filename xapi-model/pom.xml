@@ -23,6 +23,15 @@
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-jackson</artifactId>
       <optional>true</optional>
+      <exclusions>
+        <!-- This will upgrade the version of Jackson that jjwt-jackson uses. In 
+          future if jjwt-jackson does not work with the same version of Jackson as Spring then 
+          downgrade the version of Jackson that Spring uses instead. -->
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
