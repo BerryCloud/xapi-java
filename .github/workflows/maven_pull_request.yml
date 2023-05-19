@@ -2,7 +2,7 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
 name: Java CI with Maven on Pull Request
-  
+
 on:
   pull_request:
     branches: ["main"]
@@ -24,7 +24,7 @@ jobs:
         run: |
           if [ $FORK = false ]
           then
-            mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berry-cloud -Dsonar.host.url=https://sonarcloud.io --file pom.xml
+            mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud -Dsonar.host.url=https://sonarcloud.io --file pom.xml
           fi
         env:
           FORK: ${{ github.event.pull_request.head.repo.fork }}

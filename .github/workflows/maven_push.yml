@@ -2,7 +2,7 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
 name: Java CI with Maven on Push
-  
+
 on:
   push:
     branches: ["main"]
@@ -21,7 +21,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B verify --file pom.xml
       - name: Scan with Sonar
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berry-cloud -Dsonar.host.url=https://sonarcloud.io --file pom.xml
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud -Dsonar.host.url=https://sonarcloud.io --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
