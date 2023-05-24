@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -123,6 +124,8 @@ public class XapiClient {
    * </p>
    *
    * @return the ResponseEntity
+   *
+   * @throws MissingResponseBodyException if the response body is missing
    */
   public Mono<ResponseEntity<UUID>> postStatement(PostStatementRequest request) {
 
@@ -140,7 +143,8 @@ public class XapiClient {
 
         .toEntity(LIST_UUID_TYPE)
 
-        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(i.getBody().get(0)));
+        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(Optional.ofNullable(i.getBody())
+            .map(l -> l.get(0)).orElseThrow(MissingResponseBodyException::new)));
 
   }
 
@@ -1432,6 +1436,9 @@ public class XapiClient {
 
     private void init(ResponseEntity<StatementResult> response) {
       final var statementResult = response.getBody();
+      if (statementResult == null) {
+        throw new MissingResponseBodyException();
+      }
       more = statementResult.hasMore() ? statementResult.getMore() : null;
       final var s = statementResult.getStatements();
       statements = s == null ? Collections.emptyIterator() : s.iterator();
