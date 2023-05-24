@@ -50,7 +50,7 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
     public StrictObjectTypePropertyDeserializer(JavaType baseType, TypeIdResolver idRes,
         String typeProperty, boolean typeIdVisible, JavaType defaultImpl, As includeAs) {
-      super(baseType, idRes, typeProperty, typeIdVisible, defaultImpl, includeAs);
+      super(baseType, idRes, typeProperty, typeIdVisible, defaultImpl, includeAs, true);
     }
 
     public StrictObjectTypePropertyDeserializer(AsPropertyTypeDeserializer src,

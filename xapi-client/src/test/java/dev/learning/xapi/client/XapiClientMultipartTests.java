@@ -326,6 +326,7 @@ class XapiClientMultipartTests {
 
   }
 
+  @SuppressWarnings("null")
   @Test
   void whenGettingStatementWithAttachmentThenResponseIsExpected() throws InterruptedException {
 
@@ -367,6 +368,7 @@ class XapiClientMultipartTests {
         "Statement(id=183aabbe-ef9e-49c9-82a3-16ce5135b25b, actor=Agent(super=Actor(name=A N Other, mbox=mailto:another@example.com, mboxSha1sum=null, openid=null, account=null)), verb=Verb(id=http://adlnet.gov/expapi/verbs/attempted, display={und=attempted}), object=Activity(id=https://example.com/activity/simplestatement, definition=ActivityDefinition(name={en=Simple Statement}, description=null, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null)), result=null, context=null, timestamp=2023-03-29T12:42:27.923571Z, stored=2023-03-29T12:42:27.923571Z, authority=Agent(super=Actor(name=null, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://localhost, name=admin))), version=null, attachments=[Attachment(usageType=http://adlnet.gov/expapi/attachments/code, display={en=binary attachment}, description=null, contentType=application/octet-stream, length=6, sha2=0ff3c6749b3eeaae17254fdf0e2de1f32b21c592f474bf39b62b398e8a787eef, fileUrl=null, content=[64, 65, 66, 67, 68, 69]), Attachment(usageType=http://adlnet.gov/expapi/attachments/text, display={en=text attachment}, description=null, contentType=text/plain, length=17, sha2=b154d3fd46a5068da42ba05a8b9c971688ab5a57eb5c3a0e50a23c42a86786e5, fileUrl=null, content=[83, 105, 109, 112, 108, 101, 32, 97, 116, 116, 97, 99, 104, 109, 101, 110, 116])])"));
   }
 
+  @SuppressWarnings("null")
   @Test
   void whenGettingStatementsWithAttachmentsThenResponseIsExpected() throws InterruptedException {
 
