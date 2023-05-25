@@ -389,18 +389,16 @@ class XapiClientTests {
         "application/json"));
 
     // When Posting Statement
+    final var response = client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
+
     // Then MissingResponseBodyException Is Thrown
-    assertThrows(MissingResponseBodyException.class,
-        () -> client
-            .postStatement(
-                r -> r.statement(
-                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-                        .verb(Verb.ATTEMPTED)
-
-                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-            .block());
+    assertThrows(MissingResponseBodyException.class, () -> response.block());
 
   }
 
@@ -411,18 +409,16 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 400 Bad Request"));
 
     // When Posting Statement
+    final var response = client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
+
     // Then BadRequest Is Thrown
-    assertThrows(BadRequest.class,
-        () -> client
-            .postStatement(
-                r -> r.statement(
-                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-                        .verb(Verb.ATTEMPTED)
-
-                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-            .block());
+    assertThrows(BadRequest.class, () -> response.block());
 
   }
 
@@ -433,18 +429,16 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 500 Internal Server Error"));
 
     // When Posting Statement
+    final var response = client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
+
     // Then InternalServerError Is Thrown
-    assertThrows(InternalServerError.class,
-        () -> client
-            .postStatement(
-                r -> r.statement(
-                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-                        .verb(Verb.ATTEMPTED)
-
-                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-            .block());
+    assertThrows(InternalServerError.class, () -> response.block());
 
   }
 
