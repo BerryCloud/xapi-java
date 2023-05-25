@@ -36,6 +36,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException.BadRequest;
+import org.springframework.web.reactive.function.client.WebClientResponseException.InternalServerError;
 
 /**
  * XapiClient Tests.
@@ -377,6 +379,67 @@ class XapiClientTests {
 
     // Then Content Type Header Is Application Json
     assertThat(recordedRequest.getHeader("content-type"), is("application/json"));
+  }
+
+  @Test
+  void givenApiResponseIsEmptyWhenPostingStatementThenMissingResponseBodyExceptionIsThrown() {
+
+    // Given Api Response Is Empty
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setHeader("Content-Type",
+        "application/json"));
+
+    // When Posting Statement
+    final var response = client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
+
+    // Then MissingResponseBodyException Is Thrown
+    assertThrows(MissingResponseBodyException.class, () -> response.block());
+
+  }
+
+  @Test
+  void givenApiResponseIsBadRequestWhenPostingStatementThenBadRequestIsThrown() {
+
+    // Given Api Response Is Bad Request
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 400 Bad Request"));
+
+    // When Posting Statement
+    final var response = client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
+
+    // Then BadRequest Is Thrown
+    assertThrows(BadRequest.class, () -> response.block());
+
+  }
+
+  @Test
+  void givenApiResponseIsInternalServerErrorWhenPostingStatementThenInternalServerErrorIsThrown() {
+
+    // Given Api Response Is Internal Server Error
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 500 Internal Server Error"));
+
+    // When Posting Statement
+    final var response = client.postStatement(r -> r
+        .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .verb(Verb.ATTEMPTED)
+
+            .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
+
+    // Then InternalServerError Is Thrown
+    assertThrows(InternalServerError.class, () -> response.block());
+
   }
 
   // Posting a Signed Statement
