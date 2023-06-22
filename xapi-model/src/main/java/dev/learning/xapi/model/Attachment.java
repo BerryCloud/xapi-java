@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.valueextraction.Unwrapping;
 import java.net.URI;
@@ -37,6 +38,7 @@ public class Attachment {
    * Identifies the usage of this Attachment.
    */
   @NotNull
+  @HasScheme
   private URI usageType;
 
   /**
@@ -75,6 +77,7 @@ public class Attachment {
    * performs DNS lookups when calling equals and hashcode.
    * </p>
    */
+  @HasScheme
   private URI fileUrl;
 
   /**

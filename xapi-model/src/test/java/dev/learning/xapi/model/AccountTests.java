@@ -185,4 +185,23 @@ class AccountTests {
 
   }
 
+  @Test
+  void whenValidatingAccountWithHomepageWithNoSchemeThenConstraintViolationsSizeIsOne() {
+
+    final var account = Account.builder()
+
+        .name("Example")
+
+        .homePage(URI.create("www.example.com"))
+
+        .build();
+
+    // When Validating Account With Homepage With No Scheme
+    final Set<ConstraintViolation<Account>> constraintViolations = validator.validate(account);
+
+    // Then ConstraintViolations Size Is One
+    assertThat(constraintViolations, hasSize(1));
+
+  }
+
 }

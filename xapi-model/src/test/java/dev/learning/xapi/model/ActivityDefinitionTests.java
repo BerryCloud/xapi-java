@@ -13,6 +13,8 @@ import static org.springframework.integration.test.matcher.MapContentMatchers.ha
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -34,522 +36,580 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("ActivityDefinition tests")
 class ActivityDefinitionTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+    private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
-  @Test
-  void whenDeserializingActivityDefinitionThenResultIsInstanceOfActivityDefinition()
-      throws Exception {
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenResultIsInstanceOfActivityDefinition()
+            throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Result Is Instance Of Activity Definition
-    assertThat(result, instanceOf(ActivityDefinition.class));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Result Is Instance Of Activity Definition
+        assertThat(result, instanceOf(ActivityDefinition.class));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenMoreInfoIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenMoreInfoIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then MoreInfo Is Expected
-    assertThat(result.getMoreInfo(), is(URI.create("http://example.com/more")));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then MoreInfo Is Expected
+        assertThat(result.getMoreInfo(), is(URI.create("http://example.com/more")));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenInteractionTypeIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenInteractionTypeIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then InteractionType Is Expected
-    assertThat(result.getInteractionType(), is(InteractionType.TRUE_FALSE));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then InteractionType Is Expected
+        assertThat(result.getInteractionType(), is(InteractionType.TRUE_FALSE));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenCorrectResponsesPatternIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenCorrectResponsesPatternIsExpected()
+            throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then CorrectResponsesPattern Is Expected
-    assertThat(result.getCorrectResponsesPattern(), is(Collections.singletonList(
-        "{case_matters=false}{lang=en}To store and provide access to learning experiences.")));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then CorrectResponsesPattern Is Expected
+        assertThat(result.getCorrectResponsesPattern(), is(Collections.singletonList(
+                "{case_matters=false}{lang=en}To store and provide access to learning experiences.")));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenExtensionsAreExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenExtensionsAreExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Extensions Are Expected
-    assertThat(result.getExtensions().get(URI.create("http://url")), is("www.example.com"));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Extensions Are Expected
+        assertThat(result.getExtensions().get(URI.create("http://url")), is("www.example.com"));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenNameIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenNameIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Name Is Expected
-    assertThat(result.getName().get(Locale.US),
-        is("Does the xAPI include the concept of statements?"));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Name Is Expected
+        assertThat(result.getName().get(Locale.US),
+                is("Does the xAPI include the concept of statements?"));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenDescriptionIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenDescriptionIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Description Is Expected
-    assertThat(result.getDescription().get(Locale.US), is("pong[.]1:[,]dg[.]:10[,]lunch[.]"));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Description Is Expected
+        assertThat(result.getDescription().get(Locale.US), is("pong[.]1:[,]dg[.]:10[,]lunch[.]"));
 
-  @Test
-  void whenDeserializingActivityDefinitionThenTypeIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionThenTypeIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Type Is Expected
-    assertThat(result.getType(),
-        is(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction")));
+        // When Deserializing ActivityDefinition
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Type Is Expected
+        assertThat(result.getType(),
+                is(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction")));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithoutTypeWhenDeserializedThenTypeIsNull()
-      throws Exception {
+    }
 
-    final var file = ResourceUtils
-        .getFile("classpath:activity_definition/activity_definition_without_type.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithoutTypeWhenDeserializedThenTypeIsNull()
+            throws Exception {
 
-    // When Deserializing Activity Definition Without Type
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file = ResourceUtils
+                .getFile("classpath:activity_definition/activity_definition_without_type.json");
 
-    // Then Type Is Null
-    assertThat(result.getType(), nullValue());
+        // When Deserializing Activity Definition Without Type
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Type Is Null
+        assertThat(result.getType(), nullValue());
 
-  @Test
-  void whenDeserializingActivityDefinitionWithChoicesThenChoicesIDIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithChoicesThenChoicesIDIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition With Choices
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Choices ID Is Expected
-    assertThat(result.getChoices().get(0).getId(), is("1"));
+        // When Deserializing ActivityDefinition With Choices
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Choices ID Is Expected
+        assertThat(result.getChoices().get(0).getId(), is("1"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithChoicesThenChoicesDescriptionIsExpected()
-      throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithChoicesThenChoicesDescriptionIsExpected()
+            throws Exception {
 
-    // When Deserializing ActivityDefinition With Choices
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Choices Description Is Expected
-    assertThat(result.getChoices().get(0).getDescription().get(Locale.US),
-        is("Does the xAPI include the concept of statements?"));
+        // When Deserializing ActivityDefinition With Choices
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Choices Description Is Expected
+        assertThat(result.getChoices().get(0).getDescription().get(Locale.US),
+                is("Does the xAPI include the concept of statements?"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithScaledThenScaleIDIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithScaledThenScaleIDIsExpected() throws Exception {
 
-    // When Deserializing ActivityDefinition With Scaled
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Scale ID Is Expected
-    assertThat(result.getScale().get(0).getId(), is("1"));
+        // When Deserializing ActivityDefinition With Scaled
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Scale ID Is Expected
+        assertThat(result.getScale().get(0).getId(), is("1"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithScaledThenScaleDescriptionIsExpected()
-      throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithScaledThenScaleDescriptionIsExpected()
+            throws Exception {
 
-    // When Deserializing Activity Definition With Scaled
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Scale Description Is Expected
-    assertThat(result.getScale().get(0).getDescription().get(Locale.US),
-        is("Does the xAPI include the concept of statements?"));
+        // When Deserializing Activity Definition With Scaled
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Scale Description Is Expected
+        assertThat(result.getScale().get(0).getDescription().get(Locale.US),
+                is("Does the xAPI include the concept of statements?"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithSourceThenSourceIDIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithSourceThenSourceIDIsExpected() throws Exception {
 
-    // When Deserializing Activity Definition With Source
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Source ID Is Expected
-    assertThat(result.getSource().get(0).getId(), is("1"));
+        // When Deserializing Activity Definition With Source
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Source ID Is Expected
+        assertThat(result.getSource().get(0).getId(), is("1"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithSourceThenSourceDescriptionIsExpected()
-      throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithSourceThenSourceDescriptionIsExpected()
+            throws Exception {
 
-    // When Deserializing Activity Definition With Source
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Source Description Is Expected
-    assertThat(result.getSource().get(0).getDescription().get(Locale.US),
-        is("Does the xAPI include the concept of statements?"));
+        // When Deserializing Activity Definition With Source
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Source Description Is Expected
+        assertThat(result.getSource().get(0).getDescription().get(Locale.US),
+                is("Does the xAPI include the concept of statements?"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithTargetThenTargetIDIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithTargetThenTargetIDIsExpected() throws Exception {
 
-    // When Deserializing Activity Definition With Target
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Target ID Is Expected
-    assertThat(result.getTarget().get(0).getId(), is("1"));
+        // When Deserializing Activity Definition With Target
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Target ID Is Expected
+        assertThat(result.getTarget().get(0).getId(), is("1"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithTargetThenTargetDescriptionIsExpected()
-      throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithTargetThenTargetDescriptionIsExpected()
+            throws Exception {
 
-    // When Deserializing Activity Definition With Target
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Target Description Is Expected
-    assertThat(result.getTarget().get(0).getDescription().get(Locale.US),
-        is("Does the xAPI include the concept of statements?"));
+        // When Deserializing Activity Definition With Target
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Target Description Is Expected
+        assertThat(result.getTarget().get(0).getDescription().get(Locale.US),
+                is("Does the xAPI include the concept of statements?"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithStepsThenStepsIDIsExpected() throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithStepsThenStepsIDIsExpected() throws Exception {
 
-    // When Deserializing Activity Definition With Steps
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Steps ID Is Expected
-    assertThat(result.getSteps().get(0).getId(), is("1"));
+        // When Deserializing Activity Definition With Steps
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Steps ID Is Expected
+        assertThat(result.getSteps().get(0).getId(), is("1"));
 
-  @Test
-  void whenDeserializingActivityDefinitionWithStepsThenStepsDescriptionIsExpected()
-      throws Exception {
+    }
 
-    final var file =
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
+    @Test
+    void whenDeserializingActivityDefinitionWithStepsThenStepsDescriptionIsExpected()
+            throws Exception {
 
-    // When Deserializing Activity Definition With Steps
-    final var result = objectMapper.readValue(file, ActivityDefinition.class);
+        final var file =
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json");
 
-    // Then Steps Description Is Expected
-    assertThat(result.getSteps().get(0).getDescription().get(Locale.US),
-        is("Does the xAPI include the concept of statements?"));
+        // When Deserializing Activity Definition With Steps
+        final var result = objectMapper.readValue(file, ActivityDefinition.class);
 
-  }
+        // Then Steps Description Is Expected
+        assertThat(result.getSteps().get(0).getDescription().get(Locale.US),
+                is("Does the xAPI include the concept of statements?"));
 
-  @Test
-  void whenSerializingActivityDefinitionOfInteractionTypeTrueFalseThenResultIsEqualToExpectedJson()
-      throws IOException {
+    }
 
-    final var activityDefinition = ActivityDefinition.builder()
+    @Test
+    void whenSerializingActivityDefinitionOfInteractionTypeTrueFalseThenResultIsEqualToExpectedJson()
+            throws IOException {
 
-        .addName(Locale.US, "True false question")
+        final var activityDefinition = ActivityDefinition.builder()
 
-        .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+                .addName(Locale.US, "True false question")
 
-        .interactionType(InteractionType.TRUE_FALSE)
+                .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
 
-        .correctResponsesPattern(Collections.singletonList("true"))
+                .interactionType(InteractionType.TRUE_FALSE)
 
-        .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
+                .correctResponsesPattern(Collections.singletonList("true"))
 
-        .build();
+                .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
-    // When Serializing Activity Definition Of InteractionType True False
-    final var result = objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
+                .build();
 
-    // Then Result Is Equal To Expected Json
-    assertThat(result, is(objectMapper
-        .readTree(ResourceUtils.getFile("classpath:activity_definition/true_false.json"))));
+        // When Serializing Activity Definition Of InteractionType True False
+        final var result =
+                objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
 
-  }
+        // Then Result Is Equal To Expected Json
+        assertThat(result, is(objectMapper
+                .readTree(ResourceUtils.getFile("classpath:activity_definition/true_false.json"))));
 
-  @Test
-  void whenSerializingActivityDefinitionOfInteractionTypeChoiceThenResultIsEqualToExpectedJson()
-      throws IOException {
+    }
 
-    final var activityDefinition = ActivityDefinition.builder()
+    @Test
+    void whenSerializingActivityDefinitionOfInteractionTypeChoiceThenResultIsEqualToExpectedJson()
+            throws IOException {
 
-        .addName(Locale.US, "Choice")
+        final var activityDefinition = ActivityDefinition.builder()
 
-        .addDescription(Locale.US, "Which of these prototypes are available at the beta site?")
+                .addName(Locale.US, "Choice")
 
-        .interactionType(InteractionType.CHOICE)
+                .addDescription(Locale.US,
+                        "Which of these prototypes are available at the beta site?")
 
-        .correctResponsesPattern(Collections.singletonList("golf[,]tetris"))
+                .interactionType(InteractionType.CHOICE)
 
-        .addChoice(c -> c.id("golf").addDescription(Locale.US, "Golf Example"))
+                .correctResponsesPattern(Collections.singletonList("golf[,]tetris"))
 
-        .addChoice(c -> c.id("facebook").addDescription(Locale.US, "Facebook App"))
+                .addChoice(c -> c.id("golf").addDescription(Locale.US, "Golf Example"))
 
-        .addChoice(c -> c.id("tetris").addDescription(Locale.US, "Tetris Example"))
+                .addChoice(c -> c.id("facebook").addDescription(Locale.US, "Facebook App"))
 
-        .addChoice(c -> c.id("scrabble").addDescription(Locale.US, "Scrabble Example"))
+                .addChoice(c -> c.id("tetris").addDescription(Locale.US, "Tetris Example"))
 
-        .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
+                .addChoice(c -> c.id("scrabble").addDescription(Locale.US, "Scrabble Example"))
 
-        .build();
+                .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
-    // When Serializing Activity Definition Of InteractionType Choice
-    final var result = objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
+                .build();
 
-    // Then Result Is Equal To Expected Json
-    assertThat(result, is(
-        objectMapper.readTree(ResourceUtils.getFile("classpath:activity_definition/choice.json"))));
+        // When Serializing Activity Definition Of InteractionType Choice
+        final var result =
+                objectMapper.readTree(objectMapper.writeValueAsString(activityDefinition));
 
-  }
+        // Then Result Is Equal To Expected Json
+        assertThat(result, is(objectMapper
+                .readTree(ResourceUtils.getFile("classpath:activity_definition/choice.json"))));
 
-  @Test
-  void whenCallingToStringThenResultIsExpected() throws Exception {
+    }
 
-    final var activityDefinition = objectMapper.readValue(
-        ResourceUtils.getFile("classpath:activity_definition/activity_definition.json"),
-        ActivityDefinition.class);
+    @Test
+    void whenCallingToStringThenResultIsExpected() throws Exception {
 
-    // When Calling ToString
-    final var result = activityDefinition.toString();
+        final var activityDefinition = objectMapper.readValue(
+                ResourceUtils.getFile("classpath:activity_definition/activity_definition.json"),
+                ActivityDefinition.class);
 
-    // Then Result Is Expected
-    assertThat(result, is(
-        "ActivityDefinition(name={en_US=Does the xAPI include the concept of statements?}, description={en_US=pong[.]1:[,]dg[.]:10[,]lunch[.]}, type=http://adlnet.gov/expapi/activities/cmi.interaction, moreInfo=http://example.com/more, interactionType=TRUE_FALSE, correctResponsesPattern=[{case_matters=false}{lang=en}To store and provide access to learning experiences.], choices=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], scale=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], source=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], target=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], steps=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], extensions={http://url=www.example.com})"));
-  }
+        // When Calling ToString
+        final var result = activityDefinition.toString();
 
-  @Test
-  void whenBuildingActivityDefinitionWithTwoNameValuesThenNameLanguageMapHasTwoEntries() {
+        // Then Result Is Expected
+        assertThat(result, is(
+                "ActivityDefinition(name={en_US=Does the xAPI include the concept of statements?}, description={en_US=pong[.]1:[,]dg[.]:10[,]lunch[.]}, type=http://adlnet.gov/expapi/activities/cmi.interaction, moreInfo=http://example.com/more, interactionType=TRUE_FALSE, correctResponsesPattern=[{case_matters=false}{lang=en}To store and provide access to learning experiences.], choices=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], scale=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], source=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], target=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], steps=[InteractionComponent(id=1, description={en_US=Does the xAPI include the concept of statements?})], extensions={http://url=www.example.com})"));
+    }
 
-    // When Building ActivityDefinition With Two Name Values
-    final var activityDefinition = ActivityDefinition.builder()
+    @Test
+    void whenBuildingActivityDefinitionWithTwoNameValuesThenNameLanguageMapHasTwoEntries() {
 
-        .addName(Locale.US, "True false question")
+        // When Building ActivityDefinition With Two Name Values
+        final var activityDefinition = ActivityDefinition.builder()
 
-        .addName(Locale.GERMAN, "Richtig / Falsch-Frage")
+                .addName(Locale.US, "True false question")
 
-        .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+                .addName(Locale.GERMAN, "Richtig / Falsch-Frage")
 
-        .interactionType(InteractionType.TRUE_FALSE)
+                .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
 
-        .correctResponsesPattern(Collections.singletonList("true"))
+                .interactionType(InteractionType.TRUE_FALSE)
 
-        .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
+                .correctResponsesPattern(Collections.singletonList("true"))
 
-        .build();
+                .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
-    // Then Name Language Map Has Two Entries
-    assertThat(activityDefinition.getName(), aMapWithSize(2));
+                .build();
 
-  }
+        // Then Name Language Map Has Two Entries
+        assertThat(activityDefinition.getName(), aMapWithSize(2));
 
-  @Test
-  void whenBuildingActivityDefinitionWithTwoDescriptionValuesThenDescriptionLanguageMapHasTwoEntries() {
+    }
 
-    // When Building ActivityDefinition With Two Description Values
-    final var activityDefinition = ActivityDefinition.builder()
+    @Test
+    void whenBuildingActivityDefinitionWithTwoDescriptionValuesThenDescriptionLanguageMapHasTwoEntries() {
 
-        .addName(Locale.US, "True false question")
+        // When Building ActivityDefinition With Two Description Values
+        final var activityDefinition = ActivityDefinition.builder()
 
-        .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+                .addName(Locale.US, "True false question")
 
-        .addDescription(Locale.GERMAN, "Enthält die xAPI das Konzept von Anweisungen?")
+                .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
 
-        .interactionType(InteractionType.TRUE_FALSE)
+                .addDescription(Locale.GERMAN, "Enthält die xAPI das Konzept von Anweisungen?")
 
-        .correctResponsesPattern(Collections.singletonList("true"))
+                .interactionType(InteractionType.TRUE_FALSE)
 
-        .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
+                .correctResponsesPattern(Collections.singletonList("true"))
 
-        .build();
+                .type(URI.create("http://adlnet.gov/expapi/activities/cmi.interaction"))
 
-    // Then Description Language Map Has Two Entries
-    assertThat(activityDefinition.getDescription(), aMapWithSize(2));
+                .build();
 
-  }
+        // Then Description Language Map Has Two Entries
+        assertThat(activityDefinition.getDescription(), aMapWithSize(2));
 
-  @Test
-  void whenMergingActivityDefinitionsWithNamesThenMergedNameIsExpected() throws IOException {
+    }
 
-    final var activityDefinition1 =
-        ActivityDefinition.builder().addName(Locale.UK, "Colour").build();
+    @Test
+    void whenMergingActivityDefinitionsWithNamesThenMergedNameIsExpected() throws IOException {
 
-    final var x =
-        objectMapper.valueToTree(ActivityDefinition.builder().addName(Locale.US, "Color").build());
+        final var activityDefinition1 =
+                ActivityDefinition.builder().addName(Locale.UK, "Colour").build();
 
-    final var expected = new LanguageMap();
-    expected.put(Locale.UK, "Colour");
-    expected.put(Locale.US, "Color");
+        final var x = objectMapper
+                .valueToTree(ActivityDefinition.builder().addName(Locale.US, "Color").build());
 
-    // When Merging ActivityDefinitions With Names
-    final var merged =
-        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+        final var expected = new LanguageMap();
+        expected.put(Locale.UK, "Colour");
+        expected.put(Locale.US, "Color");
 
-    // Then Merged Name Is Expected
-    assertThat(merged.getName(), hasAllEntries(expected));
+        // When Merging ActivityDefinitions With Names
+        final var merged = (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1)
+                .readValue(x);
 
-  }
+        // Then Merged Name Is Expected
+        assertThat(merged.getName(), hasAllEntries(expected));
 
-  @Test
-  void whenMergingActivityDefinitionsWithDescriptionsThenMergedDescriptionIsExpected()
-      throws IOException {
+    }
 
-    final var activityDefinition1 =
-        ActivityDefinition.builder().addDescription(Locale.UK, "flavour").build();
+    @Test
+    void whenMergingActivityDefinitionsWithDescriptionsThenMergedDescriptionIsExpected()
+            throws IOException {
 
-    final var x = objectMapper
-        .valueToTree(ActivityDefinition.builder().addDescription(Locale.US, "flavor").build());
+        final var activityDefinition1 =
+                ActivityDefinition.builder().addDescription(Locale.UK, "flavour").build();
 
-    final var expected = new LanguageMap();
-    expected.put(Locale.UK, "flavour");
-    expected.put(Locale.US, "flavor");
+        final var x = objectMapper.valueToTree(
+                ActivityDefinition.builder().addDescription(Locale.US, "flavor").build());
 
-    // When Merging ActivityDefinitions With Descriptions
-    final var merged =
-        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+        final var expected = new LanguageMap();
+        expected.put(Locale.UK, "flavour");
+        expected.put(Locale.US, "flavor");
 
-    // Then Merged Description Is Expected
-    assertThat(merged.getDescription(), hasAllEntries(expected));
+        // When Merging ActivityDefinitions With Descriptions
+        final var merged = (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1)
+                .readValue(x);
 
-  }
+        // Then Merged Description Is Expected
+        assertThat(merged.getDescription(), hasAllEntries(expected));
 
-  @Test
-  void whenMergingActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
-      throws IOException {
+    }
 
-    final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
-    extensions1.put(URI.create("https://example.com/extensions/1"), "1");
+    @Test
+    void whenMergingActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
+            throws IOException {
 
-    final var activityDefinition1 = ActivityDefinition.builder().addName(Locale.UK, "Colour")
-        .addDescription(Locale.UK, "flavour").extensions(extensions1).build();
+        final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
+        extensions1.put(URI.create("https://example.com/extensions/1"), "1");
 
-    final Map<@HasScheme URI, Object> extensions2 = new HashMap<>();
-    extensions2.put(URI.create("https://example.com/extensions/2"), "2");
+        final var activityDefinition1 = ActivityDefinition.builder().addName(Locale.UK, "Colour")
+                .addDescription(Locale.UK, "flavour").extensions(extensions1).build();
 
-    final var x = objectMapper.valueToTree(ActivityDefinition.builder().addName(Locale.US, "Color")
-        .addDescription(Locale.US, "flavor").extensions(extensions2).build());
+        final Map<@HasScheme URI, Object> extensions2 = new HashMap<>();
+        extensions2.put(URI.create("https://example.com/extensions/2"), "2");
 
-    final Map<@HasScheme URI, Object> expected = new HashMap<>();
-    expected.put(URI.create("https://example.com/extensions/1"), "1");
-    expected.put(URI.create("https://example.com/extensions/2"), "2");
+        final var x =
+                objectMapper.valueToTree(ActivityDefinition.builder().addName(Locale.US, "Color")
+                        .addDescription(Locale.US, "flavor").extensions(extensions2).build());
 
-    // When Merging ActivityDefinitions With Extensions
-    final var merged =
-        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+        final Map<@HasScheme URI, Object> expected = new HashMap<>();
+        expected.put(URI.create("https://example.com/extensions/1"), "1");
+        expected.put(URI.create("https://example.com/extensions/2"), "2");
 
-    // Then Merged Extensions Are Expected
-    assertThat(merged.getExtensions(), hasAllEntries(expected));
+        // When Merging ActivityDefinitions With Extensions
+        final var merged = (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1)
+                .readValue(x);
 
-  }
+        // Then Merged Extensions Are Expected
+        assertThat(merged.getExtensions(), hasAllEntries(expected));
 
-  @Test
-  void whenMergingActivityDefinitionsWithNestedExtensionsThenMergedExtensionsAreExpected()
-      throws IOException {
+    }
 
-    final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
-    extensions1.put(URI.create("https://example.com/extensions/map"),
-        new HashMap<>(Collections.singletonMap("a", "y")));
+    @Test
+    void whenMergingActivityDefinitionsWithNestedExtensionsThenMergedExtensionsAreExpected()
+            throws IOException {
 
-    final var activityDefinition1 = ActivityDefinition.builder().extensions(extensions1).build();
+        final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
+        extensions1.put(URI.create("https://example.com/extensions/map"),
+                new HashMap<>(Collections.singletonMap("a", "y")));
 
-    final Map<@HasScheme URI, Object> extensions2 = new HashMap<>();
-    extensions2.put(URI.create("https://example.com/extensions/map"),
-        new HashMap<>(Collections.singletonMap("b", "z")));
+        final var activityDefinition1 =
+                ActivityDefinition.builder().extensions(extensions1).build();
 
-    final var x =
-        objectMapper.valueToTree(ActivityDefinition.builder().extensions(extensions2).build());
+        final Map<@HasScheme URI, Object> extensions2 = new HashMap<>();
+        extensions2.put(URI.create("https://example.com/extensions/map"),
+                new HashMap<>(Collections.singletonMap("b", "z")));
 
-    final Map<String, String> expected = new HashMap<>();
-    expected.put("a", "y");
-    expected.put("b", "z");
+        final var x = objectMapper
+                .valueToTree(ActivityDefinition.builder().extensions(extensions2).build());
 
-    // When Merging ActivityDefinitions With Nested Extensions
-    final var merged =
-        (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1).readValue(x);
+        final Map<String, String> expected = new HashMap<>();
+        expected.put("a", "y");
+        expected.put("b", "z");
 
-    @SuppressWarnings("unchecked")
-    final var po = (Map<String, String>) merged.getExtensions()
-        .get(URI.create("https://example.com/extensions/map"));
+        // When Merging ActivityDefinitions With Nested Extensions
+        final var merged = (ActivityDefinition) objectMapper.readerForUpdating(activityDefinition1)
+                .readValue(x);
 
-    // Then Merged Extensions Are Expected
-    assertThat(po, hasAllEntries(expected));
+        @SuppressWarnings("unchecked")
+        final var po = (Map<String, String>) merged.getExtensions()
+                .get(URI.create("https://example.com/extensions/map"));
 
-  }
+        // Then Merged Extensions Are Expected
+        assertThat(po, hasAllEntries(expected));
+
+    }
+
+    @Test
+    void whenValidatingActivityDefinitionWithTypeWithNoSchemeThenConstraintViolationsSizeIsOne() {
+
+        final var activityDefinition = ActivityDefinition.builder()
+
+                .addName(Locale.US, "True false question")
+
+                .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+
+                .interactionType(InteractionType.TRUE_FALSE)
+
+                .correctResponsesPattern(Collections.singletonList("true"))
+
+                .type(URI.create("cmi.interaction"))
+
+                .build();
+
+        // When Validating ActivityDefinition With Type With No Scheme
+        final var violations = validator.validate(activityDefinition);
+
+        // Then Constraint Violations Size Is One
+        assertThat(violations.size(), is(1));
+
+    }
+
+    @Test
+    void whenValidatingActivityDefinitionWithMoreInfoWithNoSchemeThenConstraintViolationsSizeIsOne() {
+
+        final var activityDefinition = ActivityDefinition.builder()
+
+                .addName(Locale.US, "True false question")
+
+                .addDescription(Locale.US, "Does the xAPI include the concept of statements?")
+
+                .interactionType(InteractionType.TRUE_FALSE)
+
+                .correctResponsesPattern(Collections.singletonList("true"))
+
+                .moreInfo(URI.create("example.com/moreInfo"))
+
+                .build();
+
+        // When Validating ActivityDefinition With MoreInfo With No Scheme
+        final var violations = validator.validate(activityDefinition);
+
+        // Then Constraint Violations Size Is One
+        assertThat(violations.size(), is(1));
+
+    }
 
 }

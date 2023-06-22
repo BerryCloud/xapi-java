@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -63,6 +64,7 @@ public abstract class Actor implements StatementObject, SubStatementObject {
   /**
    * An openID.
    */
+  @HasScheme
   URI openid;
 
   /**

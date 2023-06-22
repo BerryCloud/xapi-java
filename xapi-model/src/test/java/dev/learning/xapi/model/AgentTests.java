@@ -9,6 +9,8 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.io.IOException;
 import java.net.URI;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +30,8 @@ import org.springframework.util.ResourceUtils;
 class AgentTests {
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+
+  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @ParameterizedTest
   @ValueSource(
@@ -207,6 +211,25 @@ class AgentTests {
     // Then Result Is Equal To Expected Json
     assertThat(result, is(
         objectMapper.readTree(ResourceUtils.getFile("classpath:agent/agent_with_account.json"))));
+
+  }
+
+  @Test
+  void whenValidatingAgentWithOpenIdWithNoSchemeThenConstraintViolationsSizeIsOne() {
+
+    final Agent agent = Agent.builder()
+
+        .name("A N Other")
+
+        .openid(URI.create("1234"))
+
+        .build();
+
+    // When Validating Agent With OpenId With No Scheme
+    final var result = validator.validate(agent);
+
+    // Then Constraint Violations Size Is One
+    assertThat(result.size(), is(1));
 
   }
 

@@ -5,6 +5,7 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonMerge;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.ValidActivityDefinition;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +35,7 @@ public class Activity implements StatementObject, SubStatementObject {
    * An identifier for a single unique Activity.
    */
   @NotNull
+  @HasScheme
   private URI id;
 
   /**
