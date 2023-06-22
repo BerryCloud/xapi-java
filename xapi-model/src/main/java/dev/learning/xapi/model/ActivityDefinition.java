@@ -57,12 +57,14 @@ public class ActivityDefinition {
   /**
    * The type of Activity.
    */
+  @HasScheme
   private URI type;
 
   /**
    * Resolves to a document with human-readable information about the Activity, which could include
    * a way to launch the activity.
    */
+  @HasScheme
   private URI moreInfo;
 
   /**
