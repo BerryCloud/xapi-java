@@ -30,7 +30,7 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.1.7</version>
+            <version>1.1.8</version>
         </dependency>
     </dependencies>
 </project>
@@ -298,11 +298,11 @@ The xAPI Model Spring Boot Starter package provides an easy way to turn on/off t
 
 To use the xAPI Model Spring Boot Starter include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
 
-```
+```xml
 <dependency>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-model-spring-boot-starter</artifactId>
-  <version>1.1.7</version>
+  <version>1.1.8</version>
 </dependency>
 ```
 
@@ -355,7 +355,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.1.7</version>
+            <version>1.1.8</version>
         </dependency>
     </dependencies>
 </project>

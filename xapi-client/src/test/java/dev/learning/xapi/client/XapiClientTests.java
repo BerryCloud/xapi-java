@@ -2353,6 +2353,21 @@ class XapiClientTests {
   }
 
   @Test
+  void givenApiResponseIsEmptyWhenGettingStatementIteratorThenMissingResponseBodyExceptionIsThrown() {
+
+    // Given Api Response Is Empty
+    mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setHeader("Content-Type",
+        "application/json"));
+
+    // When Getting Statement Iterator
+    final var response = client.getStatementIterator();
+
+    // Then MissingResponseBodyException Is Thrown
+    assertThrows(MissingResponseBodyException.class, () -> response.block());
+
+  }
+
+  @Test
   void whenGettingStatementIteratorViaMultipeResponsesThenRequestsAreExpected()
       throws InterruptedException {
     final var body1 = """

@@ -4,7 +4,7 @@
   <parent>
     <groupId>dev.learning.xapi.samples</groupId>
     <artifactId>xapi-samples-build</artifactId>
-    <version>1.1.8-SNAPSHOT</version>
+    <version>1.1.9-SNAPSHOT</version>
   </parent>
   <artifactId>xapi-server</artifactId>
   <name>xAPI Server Sample</name>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>io.hypersistence</groupId>
       <artifactId>hypersistence-utils-hibernate-60</artifactId>
-      <version>3.3.2</version>
+      <version>3.4.4</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
