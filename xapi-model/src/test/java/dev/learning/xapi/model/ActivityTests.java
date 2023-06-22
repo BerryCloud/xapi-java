@@ -13,12 +13,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +38,8 @@ import org.springframework.util.ResourceUtils;
 class ActivityTests {
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+
+  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void whenDeserializingActivityThenResultIsInstanceOfActivity() throws Exception {
@@ -233,5 +239,21 @@ class ActivityTests {
 
   }
 
+  @Test
+  void whenValidatingActivityWithIdWithNoSchemeThenConstraintViolationsSizeIsOne() {
+
+    final var activity = Activity.builder()
+
+        .id(URI.create("www.example.com"))
+
+        .build();
+
+    // When Validating Activity With Id With No Scheme
+    final Set<ConstraintViolation<Activity>> constraintViolations = validator.validate(activity);
+
+    // Then Constraint Violations Size Is One
+    assertThat(constraintViolations.size(), is(1));
+
+  }
 
 }

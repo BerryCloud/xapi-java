@@ -581,4 +581,64 @@ class AttachmentTests {
 
   }
 
+  @Test
+  void whenValidatingAttachmentWithUsageTypeWithoutSchemeThenConstraintViolationsSizeIsOne() {
+
+    final var attachment = Attachment.builder()
+
+        .usageType(URI.create("signature"))
+
+        .addDisplay(Locale.US, "Signature")
+
+        .addDescription(Locale.US, "A test signature")
+
+        .contentType("application/octet-stream")
+
+        .length(4235)
+
+        .sha2("672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634")
+
+        .fileUrl(URI.create("https://example.com"))
+
+        .build();
+
+    // When Validating Attachment With UsageType Without Scheme
+    final Set<ConstraintViolation<Attachment>> constraintViolations =
+        validator.validate(attachment);
+
+    // Then ConstraintViolations Size Is One
+    assertThat(constraintViolations, hasSize(1));
+
+  }
+
+  @Test
+  void whenValidatingAttachmentWithFileUrlWithoutSchemeThenConstraintViolationsSizeIsOne() {
+
+    final var attachment = Attachment.builder()
+
+        .usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
+
+        .addDisplay(Locale.US, "Signature")
+
+        .addDescription(Locale.US, "A test signature")
+
+        .contentType("application/octet-stream")
+
+        .length(4235)
+
+        .sha2("672fa5fa658017f1b72d65036f13379c6ab05d4ab3b6664908d8acf0b6a0c634")
+
+        .fileUrl(URI.create("example.com"))
+
+        .build();
+
+    // When Validating Attachment With FileUrl Without Scheme
+    final Set<ConstraintViolation<Attachment>> constraintViolations =
+        validator.validate(attachment);
+
+    // Then ConstraintViolations Size Is One
+    assertThat(constraintViolations, hasSize(1));
+
+  }
+
 }
