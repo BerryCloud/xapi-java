@@ -30,7 +30,7 @@ To use the xAPI Java Client include the appropriate XML in the `dependencies` se
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-client</artifactId>
-            <version>1.1.9</version>
+            <version>1.1.10</version>
         </dependency>
     </dependencies>
 </project>
@@ -302,7 +302,7 @@ To use the xAPI Model Spring Boot Starter include the appropriate XML in the `de
 <dependency>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-model-spring-boot-starter</artifactId>
-  <version>1.1.9</version>
+  <version>1.1.10</version>
 </dependency>
 ```
 
@@ -355,7 +355,7 @@ To use the xAPI Model include the appropriate XML in the `dependencies` section 
         <dependency>
             <groupId>dev.learning.xapi</groupId>
             <artifactId>xapi-model</artifactId>
-            <version>1.1.9</version>
+            <version>1.1.10</version>
         </dependency>
     </dependencies>
 </project>
