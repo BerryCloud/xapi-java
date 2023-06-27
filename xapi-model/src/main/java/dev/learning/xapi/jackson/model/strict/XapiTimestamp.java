@@ -50,6 +50,11 @@ public class XapiTimestamp {
     }
   }
 
+  /**
+   * Exception used to indicate a problem while parsing a timestamp in strict xAPI mode.
+   *
+   * @author István Rátkai (Selindek)
+   */
   public static class XapiTimestampParseException extends RuntimeException {
 
     private static final long serialVersionUID = -3097189442067704841L;
