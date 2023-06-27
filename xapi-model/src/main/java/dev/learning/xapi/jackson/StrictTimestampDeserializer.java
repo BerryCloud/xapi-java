@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import dev.learning.xapi.jackson.model.strict.XapiTimestamp;
+import dev.learning.xapi.jackson.model.strict.XapiTimestamp.XapiTimestampParseException;
 import java.io.IOException;
 import java.time.Instant;
 
@@ -36,7 +37,11 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
   @Override
   public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 
-    return XapiTimestamp.parse(p.getText());
+    try {
+      return XapiTimestamp.parse(p.getText());
+    } catch (final XapiTimestampParseException ex) {
+      throw ctxt.instantiationException(handledType(), ex.getMessage());
+    }
   }
 
 }

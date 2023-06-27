@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.jackson.model.strict;
 
-import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -34,7 +33,7 @@ public class XapiTimestamp {
     // The xAPI specification states that timestamps should be formatted per RFC 3339 however the
     // conformance tests fail if negative zero offsets are accepted.
     if (text.endsWith("-00") || text.endsWith("-0000") || text.endsWith("-00:00")) {
-      throw new DateTimeException("Negative timezone offset can not be zero");
+      throw new XapiTimestampParseException("Negative timezone offset can not be zero");
     }
 
     // Permit +00:00, +0000 and +00
@@ -50,5 +49,17 @@ public class XapiTimestamp {
       return Instant.from(ZonedDateTime.of((LocalDateTime) dt, ZoneOffset.UTC));
     }
   }
+
+  public static class XapiTimestampParseException extends RuntimeException {
+
+    private static final long serialVersionUID = -3097189442067704841L;
+
+    XapiTimestampParseException(String message) {
+
+      super(message);
+    }
+
+  }
+
 
 }
