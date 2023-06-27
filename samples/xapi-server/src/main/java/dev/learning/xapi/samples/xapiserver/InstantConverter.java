@@ -21,9 +21,12 @@ import org.springframework.stereotype.Component;
 public class InstantConverter implements Converter<String, Instant> {
 
   /**
-   * Converts string to {@link java.time.Instant}. If the timezone is not specified in string, UTC will be used.
+   * Converts string to {@link java.time.Instant}. If the timezone is not specified in string, UTC
+   * will be used.
    *
-   * @param source the String representation of the datetime in ISO 8601 format (e.q. '2011-12-03T10:15:30+01:00')
+   * @param source the String representation of the datetime in ISO 8601 format (e.q.
+   *        '2011-12-03T10:15:30+01:00')
+   *
    * @return {@link java.time.Instant} of source input
    */
   @Override
