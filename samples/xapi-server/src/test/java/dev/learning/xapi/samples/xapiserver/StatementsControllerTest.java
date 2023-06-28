@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,6 +68,28 @@ class StatementControllerTest {
 
         // Then Status Is Ok
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void whenGettingMultipleStatementsWithSinceParameterThenStatusIsNotImplemented()
+      throws Exception {
+
+    // When Getting Multiple Statements With Since Parameter
+    mvc.perform(get("/xapi/statements?since=2017-03-01T12:30:00.000+00"))
+
+        // Then Status Is Not Implemented
+        .andExpect(status().isNotImplemented());
+  }
+
+  @Test
+  void whenGettingMultipleStatementsWithNegativeTimezoneOffsetThenStatusIsBadRequest()
+      throws Exception {
+
+    // When Getting Multiple Statements With Negative Timezone Offset
+    mvc.perform(get("/xapi/statements?since=2017-03-01T12:30:00.000-00"))
+
+        // Then Status Is Bad Request
+        .andExpect(status().isBadRequest());
   }
 
 }
