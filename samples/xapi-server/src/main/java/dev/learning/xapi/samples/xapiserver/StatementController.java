@@ -8,6 +8,7 @@ import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import dev.learning.xapi.model.validation.constraints.Statements;
 import jakarta.validation.Valid;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -80,7 +81,24 @@ public class StatementController {
    *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
    *      Statements</a>
    */
-  @GetMapping(params = {"!statementId, !voidedStatementId"})
+  @GetMapping(params = "since")
+  public ResponseEntity<Void> getStatementsSince(@RequestParam Instant since) {
+
+    log.debug("GET statements since");
+
+    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+  }
+
+  /**
+   * Get Statements.
+   *
+   * @return the ResponseEntity
+   *
+   * @see <a href=
+   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+   *      Statements</a>
+   */
+  @GetMapping(params = {"!statementId, !voidedStatementId", "!since"})
   public ResponseEntity<StatementResult> getStatements() {
 
     log.debug("GET statements");
