@@ -1,0 +1,95 @@
+name: Bug Report
+description: Create a bug report to help us improve
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - knoake
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A clear and concise description of what the bug is.
+      placeholder: Posting a statement with an attachment fails with a 400 error
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Steps to reproduce the behavior.
+
+        A unit test or JDoodle (https://www.jdoodle.com/online-java-compiler) example would be very helpful.
+
+      placeholder: |
+        ```java
+        @Test
+          void whenPostingStatementWithAttachmentThenResponseStatusCodeIsOk()
+              throws InterruptedException {
+
+            // When Posting Statement With Attachment
+            var response = client.postStatement(r -> r
+                .statement(s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+                    .addAttachment(a -> a.content("Simple attachment").length(17).contentType("text/plain")
+                        .usageType(URI.create("http://adlnet.gov/expapi/attachments/text"))
+                        .addDisplay(Locale.ENGLISH, "text attachment"))
+
+                    .verb(Verb.ATTEMPTED)
+
+                    .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                .block();
+
+            // Then Response Status Code Is Ok
+            assertThat(response.getStatusCode().value(), is(200));
+          }
+          ```
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: The statement is posted successfully with a 200 response status code
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: A clear and concise description of what actually happens.
+      placeholder: The statement fails to post with a 400 response status code
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Notes
+      description: |
+        Any additional information that might be useful
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: |
+        What version of our software are you running?
+
+        Please note that we only support the latest version of our software.
+      options:
+        - 1.x
+        - 2.x
+        - 3.x
+        - 4.x
+        - 5.x
+    validations:
+      required: true
