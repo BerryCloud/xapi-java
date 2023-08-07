@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.model;
 
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasNoJsonPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
@@ -218,6 +220,64 @@ class StatementTests {
     assertThat(result.getAttachments().get(0), instanceOf(Attachment.class));
 
   }
+
+  @Test
+  void whenDeserializingStatementWithActivityWithoutObjectTypeThenObjectTypeIsNotPresent()
+      throws Exception {
+
+    final var json = """
+        {
+            "actor":{
+                "name":"A N Other",
+                "mbox":"mailto:another@example.com"
+            },
+            "verb":{
+                "id":"http://adlnet.gov/expapi/verbs/attempted"
+            },
+            "object":{
+                "id":"https://example.com/activity/simplestatement"
+            }
+        }""";
+
+    final var statement = objectMapper.readValue(json, Statement.class);
+
+    // When Deserializing Statement With Activity Without ObjectType
+    final var result = objectMapper.writeValueAsString(statement);
+
+    // Then ObjectType Is Not Present
+    assertThat(result, hasNoJsonPath("$.object.objectType"));
+
+  }
+
+  @Test
+  void whenDeserializingStatementWithActivityWithObjectTypeThenObjectTypeIsPresent()
+      throws Exception {
+
+    final var json = """
+        {
+            "actor":{
+                "name":"A N Other",
+                "mbox":"mailto:another@example.com"
+            },
+            "verb":{
+                "id":"http://adlnet.gov/expapi/verbs/attempted"
+            },
+            "object":{
+                "objectType":"Activity",
+                "id":"https://example.com/activity/simplestatement"
+            }
+        }""";
+
+    final var statement = objectMapper.readValue(json, Statement.class);
+
+    // When Deserializing Statement With Activity With ObjectType
+    final var result = objectMapper.writeValueAsString(statement);
+
+    // Then ObjectType Is Present
+    assertThat(result, hasJsonPath("$.object.objectType"));
+
+  }
+
 
   @Test
   void whenSerializingStatementWithAgentWithAccountThenResultIsEqualToExpectedJson()
