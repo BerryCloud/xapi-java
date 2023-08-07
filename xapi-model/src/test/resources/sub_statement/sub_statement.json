@@ -8,7 +8,6 @@
     }
   },
   "actor" : {
-    "objectType" : "Agent",
     "mbox" : "mailto:agent@example.com"
   },
   "object" : {
@@ -33,7 +32,6 @@
     "platform" : "platform",
     "language" : "en-US",
     "instructor" : {
-      "objectType" : "Agent",
       "mbox" : "mailto:agent@example.com"
     },
     "team" : {
@@ -46,19 +44,15 @@
     },
     "contextActivities" : {
       "parent" : [ {
-        "objectType" : "Activity",
         "id" : "http://www.example.co.uk/exampleactivity"
       } ],
       "grouping" : [ {
-        "objectType" : "Activity",
         "id" : "http://www.example.co.uk/exampleactivity"
       } ],
       "category" : [ {
-        "objectType" : "Activity",
         "id" : "http://www.example.co.uk/exampleactivity"
       } ],
       "other" : [ {
-        "objectType" : "Activity",
         "id" : "http://www.example.co.uk/exampleactivity"
       } ]
     },

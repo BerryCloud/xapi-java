@@ -11,9 +11,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.function.Consumer;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.Value;
 
 /**
@@ -31,6 +33,7 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
 
+  @Setter(AccessLevel.NONE)
   private ObjectType objectType;
 
   /**

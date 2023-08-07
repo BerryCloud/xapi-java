@@ -1,8 +1,7 @@
 {
 	"id": "4b9175ba-367d-4b93-990b-34d4180039f1",
 	"actor": {
-		"name": "A N Other",
-		"objectType": "Agent"
+		"name": "A N Other"
 	},
 	"verb": {
 		"id": "http://example.com/xapi/verbs#sent-a-statement",
@@ -23,8 +22,7 @@
 			"account": {
 				"homePage": "https://example.com",
 				"name": "13936749"
-			},
-			"objectType": "Agent"
+			}
 		},
 		"team": {
 			"name": "Team",
@@ -44,8 +42,7 @@
 		"account": {
 			"homePage": "https://example.com",
 			"name": "13936749"
-		},
-		"objectType": "Agent"
+		}
 	},
 	"version": "1.0.0",
 	"object": {
@@ -62,8 +59,7 @@
 			},
 			"type": "http://adlnet.gov/expapi/activities/meeting",
 			"moreInfo": "http://virtualmeeting.example.com/345256"
-		},
-		"objectType": "Activity"
+		}
 	},
 	"attachments": [
 		{

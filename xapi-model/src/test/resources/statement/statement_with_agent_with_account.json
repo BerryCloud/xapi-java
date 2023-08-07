@@ -1,6 +1,5 @@
 {
    "actor":{
-      "objectType":"Agent",
       "account":{
          "name":"A N Other",
          "homePage":"https://example.com/account/1234"
@@ -13,7 +12,6 @@
       }
    },
    "object":{
-      "objectType":"Activity",
       "id":"https://example.com/xapi/activity/simplestatement"
    }
 }
