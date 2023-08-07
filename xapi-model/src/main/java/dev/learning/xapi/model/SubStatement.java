@@ -32,6 +32,8 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject, CoreStatement {
 
+  private final ObjectType objectType = ObjectType.SUBSTATEMENT;
+
   /**
    * {@inheritDoc}
    */

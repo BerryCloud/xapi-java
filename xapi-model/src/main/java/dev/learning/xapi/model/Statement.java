@@ -318,6 +318,27 @@ public class Statement implements CoreStatement {
     }
 
     /**
+     * Sets the object. <b> This custom setter makes sure that if the object is an Agent then its
+     * objectType property was set properly. </b>
+     *
+     * @param object The object of the Statement.
+     *
+     * @return This builder.
+     */
+    public Builder object(StatementObject object) {
+
+      if (object instanceof final Agent agent && ObjectType.AGENT != agent.getObjectType()) {
+        this.object = Agent.builder().objectType(ObjectType.AGENT).name(agent.getName())
+            .account(agent.getAccount()).mbox(agent.getMbox()).mboxSha1sum(agent.getMboxSha1sum())
+            .openid(agent.getOpenid()).build();
+      } else {
+        this.object = object;
+      }
+
+      return this;
+    }
+
+    /**
      * Consumer Builder for activity object.
      *
      * @param activity The Consumer Builder for activity object

@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,12 +35,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "name")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", defaultImpl = Agent.class,
-    include = As.PROPERTY)
+    visible = true, include = As.EXISTING_PROPERTY)
 @JsonSubTypes({@JsonSubTypes.Type(value = Agent.class, name = "Agent"),
     @JsonSubTypes.Type(value = Agent.class, name = "Person"),
     @JsonSubTypes.Type(value = Group.class, name = "Group")})
 @JsonInclude(Include.NON_EMPTY)
-@JsonIgnoreProperties("objectType")
 public abstract class Actor implements StatementObject, SubStatementObject {
 
   /**

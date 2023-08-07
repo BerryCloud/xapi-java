@@ -26,6 +26,8 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
 public class Agent extends Actor {
 
+  private ObjectType objectType;
+
   // **Warning** do not add fields that are not required by the xAPI specification.
 
   /**

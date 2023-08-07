@@ -31,6 +31,8 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
 
+  private ObjectType objectType;
+
   /**
    * An identifier for a single unique Activity.
    */
@@ -54,7 +56,7 @@ public class Activity implements StatementObject, SubStatementObject {
    * @param id The identifier of the Activity.
    */
   public Activity(String id) {
-
+    this.objectType = null;
     this.id = URI.create(id);
     this.definition = null;
   }
