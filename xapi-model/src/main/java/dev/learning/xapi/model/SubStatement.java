@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.Agent.AgentObjectType;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
 import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;

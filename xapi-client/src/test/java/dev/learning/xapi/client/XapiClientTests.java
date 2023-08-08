@@ -107,7 +107,7 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 
         .setBody(
-            "{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}")
+            "{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Statement
@@ -208,7 +208,7 @@ class XapiClientTests {
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
-        "[{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
+        "[{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
   }
 
   @Test
@@ -238,7 +238,7 @@ class XapiClientTests {
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
-        "[{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
+        "[{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}},{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/passed\",\"display\":{\"und\":\"passed\"}},\"object\":{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}]"));
   }
 
   @Test
@@ -352,7 +352,7 @@ class XapiClientTests {
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
-        "{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}"));
+        "{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/attempted\",\"display\":{\"und\":\"attempted\"}},\"object\":{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}}"));
   }
 
   @Test
@@ -609,7 +609,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/statements?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&verb=http%3A%2F%2Fadlnet.gov%2Fexpapi%2Fverbs%2Fanswered&activity=https%3A%2F%2Fexample.com%2Factivity%2F1&since=2016-01-01T00%3A00%3A00Z&until=2018-01-01T00%3A00%3A00Z&registration=dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3&related_activities=true&related_agents=true&limit=10&format=canonical&attachments=true&ascending=true"));
+        "/statements?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&verb=http%3A%2F%2Fadlnet.gov%2Fexpapi%2Fverbs%2Fanswered&activity=https%3A%2F%2Fexample.com%2Factivity%2F1&since=2016-01-01T00%3A00%3A00Z&until=2018-01-01T00%3A00%3A00Z&registration=dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3&related_activities=true&related_agents=true&limit=10&format=canonical&attachments=true&ascending=true"));
   }
 
   @Test
@@ -628,7 +628,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/statements?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+        "/statements?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
   @Test
@@ -746,7 +746,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
   }
 
   @Test
@@ -787,7 +787,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark"));
   }
 
   @Test
@@ -884,7 +884,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
   }
 
   @Test
@@ -981,7 +981,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark"));
   }
 
   // Put Single State
@@ -1032,7 +1032,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
   }
 
   @Test
@@ -1129,7 +1129,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&stateId=bookmark"));
   }
 
   // Deleting Single State
@@ -1172,7 +1172,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
   }
 
   @Test
@@ -1211,7 +1211,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6&stateId=bookmark"));
   }
 
   // Getting Multiple States
@@ -1258,7 +1258,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6"));
   }
 
   @Test
@@ -1300,7 +1300,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
   @Test
@@ -1387,7 +1387,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6"));
   }
 
   @Test
@@ -1426,7 +1426,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+        "/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
   // Get Single Agent Profile
@@ -1465,7 +1465,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
   }
 
   // Delete Single Agent Profile
@@ -1506,7 +1506,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
   }
 
   // Put Single Agent Profile
@@ -1549,7 +1549,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
   }
 
   @Test
@@ -1662,7 +1662,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&profileId=greeting"));
   }
 
   @Test
@@ -1772,7 +1772,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
   @Test
@@ -1794,7 +1794,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(), is(
-        "/agents/profile?agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&since=2016-01-01T00%3A00%3A00Z"));
+        "/agents/profile?agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&since=2016-01-01T00%3A00%3A00Z"));
   }
 
   // Get Activity
@@ -1852,7 +1852,7 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 
         .setBody(
-            "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}")
+            "{\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"en\":\"Simple Statement\"}}}")
         .addHeader("Content-Type", "application/json; charset=utf-8"));
 
     // When Getting Activity
@@ -1891,8 +1891,8 @@ class XapiClientTests {
     final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
-    assertThat(recordedRequest.getPath(), is(
-        "/agents?agent=%7B%22objectType%22%3A%22Agent%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
+    assertThat(recordedRequest.getPath(),
+        is("/agents?agent=%7B%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D"));
   }
 
   @Test
@@ -2585,7 +2585,7 @@ class XapiClientTests {
 
     // Then Body Is Expected
     assertThat(recordedRequest.getBody().readUtf8(), is(
-        "{\"actor\":{\"objectType\":\"Agent\",\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/voided\",\"display\":{\"und\":\"voided\"}},\"object\":{\"objectType\":\"StatementRef\",\"id\":\"175c9264-692f-4108-9b7d-0ba64bd59ac3\"}}"));
+        "{\"actor\":{\"name\":\"A N Other\",\"mbox\":\"mailto:another@example.com\"},\"verb\":{\"id\":\"http://adlnet.gov/expapi/verbs/voided\",\"display\":{\"und\":\"voided\"}},\"object\":{\"id\":\"175c9264-692f-4108-9b7d-0ba64bd59ac3\",\"objectType\":\"StatementRef\"}}"));
   }
 
   @Getter

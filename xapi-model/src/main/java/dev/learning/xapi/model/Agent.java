@@ -5,6 +5,7 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,21 @@ public class Agent extends Actor {
       extends Actor.Builder<C, B> {
 
     // This static class extends the lombok builder.
+
+  }
+
+  /**
+   * This enumeration class represents the optional xAPI Agent object type.
+   *
+   * @author István Rátkai (Selindek)
+   */
+  public enum AgentObjectType {
+
+    /**
+     * Agent object type.
+     */
+    @JsonProperty("Agent")
+    AGENT;
 
   }
 

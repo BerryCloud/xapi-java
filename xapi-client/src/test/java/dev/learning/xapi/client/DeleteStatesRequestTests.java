@@ -138,13 +138,13 @@ class DeleteStatesRequestTests {
     final Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
-    final URI url = request
-        .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-        .build(queryParams);
+    final var url =
+        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+            .build(queryParams);
 
     // Then Result Is Expected
     assertThat(url, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D&registration=67828e3a-d116-4e18-8af3-2d2c59e27be6")));
 
   }
 
@@ -163,13 +163,13 @@ class DeleteStatesRequestTests {
     final Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
-    final URI url = request
-        .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-        .build(queryParams);
+    final var url =
+        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+            .build(queryParams);
 
     // Then Result Is Expected
     assertThat(url, is(URI.create(
-        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22objectType%22%3A%22Agent%22%2C%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D")));
+        "https://example.com/xapi/activities/state?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&agent=%7B%22name%22%3A%22A%20N%20Other%22%2C%22mbox%22%3A%22mailto%3Aanother%40example.com%22%7D")));
 
   }
 
