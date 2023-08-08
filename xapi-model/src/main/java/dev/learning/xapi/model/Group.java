@@ -31,6 +31,8 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Group extends Actor {
 
+  private final String objectType = "Group"; // NOSONAR
+
   /**
    * The members of this Group.
    */

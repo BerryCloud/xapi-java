@@ -145,7 +145,7 @@ class PersonTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Person(objectType=PERSON, name=[Normal Person], mbox=[normal.person@normal.mail], mboxSha1sum=[123], openid=[https://example.com], account=[Account(homePage=https://example.com, name=example1), Account(homePage=https://example.com, name=example2)])"));
+        "Person(objectType=Person, name=[Normal Person], mbox=[normal.person@normal.mail], mboxSha1sum=[123], openid=[https://example.com], account=[Account(homePage=https://example.com, name=example1), Account(homePage=https://example.com, name=example2)])"));
 
   }
 

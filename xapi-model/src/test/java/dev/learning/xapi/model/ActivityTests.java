@@ -103,8 +103,8 @@ class ActivityTests {
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(activity));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result, is((objectMapper
-        .readTree(ResourceUtils.getFile("classpath:activity/activity_with_object_type.json")))));
+    assertThat(result,
+        is((objectMapper.readTree(ResourceUtils.getFile("classpath:activity/activity.json")))));
 
   }
 
@@ -125,7 +125,7 @@ class ActivityTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Activity(id=http://www.example.co.uk/exampleactivity, definition=ActivityDefinition(name=null, description={en_US=A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.}, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null))"));
+        "Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=ActivityDefinition(name=null, description={en_US=A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.}, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null))"));
 
   }
 

@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.model;
 
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasNoJsonPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
@@ -22,6 +24,7 @@ import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
+import dev.learning.xapi.model.Agent.AgentObjectType;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -220,6 +223,64 @@ class StatementTests {
   }
 
   @Test
+  void whenDeserializingStatementWithActivityWithoutObjectTypeThenObjectTypeIsNotPresent()
+      throws Exception {
+
+    final var json = """
+        {
+            "actor":{
+                "name":"A N Other",
+                "mbox":"mailto:another@example.com"
+            },
+            "verb":{
+                "id":"http://adlnet.gov/expapi/verbs/attempted"
+            },
+            "object":{
+                "id":"https://example.com/activity/simplestatement"
+            }
+        }""";
+
+    final var statement = objectMapper.readValue(json, Statement.class);
+
+    // When Deserializing Statement With Activity Without ObjectType
+    final var result = objectMapper.writeValueAsString(statement);
+
+    // Then ObjectType Is Not Present
+    assertThat(result, hasNoJsonPath("$.object.objectType"));
+
+  }
+
+  @Test
+  void whenDeserializingStatementWithActivityWithObjectTypeThenObjectTypeIsPresent()
+      throws Exception {
+
+    final var json = """
+        {
+            "actor":{
+                "name":"A N Other",
+                "mbox":"mailto:another@example.com"
+            },
+            "verb":{
+                "id":"http://adlnet.gov/expapi/verbs/attempted"
+            },
+            "object":{
+                "objectType":"Activity",
+                "id":"https://example.com/activity/simplestatement"
+            }
+        }""";
+
+    final var statement = objectMapper.readValue(json, Statement.class);
+
+    // When Deserializing Statement With Activity With ObjectType
+    final var result = objectMapper.writeValueAsString(statement);
+
+    // Then ObjectType Is Present
+    assertThat(result, hasJsonPath("$.object.objectType"));
+
+  }
+
+
+  @Test
   void whenSerializingStatementWithAgentWithAccountThenResultIsEqualToExpectedJson()
       throws IOException {
 
@@ -336,7 +397,6 @@ class StatementTests {
     assertThat(result,
         is(objectMapper.readTree(objectMapper.writeValueAsString(objectMapper.readValue(
             ResourceUtils.getFile("classpath:statement/statement.json"), Statement.class)))));
-
   }
 
   @Test
@@ -1538,7 +1598,7 @@ class StatementTests {
     // Then Signature is Expected
     assertThat(new String(statement.getAttachments().get(0).getContent(), StandardCharsets.UTF_8),
         startsWith(
-            "eyJhbGciOiJSUzUxMiJ9.eyJhY3RvciI6eyJuYW1lIjoiQSBOIE90aGVyIn0sInJlc3VsdCI6eyJzdWNjZXNzIjp0cnVlLCJjb21wbGV0aW9uIjp0cnVlLCJyZXNwb25zZSI6IlJlc3BvbnNlIiwiZHVyYXRpb24iOiJQMUQifSwidmVyYiI6eyJpZCI6Imh0dHA6Ly9leGFtcGxlLmNvbS94YXBpL3ZlcmJzI3NlbnQtYS1zdGF0ZW1lbnQiLCJkaXNwbGF5Ijp7ImVuLVVTIjoiYXR0ZW5kZWQifX0sImNvbnRleHQiOnsicmVnaXN0cmF0aW9uIjoiZWM1MzEyNzctYjU3Yi00YzE1LThkOTEtZDI5MmM1YjJiOGY3IiwiaW5zdHJ1Y3RvciI6eyJvYmplY3RUeXBlIjoiQWdlbnQiLCJuYW1lIjoiQSBOIE90aGVyIiwiYWNjb3VudCI6eyJob21lUGFnZSI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJuYW1lIjoiMTM5MzY3NDkifX0sInRlYW0iOnsib2JqZWN0VHlwZSI6Ikdyb3VwIiwibmFtZSI6IlRlYW0iLCJtYm94IjoibWFpbHRvOnRlYW1AZXhhbXBsZS5jb20ifSwicGxhdGZvcm0iOiJFeGFtcGxlIHZpcnR1YWwgbWVldGluZyBzb2Z0d2FyZSIsImxhbmd1YWdlIjoiZW4iLCJzdGF0ZW1lbnQiOnsib2JqZWN0VHlwZSI6IlN0YXRlbWVudFJlZiIsImlkIjoiNjY5MGU2YzktM2VmMC00ZWQzLThiMzctN2YzOTY0NzMwYmVlIn19LCJvYmplY3QiOnsiaWQiOiJodHRwOi8vd3d3LmV4YW1wbGUuY29tL21lZXRpbmdzL29jY3VyYW5jZXMvMzQ1MzQiLCJkZWZpbml0aW9uIjp7Im5hbWUiOnsiZW4tR0IiOiJBIHNpbXBsZSBFeHBlcmllbmNlIEFQSSBzdGF0ZW1lbnQuIE5vdGUgdGhhdCB0aGUgTFJTIGRvZXMgbm90IG5lZWQgdG8gaGF2ZSBhbnkgcHJpb3IgaW5mb3JtYXRpb24gYWJvdXQgdGhlIEFjdG9yIChsZWFybmVyKSwgdGhlIHZlcmIsIG9yIHRoZSBBY3Rpdml0eS9vYmplY3QuIn0sImRlc2NyaXB0aW9uIjp7ImVuLUdCIjoiQSBzaW1wbGUgRXhwZXJpZW5jZSBBUEkgc3RhdGVtZW50LiBOb3RlIHRoYXQgdGhlIExSUyBkb2VzIG5vdCBuZWVkIHRvIGhhdmUgYW55IHByaW9yIGluZm9ybWF0aW9uIGFib3V0IHRoZSBBY3RvciAobGVhcm5lciksIHRoZSB2ZXJiLCBvciB0aGUgQWN0aXZpdHkvb2JqZWN0LiJ9LCJ0eXBlIjoiaHR0cDovL2FkbG5ldC5nb3YvZXhwYXBpL2FjdGl2aXRpZXMvbWVldGluZyIsIm1vcmVJbmZvIjoiaHR0cDovL3ZpcnR1YWxtZWV0aW5nLmV4YW1wbGUuY29tLzM0NTI1NiIsImV4dGVuc2lvbnMiOnsiaHR0cDovL25hbWUiOiJLaWxieSJ9fX19."));
+            "eyJhbGciOiJSUzUxMiJ9.eyJhY3RvciI6eyJuYW1lIjoiQSBOIE90aGVyIn0sInJlc3VsdCI6eyJzdWNjZXNzIjp0cnVlLCJjb21wbGV0aW9uIjp0cnVlLCJyZXNwb25zZSI6IlJlc3BvbnNlIiwiZHVyYXRpb24iOiJQMUQifSwidmVyYiI6eyJpZCI6Imh0dHA6Ly9leGFtcGxlLmNvbS94YXBpL3ZlcmJzI3NlbnQtYS1zdGF0ZW1lbnQiLCJkaXNwbGF5Ijp7ImVuLVVTIjoiYXR0ZW5kZWQifX0sImNvbnRleHQiOnsicmVnaXN0cmF0aW9uIjoiZWM1MzEyNzctYjU3Yi00YzE1LThkOTEtZDI5MmM1YjJiOGY3IiwiaW5zdHJ1Y3RvciI6eyJuYW1lIjoiQSBOIE90aGVyIiwiYWNjb3VudCI6eyJob21lUGFnZSI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJuYW1lIjoiMTM5MzY3NDkifX0sInRlYW0iOnsibmFtZSI6IlRlYW0iLCJtYm94IjoibWFpbHRvOnRlYW1AZXhhbXBsZS5jb20iLCJvYmplY3RUeXBlIjoiR3JvdXAifSwicGxhdGZvcm0iOiJFeGFtcGxlIHZpcnR1YWwgbWVldGluZyBzb2Z0d2FyZSIsImxhbmd1YWdlIjoiZW4iLCJzdGF0ZW1lbnQiOnsiaWQiOiI2NjkwZTZjOS0zZWYwLTRlZDMtOGIzNy03ZjM5NjQ3MzBiZWUiLCJvYmplY3RUeXBlIjoiU3RhdGVtZW50UmVmIn19LCJvYmplY3QiOnsiaWQiOiJodHRwOi8vd3d3LmV4YW1wbGUuY29tL21lZXRpbmdzL29jY3VyYW5jZXMvMzQ1MzQiLCJkZWZpbml0aW9uIjp7Im5hbWUiOnsiZW4tR0IiOiJBIHNpbXBsZSBFeHBlcmllbmNlIEFQSSBzdGF0ZW1lbnQuIE5vdGUgdGhhdCB0aGUgTFJTIGRvZXMgbm90IG5lZWQgdG8gaGF2ZSBhbnkgcHJpb3IgaW5mb3JtYXRpb24gYWJvdXQgdGhlIEFjdG9yIChsZWFybmVyKSwgdGhlIHZlcmIsIG9yIHRoZSBBY3Rpdml0eS9vYmplY3QuIn0sImRlc2NyaXB0aW9uIjp7ImVuLUdCIjoiQSBzaW1wbGUgRXhwZXJpZW5jZSBBUEkgc3RhdGVtZW50LiBOb3RlIHRoYXQgdGhlIExSUyBkb2VzIG5vdCBuZWVkIHRvIGhhdmUgYW55IHByaW9yIGluZm9ybWF0aW9uIGFib3V0IHRoZSBBY3RvciAobGVhcm5lciksIHRoZSB2ZXJiLCBvciB0aGUgQWN0aXZpdHkvb2JqZWN0LiJ9LCJ0eXBlIjoiaHR0cDovL2FkbG5ldC5nb3YvZXhwYXBpL2FjdGl2aXRpZXMvbWVldGluZyIsIm1vcmVJbmZvIjoiaHR0cDovL3ZpcnR1YWxtZWV0aW5nLmV4YW1wbGUuY29tLzM0NTI1NiIsImV4dGVuc2lvbnMiOnsiaHR0cDovL25hbWUiOiJLaWxieSJ9fX19."));
 
   }
 
@@ -1626,4 +1686,47 @@ class StatementTests {
     assertThat(bodyStatement, is(statement));
 
   }
+
+  @Test
+  void whenBuildingStatementWithAgentObjectWithoutObjectTypeThenStatementObjectObjectTypeIsNotNull() {
+
+    final Agent agent = Agent.builder().name("A N Other").objectType(null).build();
+
+    // When Building Statement With Agent Object Without ObjectType
+    final var statement = Statement.builder()
+
+        .agentActor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .object(agent)
+
+        .build();
+
+    // Then Statement Object ObjectType Is Not Null
+    assertThat(((Agent) statement.getObject()).getObjectType(), is(notNullValue()));
+
+  }
+
+  @Test
+  void whenBuildingStatementWithAgentObjectWithObjectTypeThenStatementObjectObjectTypeIsNotNull() {
+
+    final Agent agent = Agent.builder().name("A N Other").objectType(AgentObjectType.AGENT).build();
+
+    // When Building Statement With Agent Object With ObjectType
+    final var statement = Statement.builder()
+
+        .agentActor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .object(agent)
+
+        .build();
+
+    // Then Statement Object ObjectType Is Not Null
+    assertThat(((Agent) statement.getObject()).getObjectType(), is(notNullValue()));
+
+  }
+
 }

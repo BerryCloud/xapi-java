@@ -69,8 +69,7 @@ class StatementReferenceTest {
         .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")).build();
 
     // When Serializing Context
-    final var result =
-        objectMapper.readTree(objectMapper.writeValueAsString(statementReference));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(statementReference));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(objectMapper.readTree(
@@ -89,7 +88,8 @@ class StatementReferenceTest {
     final var result = statementReference.toString();
 
     // Then Result Is Expected
-    assertThat(result, is("StatementReference(id=099bbde8-780e-483f-8181-128393db0f53)"));
+    assertThat(result,
+        is("StatementReference(objectType=StatementRef, id=099bbde8-780e-483f-8181-128393db0f53)"));
 
   }
 

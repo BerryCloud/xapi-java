@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.model.Agent.AgentObjectType;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidAuthority;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
@@ -315,6 +316,25 @@ public class Statement implements CoreStatement {
       authority.accept(builder);
 
       return authority(builder.build());
+    }
+
+    /**
+     * Sets the object. <b> This custom setter makes sure that if the object is an Agent then its
+     * objectType property was set properly. </b>
+     *
+     * @param object The object of the Statement.
+     *
+     * @return This builder.
+     */
+    public Builder object(StatementObject object) {
+
+      if (object instanceof final Agent agent && AgentObjectType.AGENT != agent.getObjectType()) {
+        this.object = agent.withObjectType(AgentObjectType.AGENT);
+      } else {
+        this.object = object;
+      }
+
+      return this;
     }
 
     /**

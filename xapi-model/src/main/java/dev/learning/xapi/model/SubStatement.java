@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import dev.learning.xapi.model.Agent.AgentObjectType;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidStatementPlatform;
 import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
@@ -31,6 +32,8 @@ import lombok.Value;
 @ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject, CoreStatement {
+
+  private final String objectType = "SubStatement"; // NOSONAR
 
   /**
    * {@inheritDoc}
@@ -156,6 +159,25 @@ public class SubStatement implements StatementObject, CoreStatement {
     public Builder verb(Verb verb) {
 
       this.verb = verb;
+
+      return this;
+    }
+
+    /**
+     * Sets the object. <b> This custom setter makes sure that if the object is an Agent then its
+     * objectType property was set properly. </b>
+     *
+     * @param object The object of the SubStatement.
+     *
+     * @return This builder.
+     */
+    public Builder object(SubStatementObject object) {
+
+      if (object instanceof final Agent agent && AgentObjectType.AGENT != agent.getObjectType()) {
+        this.object = agent.withObjectType(AgentObjectType.AGENT);
+      } else {
+        this.object = object;
+      }
 
       return this;
     }
