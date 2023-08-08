@@ -13,8 +13,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.Value;
 
 /**
@@ -32,6 +35,8 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject, CoreStatement {
 
+  @Default
+  @Setter(AccessLevel.NONE)
   private final ObjectType objectType = ObjectType.SUBSTATEMENT;
 
   /**

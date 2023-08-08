@@ -104,7 +104,7 @@ class GroupTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://example.com/homePage, name=GroupAccount)), member=[Agent(super=Actor(name=Member 1, mbox=mailto:member1@example.com, mboxSha1sum=null, openid=null, account=null)), Agent(super=Actor(name=Member 2, mbox=null, mboxSha1sum=null, openid=https://example.com/openId, account=null))])"));
+        "Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=Account(homePage=http://example.com/homePage, name=GroupAccount)), objectType=GROUP, member=[Agent(super=Actor(name=Member 1, mbox=mailto:member1@example.com, mboxSha1sum=null, openid=null, account=null), objectType=null), Agent(super=Actor(name=Member 2, mbox=null, mboxSha1sum=null, openid=https://example.com/openId, account=null), objectType=null)])"));
 
   }
 

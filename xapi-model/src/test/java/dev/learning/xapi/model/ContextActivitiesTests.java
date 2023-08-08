@@ -109,8 +109,7 @@ class ContextActivitiesTests {
         .build();
 
     // When Serializing Attachment
-    final var result =
-        objectMapper.readTree(objectMapper.writeValueAsString(contextActivities));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(contextActivities));
 
     // Then Result Is Equal To Expected Json
     assertThat(result, is(objectMapper
@@ -130,7 +129,7 @@ class ContextActivitiesTests {
 
     // Then Result Is Expected
     assertThat(result, is(
-        "ContextActivities(parent=[Activity(id=https://example.com/activity/1, definition=null)], grouping=[Activity(id=https://example.com/activity/2, definition=null)], category=[Activity(id=https://example.com/activity/3, definition=null)], other=[Activity(id=https://example.com/activity/4, definition=null)])"));
+        "ContextActivities(parent=[Activity(objectType=null, id=https://example.com/activity/1, definition=null)], grouping=[Activity(objectType=null, id=https://example.com/activity/2, definition=null)], category=[Activity(objectType=null, id=https://example.com/activity/3, definition=null)], other=[Activity(objectType=null, id=https://example.com/activity/4, definition=null)])"));
 
   }
 
