@@ -8,7 +8,6 @@ import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Value;
 
 /**
@@ -24,7 +23,6 @@ import lombok.Value;
 @Builder
 public class StatementReference implements StatementObject, SubStatementObject {
 
-  @Default
   private final ObjectType objectType = ObjectType.STATEMENTREF;
 
   /**

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -32,7 +31,6 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Group extends Actor {
 
-  @Default
   private final ObjectType objectType = ObjectType.GROUP;
 
   /**
