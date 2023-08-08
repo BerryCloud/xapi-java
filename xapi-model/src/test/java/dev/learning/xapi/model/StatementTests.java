@@ -371,8 +371,6 @@ class StatementTests {
 
         .activityObject(a -> a.id("http://www.example.com/meetings/occurances/34534")
 
-            .objectType(ObjectType.ACTIVITY)
-
             .definition(d -> d.addName(Locale.US,
                 "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.")
 
@@ -392,10 +390,18 @@ class StatementTests {
         .build();
 
     // When Serializing Statement
-    final var result = objectMapper.writeValueAsString(statement);
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(statement));
+
+    System.out.println("one \n" + ResourceUtils.getFile("classpath:statement/statement.json"));
+
+    System.out.println("two \n"
+        + objectMapper.readTree(ResourceUtils.getFile("classpath:statement/statement.json")));
+
+
 
     // Then Result Is Equal To Expected Json
-    assertThat(result, is(ResourceUtils.getFile("classpath:statement/statement.json")));
+    assertThat(result,
+        is(objectMapper.readTree(ResourceUtils.getFile("classpath:statement/statement.json"))));
 
   }
 
