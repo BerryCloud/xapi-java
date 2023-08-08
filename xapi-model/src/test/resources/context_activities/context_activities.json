@@ -1,26 +1,22 @@
 {
 	"parent": [
 		{
-			"id": "https://example.com/activity/1",
-			"objectType": "Activity"
+			"id": "https://example.com/activity/1"
 		}
 	],
 	"grouping": [
 		{
-			"id": "https://example.com/activity/2",
-			"objectType": "Activity"
+			"id": "https://example.com/activity/2"
 		}
 	],
 	"category": [
 		{
-			"id": "https://example.com/activity/3",
-			"objectType": "Activity"
+			"id": "https://example.com/activity/3"
 		}
 	],
 	"other": [
 		{
-			"id": "https://example.com/activity/4",
-			"objectType": "Activity"
+			"id": "https://example.com/activity/4"
 		}
 	]
 }

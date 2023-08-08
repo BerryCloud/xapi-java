@@ -1,13 +1,28 @@
 {
 	"id": "4b9175ba-367d-4b93-990b-34d4180039f1",
 	"actor": {
-		"name": "A N Other",
-		"objectType": "Agent"
+		"name": "A N Other"
 	},
 	"verb": {
 		"id": "http://example.com/xapi/verbs#sent-a-statement",
 		"display": {
 			"en-US": "attended"
+		}
+	},
+	"object": {
+		"id": "http://www.example.com/meetings/occurances/34534",
+		"definition": {
+			"name": {
+				"en-US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
+			},
+			"description": {
+				"en-US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
+			},
+			"type": "http://adlnet.gov/expapi/activities/meeting",
+			"moreInfo": "http://virtualmeeting.example.com/345256",
+			"extensions": {
+				"http://name": "Kilby"
+			}
 		}
 	},
 	"result": {
@@ -23,13 +38,12 @@
 			"account": {
 				"homePage": "https://example.com",
 				"name": "13936749"
-			},
-			"objectType": "Agent"
+			}
 		},
 		"team": {
+			"objectType": "Group",	
 			"name": "Team",
-			"mbox": "mailto:team@example.com",
-			"objectType": "Group"
+			"mbox": "mailto:team@example.com"
 		},
 		"platform": "Example virtual meeting software",
 		"language": "en-US",
@@ -44,27 +58,9 @@
 		"account": {
 			"homePage": "https://example.com",
 			"name": "13936749"
-		},
-		"objectType": "Agent"
+		}
 	},
-	"version": "1.0.0",
-	"object": {
-		"id": "http://www.example.com/meetings/occurances/34534",
-		"definition": {
-			"extensions": {
-				"http://name": "Kilby"
-			},
-			"name": {
-				"en-US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
-			},
-			"description": {
-				"en-US": "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."
-			},
-			"type": "http://adlnet.gov/expapi/activities/meeting",
-			"moreInfo": "http://virtualmeeting.example.com/345256"
-		},
-		"objectType": "Activity"
-	},
+	"version": "1.0.0",	
 	"attachments": [
 		{
 			"usageType": "http://example.com",

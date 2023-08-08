@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Value;
 
 /**
@@ -33,7 +32,6 @@ import lombok.Value;
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
 public class Person {
 
-  @Default
   private final String objectType = "Person"; // NOSONAR
 
   /**
