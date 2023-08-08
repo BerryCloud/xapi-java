@@ -42,8 +42,8 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
   }
 
   /**
-   * Custom {@link AsPropertyTypeDeserializer} which accepts only valid {@link ObjectType} as
-   * property value.
+   * Custom {@link AsPropertyTypeDeserializer} which accepts only valid objectType as property
+   * value.
    */
   public static class StrictObjectTypePropertyDeserializer extends AsPropertyTypeDeserializer {
 
