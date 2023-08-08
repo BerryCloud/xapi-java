@@ -11,12 +11,10 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -35,7 +33,6 @@ import lombok.experimental.SuperBuilder;
 public class Group extends Actor {
 
   @Default
-  @Setter(AccessLevel.NONE)
   private final ObjectType objectType = ObjectType.GROUP;
 
   /**

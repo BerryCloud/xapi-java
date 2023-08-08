@@ -14,10 +14,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Builder.Default;
-import lombok.Setter;
 import lombok.Value;
 
 /**
@@ -35,7 +33,6 @@ import lombok.Value;
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
 public class Person {
 
-  @Setter(AccessLevel.NONE)
   @Default
   private final ObjectType objectType = ObjectType.PERSON;
 

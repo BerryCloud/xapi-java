@@ -7,10 +7,8 @@ package dev.learning.xapi.model;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Builder.Default;
-import lombok.Setter;
 import lombok.Value;
 
 /**
@@ -27,7 +25,6 @@ import lombok.Value;
 public class StatementReference implements StatementObject, SubStatementObject {
 
   @Default
-  @Setter(AccessLevel.NONE)
   private final ObjectType objectType = ObjectType.STATEMENTREF;
 
   /**
