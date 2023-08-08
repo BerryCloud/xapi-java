@@ -174,7 +174,7 @@ public class SubStatement implements StatementObject, CoreStatement {
     public Builder object(SubStatementObject object) {
 
       if (object instanceof final Agent agent && AgentObjectType.AGENT != agent.getObjectType()) {
-        this.object = agent.withObjectType(AgentObjectType.AGENT);
+        this.object = agent.toBuilder().objectType(AgentObjectType.AGENT).build();
       } else {
         this.object = object;
       }

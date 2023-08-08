@@ -7,6 +7,8 @@ package dev.learning.xapi.model;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasNoJsonPath;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -1688,7 +1690,7 @@ class StatementTests {
   }
 
   @Test
-  void whenBuildingStatementWithAgentObjectWithoutObjectTypeThenStatementObjectObjectTypeIsNotNull() {
+  void whenBuildingStatementWithAgentObjectWithoutObjectTypeThenStatementObjectObjectTypeWasSet() {
 
     final Agent agent = Agent.builder().name("A N Other").objectType(null).build();
 
@@ -1703,8 +1705,9 @@ class StatementTests {
 
         .build();
 
-    // Then Statement Object ObjectType Is Not Null
-    assertThat(((Agent) statement.getObject()).getObjectType(), is(notNullValue()));
+    // Then Statement Object ObjectType Was Set
+    assertThat((Agent) statement.getObject(),
+        allOf(hasProperty("objectType", is(notNullValue())), hasProperty("name", is("A N Other"))));
 
   }
 
