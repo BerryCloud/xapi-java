@@ -1687,8 +1687,6 @@ class StatementTests {
 
   }
 
-
-
   @Test
   void whenBuildingStatementWithAgentObjectWithoutObjectTypeThenStatementObjectObjectTypeIsNotNull() {
 
@@ -1725,8 +1723,6 @@ class StatementTests {
         .object(agent)
 
         .build();
-
-    System.out.print(((Agent) statement.getObject()).getObjectType());
 
     // Then Statement Object ObjectType Is Not Null
     assertThat(((Agent) statement.getObject()).getObjectType(), is(notNullValue()));

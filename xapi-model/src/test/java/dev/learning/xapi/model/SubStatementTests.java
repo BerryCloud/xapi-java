@@ -7,9 +7,11 @@ package dev.learning.xapi.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.learning.xapi.model.Agent.AgentObjectType;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
@@ -367,5 +369,48 @@ class SubStatementTests {
         "SubStatement(objectType=SubStatement, actor=Agent(super=Actor(name=null, mbox=mailto:agent@example.com, mboxSha1sum=null, openid=null, account=null), objectType=null), verb=Verb(id=http://example.com/confirmed, display={en_US=confirmed}), object=StatementReference(objectType=StatementRef, id=9e13cefd-53d3-4eac-b5ed-2cf6693903bb), result=Result(score=Score(scaled=1.0, raw=1.0, min=0.0, max=5.0), success=true, completion=true, response=test, duration=P1D, extensions=null), context=Context(registration=6d969975-8d7e-4506-ac19-877c57f2921a, instructor=Agent(super=Actor(name=null, mbox=mailto:agent@example.com, mboxSha1sum=null, openid=null, account=null), objectType=null), team=Group(super=Actor(name=Example Group, mbox=null, mboxSha1sum=null, openid=null, account=null), objectType=Group, member=null), contextActivities=ContextActivities(parent=[Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=null)], grouping=[Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=null)], category=[Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=null)], other=[Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=null)]), revision=revision, platform=platform, language=en_US, statement=StatementReference(objectType=StatementRef, id=9e13cefd-53d3-4eac-b5ed-2cf6693903bb), extensions={http://url=www.example.com}), timestamp=2015-11-18T11:17:00Z, attachments=[Attachment(usageType=http://example.com, display={en_US=value}, description={en_US=value}, contentType=file, length=123, sha2=123, fileUrl=http://example.com, content=null), Attachment(usageType=http://example.com, display={en=value}, description={en=value}, contentType=file, length=123, sha2=123, fileUrl=http://example.com, content=null)])"));
 
   }
+
+  @Test
+  void whenBuildingSubStatementWithAgentObjectWithoutObjectTypeThenSubStatementObjectObjectTypeIsNotNull() {
+
+    final Agent agent = Agent.builder().name("A N Other").objectType(null).build();
+
+    // When Building SubStatement With Agent Object Without ObjectType
+    final var subStatement = SubStatement.builder()
+
+        .agentActor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .object(agent)
+
+        .build();
+
+    // Then SubStatement Object ObjectType Is Not Null
+    assertThat(((Agent) subStatement.getObject()).getObjectType(), is(notNullValue()));
+
+  }
+
+  @Test
+  void whenBuildingSubStatementWithAgentObjectWithObjectTypeThenSubStatementObjectObjectTypeIsNotNull() {
+
+    final Agent agent = Agent.builder().name("A N Other").objectType(AgentObjectType.AGENT).build();
+
+    // When Building SubStatement With Agent Object With ObjectType
+    final var subStatement = SubStatement.builder()
+
+        .agentActor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .object(agent)
+
+        .build();
+
+    // Then SubStatement Object ObjectType Is Not Null
+    assertThat(((Agent) subStatement.getObject()).getObjectType(), is(notNullValue()));
+
+  }
+
 
 }
