@@ -34,7 +34,7 @@ import lombok.Value;
 public class Person {
 
   @Default
-  private final ObjectType objectType = ObjectType.PERSON;
+  private final String objectType = "Person"; // NOSONAR
 
   /**
    * List of names.

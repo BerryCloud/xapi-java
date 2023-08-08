@@ -31,7 +31,7 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
 
-  private ObjectType objectType;
+  private ActivityObjectType objectType;
 
   /**
    * An identifier for a single unique Activity.

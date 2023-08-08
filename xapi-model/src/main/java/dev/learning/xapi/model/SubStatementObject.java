@@ -30,6 +30,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
     @JsonSubTypes.Type(value = StatementReference.class, name = "StatementRef")})
 public interface SubStatementObject {
 
-  ObjectType getObjectType();
-
 }

@@ -32,7 +32,7 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject, CoreStatement {
 
-  private final ObjectType objectType = ObjectType.SUBSTATEMENT;
+  private final String objectType = "SubStatement"; // NOSONAR
 
   /**
    * {@inheritDoc}
@@ -158,6 +158,27 @@ public class SubStatement implements StatementObject, CoreStatement {
     public Builder verb(Verb verb) {
 
       this.verb = verb;
+
+      return this;
+    }
+
+    /**
+     * Sets the object. <b> This custom setter makes sure that if the object is an Agent then its
+     * objectType property was set properly. </b>
+     *
+     * @param object The object of the SubStatement.
+     *
+     * @return This builder.
+     */
+    public Builder object(SubStatementObject object) {
+
+      if (object instanceof final Agent agent && AgentObjectType.AGENT != agent.getObjectType()) {
+        this.object = Agent.builder().objectType(AgentObjectType.AGENT).name(agent.getName())
+            .account(agent.getAccount()).mbox(agent.getMbox()).mboxSha1sum(agent.getMboxSha1sum())
+            .openid(agent.getOpenid()).build();
+      } else {
+        this.object = object;
+      }
 
       return this;
     }

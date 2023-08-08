@@ -23,7 +23,7 @@ import lombok.Value;
 @Builder
 public class StatementReference implements StatementObject, SubStatementObject {
 
-  private final ObjectType objectType = ObjectType.STATEMENTREF;
+  private final String objectType = "StatementRef"; // NOSONAR
 
   /**
    * The UUID of a Statement.
