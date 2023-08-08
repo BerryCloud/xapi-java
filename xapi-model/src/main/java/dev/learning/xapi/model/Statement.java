@@ -329,7 +329,7 @@ public class Statement implements CoreStatement {
     public Builder object(StatementObject object) {
 
       if (object instanceof final Agent agent && AgentObjectType.AGENT != agent.getObjectType()) {
-        this.object = agent.withObjectType(AgentObjectType.AGENT);
+        this.object = agent.toBuilder().objectType(AgentObjectType.AGENT).build();
       } else {
         this.object = object;
       }
