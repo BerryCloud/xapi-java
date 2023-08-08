@@ -24,6 +24,7 @@ import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
 import dev.learning.xapi.jackson.XapiStrictTimestampModule;
+import dev.learning.xapi.model.Agent.AgentObjectType;
 import io.jsonwebtoken.Jwts;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -1685,4 +1686,51 @@ class StatementTests {
     assertThat(bodyStatement, is(statement));
 
   }
+
+
+
+  @Test
+  void whenBuildingStatementWithAgentObjectWithoutObjectTypeThenStatementObjectObjectTypeIsNotNull() {
+
+    final Agent agent = Agent.builder().name("A N Other").objectType(null).build();
+
+    // When Building Statement With Agent Object Without ObjectType
+    final var statement = Statement.builder()
+
+        .agentActor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .object(agent)
+
+        .build();
+
+    // Then Statement Object ObjectType Is Not Null
+    assertThat(((Agent) statement.getObject()).getObjectType(), is(notNullValue()));
+
+  }
+
+  @Test
+  void whenBuildingStatementWithAgentObjectWithObjectTypeThenStatementObjectObjectTypeIsNotNull() {
+
+    final Agent agent = Agent.builder().name("A N Other").objectType(AgentObjectType.AGENT).build();
+
+    // When Building Statement With Agent Object With ObjectType
+    final var statement = Statement.builder()
+
+        .agentActor(a -> a.name("A N Other"))
+
+        .verb(Verb.PASSED)
+
+        .object(agent)
+
+        .build();
+
+    System.out.print(((Agent) statement.getObject()).getObjectType());
+
+    // Then Statement Object ObjectType Is Not Null
+    assertThat(((Agent) statement.getObject()).getObjectType(), is(notNullValue()));
+
+  }
+
 }

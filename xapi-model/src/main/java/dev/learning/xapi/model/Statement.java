@@ -329,9 +329,7 @@ public class Statement implements CoreStatement {
     public Builder object(StatementObject object) {
 
       if (object instanceof final Agent agent && AgentObjectType.AGENT != agent.getObjectType()) {
-        this.object = Agent.builder().objectType(AgentObjectType.AGENT).name(agent.getName())
-            .account(agent.getAccount()).mbox(agent.getMbox()).mboxSha1sum(agent.getMboxSha1sum())
-            .openid(agent.getOpenid()).build();
+        this.object = agent.withObjectType(AgentObjectType.AGENT);
       } else {
         this.object = object;
       }
