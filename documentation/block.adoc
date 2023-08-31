@@ -1,0 +1,1015 @@
+= Block
+
+A block is a unit of content. There are different types of blocks. Each block type has its own parameters.
+
+== Parameters
+
+All blocks have the following parameters.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `activity` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition[Activity] | Activity of the block | No
+| `doneCriteria` | `string` | Criteria to determine if the block is done | No
+|===
+
+== Restrictions
+
+The `type` property must be set to one of the following string values:
+
+* `accordion`
+* `audio`
+* `button-group`
+* `flashcard`
+* `html`
+* `labeled-image`
+* `process`
+* `questionnaire`
+* `tabs`
+* `video`
+* `youtube`
+
+Different block types have different restrictions. See the section for each block type for more details.
+
+== Details
+
+If `activity` is undefined, no statements about the block are sent to the LRS.
+
+If `doneCriteria` is undefined, the block is considered done. If defined, the block is considered done when the criteria is met.
+
+The `type` property is used to determine the type of the block. The type of the block determines the parameters of the block.
+
+== Block Types
+
+=== Accordion Block
+
+An accordion block is a block that contains a number of panels.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the accordion is done | No
+| `minimumPanelsDone` | `number` | Minimum number of panels that must be done to consider the accordion done | No
+| `panels` | <<Accordion Panel, AccordionPanel>> `array` | Panels of the accordion | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `accordion`.
+
+The `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `minimumPanelsDone` property must be greater than 0 and must not be greater than the size of the `panels` array.Only applicable if the `doneCriteria` is set to `completed`.
+
+The `panels` array must contain at least one <<Accordion Panel, AccordionPanel>> object.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the accordion block is considered done when the accordion block is visible.
+If the `doneCriteria` is set to `completed`, then the accordion block is considered done when the minimum number of accordion `panels` have been done.
+If the `doneCriteria` is set to `interacted`, then the accordion block is considered done when at least one accordion panel is opened.
+
+If `minimumPanelsDone` is undefined, then the block is considered done when all the panels are done.
+
+The `panels`should be displayed in the order they are defined in the `panels` array.
+
+===== Accordion Panel
+
+An accordion panel is a panel of an accordion block.
+
+====== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `name` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps[LanguageMap] | Name of the accordion panel | Yes
+| `blocks` | Block `array` | Blocks of the accordion panel | Yes
+|===
+
+====== Restrictions
+
+The `blocks` array must contain at least one <<HTML Block, HtmlBlock>> or <<YouTube Block, YouTubeBlock>> object.
+
+===== Details
+
+An accordion panel is considered done when all the blocks of the accordion panel are done. It cannot be done until is visible.
+
+=== Audio Block
+
+An audio block is a block that contains an audio file.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the audio block is done | No
+| `url` | `string` | URL of the audio file | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `audio`.
+
+If set the `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `url` property must be a valid URL.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the audio block is considered done when the audio block is visible.
+If the `doneCriteria` is set to `completed`, then the audio block is considered done when the audio is played until the end.
+If the `doneCriteria` is set to `interacted`, then the audio block is considered done when the audio is played.
+
+=== Button Group Block
+
+A button group block is a block that contains a number of buttons.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the button group is done | No
+| `minimumButtonsDone` | `number` | Minimum number of buttons that must be done to consider the button group done | No
+| `single` | `boolean` | If true, only one button can be actioned | No
+| `buttons` | <<Button>> `array` | Buttons of the button group | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `button-group`.
+
+The `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `minimumButtonsDone` property must be greater than 0 and must not be greater than the size of the `buttons` array. Only applicable if the `doneCriteria` is set to `completed`.
+
+The `single` property must only be set to true if `minimumButtonsDone` is 1 or if the `doneCriteria` is `interacted`, `experienced` or undefined.
+
+The `buttons` array must contain at least one <<Button>> object.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the button group block is considered done when the button group block is visible.
+If the `doneCriteria` is set to `completed`, then the button group block is considered done when the minimum number of buttons have been done.
+If the `doneCriteria` is set to `interacted`, then the button group block is considered done when at least one button is actioned.
+
+If `minimumButtonsDone` is undefined, then the block is considered done when all the buttons are done.
+
+The `buttons` should be displayed in the order they are defined in the `buttons` array.
+
+==== Button
+
+A button is a button of a button group block.
+
+===== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `action` | `string` | Action of the button | Yes
+| `text` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps[LanguageMap] | Text of the button | Yes
+| `title` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps[LanguageMap] | Title of the button | No
+| `description` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps[LanguageMap] | Description of the button | No
+| `image` | link:image[Image] | Image of the button | No
+|===
+
+===== Restrictions
+
+The `action` property must be a valid URL, PathId or PathContainerId.
+
+===== Details
+
+If the `action` property is a URL, then the button will open the URL. If the `action` property is a PathId, then the button will redirect the learner to the path. When the path is completed, the learner will be redirected back to the original path. If the `action` property is a PathContainerId, then the button will redirect the learner to the path container. The path container may be in a different path. When the path container is completed, it is the responsibility of the implementation to determine what to do next. If the `action` is a URL then the button is considered done when it is actioned. If the `action` is a PathId then the button is considered done when the path is done. If the `action` is a PathContainerId then the button is considered done when it is actioned.
+
+=== Flashcard Block
+
+A flashcard block is a block that contains a number of flashcards. 
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `cards` | <<Card>> `array` | Cards of the flashcard block | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `flashcard`.
+
+The `cards` property must contain at least one <<Card>> object.
+
+==== Card
+
+A card is a card in a flashcard block.
+
+===== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `front` | <<Card Side, CardSide>> | Front of the card | Yes
+| `back` | <<Card Side, CardSide>> | Back of the card | Yes
+|===
+
+===== Card Side
+
+A card side is a side of a card.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `text` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The text of the card side | No
+| `description` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The description of the card side | No
+| `image` | `string` | The image of the card side | No
+| `audio` | `string` | The audio of the card side | No
+|===
+
+===== Restrictions
+
+The `image` property must be a valid URL.
+
+The `audio` property must be a valid URL.
+
+A card side must have at least one of the following properties: `text`, `description`, `image`, `audio`.
+
+=== HTML Block
+
+An HTML block is a block that contains HTML content.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the HTML block is done | No
+| `url` | `string` | The HTML content | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `html`.
+
+If set the `doneCriteria` property must be `experienced`.
+
+The `url` property must be a valid URL.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the HTML block is considered done when the HTML block is visible.
+
+=== Labeled Image Block
+
+A labeled image block is a block that contains an image with labels.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `image` | `string` | URL of the image | Yes
+| `doneCriteria` | `string` | Criteria to determine if the labeled image block is done | No
+| `minimumLabelsOpened` | `number` | Minimum number of labels that must be opened to consider the labeled image block done | No
+| `labels` | <<Label>> `array` | The labels of the labeled image block | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `labeled-image`.
+
+The `image` property must be a valid URL.
+
+If set the `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `minimumLabelsOpened` property must be greater than 0 and must not be greater than the size of the labels array. If undefined, then the block is considered done when all the labels are opened. Only applicable if the `doneCriteria` is set to `completed`.
+
+The `labels` property must contain at least one <<Label>> object.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the labeled image block is considered done when the labeled image block is visible.
+If the `doneCriteria` is set to `completed`, then the labeled image block is considered done when the minimum number of labels have been opened.
+If the `doneCriteria` is set to `interacted`, then the labeled image block is considered done when at least one label is opened.
+
+==== Label
+
+A label is a label of a labeled image block.
+
+===== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `name` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The name of the label | Yes
+| `description` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The description of the label | No
+| `x` | `number` | X coordinate of the label | Yes
+| `y` | `number` | Y coordinate of the label | Yes
+|===
+
+===== Restrictions
+
+* The `x` property must be greater than or equal to 0.
+* The `y` property must be greater than or equal to 0.
+
+=== Process Block
+
+A process block is a block that contains a number of steps. Only one step can be open at a time.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the process block is done | No
+| `steps` | <<Step>> `array` | The steps of the process block | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `process`.
+
+The `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `steps` property must contain at least one <<Step>> object.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the process block is considered done when the process block is visible.
+If the `doneCriteria` is set to `completed`, then the process block is considered done when all the steps have been done.
+If the `doneCriteria` is set to `interacted`, then the process block is considered done when at least one step is opened.
+
+===== Step
+
+A step is a step of a process block.
+
+====== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `blocks` | block `array` | The blocks of the step | Yes
+|===
+
+====== Restrictions
+
+The `blocks` property must contain at least one <<HTML Block, HTMLBlock>> or <<YouTube Block, YouTubeBlock>> object.
+
+=== Questionnaire Block
+
+A questionnaire block is a block that contains a number of questions and possibly additional questionnaires.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the questionnaire block is done | No
+| `passCriteria` | <<Pass Criteria,PassCriteria>> | The pass criteria of the questionnaire block | No
+| `timeLimit` | `number` | Time limit of the questionnaire block in seconds | No
+| `attempts` | `number` | Number of attempts allowed for the questionnaire block | No
+| `numberOfQuestions` | `number` | Number of questions to be randomly selected from the questions array | No
+| `next` | <<Next Map,NextMap>> | The next block of the questionnaire block | No
+| `review` | `boolean` | If true, the learner can review the questionnaire block | No
+| `feedback` | <<Questionnaire Feedback, QuestionnaireFeedback>> | The feedback of the questionnaire block | No
+| `questions` | <<Question>> `array` | The questions of the questionnaire block | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `questionnaire`.
+
+The `doneCriteria` property can be one of the following string values:
+
+* `passed`
+* `experienced`
+* `completed`
+* `interacted`
+
+If defined, the `timeLimit` property must be greater than 0.
+
+If defined, the `attempts` property must be greater than 0.
+
+If defined, the `numberOfQuestions` property must be greater than 0 and should not be greater than the size of the questions array.
+
+==== Details
+
+The feedback of a questionnaire block is not inherited by the `next` block.
+
+The `doneCriteria` property is inherited by the `next` block irrespective of the `doneCriteria` property of the `next` block.
+
+If the `doneCriteria` is set to `passed`, then the questionnaire block is considered done when the learners score is greater than or equal to the pass criteria score or less than or equal to the pass criteria score if `inverse` is set to true and `next` is undefined. If `next`is defined, then it is considered done when the next step is done. Note: the `next` step inherits its `doneCriteria` from its parent.
+
+If the `doneCriteria` is set to `experienced`, then the questionnaire block is considered done when the questionnaire block is visible.
+
+If the `doneCriteria` is set to `completed`, then the questionnaire block is considered done when the last question is answered and `next` is undefined. If `next` is defined, then it is considered done when the next step is done. Note: the `next` step inherits its `doneCriteria` from its parent.
+
+If the `doneCriteria` is set to `interacted`, then the questionnaire block is considered done when the learner answers at least one question.
+
+The `numberOfQuestions` property controls the number of questions to be randomly selected from the questions array. If undefined, then all the questions are used.
+
+===== Pass Criteria
+
+The pass criteria of a questionnaire block.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `score` | `number` | The passing score | Yes
+| `inverse` | `boolean` | If true, the score is the maximum score to pass the questionnaire | No
+| `unit` | `boolean` | If true this questionnaire is used to score the unit | No
+|===
+
+====== Restrictions
+
+The `score` property must not be greater than the sum of the scores of the questions.
+
+====== Details
+
+If the `inverse` property is true, then the score is the maximum score to pass the questionnaire. If false, then the score is the minimum score to pass the questionnaire.
+
+If the `unit` property is true, then the questionnaire is used to score the unit. A Passed statement is sent to the LRS when the questionnaire is passed. A Failed statement is sent to the LRS when the questionnaire is failed. 
+
+===== Question
+
+A question of a questionnaire block.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `id` | `string` | The id of the question | no
+| `definition` | <<Question Definition>> | The definition of the question | yes
+|===
+
+====== Restrictions
+
+The `id` property must be a valid URI.
+
+====== Details
+
+The `id` property is used to identify the question. If undefined, then no Answered statement is sent to the LRS.
+
+===== Question Definition
+
+The definition of a question.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `name` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The name of the question | yes
+| `description` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The text of the question | no
+| `feedback` | <<Questionnaire Feedback>> | The feedback settings of the question | no
+| `interactionType` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#interaction-types[Interaction Type] | The interaction type of the question | no
+| `multipleChoices` | `boolean` | If true, the question is a multiple choice question | no
+| `score` | `number` | The score of the question | no
+| `correctResponsesPattern` | `string` `array` | The correct responses pattern of the question | no
+| `exitResponsesPattern` | `string` `array` | The exit responses pattern of the question | no
+| `choices` | <<Question Interaction Component>> `array` | The choices of the question | no
+| `scale` | <<Question Interaction Component>> `array` | The scale of the question | no
+| `source` | <<Question Interaction Component>> `array` | The source of the question | no
+| `target` | <<Question Interaction Component>> `array` | The target of the question | no
+| `steps` | <<Question Interaction Component>> `array` | The steps of the question | no
+|===
+
+====== Restrictions
+
+The `correctResponsesPattern` property must be an array of valid strings.
+
+The `exitResponsesPattern` property must be an array of valid strings.
+
+
+
+===== Questionnaire Feedback
+
+The feedback of a questionnaire block.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `score` | `boolean` | If true, the score is shown | no
+| `text` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The text of the feedback | no
+| `scoreText` | <<Score Text Map,ScoreTextMap>> | The score text of the feedback | no
+|===
+
+====== Score Text Map
+
+The text to display based on the score.
+
+Score Text is a map of score to text where the score is the key and the text is the value. The text is a https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap].
+
+===== Question Interaction Component
+
+A question interaction component is a component of a question interaction type.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `id` | `string` | The id of the question interaction component | no
+| `description` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The description of the question interaction component | no
+| `score` | `number` | The score of the question interaction component | no
+|===
+
+====== Restrictions
+
+The `id` property must be a valid URI.
+
+===== Next Map
+
+The next questionnaire part of a questionnaire block.
+
+A map of score to questionnaire part where the score is the key and the questionnaire part is the value or null.
+
+====== Questionnaire Part
+
+A questionnaire part is a part of a questionnaire block.
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+|===
+
+
+
+
+=== Tabs Block
+
+A tabs block is a block that contains a number of tabs. Only one tab can be open at a time.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the tabs block is done | No
+| `minimumTabsDone` | `number` | Minimum number of tabs that must be done to consider the tabs block done | No
+| `tabs` |  <<Tab>> `array` | The tabs of the tabs block | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `tabs`.
+
+The `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `minimumTabsDone` property must be greater than 0 and should not be greater than the size of the tabs array.
+
+The `tabs` property must contain at least two <<Tab>> objects.
+
+==== Details
+
+If undefined, then the block is considered done when all the tabs are done. Only applicable if the `doneCriteria` is set to `completed`.
+
+
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the tabs block is considered done when the tabs block is visible.
+If the `doneCriteria` is set to `completed`, then the tabs block is considered done when the minimum number of tabs have been done.
+If the `doneCriteria` is set to `interacted`, then the tabs block is considered done when at least one tab is opened.
+
+===== Tab
+
+A tab is a tab of a tabs block.
+
+====== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `name` | https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#42-language-maps[LanguageMap] | The name of the tab | Yes
+| `blocks` | <<HTML Block, HTML>> or <<YouTube Block, YouTube>> 
+ `array` | The blocks of the tab | Yes
+|===
+
+====== Restrictions
+
+The `blocks` property must contain at least one <<HTML Block, HTML>> or <<YouTube Block, YouTube>> block object.
+
+=== Video Block
+
+A video block is a block that contains a video file.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the video block is done | No
+| `url` | `string` | URL of the video file | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `video`.
+
+If set the `doneCriteria` property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `url` property must be a valid URL.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the video block is considered done when the video block is visible.
+If the `doneCriteria` is set to `completed`, then the video block is considered done when the video is finished.
+If the `doneCriteria` is set to `interacted`, then the video block is considered done when the video is played.
+
+=== YouTube Block
+
+A YouTube block is a block that contains a YouTube video.
+
+==== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| `type` | `string` | Type of the block | Yes
+| `doneCriteria` | `string` | Criteria to determine if the YouTube block is done | No
+| `id` | `string` | ID of the YouTube video | Yes
+|===
+
+==== Restrictions
+
+The `type` property must be set to `youtube`.
+
+If set the 'doneCriteria' property can be one of the following string values:
+
+* `experienced`
+* `completed`
+* `interacted`
+
+The `id` property must be a valid YouTube video ID.
+
+==== Details
+
+If the `doneCriteria` is set to `experienced`, then the YouTube block is considered done when the YouTube block is visible.
+If the `doneCriteria` is set to `completed`, then the YouTube block is considered done when the video is finished.
+If the `doneCriteria` is set to `interacted`, then the YouTube block is considered done when the video is played.
+
+== Examples
+
+=== Example of an Accordion Block
+
+[source, json]
+----
+{
+  "type": "accordion",
+  "doneCriteria": "completed",
+  "minimumPanelsDone": 2,
+  "panels": [
+    {
+      "name": {
+        "en-US": "Panel 1"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/panel1.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Panel 2"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/panel2.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Panel 3"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/panel3.html"
+        }
+      ]
+    }
+  ]
+}
+----
+
+=== Example of an Audio Block
+
+[source, json]
+----
+{
+  "type": "audio",
+  "doneCriteria": "completed",
+  "url": "https://www.example.com/audio.mp3"
+}
+----
+
+=== Example of a Button Group Block
+
+[source, json]
+----
+{
+  "type": "button-group",
+  "doneCriteria": "completed",
+  "minimumButtonsDone": 2,
+  "buttons": [
+    {
+      "name": {
+        "en-US": "Button 1"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/button1.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Button 2"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/button2.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Button 3"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/button3.html"
+        }
+      ]
+    }
+  ]
+}
+----
+
+=== Example of a Flashcard Block
+
+[source, json]
+----
+{
+  "cards": [
+    {
+      "front": {
+        "en-US": {
+          "text": "Front of Card 1"
+        }
+      },
+      "back": {
+        "en-US": {
+          "text": "Back of Card 1"
+        }
+      }
+    },
+    {
+      "front": {
+        "en-US": {
+          "text": "Front of Card 2"
+        }
+      },
+      "back": {
+        "en-US": {
+          "text": "Back of Card 2"
+        }
+      }
+    },
+    {
+      "front": {
+        "en-US": {
+          "text": "Front of Card 3"
+        }
+      },
+      "back": {
+        "en-US": {
+          "text": "Back of Card 3"
+        }
+      }
+    }
+  ]
+}
+----
+
+=== Example of an HTML Block
+
+[source, json]
+----
+{
+  "type": "html",
+  "doneCriteria": "experienced",
+  "url": "https://www.example.com/html.html"
+}
+----
+
+=== Example of a Labeled Image Block
+
+[source, json]
+----
+{
+  "type": "labeled-image",
+  "image": "https://www.example.com/image.png",
+  "labels": [
+    {
+      "name": {
+        "en-US": "Label 1"
+      },
+      "description": {
+        "en-US": "Description of Label 1"
+      },
+      "x": 100,
+      "y": 200
+    },
+    {
+      "name": {
+        "en-US": "Label 2"
+      },
+      "description": {
+        "en-US": "Description of Label 2"
+      },
+      "x": 300,
+      "y": 400
+    },
+    {
+      "name": {
+        "en-US": "Label 3"
+      },
+      "description": {
+        "en-US": "Description of Label 3"
+      },
+      "x": 500,
+      "y": 600
+    }
+  ]
+}
+----
+
+=== Example of a Process Block
+
+[source, json]
+----
+{
+  "type": "process",
+  "doneCriteria": "completed",
+  "minimumStepsDone": 2,
+  "steps": [
+    {
+      "name": {
+        "en-US": "Step 1"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/step1.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Step 2"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/step2.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Step 3"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/step3.html"
+        }
+      ]
+    }
+  ]
+}
+----
+
+=== Example of a Questionnaire Block
+
+[source, json]
+
+
+=== Example of a Tabs Block
+
+[source, json]
+----
+{
+  "type": "tabs",
+  "doneCriteria": "completed",
+  "minimumTabsDone": 2,
+  "tabs": [
+    {
+      "name": {
+        "en-US": "Tab 1"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/tab1.html"
+        },
+        {
+          "type": "youtube",
+          "id": "123456789"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Tab 2"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/tab2.html"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en-US": "Tab 3"
+      },
+      "blocks": [
+        {
+          "type": "html",
+          "url": "https://www.example.com/tab3.html"
+        }
+      ]
+    }
+  ]
+}
+----
+
+=== Example of a Video Block
+
+[source, json]
+----
+{
+  "type": "video",
+  "doneCriteria": "completed",
+  "url": "https://www.example.com/video.mp4"
+}
+----
+
+=== Example of a YouTube Block
+
+[source, json]
+----
+{
+  "type": "youtube",
+  "doneCriteria": "completed",
+  "id": "123456789"
+}
+----
+

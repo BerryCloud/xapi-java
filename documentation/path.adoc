@@ -1,0 +1,33 @@
+= Path
+
+== Description
+
+== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| id | string | The id of the path | Yes
+| name | LanguageMap | The name of the path | Yes
+| activity | Activity | The activity of the path | Yes
+| containers | PathContainer array | The containers of the path | Yes
+|===
+
+== PathContainer
+
+== Description
+
+=== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| id | string | Identifier of the path container | true
+| name | LanguageMap | Name of the path container | true
+| completed | boolean | Completed status of the path container | true
+| activity | Activity | Activity of the path container | false
+| blocks | Block array | Blocks of the path container | true
+|===
+
+
+

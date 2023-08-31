@@ -1,0 +1,69 @@
+= Unit 
+
+== Properties
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| version | string | Version of the unit definition | Yes
+| name | object | Name of the unit | Yes
+| description | object | Description of the unit | Yes
+| activity | object | Activity of the unit | Yes
+| image | object | Image of the unit | Yes
+| primaryColor | string | Primary color of the unit | Yes
+| accentColor | string | Accent color of the unit | Yes
+| warnColor | string | Warn color of the unit | Yes
+| containers | array | Containers of the unit | Yes
+| help | object | Help path of the unit | No
+| paths | array | Paths of the unit | No
+|===
+
+== Restrictions
+
+The containers must contain at least one container. At least one of the containers must be marked as completed.
+
+The name must be a valid LanguageMap.
+== Examples
+
+=== Minimal unit definition
+
+A minimal unit definition is composed of the following properties:
+version, name, description, activity, image, primaryColor, accentColor, warnColor, containers.
+
+[source,json]
+----
+{
+   "version":"1.0.0",
+   "name":{
+      "en":"Introduction to Atmospheric Circulation"
+   },
+   "description":{
+      "en":"This course will introduce the concepts of atmospheric circulation and how heat is transferred around the globe."
+   },
+   "image":{
+      "url":"data/atmospheric-circulation.jpg"
+   },
+   "activity":{
+      "id":"introduction-to-atmospheric-circulation"
+   },
+   "primaryColor":"#3f51b5",
+   "accentColor":"#ff4081",
+   "warnColor":"#f44336",
+   "containers":[
+      {
+         "id":"containers/summary",
+         "name":{
+            "en":"Summary"
+         },
+         "blocks":[
+            {
+               "type":"html",
+               "url":"data/summary/header.html"
+            }
+         ],
+         "completed":true
+      }
+   ]
+};
+----
+

@@ -1,0 +1,17 @@
+{
+  "name": "xapi-player",
+  "version": "1.0.0",
+  "description": "xAPI player specification ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@berry-cloud/ngx-xapi": "^0.3.4"
+  }
+}

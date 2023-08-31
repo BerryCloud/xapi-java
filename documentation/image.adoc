@@ -1,0 +1,17 @@
+= Image
+
+== Description
+
+== Parameters
+
+[cols="1,1,1,1"]
+|===
+| Name | Type | Description | Required
+| url | string | The URL of the image | Yes
+| description | string | The description of the image | No
+| author.name | string | The name of the author | No
+| author.homepage | string | The homepage of the author | No
+| provider.name | string | The name of the provider | No
+| provider.homepage | string | The homepage of the provider | No
+|===
+
