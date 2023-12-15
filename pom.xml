@@ -4,23 +4,23 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.1.4</version>
+    <version>3.2.0</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>dev.learning.xapi</groupId>
   <artifactId>xapi-build</artifactId>
-  <version>1.1.14-SNAPSHOT</version>
+  <version>1.1.16-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>xAPI Build</name>
   <description>learning.dev xAPI Build</description>
   <url>https://github.com/BerryCloud/xapi-java</url>
   <properties>
     <java.version>17</java.version>
-    <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
-    <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
+    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+    <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
     <checkstyle.version>10.6.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-    <jjwt.version>0.11.5</jjwt.version>
+    <jjwt.version>0.12.3</jjwt.version>
   </properties>
   <organization>
     <name>Berry Cloud Ltd</name>
@@ -262,17 +262,17 @@
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-model</artifactId>
-        <version>1.1.14-SNAPSHOT</version>
+        <version>1.1.16-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-model-spring-boot-starter</artifactId>
-        <version>1.1.14-SNAPSHOT</version>
+        <version>1.1.16-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>dev.learning.xapi</groupId>
         <artifactId>xapi-client</artifactId>
-        <version>1.1.14-SNAPSHOT</version>
+        <version>1.1.16-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>io.jsonwebtoken</groupId>

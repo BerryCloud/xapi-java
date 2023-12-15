@@ -1678,10 +1678,10 @@ class StatementTests {
         .signAndBuild(keyPair.getPrivate());
 
     // Then Signature is Valid
-    final var body = Jwts.parserBuilder().setSigningKey(keyPair.getPublic()).build()
-        .parseClaimsJws(
+    final var body = Jwts.parser().verifyWith(keyPair.getPublic()).build()
+        .parseSignedClaims(
             new String(statement.getAttachments().get(0).getContent(), StandardCharsets.UTF_8))
-        .getBody();
+        .getPayload();
 
     final var bodyStatement =
         objectMapper.readValue(objectMapper.writeValueAsString(body), Statement.class);
