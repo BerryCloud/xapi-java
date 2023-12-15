@@ -64,7 +64,7 @@ public class Result implements Serializable {
       message = "Must be a valid ISO 8601:2004 duration format.")
   private String duration;
 
-  private LinkedHashMap<@HasScheme URI, Object> extensions;
+  private LinkedHashMap<@HasScheme URI, Serializable> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
