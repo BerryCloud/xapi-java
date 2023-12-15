@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Locale;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,9 @@ import lombok.With;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @JsonInclude(Include.NON_EMPTY)
-public class Verb {
+public class Verb implements Serializable {
+
+  private static final long serialVersionUID = -824710119986236174L;
 
   /**
    * Indicates the actor replied to a question, where the object is generally an activity

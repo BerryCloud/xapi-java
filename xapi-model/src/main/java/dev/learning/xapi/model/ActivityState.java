@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Value;
@@ -26,7 +27,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class ActivityState {
+public class ActivityState implements Serializable {
+
+  private static final long serialVersionUID = 5759367018015646716L;
 
   private String activityId;
 

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.valueextraction.Unwrapping;
+import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -32,7 +33,9 @@ import lombok.With;
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = "sha2")
-public class Attachment {
+public class Attachment implements Serializable {
+
+  private static final long serialVersionUID = 3100127370407102815L;
 
   /**
    * Identifies the usage of this Attachment.

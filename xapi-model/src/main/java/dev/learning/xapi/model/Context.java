@@ -13,6 +13,7 @@ import dev.learning.xapi.model.validation.constraints.NotUndetermined;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -32,7 +33,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class Context {
+public class Context implements Serializable {
+
+  private static final long serialVersionUID = 1854198476180560925L;
 
   /**
    * The registration that the Statement is associated with.
@@ -87,7 +90,7 @@ public class Context {
   /**
    * A map of any other domain-specific context relevant to this Statement.
    */
-  private LinkedHashMap<@HasScheme URI, Object> extensions;
+  private LinkedHashMap<@HasScheme URI, Serializable> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 

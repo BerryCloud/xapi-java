@@ -31,6 +31,8 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Group extends Actor {
 
+  private static final long serialVersionUID = -8192484918456106884L;
+
   private final String objectType = "Group"; // NOSONAR
 
   /**

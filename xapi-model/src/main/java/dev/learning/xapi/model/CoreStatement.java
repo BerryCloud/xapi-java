@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author István Rátkai (Selindek)
  */
-public interface CoreStatement {
+public interface CoreStatement extends Serializable {
 
   /**
    * Whom the Statement is about, as an Agent or Group Object.
@@ -27,7 +28,7 @@ public interface CoreStatement {
   /**
    * Activity, Agent, or another Statement that is the Object of the Statement.
    */
-  Object getObject();
+  Serializable getObject();
 
   /**
    * Result Object, further details representing a measured outcome.

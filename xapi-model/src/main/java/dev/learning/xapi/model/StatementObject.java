@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import java.io.Serializable;
 
 /**
  * This interface represents the xAPI statement object.
@@ -26,6 +27,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
     @JsonSubTypes.Type(value = Group.class, name = "Group"),
     @JsonSubTypes.Type(value = SubStatement.class, name = "SubStatement"),
     @JsonSubTypes.Type(value = StatementReference.class, name = "StatementRef")})
-public interface StatementObject {
+public interface StatementObject extends Serializable {
 
 }

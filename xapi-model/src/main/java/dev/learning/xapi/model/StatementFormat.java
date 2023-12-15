@@ -4,12 +4,14 @@
 
 package dev.learning.xapi.model;
 
+import java.io.Serializable;
+
 /**
  * This enumeration class represents all valid Statement formats.
  *
  * @author Thomas Turrell-Croft
  */
-public enum StatementFormat {
+public enum StatementFormat implements Serializable {
 
   IDS("ids"),
 

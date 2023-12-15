@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.Valid;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,9 @@ import lombok.Value;
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
-public class Person {
+public class Person implements Serializable {
+
+  private static final long serialVersionUID = 7267970289744420409L;
 
   private final String objectType = "Person"; // NOSONAR
 

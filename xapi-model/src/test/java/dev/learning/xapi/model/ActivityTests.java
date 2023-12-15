@@ -17,6 +17,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
@@ -227,7 +228,7 @@ class ActivityTests {
             Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))))
         .build());
 
-    final Map<@HasScheme URI, Object> expected = new HashMap<>();
+    final Map<@HasScheme URI, Serializable> expected = new HashMap<>();
     expected.put(URI.create("https://example.com/extensions/a"), "a");
     expected.put(URI.create("https://example.com/extensions/b"), "b");
 

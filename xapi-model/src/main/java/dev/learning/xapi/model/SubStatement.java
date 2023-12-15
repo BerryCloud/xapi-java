@@ -33,6 +33,8 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})
 public class SubStatement implements StatementObject, CoreStatement {
 
+  private static final long serialVersionUID = -2319652778525572382L;
+
   private final String objectType = "SubStatement"; // NOSONAR
 
   /**

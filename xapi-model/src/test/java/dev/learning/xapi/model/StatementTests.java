@@ -32,6 +32,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPairGenerator;
@@ -311,7 +312,7 @@ class StatementTests {
   @Test
   void whenSerializingStatementThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
 
@@ -404,7 +405,7 @@ class StatementTests {
   @Test
   void whenSerializingStatementWithEnLocaleThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
     final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
@@ -658,7 +659,7 @@ class StatementTests {
   void whenBuildingStatementWithTwoAttachmentsThenAttachmentsHasTwoEntries() {
 
     // When Building Statement With Two Attachments
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
     final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
@@ -1364,7 +1365,7 @@ class StatementTests {
     final var keyPair = keyPairGenerator.generateKeyPair();
 
     // When Signing Statement
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
     final var account = Account.builder()
@@ -1441,7 +1442,7 @@ class StatementTests {
     final var keyPair = keyPairGenerator.generateKeyPair();
 
     // When Signing Statement
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
     final var attachment = Attachment.builder().usageType(URI.create("http://example.com"))
@@ -1534,7 +1535,7 @@ class StatementTests {
     final var keyPair = keyPairGenerator.generateKeyPair();
 
     // When Signing Statement
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
     final var account = Account.builder()
@@ -1613,7 +1614,7 @@ class StatementTests {
     final var keyPair = keyPairGenerator.generateKeyPair();
 
     // When Signing Statement
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://name"), "Kilby");
 
     final var account = Account.builder()

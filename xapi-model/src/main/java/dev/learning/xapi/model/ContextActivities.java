@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.Valid;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -26,7 +27,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class ContextActivities {
+public class ContextActivities implements Serializable {
+
+  private static final long serialVersionUID = -1506339427588185954L;
 
   /**
    * Activity with a direct relation to the Activity which is the Object of the Statement.

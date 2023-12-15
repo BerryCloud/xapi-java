@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonMerge;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class ActivityDefinition {
+public class ActivityDefinition implements Serializable {
+
+  private static final long serialVersionUID = 7290202147126019438L;
 
   /**
    * The human readable/visual name of the Activity.
@@ -107,7 +110,7 @@ public class ActivityDefinition {
    * A map of other properties as needed.
    */
   @JsonMerge
-  private Map<@HasScheme URI, Object> extensions;
+  private Map<@HasScheme URI, Serializable> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI
   // specification.

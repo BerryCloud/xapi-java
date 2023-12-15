@@ -10,6 +10,7 @@ import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.VaildScore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
@@ -27,7 +28,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class Result {
+public class Result implements Serializable {
+
+  private static final long serialVersionUID = -6034672506802254604L;
 
   /**
    * The score of the Agent in relation to the success or quality of the experience.

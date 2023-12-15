@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent.AgentObjectType;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Collections;
@@ -270,7 +271,7 @@ class SubStatementTests {
 
         .other(Collections.singletonList(activity)).build();
 
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://url"), "www.example.com");
 
     final var context = Context.builder()

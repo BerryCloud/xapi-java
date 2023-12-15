@@ -55,6 +55,8 @@ import lombok.With;
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
 public class Statement implements CoreStatement {
 
+  private static final long serialVersionUID = 7664949791630334169L;
+
   /**
    * UUID assigned by LRS if not set by the Learning Record Provider.
    */

@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -25,7 +26,9 @@ import lombok.Value;
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = "id")
-public class InteractionComponent {
+public class InteractionComponent implements Serializable {
+
+  private static final long serialVersionUID = 6163600666447504207L;
 
   /**
    * Identifies the interaction component within the list.

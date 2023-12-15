@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.ScaledScore;
+import java.io.Serializable;
 import lombok.Builder;
 import lombok.Value;
 
@@ -21,7 +22,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class Score {
+public class Score implements Serializable {
+
+  private static final long serialVersionUID = -7263428125809380113L;
 
   /**
    * The score related to the experience as modified by scaling and/or normalization.

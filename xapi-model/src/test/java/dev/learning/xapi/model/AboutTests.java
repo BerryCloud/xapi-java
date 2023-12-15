@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -117,7 +118,7 @@ class AboutTests {
   @Test
   void whenSerializingAboutWithExtensionsThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://url"), "www.example.com");
 
     final var about = About.builder()
@@ -140,7 +141,7 @@ class AboutTests {
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://url"), "www.example.com");
 
     final var about = About.builder()

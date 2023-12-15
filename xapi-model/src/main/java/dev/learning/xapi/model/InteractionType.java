@@ -5,13 +5,14 @@
 package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 
 /**
  * This enumeration class represents all valid xAPI interaction types.
  *
  * @author István Rátkai (Selindek)
  */
-public enum InteractionType {
+public enum InteractionType implements Serializable {
 
   /**
    * An interaction with two possible responses: true or false.

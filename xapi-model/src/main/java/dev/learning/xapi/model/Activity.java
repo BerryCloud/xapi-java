@@ -32,6 +32,8 @@ import lombok.Value;
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {
 
+  private static final long serialVersionUID = 4135835531245879966L;
+
   private ActivityObjectType objectType;
 
   /**

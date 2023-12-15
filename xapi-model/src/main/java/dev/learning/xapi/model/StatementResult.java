@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,9 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_NULL) // Statements array could be empty
-public class StatementResult {
+public class StatementResult implements Serializable {
+
+  private static final long serialVersionUID = -8675457304395469964L;
 
   private static final URI NO_MORE = URI.create("");
 

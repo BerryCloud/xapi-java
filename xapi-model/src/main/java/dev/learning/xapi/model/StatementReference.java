@@ -23,6 +23,8 @@ import lombok.Value;
 @Builder
 public class StatementReference implements StatementObject, SubStatementObject {
 
+  private static final long serialVersionUID = -1285464528057015071L;
+
   private final String objectType = "StatementRef"; // NOSONAR
 
   /**

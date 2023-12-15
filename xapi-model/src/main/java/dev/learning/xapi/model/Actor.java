@@ -42,6 +42,8 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(Include.NON_EMPTY)
 public abstract class Actor implements StatementObject, SubStatementObject {
 
+  private static final long serialVersionUID = 8344100941818325257L;
+
   /**
    * Full name.
    */

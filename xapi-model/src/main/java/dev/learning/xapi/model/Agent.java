@@ -27,6 +27,8 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
 public class Agent extends Actor {
 
+  private static final long serialVersionUID = -2250078950427999041L;
+
   private AgentObjectType objectType;
 
   // **Warning** do not add fields that are not required by the xAPI specification.

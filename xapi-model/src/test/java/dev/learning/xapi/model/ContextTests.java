@@ -11,6 +11,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -214,7 +215,7 @@ class ContextTests {
   @Test
   void whenSerializingContextThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var extensions = new LinkedHashMap<URI, Object>();
+    final var extensions = new LinkedHashMap<URI, Serializable>();
     extensions.put(URI.create("http://url"), "www.example.com");
 
     final var context = Context.builder()

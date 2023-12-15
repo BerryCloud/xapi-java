@@ -6,6 +6,7 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,11 +26,13 @@ import lombok.Value;
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
-public class About {
+public class About implements Serializable {
+
+  private static final long serialVersionUID = 1589717062268375380L;
 
   private List<String> version;
 
-  private LinkedHashMap<URI, Object> extensions;
+  private LinkedHashMap<URI, Serializable> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
