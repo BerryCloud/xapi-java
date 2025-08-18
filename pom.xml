@@ -20,7 +20,7 @@
     <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
     <checkstyle.version>10.6.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-    <jjwt.version>0.12.6</jjwt.version>
+    <jjwt.version>0.12.7</jjwt.version>
   </properties>
   <organization>
     <name>Berry Cloud Ltd</name>
