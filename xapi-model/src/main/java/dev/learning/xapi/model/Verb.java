@@ -20,6 +20,17 @@ import lombok.With;
 /**
  * The Verb defines the action between an Actor and an Activity.
  *
+ * <p>The domain host in the verb ID identifies the organization that owns the verb.
+ * For example:
+ * <ul>
+ *   <li>{@code http://adlnet.gov/expapi/verbs/answered} - ADL (Advanced Distributed Learning)</li>
+ *   <li>{@code https://w3id.org/xapi/adl/verbs/logged-in} - ADL (Advanced Distributed Learning)</li>
+ *   <li>{@code https://example.com/verbs/custom-action} - example.com</li>
+ * </ul>
+ *
+ * <p>Use {@link #getOrganization()} to programmatically identify the organization
+ * that owns a verb instance.
+ *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  *
@@ -387,6 +398,40 @@ public class Verb {
   public boolean isVoided() {
 
     return VOIDED.equals(this);
+  }
+
+  /**
+   * Returns the organization that owns this verb based on the domain host in the verb ID.
+   * The domain host in the verb identifies the organization.
+   *
+   * @return the organization name, or "Unknown" if the organization cannot be determined
+   */
+  @JsonIgnore
+  public String getOrganization() {
+    if (id == null) {
+      return "Unknown";
+    }
+
+    String host = id.getHost();
+    if (host == null) {
+      return "Unknown";
+    }
+
+    // Map known hosts to organization names
+    switch (host.toLowerCase()) {
+      case "adlnet.gov":
+        return "ADL (Advanced Distributed Learning)";
+      case "w3id.org":
+        // Check if it's an ADL verb under w3id.org
+        String path = id.getPath();
+        if (path != null && path.startsWith("/xapi/adl/")) {
+          return "ADL (Advanced Distributed Learning)";
+        }
+        return "W3C";
+      default:
+        // Return the host as the organization for custom verbs
+        return host;
+    }
   }
 
   /**

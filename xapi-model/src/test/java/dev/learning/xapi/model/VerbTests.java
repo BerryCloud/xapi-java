@@ -340,4 +340,90 @@ class VerbTests {
 
   }
 
+  /*
+   * Organization identification tests.
+   */
+
+  @Test
+  void givenVerbWithAdlnetGovDomainWhenGettingOrganizationThenResultIsADL() {
+    // Given Verb With adlnet.gov Domain
+    final var verb = new Verb("http://adlnet.gov/expapi/verbs/answered");
+
+    // When Getting Organization
+    final var result = verb.getOrganization();
+
+    // Then Result Is ADL
+    assertThat(result, is("ADL (Advanced Distributed Learning)"));
+  }
+
+  @Test
+  void givenVerbWithW3idOrgAdlPathWhenGettingOrganizationThenResultIsADL() {
+    // Given Verb With w3id.org ADL Path
+    final var verb = new Verb("https://w3id.org/xapi/adl/verbs/logged-in");
+
+    // When Getting Organization
+    final var result = verb.getOrganization();
+
+    // Then Result Is ADL
+    assertThat(result, is("ADL (Advanced Distributed Learning)"));
+  }
+
+  @Test
+  void givenVerbWithW3idOrgNonAdlPathWhenGettingOrganizationThenResultIsW3C() {
+    // Given Verb With w3id.org Non-ADL Path
+    final var verb = new Verb("https://w3id.org/security/vocab/verbs/requested");
+
+    // When Getting Organization
+    final var result = verb.getOrganization();
+
+    // Then Result Is W3C
+    assertThat(result, is("W3C"));
+  }
+
+  @Test
+  void givenVerbWithCustomDomainWhenGettingOrganizationThenResultIsCustomDomain() {
+    // Given Verb With Custom Domain
+    final var verb = new Verb("https://example.com/verbs/custom-action");
+
+    // When Getting Organization
+    final var result = verb.getOrganization();
+
+    // Then Result Is Custom Domain
+    assertThat(result, is("example.com"));
+  }
+
+  @Test
+  void givenVerbWithNullIdWhenGettingOrganizationThenResultIsUnknown() {
+    // Given Verb With Null Id
+    final var verb = Verb.builder().build();
+
+    // When Getting Organization
+    final var result = verb.getOrganization();
+
+    // Then Result Is Unknown
+    assertThat(result, is("Unknown"));
+  }
+
+  @Test
+  void givenVerbWithIdWithoutHostWhenGettingOrganizationThenResultIsUnknown() {
+    // Given Verb With Id Without Host (relative URI)
+    final var verb = new Verb("relative/path/to/verb");
+
+    // When Getting Organization
+    final var result = verb.getOrganization();
+
+    // Then Result Is Unknown
+    assertThat(result, is("Unknown"));
+  }
+
+  @Test
+  void givenBuiltInVerbsWhenGettingOrganizationThenResultsAreExpected() {
+    // Test a few built-in verbs to ensure they return ADL
+    assertThat(Verb.ANSWERED.getOrganization(), is("ADL (Advanced Distributed Learning)"));
+    assertThat(Verb.ATTENDED.getOrganization(), is("ADL (Advanced Distributed Learning)"));
+    assertThat(Verb.COMPLETED.getOrganization(), is("ADL (Advanced Distributed Learning)"));
+    assertThat(Verb.LOGGED_IN.getOrganization(), is("ADL (Advanced Distributed Learning)"));
+    assertThat(Verb.ABANDONED.getOrganization(), is("ADL (Advanced Distributed Learning)"));
+  }
+
 }
