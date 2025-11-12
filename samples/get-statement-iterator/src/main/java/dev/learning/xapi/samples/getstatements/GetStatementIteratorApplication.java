@@ -31,7 +31,7 @@ public class GetStatementIteratorApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Get Statements as StatementIterator
     var statements = client.getStatementIterator().block();

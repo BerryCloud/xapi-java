@@ -33,7 +33,7 @@ public class GetStatesApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post Example state for later retrieval
     postState();

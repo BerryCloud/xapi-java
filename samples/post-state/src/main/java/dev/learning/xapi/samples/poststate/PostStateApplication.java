@@ -31,7 +31,7 @@ public class PostStateApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post State
     client.postState(r -> r.activityId("https://example.com/activity/1")

@@ -35,7 +35,7 @@ public class GetActivityApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post statement for later retrieval of activity
     postStatement();

@@ -31,7 +31,7 @@ public class DeleteAgentProfileApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post Example agent profile for later deletion
     postAgentProfile();

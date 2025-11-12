@@ -31,7 +31,7 @@ public class PostAgentProfileApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post Profile
     client

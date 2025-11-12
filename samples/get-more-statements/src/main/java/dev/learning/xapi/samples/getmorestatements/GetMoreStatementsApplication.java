@@ -32,7 +32,7 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Get Statements
     ResponseEntity<StatementResult> response = client.getStatements(r -> r.limit(1)).block();

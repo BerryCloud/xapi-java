@@ -34,7 +34,7 @@ public class GetStatementApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Get Statements
     ResponseEntity<Statement> response = client.getStatement(r -> r.id(postStatement())).block();
