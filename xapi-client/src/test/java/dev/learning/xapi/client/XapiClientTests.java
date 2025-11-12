@@ -102,7 +102,7 @@ class XapiClientTests {
   }
 
   @Test
-  void whenGettingStatementThenBodyIsInstanceOfStatement() throws InterruptedException {
+  void whenGettingStatementThenBodyIsInstanceOfStatement() {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 
@@ -1847,7 +1847,7 @@ class XapiClientTests {
   }
 
   @Test
-  void whenGettingActivityThenBodyIsInstanceOfActivity() throws InterruptedException {
+  void whenGettingActivityThenBodyIsInstanceOfActivity() {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 
@@ -1896,7 +1896,7 @@ class XapiClientTests {
   }
 
   @Test
-  void whenGettingAgentsThenBodyIsInstanceOfPerson() throws InterruptedException {
+  void whenGettingAgentsThenBodyIsInstanceOfPerson() {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 
@@ -1951,7 +1951,7 @@ class XapiClientTests {
   }
 
   @Test
-  void whenGettingAboutThenBodyIsInstanceOfAbout() throws InterruptedException {
+  void whenGettingAboutThenBodyIsInstanceOfAbout() {
 
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
 

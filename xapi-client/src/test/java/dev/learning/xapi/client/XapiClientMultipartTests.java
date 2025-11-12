@@ -328,7 +328,7 @@ class XapiClientMultipartTests {
 
   @SuppressWarnings("null")
   @Test
-  void whenGettingStatementWithAttachmentThenResponseIsExpected() throws InterruptedException {
+  void whenGettingStatementWithAttachmentThenResponseIsExpected() {
 
     // single statement with two attachments
     final var body =
@@ -370,7 +370,7 @@ class XapiClientMultipartTests {
 
   @SuppressWarnings("null")
   @Test
-  void whenGettingStatementsWithAttachmentsThenResponseIsExpected() throws InterruptedException {
+  void whenGettingStatementsWithAttachmentsThenResponseIsExpected() {
 
     // two statements with overlapping attachments
     final var body =
