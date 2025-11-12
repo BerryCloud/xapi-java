@@ -109,7 +109,7 @@ class GroupTests {
   }
 
   @Test
-  void givenGroupWithNameAndMembersWhenCallingIsAnonymousThenResultIsTrue() throws IOException {
+  void givenGroupWithNameAndMembersWhenCallingIsAnonymousThenResultIsTrue() {
 
     // Given Group With Name And Members
     final Group group = Group.builder()
@@ -131,7 +131,7 @@ class GroupTests {
   }
 
   @Test
-  void givenGroupWithNameAndNoMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+  void givenGroupWithNameAndNoMembersWhenCallingIsAnonymousThenResultIsFalse() {
 
     // Given Group With Name And Empty Members
     final Group group = Group.builder()
@@ -172,7 +172,7 @@ class GroupTests {
   }
 
   @Test
-  void givenGroupWithMboxAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+  void givenGroupWithMboxAndMembersWhenCallingIsAnonymousThenResultIsFalse() {
 
     // Given Group With MBox And Members
     final Group group = Group.builder()
@@ -217,7 +217,7 @@ class GroupTests {
   }
 
   @Test
-  void givenGroupWithOpenIDAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+  void givenGroupWithOpenIDAndMembersWhenCallingIsAnonymousThenResultIsFalse() {
 
     // Given Group With OpenID And Members
     final Group group = Group.builder()
@@ -241,7 +241,7 @@ class GroupTests {
 
 
   @Test
-  void givenGroupWithAccountAndMembersWhenCallingIsAnonymousThenResultIsFalse() throws IOException {
+  void givenGroupWithAccountAndMembersWhenCallingIsAnonymousThenResultIsFalse() {
 
     // Given Group With Account And Members
     final Group group = Group.builder()

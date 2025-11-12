@@ -138,7 +138,7 @@ class AboutTests {
   }
 
   @Test
-  void whenCallingToStringThenResultIsExpected() throws IOException {
+  void whenCallingToStringThenResultIsExpected() {
 
     final var extensions = new LinkedHashMap<URI, Object>();
     extensions.put(URI.create("http://url"), "www.example.com");

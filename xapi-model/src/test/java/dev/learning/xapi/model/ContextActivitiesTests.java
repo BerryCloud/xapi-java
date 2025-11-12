@@ -134,7 +134,7 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoParentsThenParentIshasSizeTwo() throws IOException {
+  void whenBuildingContextActivitiesWithTwoParentsThenParentIshasSizeTwo() {
 
     // When Building ContextActivities With Two Parents
     final var contextActivities = ContextActivities.builder()
@@ -151,7 +151,7 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIshasSizeTwo() throws IOException {
+  void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIshasSizeTwo() {
 
     // When Building ContextActivities With Two Groupings
     final var contextActivities = ContextActivities.builder()
@@ -168,7 +168,7 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoOtherThenOtherIshasSizeTwo() throws IOException {
+  void whenBuildingContextActivitiesWithTwoOtherThenOtherIshasSizeTwo() {
 
     // When Building ContextActivities With Two Others
     final var contextActivities = ContextActivities.builder()
@@ -185,7 +185,7 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIshasSizeTwo() throws IOException {
+  void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIshasSizeTwo() {
 
     // When Building ContextActivities With Two Categories
     final var contextActivities = ContextActivities.builder()
