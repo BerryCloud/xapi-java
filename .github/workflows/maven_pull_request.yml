@@ -28,6 +28,5 @@ jobs:
         run: |
           if [ $FORK = false ]
           then
-            mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud
             mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud --file pom.xml
           fi
