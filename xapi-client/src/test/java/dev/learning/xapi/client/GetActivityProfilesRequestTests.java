@@ -36,7 +36,7 @@ class GetActivityProfilesRequestTests {
         .since(Instant.parse("2016-01-01T00:00:00Z"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -49,7 +49,7 @@ class GetActivityProfilesRequestTests {
         .activityId(URI.create("https://example.com/activity/1"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -62,7 +62,7 @@ class GetActivityProfilesRequestTests {
         .activityId("https://example.com/activity/1");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -73,7 +73,7 @@ class GetActivityProfilesRequestTests {
     Builder builder = GetActivityProfilesRequest.builder();
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 

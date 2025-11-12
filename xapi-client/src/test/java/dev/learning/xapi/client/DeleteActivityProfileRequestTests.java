@@ -35,7 +35,7 @@ class DeleteActivityProfileRequestTests {
         .profileId("bookmark");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -50,7 +50,7 @@ class DeleteActivityProfileRequestTests {
         .profileId("bookmark");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -63,7 +63,7 @@ class DeleteActivityProfileRequestTests {
         .profileId("bookmark");
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -76,7 +76,7 @@ class DeleteActivityProfileRequestTests {
         .activityId(URI.create("https://example.com/activity/1"));
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 

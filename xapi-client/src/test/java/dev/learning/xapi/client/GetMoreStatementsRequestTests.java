@@ -29,7 +29,7 @@ class GetMoreStatementsRequestTests {
             URI.create("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -42,7 +42,7 @@ class GetMoreStatementsRequestTests {
         .more("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -53,7 +53,7 @@ class GetMoreStatementsRequestTests {
     GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder();
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 

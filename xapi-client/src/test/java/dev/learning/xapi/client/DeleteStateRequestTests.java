@@ -39,7 +39,7 @@ class DeleteStateRequestTests {
         .stateId("bookmark");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -56,7 +56,7 @@ class DeleteStateRequestTests {
         .stateId("bookmark");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -73,7 +73,7 @@ class DeleteStateRequestTests {
         .stateId("bookmark");
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -90,7 +90,7 @@ class DeleteStateRequestTests {
         .stateId("bookmark");
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -107,7 +107,7 @@ class DeleteStateRequestTests {
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
