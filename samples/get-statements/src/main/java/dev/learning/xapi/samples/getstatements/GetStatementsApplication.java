@@ -38,7 +38,7 @@ public class GetStatementsApplication implements CommandLineRunner {
     ResponseEntity<StatementResult> response = client.getStatements().block();
 
     // Print the returned statements to the console
-    response.getBody().getStatements().forEach(s -> System.out.println(s));
+    response.getBody().getStatements().forEach(System.out::println);
 
 
 
@@ -47,7 +47,7 @@ public class GetStatementsApplication implements CommandLineRunner {
         client.getStatements(r -> r.verb(Verb.ATTEMPTED.getId())).block();
 
     // Print the returned statements to the console
-    filteredResponse.getBody().getStatements().forEach(s -> System.out.println(s));
+    filteredResponse.getBody().getStatements().forEach(System.out::println);
 
   }
 

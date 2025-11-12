@@ -45,7 +45,7 @@ public class GetActivityProfilesApplication implements CommandLineRunner {
             .block();
 
     // Print the each returned activity profile id to the console
-    response.getBody().stream().forEach(id -> System.out.println(id));
+    response.getBody().stream().forEach(System.out::println);
   }
 
   private void postActivityProfile() {

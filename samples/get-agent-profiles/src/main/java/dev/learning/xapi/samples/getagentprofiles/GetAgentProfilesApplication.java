@@ -40,7 +40,7 @@ public class GetAgentProfilesApplication implements CommandLineRunner {
         .block();
 
     // Print the each returned profile id to the console
-    response.getBody().stream().forEach(id -> System.out.println(id));
+    response.getBody().stream().forEach(System.out::println);
 
   }
 

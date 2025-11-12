@@ -40,7 +40,7 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
     StatementResult result = response.getBody();
 
     // Print the returned statements to the console
-    Arrays.asList(result.getStatements()).forEach(s -> System.out.println(s));
+    Arrays.asList(result.getStatements()).forEach(System.out::println);
 
     if (result.hasMore()) {
       // Get More Statements
@@ -48,7 +48,7 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
           client.getMoreStatements(r -> r.more(result.getMore())).block();
 
       // Print the returned statements to the console
-      Arrays.asList(more.getBody().getStatements()).forEach(s -> System.out.println(s));
+      Arrays.asList(more.getBody().getStatements()).forEach(System.out::println);
     }
   }
 
