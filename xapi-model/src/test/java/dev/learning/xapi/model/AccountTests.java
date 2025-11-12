@@ -94,7 +94,7 @@ class AccountTests {
   }
 
   @Test
-  void whenCallingToStringThenResultIsExpected() throws IOException {
+  void whenCallingToStringThenResultIsExpected() {
 
     final var account = Account.builder()
 

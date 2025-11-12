@@ -109,7 +109,7 @@ class ActivityTests {
   }
 
   @Test
-  void whenCallingToStringThenResultIsExpected() throws IOException {
+  void whenCallingToStringThenResultIsExpected() {
 
     final var activity = Activity.builder()
 

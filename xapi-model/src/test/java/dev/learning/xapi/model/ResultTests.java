@@ -130,7 +130,7 @@ class ResultTests {
   }
 
   @Test
-  void whenCallingToStringThenResultIsExpected() throws IOException {
+  void whenCallingToStringThenResultIsExpected() {
 
     final var resultInstance = Result.builder()
 

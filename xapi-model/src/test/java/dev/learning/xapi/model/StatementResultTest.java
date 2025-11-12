@@ -88,7 +88,7 @@ class StatementResultTest {
   }
 
   @Test
-  void whenCallingToStringThenResultIsExpected() throws IOException {
+  void whenCallingToStringThenResultIsExpected() {
 
     final var statementResult = StatementResult.builder()
 

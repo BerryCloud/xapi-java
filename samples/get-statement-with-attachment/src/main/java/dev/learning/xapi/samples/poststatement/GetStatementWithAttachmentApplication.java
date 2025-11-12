@@ -7,7 +7,6 @@ package dev.learning.xapi.samples.poststatement;
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.Verb;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -63,7 +62,7 @@ public class GetStatementWithAttachmentApplication implements CommandLineRunner 
 
   }
   
-  private UUID postStatement() throws FileNotFoundException, IOException {
+  private UUID postStatement() throws IOException {
 
     // Load jpg attachment from class-path
     var data = Files.readAllBytes(ResourceUtils.getFile("classpath:example.jpg").toPath());
