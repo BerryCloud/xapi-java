@@ -12,18 +12,6 @@
   <name>xAPI Client</name>
   <description>learning.dev xAPI Client</description>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp-bom</artifactId>
-        <version>4.12.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
