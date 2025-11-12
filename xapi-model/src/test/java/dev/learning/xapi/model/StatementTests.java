@@ -991,7 +991,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementNullTimestampThenExceptionIsThrown() throws IOException {
+  void whenDeserializingStatementNullTimestampThenExceptionIsThrown() {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictNullValuesModule()).readValue("""
@@ -1023,7 +1023,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithInvalidLocaleStringThenExceptionIsThrown() throws IOException {
+  void whenDeserializingStatementWithInvalidLocaleStringThenExceptionIsThrown() {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
       objectMapper.registerModule(new XapiStrictLocaleModule()).readValue("""
@@ -1057,7 +1057,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNonStringLocaleThenExceptionIsThrown() throws IOException {
+  void whenDeserializingStatementWithNonStringLocaleThenExceptionIsThrown() {
 
     Assertions.assertThrows(MismatchedInputException.class, () -> {
       objectMapper.registerModule(new XapiStrictLocaleModule()).readValue("""
@@ -1091,7 +1091,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNullPropertyThenExceptionIsThrown() throws IOException {
+  void whenDeserializingStatementWithNullPropertyThenExceptionIsThrown() {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictNullValuesModule()).readValue("""
@@ -1291,7 +1291,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() throws IOException {
+  void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() {
 
     Assertions.assertThrows(InvalidFormatException.class, () -> {
       objectMapper.registerModule(new XapiStrictLocaleModule()).readValue("""
@@ -1606,7 +1606,7 @@ class StatementTests {
 
   @Test
   void whenSigningStatementThenSignatureIsValid()
-      throws NoSuchAlgorithmException, JsonMappingException, JsonProcessingException {
+      throws NoSuchAlgorithmException, JsonProcessingException {
 
     final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
