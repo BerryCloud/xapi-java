@@ -38,7 +38,7 @@ class DeleteStatesRequestTests {
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -55,7 +55,7 @@ class DeleteStatesRequestTests {
         .registration(UUID.fromString("67828e3a-d116-4e18-8af3-2d2c59e27be6"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -72,7 +72,7 @@ class DeleteStatesRequestTests {
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -87,7 +87,7 @@ class DeleteStatesRequestTests {
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -102,7 +102,7 @@ class DeleteStatesRequestTests {
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -117,7 +117,7 @@ class DeleteStatesRequestTests {
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
     // Then NullPointerException Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 

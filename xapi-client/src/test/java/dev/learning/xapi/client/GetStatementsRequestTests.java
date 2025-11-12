@@ -51,7 +51,7 @@ class GetStatementsRequestTests {
         .ascending(true);
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 

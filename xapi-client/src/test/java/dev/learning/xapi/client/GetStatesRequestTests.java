@@ -40,7 +40,7 @@ class GetStatesRequestTests {
         .since(Instant.now());
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -57,7 +57,7 @@ class GetStatesRequestTests {
         .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -72,7 +72,7 @@ class GetStatesRequestTests {
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -87,7 +87,7 @@ class GetStatesRequestTests {
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -100,7 +100,7 @@ class GetStatesRequestTests {
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then Null Pointer Exception Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -113,7 +113,7 @@ class GetStatesRequestTests {
         .activityId("https://example.com/activity/1");
 
     // Then Null Pointer Exception Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
