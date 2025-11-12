@@ -40,7 +40,7 @@ class PostStateRequestTests {
         .state("Hello World!");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 

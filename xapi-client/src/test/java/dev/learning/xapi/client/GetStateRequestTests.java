@@ -39,7 +39,7 @@ class GetStateRequestTests {
         .stateId("bookmark");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -56,7 +56,7 @@ class GetStateRequestTests {
         .stateId("bookmark");
 
     // Then No Exception Is Thrown
-    assertDoesNotThrow(() -> builder.build());
+    assertDoesNotThrow(builder::build);
 
   }
 
@@ -71,7 +71,7 @@ class GetStateRequestTests {
         .stateId("bookmark");
 
     // Then Null Pointer Exception Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -86,7 +86,7 @@ class GetStateRequestTests {
         .stateId("bookmark");
 
     // Then Null Pointer Exception Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
@@ -101,7 +101,7 @@ class GetStateRequestTests {
         .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
 
     // Then Null Pointer Exception Is Thrown
-    assertThrows(NullPointerException.class, () -> builder.build());
+    assertThrows(NullPointerException.class, builder::build);
 
   }
 
