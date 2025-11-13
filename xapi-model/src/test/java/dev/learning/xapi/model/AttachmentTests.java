@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -247,8 +246,7 @@ class AttachmentTests {
   }
 
   @Test
-  void givenAttachmentWithBinaryDataWhenGettingSHA2ThenResultIsExpected()
-      throws FileNotFoundException, IOException {
+  void givenAttachmentWithBinaryDataWhenGettingSHA2ThenResultIsExpected() throws IOException {
 
     final var data =
         Files.readAllBytes(ResourceUtils.getFile("classpath:attachment/example.jpg").toPath());

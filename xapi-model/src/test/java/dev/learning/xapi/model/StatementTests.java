@@ -759,8 +759,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithPositiveZeroHoursAndMinutesTimestampOffsetThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithPositiveZeroHoursAndMinutesTimestampOffsetThenNoExceptionIsThrown() {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -792,8 +791,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithPositiveFourZerosTimestampOffsetThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithPositiveFourZerosTimestampOffsetThenNoExceptionIsThrown() {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -824,8 +822,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithPositiveTwoZerosTimestampOffsetThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithPositiveTwoZerosTimestampOffsetThenNoExceptionIsThrown() {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -858,8 +855,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown() {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -891,8 +887,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNegativeFourZerosTimestampOffsetThenExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithNegativeFourZerosTimestampOffsetThenExceptionIsThrown() {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -923,8 +918,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithNegativeTwoZerosTimestampOffsetThenExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithNegativeTwoZerosTimestampOffsetThenExceptionIsThrown() {
 
     Assertions.assertThrows(ValueInstantiationException.class, () -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -957,8 +951,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithoutTimestampOffsetThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithoutTimestampOffsetThenNoExceptionIsThrown() {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.registerModule(new XapiStrictTimestampModule()).readValue("""
@@ -1122,8 +1115,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown() {
 
     Assertions.assertThrows(InvalidTypeIdException.class, () -> {
       objectMapper
@@ -1154,8 +1146,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithLowercaseActivityObjectTypeThenExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithLowercaseActivityObjectTypeThenExceptionIsThrown() {
 
     Assertions.assertThrows(InvalidTypeIdException.class, () -> {
       objectMapper
@@ -1186,8 +1177,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithActorWithoutObjectTypeThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingStatementWithActorWithoutObjectTypeThenNoExceptionIsThrown() {
 
     Assertions.assertDoesNotThrow(() -> {
       objectMapper.readValue("""
@@ -1324,8 +1314,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingMinimalStatementWithAllTheModulesThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingMinimalStatementWithAllTheModulesThenNoExceptionIsThrown() {
 
     Assertions.assertDoesNotThrow(() -> {
 

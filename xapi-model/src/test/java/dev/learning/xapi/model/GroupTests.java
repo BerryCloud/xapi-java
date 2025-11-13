@@ -151,8 +151,7 @@ class GroupTests {
   }
 
   @Test
-  void givenGroupWithNameAndNullMembersWhenCallingIsAnonymousThenResultIsFalse()
-      throws IOException {
+  void givenGroupWithNameAndNullMembersWhenCallingIsAnonymousThenResultIsFalse() {
 
     // Given Group With Name And Null Members
     final Group group = Group.builder()
@@ -194,8 +193,7 @@ class GroupTests {
   }
 
   @Test
-  void givenGroupWithMboxSha1sumAndMembersWhenCallingIsAnonymousThenResultIsFalse()
-      throws IOException {
+  void givenGroupWithMboxSha1sumAndMembersWhenCallingIsAnonymousThenResultIsFalse() {
 
     // Given Group With MboxSha1sum And Members
     final Group group = Group.builder()

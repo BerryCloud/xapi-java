@@ -15,7 +15,6 @@ import dev.learning.xapi.model.validation.constraints.ValidStatementRevision;
 import dev.learning.xapi.model.validation.constraints.ValidStatementVerb;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.lang.UnknownClassException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -162,8 +161,8 @@ public class Statement implements CoreStatement {
       claims.put("context", this.context);
 
       try {
-        final var token = Jwts.builder().setClaims(claims)
-            .signWith(privateKey, SignatureAlgorithm.RS512).compact();
+        final var token = Jwts.builder().claims(claims)
+            .signWith(privateKey, Jwts.SIG.RS512).compact();
 
         addAttachment(a -> a.usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
 

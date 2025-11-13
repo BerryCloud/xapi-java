@@ -202,8 +202,7 @@ class ContextActivitiesTests {
   }
 
   @Test
-  void whenBuildingContextActivitiesWithTwoParentsWithSameIdThenParentIshasSizeTwo()
-      throws IOException {
+  void whenBuildingContextActivitiesWithTwoParentsWithSameIdThenParentIshasSizeTwo() {
 
     // When Building ContextActivities With Two Parents With Same Id
     final var contextActivities = ContextActivities.builder()

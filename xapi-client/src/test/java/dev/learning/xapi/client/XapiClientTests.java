@@ -398,7 +398,7 @@ class XapiClientTests {
                 .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
 
     // Then MissingResponseBodyException Is Thrown
-    assertThrows(MissingResponseBodyException.class, () -> response.block());
+    assertThrows(MissingResponseBodyException.class, response::block);
 
   }
 
@@ -418,7 +418,7 @@ class XapiClientTests {
                 .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
 
     // Then BadRequest Is Thrown
-    assertThrows(BadRequest.class, () -> response.block());
+    assertThrows(BadRequest.class, response::block);
 
   }
 
@@ -438,7 +438,7 @@ class XapiClientTests {
                 .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))));
 
     // Then InternalServerError Is Thrown
-    assertThrows(InternalServerError.class, () -> response.block());
+    assertThrows(InternalServerError.class, response::block);
 
   }
 
@@ -512,14 +512,14 @@ class XapiClientTests {
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK"));
 
     // When Getting Voided Statement With Attachments
-    client.getStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
+    client.getVoidedStatement(r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").attachments(true))
         .block();
 
     final var recordedRequest = mockWebServer.takeRequest();
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
-        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&attachments=true"));
+        is("/statements?voidedStatementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&attachments=true"));
   }
 
   @Test
@@ -530,7 +530,7 @@ class XapiClientTests {
 
     // When Getting Voided Statement With Canonical Format
     client
-        .getStatement(
+        .getVoidedStatement(
             r -> r.id("4df42866-40e7-45b6-bf7c-8d5fccbdccd6").format(StatementFormat.CANONICAL))
         .block();
 
@@ -538,7 +538,7 @@ class XapiClientTests {
 
     // Then Path Is Expected
     assertThat(recordedRequest.getPath(),
-        is("/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&format=canonical"));
+        is("/statements?voidedStatementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6&format=canonical"));
   }
 
   // Get Statements
@@ -791,8 +791,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenStateContentTypeIsTextPlainWhenGettingStateThenBodyIsInstanceOfString()
-      throws InterruptedException {
+  void givenStateContentTypeIsTextPlainWhenGettingStateThenBodyIsInstanceOfString() {
 
     // Given State Content Type Is Text Plain
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
@@ -814,8 +813,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenStateContentTypeIsTextPlainWhenGettingStateThenBodyIsExpected()
-      throws InterruptedException {
+  void givenStateContentTypeIsTextPlainWhenGettingStateThenBodyIsExpected() {
 
     // Given State Content Type Is Text Plain
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
@@ -1304,8 +1302,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenMultipleStatesExistWhenGettingMultipleStatesThenBodyIsInstanceOfStringArray()
-      throws InterruptedException {
+  void givenMultipleStatesExistWhenGettingMultipleStatesThenBodyIsInstanceOfStringArray() {
 
     // Given Multiple States Exist
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
@@ -1326,8 +1323,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenMultipleStatesExistWhenGettingMultipleStatesThenBodyIsExpected()
-      throws InterruptedException {
+  void givenMultipleStatesExistWhenGettingMultipleStatesThenBodyIsExpected() {
 
     // Given Multiple States Exist
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK")
@@ -2002,8 +1998,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenActivityProfileContentTypeIsTextPlainWhenGettingActivityProfileThenBodyIsInstanceOfString()
-      throws InterruptedException {
+  void givenActivityProfileContentTypeIsTextPlainWhenGettingActivityProfileThenBodyIsInstanceOfString() {
 
     // Given ActivityProfile Content Type Is Text Plain
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
@@ -2022,8 +2017,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenActivityProfileContentTypeIsTextPlainWhenGettingActivityProfileThenBodyIsExpected()
-      throws InterruptedException {
+  void givenActivityProfileContentTypeIsTextPlainWhenGettingActivityProfileThenBodyIsExpected() {
 
     // Given ActivityProfile Content Type Is Text Plain
     mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 200 OK").setBody("Hello World!")
@@ -2363,7 +2357,7 @@ class XapiClientTests {
     final var response = client.getStatementIterator();
 
     // Then MissingResponseBodyException Is Thrown
-    assertThrows(MissingResponseBodyException.class, () -> response.block());
+    assertThrows(MissingResponseBodyException.class, response::block);
 
   }
 
@@ -2490,8 +2484,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenEmptyStatementResultWhenGettingStatementIteratorThenHasNextIsFalse()
-      throws InterruptedException {
+  void givenEmptyStatementResultWhenGettingStatementIteratorThenHasNextIsFalse() {
 
     // Given Empty StatementResult
     final var body = """
@@ -2514,8 +2507,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenEmptyResponseWhenGettingStatementIteratorThenHasNextIsFalse()
-      throws InterruptedException {
+  void givenEmptyResponseWhenGettingStatementIteratorThenHasNextIsFalse() {
 
     // Given Empty Response
     // This response is technically invalid by the xAPI specification, but we cannot assume
@@ -2535,8 +2527,7 @@ class XapiClientTests {
   }
 
   @Test
-  void givenEmptyResponseWhenGettingStatementIteratorThenNextThrowsAnException()
-      throws InterruptedException {
+  void givenEmptyResponseWhenGettingStatementIteratorThenNextThrowsAnException() {
 
     // Given Empty Response
     final var body = """
@@ -2554,7 +2545,7 @@ class XapiClientTests {
     final var iterator = client.getStatementIterator().block();
 
     // Then Next Throws An Exception
-    assertThrows(NoSuchElementException.class, () -> iterator.next());
+    assertThrows(NoSuchElementException.class, iterator::next);
 
   }
 

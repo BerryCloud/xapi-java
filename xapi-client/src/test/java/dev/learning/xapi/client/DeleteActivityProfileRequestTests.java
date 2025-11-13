@@ -40,21 +40,6 @@ class DeleteActivityProfileRequestTests {
   }
 
   @Test
-  void whenBuildingDeleteActivityProfileRequestWithoutRegistrationThenNoExceptionIsThrown() {
-
-    // When Building DeleteActivityProfileRequest Without Registration
-    Builder<?, ?> builder = DeleteActivityProfileRequest.builder()
-
-        .activityId(URI.create("https://example.com/activity/1"))
-
-        .profileId("bookmark");
-
-    // Then No Exception Is Thrown
-    assertDoesNotThrow(builder::build);
-
-  }
-
-  @Test
   void whenBuildingDeleteActivityProfileRequestWithoutActivityIdThenExceptionIsThrown() {
 
     // When Building DeleteActivityProfileRequest Without ActivityId
@@ -84,31 +69,6 @@ class DeleteActivityProfileRequestTests {
   void givenDeleteActivityProfileRequestWithAllParametersWhenGettingURLThenResultIsExpected() {
 
     // Given DeleteActivityProfileRequest With All Parameters
-    DeleteActivityProfileRequest request = DeleteActivityProfileRequest.builder()
-
-        .activityId(URI.create("https://example.com/activity/1"))
-
-        .profileId("bookmark")
-
-        .build();
-
-    Map<String, Object> queryParams = new HashMap<>();
-
-    // When Getting URL
-    URI result =
-        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
-            .build(queryParams);
-
-    // Then Result Is Expected
-    assertThat(result, is(URI.create(
-        "https://example.com/xapi/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&profileId=bookmark")));
-
-  }
-
-  @Test
-  void givenDeleteActivityProfileRequestWithoutRegistrationWhenGettingURLThenResultIsExpected() {
-
-    // Given DeleteActivityProfileRequest Without Registration
     DeleteActivityProfileRequest request = DeleteActivityProfileRequest.builder()
 
         .activityId(URI.create("https://example.com/activity/1"))
