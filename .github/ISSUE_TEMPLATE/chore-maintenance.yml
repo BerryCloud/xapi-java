@@ -9,7 +9,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to improve the project's maintenance and code quality!
-        
+
         Use this template for:
         - Code cleanup and refactoring (without changing functionality)
         - Documentation updates and improvements
