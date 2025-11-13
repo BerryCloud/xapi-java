@@ -31,7 +31,7 @@ public class PutStateApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Put State
     client.putState(r -> r.activityId("https://example.com/activity/1")

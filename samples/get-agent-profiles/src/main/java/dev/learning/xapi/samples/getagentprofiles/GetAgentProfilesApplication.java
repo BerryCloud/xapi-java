@@ -31,7 +31,7 @@ public class GetAgentProfilesApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Get Profiles
     ResponseEntity<List<String>> response = client

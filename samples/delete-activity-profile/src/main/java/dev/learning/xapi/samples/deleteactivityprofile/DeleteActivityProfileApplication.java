@@ -31,7 +31,7 @@ public class DeleteActivityProfileApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post activity profile for later deletion
     postActivityProfile();

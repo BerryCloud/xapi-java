@@ -25,8 +25,7 @@ class LanguageMapTests {
 
   @ParameterizedTest
   @CsvSource({"en-GB, Colour", "en-US, Color", "de, Colour"})
-  void givenUkAndUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected)
-      throws Exception {
+  void givenUkAndUSKeyWhenGettingLocaleValueThenValueIsExpected(String locale, String expected) {
 
     final var languageMap = new LanguageMap();
 
@@ -43,7 +42,7 @@ class LanguageMapTests {
   }
 
   @Test
-  void givenFranceGermanyandUSKeyWhenGettingUKValueThenValueIsEnglish() throws Exception {
+  void givenFranceGermanyandUSKeyWhenGettingUKValueThenValueIsEnglish() {
 
     final var languageMap = new LanguageMap();
 
@@ -61,7 +60,7 @@ class LanguageMapTests {
   }
 
   @Test
-  void givenFrenchAndEnglishKeyWhenGettingUSValueThenValueIsEnglish() throws Exception {
+  void givenFrenchAndEnglishKeyWhenGettingUSValueThenValueIsEnglish() {
 
     final var languageMap = new LanguageMap();
 
@@ -78,7 +77,7 @@ class LanguageMapTests {
   }
 
   @Test
-  void givenFrenchAndUsKeyWhenGettingCanadaFrenchValueThenValueIsFrench() throws Exception {
+  void givenFrenchAndUsKeyWhenGettingCanadaFrenchValueThenValueIsFrench() {
 
     final var languageMap = new LanguageMap();
 
@@ -95,7 +94,7 @@ class LanguageMapTests {
   }
 
   @Test
-  void givenMapIsEmptyWhenGettingGermanValueThenValueIsNull() throws Exception {
+  void givenMapIsEmptyWhenGettingGermanValueThenValueIsNull() {
 
     final var languageMap = new LanguageMap();
 
@@ -110,7 +109,7 @@ class LanguageMapTests {
   }
 
   @Test
-  void givenUsAndUndKeyWhenGettingGermanValueThenValueIsUnd() throws Exception {
+  void givenUsAndUndKeyWhenGettingGermanValueThenValueIsUnd() {
 
     final var languageMap = new LanguageMap();
 
@@ -127,8 +126,7 @@ class LanguageMapTests {
   }
 
   @Test
-  void givenUkAndUsKeyInMapUsedToConstructLanguageMapWhenGettingUKValueThenValueIsUK()
-      throws Exception {
+  void givenUkAndUsKeyInMapUsedToConstructLanguageMapWhenGettingUKValueThenValueIsUK() {
 
     final Map<Locale, String> map = new HashMap<>();
     map.put(Locale.UK, "Colour");

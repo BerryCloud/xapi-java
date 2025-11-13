@@ -34,7 +34,7 @@ public class GetAgentsApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post statement for later retrieval of Agent
     postStatement();

@@ -31,7 +31,7 @@ public class PostActivityProfileApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post activity profile
     client.postActivityProfile(r -> r

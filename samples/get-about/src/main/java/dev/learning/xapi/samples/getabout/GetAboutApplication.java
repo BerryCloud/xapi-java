@@ -31,7 +31,7 @@ public class GetAboutApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Get About
     ResponseEntity<About> response = client.getAbout().block();

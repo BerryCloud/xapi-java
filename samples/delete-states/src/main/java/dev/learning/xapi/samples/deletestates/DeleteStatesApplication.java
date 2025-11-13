@@ -31,7 +31,7 @@ public class DeleteStatesApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post state for later deletion
     postState();

@@ -160,7 +160,7 @@ class ActivityTests {
   }
 
   @Test
-  void whenDeserializingActivityWithInvalidDisplayThenResultIsExpected() throws Exception {
+  void whenDeserializingActivityWithInvalidDisplayThenResultIsExpected() {
 
     final var json =
         "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";

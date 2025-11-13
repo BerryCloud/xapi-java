@@ -32,7 +32,7 @@ public class PostStatementsApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     Statement attemptedStatement = Statement.builder()
         .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))

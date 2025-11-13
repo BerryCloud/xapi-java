@@ -32,8 +32,7 @@ class NotUndeterminedValidatorTests {
   }
 
   @Test
-  void whenValueIsUndeterminedLocaleThenResultIsFalse()
-      throws NoSuchFieldException, SecurityException {
+  void whenValueIsUndeterminedLocaleThenResultIsFalse() {
 
     // When Value Is Undetermined Locale
     final var result = validator.isValid(Locale.forLanguageTag("und"), null);
@@ -43,8 +42,7 @@ class NotUndeterminedValidatorTests {
   }
 
   @Test
-  void whenValueIsNotUndeterminedLocaleThenResultIsTrue()
-      throws NoSuchFieldException, SecurityException {
+  void whenValueIsNotUndeterminedLocaleThenResultIsTrue() {
 
     // When Value Is Not Undetermined Locale
     final var result = validator.isValid(Locale.forLanguageTag("en-US"), null);

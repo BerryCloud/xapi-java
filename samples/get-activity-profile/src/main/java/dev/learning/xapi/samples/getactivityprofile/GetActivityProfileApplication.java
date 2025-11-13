@@ -32,7 +32,7 @@ public class GetActivityProfileApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Post activity profile for later retrieval
     postActivityProfile();

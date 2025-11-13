@@ -31,7 +31,7 @@ public class PutActivityProfileApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     // Put activity profile
     client.putActivityProfile(r -> r
