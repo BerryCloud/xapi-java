@@ -247,8 +247,7 @@ class AttachmentTests {
   }
 
   @Test
-  void givenAttachmentWithBinaryDataWhenGettingSHA2ThenResultIsExpected()
-      throws FileNotFoundException, IOException {
+  void givenAttachmentWithBinaryDataWhenGettingSHA2ThenResultIsExpected() throws IOException {
 
     final var data =
         Files.readAllBytes(ResourceUtils.getFile("classpath:attachment/example.jpg").toPath());

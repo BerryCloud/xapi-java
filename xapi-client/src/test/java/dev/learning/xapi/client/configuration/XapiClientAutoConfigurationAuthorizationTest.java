@@ -47,6 +47,7 @@ class XapiClientAutoConfigurationAuthorizationTest {
       try {
         mockWebServer.start();
       } catch (final IOException e) {
+        // Ignore - test will fail if server doesn't start
       }
       builder.baseUrl(mockWebServer.url("").toString());
     }
