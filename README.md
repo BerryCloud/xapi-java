@@ -8,6 +8,14 @@ Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedi
 
 [CheckStyle](https://checkstyle.sourceforge.io) is used to enforce the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html). Sonar performs automatic pull request reviews. [CodeQL](https://codeql.github.com) scans for vulnerabilities. The number of bugs, code smells and vulnerabilities in the codebase can be viewed in SonarCloud. The code coverage and code duplication percentages can also be viewed in SonarCloud. Over three-hundred unit tests ensure conformance with the xAPI specification.
 
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+- How to report bugs and request features
+- Development workflow and coding standards
+- Chore and maintenance task guidelines
+- Pull request process
+
 ## Requirements
 
 xAPI Java requires Java 17 or newer.

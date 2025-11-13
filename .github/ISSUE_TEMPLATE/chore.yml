@@ -1,0 +1,59 @@
+name: Chore or Maintenance
+description: Report routine tasks, dependency updates, code cleanup, or repository improvements
+title: "[Chore]: "
+labels: ["chore", "triage"]
+assignees:
+  - knoake
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the project through regular maintenance!
+  - type: dropdown
+    id: chore-type
+    attributes:
+      label: Chore Type
+      description: What type of maintenance task is this?
+      options:
+        - Dependency Update
+        - Code Cleanup/Refactoring
+        - Documentation Update
+        - Build/CI Configuration
+        - Testing Infrastructure
+        - Repository Hygiene
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: What maintenance or chore work needs to be done?
+      placeholder: Update dependencies to latest versions, clean up unused imports, improve build configuration, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: Why is this maintenance work important or beneficial?
+      placeholder: To keep dependencies up-to-date with security patches, improve code maintainability, reduce technical debt, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What parts of the codebase are affected?
+      placeholder: All modules, xapi-client only, build configuration, documentation, etc.
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Any other information, links to related issues, or breaking changes to be aware of.
+      placeholder: |
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false
