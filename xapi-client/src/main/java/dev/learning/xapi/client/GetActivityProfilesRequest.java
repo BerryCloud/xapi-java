@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 Berry Cloud Ltd. All rights reserved.
+ * Copyright 2016-2025 Berry Cloud Ltd. All rights reserved.
  */
 
 package dev.learning.xapi.client;
