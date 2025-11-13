@@ -1,0 +1,86 @@
+name: Chore / Maintenance
+description: Track chores, maintenance tasks, and repository hygiene improvements
+title: "[Chore]: "
+labels: ["chore", "maintenance"]
+assignees:
+  - knoake
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to improve the project's maintenance and code quality!
+        
+        Use this template for:
+        - Code cleanup and refactoring (without changing functionality)
+        - Documentation updates and improvements
+        - Dependency updates and version bumps
+        - Build system and tooling improvements
+        - Repository configuration and settings
+        - Test infrastructure improvements
+        - CI/CD pipeline enhancements
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of Maintenance
+      description: What type of maintenance task is this?
+      options:
+        - Code cleanup / refactoring
+        - Documentation update
+        - Dependency update
+        - Build system improvement
+        - CI/CD enhancement
+        - Test infrastructure
+        - Repository configuration
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: What maintenance task needs to be done?
+      placeholder: Update the Spring Boot dependency from version 3.5.6 to 3.5.7
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: Why is this maintenance task needed?
+      placeholder: The new version includes security fixes and performance improvements
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and Impact
+      description: |
+        What is the scope of this task? What areas of the codebase will be affected?
+        Are there any breaking changes or risks?
+      placeholder: |
+        - Affects: All Spring Boot modules
+        - Breaking changes: None expected
+        - Risk level: Low
+    validations:
+      required: false
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Task Checklist
+      description: |
+        Optional: List specific tasks or steps needed to complete this maintenance work
+      placeholder: |
+        - [ ] Update parent POM version
+        - [ ] Run all tests to verify compatibility
+        - [ ] Update documentation if needed
+        - [ ] Check for deprecated API usage
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Notes
+      description: Any additional information or context
+      placeholder: |
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false

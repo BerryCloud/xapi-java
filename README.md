@@ -488,3 +488,23 @@ public ResponseEntity<Collection<UUID>> postStatements(
 }
 
 ```
+
+## Contributing
+
+We welcome contributions to xAPI Java! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.
+
+Please see our [Contributing Guide](CONTRIBUTING.md) for:
+- Development workflow and guidelines
+- How to report bugs and request features
+- Standards for code, tests, and documentation
+- Information about chores and maintenance tasks
+
+Before submitting a pull request, please ensure:
+- All tests pass locally
+- Code follows the Google Java Style Guide (enforced by Checkstyle)
+- Public methods are documented and tested
+- Changes are described clearly in the PR
+
+## License
+
+This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](LICENSE) file for details.
