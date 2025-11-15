@@ -254,6 +254,8 @@
           <useReleaseProfile>false</useReleaseProfile>
           <releaseProfiles>release</releaseProfiles>
           <goals>deploy</goals>
+          <!-- Only release production modules, exclude all sample modules -->
+          <arguments>-pl xapi-model,xapi-client,xapi-model-spring-boot-starter</arguments>
         </configuration>
       </plugin>
     </plugins>
