@@ -29,4 +29,4 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
       - name: Generate Javadoc
-        run: mvn -B javadoc:javadoc --file pom.xml # This checks that the Javadoc is vaild
+        run: mvn -B javadoc:javadoc --file pom.xml -pl xapi-model,xapi-client,xapi-model-spring-boot-starter # This checks that the Javadoc is valid
