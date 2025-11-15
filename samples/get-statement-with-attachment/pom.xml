@@ -4,7 +4,7 @@
   <parent>
     <groupId>dev.learning.xapi.samples</groupId>
     <artifactId>xapi-samples-build</artifactId>
-    <version>1.1.16</version>
+    <version>1.1.17-SNAPSHOT</version>
   </parent>
   <artifactId>get-statement-with-attachment</artifactId>
   <name>Get xAPI Statement With Attachment Sample</name>
