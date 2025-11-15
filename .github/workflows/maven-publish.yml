@@ -21,7 +21,6 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      - name: Generate Javadoc
         run: mvn -B javadoc:javadoc --file pom.xml -pl xapi-model,xapi-client,xapi-model-spring-boot-starter # This checks that the Javadoc is valid
       - name: Publish package
         run: |
