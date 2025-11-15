@@ -103,6 +103,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- Prevent javadoc from being generated for samples -->
+          <skip>true</skip>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
