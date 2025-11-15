@@ -26,7 +26,7 @@ jobs:
       - name: Publish snapshot package
         run: mvn -B deploy --file pom.xml
         env:
-          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
       - name: Generate Javadoc
         run: mvn -B javadoc:javadoc --file pom.xml # This checks that the Javadoc is vaild

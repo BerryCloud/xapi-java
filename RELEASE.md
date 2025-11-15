@@ -9,8 +9,8 @@ The project uses the [Central Publisher Portal](https://central.sonatype.org/pub
 1. A Sonatype account with publishing rights to the `dev.learning.xapi` namespace
 2. Generate a user token from [Central Portal](https://central.sonatype.com/)
 3. Configure the following GitHub secrets:
-   - `CENTRAL_TOKEN_USERNAME`: Your Central Portal token username
-   - `CENTRAL_TOKEN_PASSWORD`: Your Central Portal token password
+   - `OSSRH_USERNAME`: Your Central Portal token username
+   - `OSSRH_TOKEN`: Your Central Portal token password
    - `MAVEN_GPG_PRIVATE_KEY`: GPG private key for signing artifacts
    - `MAVEN_GPG_PASSPHRASE`: Passphrase for the GPG key
 
