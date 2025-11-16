@@ -14,7 +14,7 @@ All version management, building, testing, and deployment happens automatically.
 
 ## Automated Release Process
 
-The release process is fully automated via GitHub Actions. To create a new release:
+
 
 ### Step 1: Create a GitHub Release
 
@@ -136,7 +136,7 @@ If the automated release workflow fails:
    | Missing secrets | Ensure GPG keys and Maven credentials are configured in repository secrets |
    | Build failures | Fix build issues on main branch first, then retry release |
    | Test failures | Fix failing tests on main branch first, then retry release |
-   | Branch already exists | Delete existing branch (see below) before creating new release |
+   | Local branch already exists | Delete or rename your local branch before retrying. The automated workflow does not create separate release branches. |
    | Permission denied | Ensure workflow has `contents: write` permission |
 
 4. **After fixing issues:**
