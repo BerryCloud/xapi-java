@@ -488,3 +488,7 @@ public ResponseEntity<Collection<UUID>> postStatements(
 }
 
 ```
+
+## Contributing
+
+For information about creating releases, see [RELEASING.md](RELEASING.md).

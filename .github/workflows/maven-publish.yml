@@ -1,7 +1,13 @@
+# DEPRECATED: This workflow is kept for backward compatibility only
+# 
+# Please use the automated release process instead:
+# 1. Create a new release in GitHub UI with tag format vX.Y.Z
+# 2. The "Automated Release" workflow will handle the rest
+#
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
-name: Maven Release
+name: Maven Release (Manual - Deprecated)
 
 on: workflow_dispatch
 jobs:
