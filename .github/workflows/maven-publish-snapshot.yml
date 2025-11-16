@@ -24,7 +24,7 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Publish snapshot package
-        run: mvn -B deploy --file pom.xml -pl xapi-build,xapi-model,xapi-client,xapi-model-spring-boot-starter
+        run: mvn -B deploy --file pom.xml -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
