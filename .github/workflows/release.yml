@@ -100,6 +100,13 @@ jobs:
           git add .
           git commit -m "[maven-release-plugin] prepare release v${VERSION}"
       
+      - name: Verify release build
+        run: |
+          echo "Running tests and verification for release version"
+          
+          # Build and test the release version
+          ./mvnw -B clean verify
+      
       - name: Build and deploy release
         run: |
           VERSION="${{ steps.validate_tag.outputs.version }}"
