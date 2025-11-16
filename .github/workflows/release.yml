@@ -160,6 +160,28 @@ jobs:
           
           echo "Pushed release branch: $RELEASE_BRANCH"
       
+      - name: Update main branch with next development version
+        run: |
+          NEXT_VERSION="${{ steps.validate_tag.outputs.next_version }}"
+          
+          echo "Updating main branch to next development version: $NEXT_VERSION"
+          
+          # Fetch and checkout main branch
+          git fetch origin main
+          git checkout main
+          
+          # Update to next SNAPSHOT version
+          ./mvnw -B versions:set -DnewVersion="${NEXT_VERSION}" -DgenerateBackupPoms=false
+          
+          # Commit the version change
+          git add .
+          git commit -m "[maven-release-plugin] prepare for next development iteration"
+          
+          # Push to main
+          git push origin main
+          
+          echo "Updated main branch to version: $NEXT_VERSION"
+      
       - name: Clean up
         if: always()
         run: |

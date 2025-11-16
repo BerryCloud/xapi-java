@@ -43,8 +43,9 @@ Once you publish the release, the "Automated Release" workflow will:
    - Javadoc JARs
    - GPG signatures
 8. ✅ Update the release tag to point to the release commit
-9. ✅ Update `pom.xml` files to the next SNAPSHOT version
+9. ✅ Update `pom.xml` files to the next SNAPSHOT version on release branch
 10. ✅ Push all commits to the release branch
+11. ✅ Update `main` branch with the next SNAPSHOT version
 
 **Workflow Diagram:**
 ```
@@ -68,9 +69,12 @@ Workflow: Update pom.xml to 1.2.1-SNAPSHOT → commit C
     ↓
 Workflow: Push branch release-1.2.0
     ↓
+Workflow: Update main branch → pom.xml to 1.2.1-SNAPSHOT
+    ↓
 Result:
   - Tag v1.2.0 → commit B (release version)
   - Branch release-1.2.0 → commit C (next SNAPSHOT)
+  - Main branch → updated to 1.2.1-SNAPSHOT
   - Artifacts deployed to Maven Central
 ```
 
@@ -83,10 +87,12 @@ Result:
 ## Release Branch Strategy
 
 - **Main branch (`main`)**: Contains development code with `-SNAPSHOT` versions
+  - Automatically updated to next SNAPSHOT version after each release
 - **Release branches (`release-X.Y.Z`)**: Created automatically for each release
   - Contains two commits:
     1. Version update to release version (X.Y.Z)
     2. Version update to next development version (X.Y.Z+1-SNAPSHOT)
+  - The next development version commit is also applied to `main`
 - **Release tags (`vX.Y.Z`)**: Points to the release version commit
 
 ## Version Numbering
