@@ -100,6 +100,14 @@ Result:
   - Used for reproducible builds and deployments
 - **No separate release branches**: The release workflow pushes directly to the originating branch
 
+### CI Workflow Behavior
+
+**Important**: Release commits pushed by the automated workflow will **not** trigger other CI workflows (such as build or test workflows). This is because the workflow uses the default `GITHUB_TOKEN`, and GitHub intentionally prevents workflows from triggering other workflows to avoid infinite loops.
+
+- The release commits are still valid and properly signed by `github-actions[bot]`
+- Maven Central deployment happens within the release workflow itself
+- If you need CI to run on release commits, you would need to use a Personal Access Token (PAT) instead of `GITHUB_TOKEN`, though this is generally not recommended for releases
+
 ## Version Numbering
 
 This project follows [Semantic Versioning](https://semver.org/):
@@ -187,6 +195,15 @@ If artifacts don't appear on Maven Central after a successful workflow:
 2. Deployment can take up to 2 hours to sync to Maven Central
 3. Check for any deployment errors in the workflow logs
 4. Verify GPG signing was successful (check for GPG-related errors)
+
+### CI Workflows Not Triggered by Release Commits
+
+**This is expected behavior**. Release commits pushed by the automated workflow will not trigger other CI workflows (such as build or test workflows). This is by design:
+
+- The workflow uses the default `GITHUB_TOKEN` for authentication
+- GitHub prevents workflows triggered by `GITHUB_TOKEN` from triggering other workflows to avoid infinite loops
+- The release workflow already performs all necessary building, testing, and deployment within itself
+- If you need CI workflows to run on release commits (generally not recommended), you would need to configure a Personal Access Token (PAT) instead
 
 ## Required Secrets
 
