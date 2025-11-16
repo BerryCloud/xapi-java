@@ -1,23 +1,23 @@
 # This workflow automates the release process when a release is created on GitHub
-# It creates a release branch, updates versions, and deploys to Maven Central
+# It uses Maven release plugin to manage versions and deploys to Maven Central
 #
 # Usage:
 # 1. Create a new release in GitHub UI with tag format: vX.Y.Z (e.g., v1.2.0)
+#    - Select the target branch (typically main)
 # 2. This workflow will automatically:
-#    - Create a release-X.Y.Z branch
-#    - Update pom.xml versions to release version
-#    - Build and deploy artifacts to Maven Central
-#    - Update pom.xml to next development version
-#    - Push version commits back to the release branch
+#    - Use Maven release:prepare to update versions and create release commits
+#    - Use Maven release:perform to build and deploy artifacts to Maven Central
+#    - Move the tag to point to the actual release commit
+#    - Push commits back to the originating branch
 
 name: Automated Release
 
 on:
   release:
-    types: [created]  # Trigger when release is created (before it's published)
+    types: [created]  # Trigger when release is created
 
 permissions:
-  contents: write  # Required to create branches and push commits
+  contents: write  # Required to push commits and update tags
 
 jobs:
   release:
@@ -41,11 +41,6 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
           
-          # Create release branch name
-          RELEASE_BRANCH="release-${VERSION}"
-          echo "release_branch=${RELEASE_BRANCH}" >> $GITHUB_OUTPUT
-          echo "Release branch: $RELEASE_BRANCH"
-          
           # Calculate next development version (increment patch version)
           IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
           MAJOR="${VERSION_PARTS[0]}"
@@ -56,20 +51,36 @@ jobs:
           echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
           echo "Next development version: $NEXT_VERSION"
       
-      - name: Checkout repository at release tag
+      - name: Determine target branch
+        id: target_branch
+        run: |
+          # Use target_commitish to determine the originating branch
+          TARGET="${{ github.event.release.target_commitish }}"
+          
+          # If target_commitish is empty or a SHA, default to main
+          if [[ -z "$TARGET" ]] || [[ "$TARGET" =~ ^[0-9a-f]{40}$ ]]; then
+            TARGET="main"
+          fi
+          
+          echo "target_branch=${TARGET}" >> $GITHUB_OUTPUT
+          echo "Target branch: $TARGET"
+      
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Create release branch
+      - name: Delete user-created tag
         run: |
-          RELEASE_BRANCH="${{ steps.validate_tag.outputs.release_branch }}"
+          TAG_NAME="${{ github.event.release.tag_name }}"
           
-          # Create new branch from the release tag
-          git checkout -b "$RELEASE_BRANCH"
-          echo "Created branch $RELEASE_BRANCH from tag ${{ github.event.release.tag_name }}"
+          # Delete the tag created by the user (will be recreated by release:prepare)
+          git tag -d "$TAG_NAME" || true
+          git push origin ":refs/tags/$TAG_NAME" || true
+          
+          echo "Deleted user-created tag $TAG_NAME"
       
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -88,103 +99,60 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       
-      - name: Set release version in POM
+      - name: Run Maven release:prepare
         run: |
           VERSION="${{ steps.validate_tag.outputs.version }}"
-          echo "Setting version to: $VERSION"
+          NEXT_VERSION="${{ steps.validate_tag.outputs.next_version }}"
+          TAG_NAME="${{ github.event.release.tag_name }}"
           
-          # Use Maven versions plugin to set the version
-          ./mvnw -B versions:set -DnewVersion="${VERSION}" -DgenerateBackupPoms=false
+          echo "Preparing release version: $VERSION"
+          echo "Next development version: $NEXT_VERSION"
+          echo "Tag name: $TAG_NAME"
           
-          # Commit the version change
-          git add .
-          git commit -m "[maven-release-plugin] prepare release v${VERSION}"
-      
-      - name: Verify release build
-        run: |
-          echo "Running tests and verification for release version"
-          
-          # Build and test the release version
-          ./mvnw -B clean verify
-      
-      - name: Build and deploy release
-        run: |
-          VERSION="${{ steps.validate_tag.outputs.version }}"
-          echo "Building and deploying version: $VERSION"
-          
-          # Build and deploy with release profile (includes signing, sources, javadocs)
-          ./mvnw -B clean deploy -Prelease \
-            -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am \
-            -DskipTests
+          # Run release:prepare with explicit versions
+          ./mvnw -B release:prepare \
+            -DreleaseVersion="${VERSION}" \
+            -DdevelopmentVersion="${NEXT_VERSION}" \
+            -Dtag="${TAG_NAME}" \
+            -DpushChanges=false \
+            -DremoteTagging=false
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       
-      - name: Update to next development version
+      - name: Run Maven release:perform
         run: |
-          NEXT_VERSION="${{ steps.validate_tag.outputs.next_version }}"
-          echo "Setting next development version to: $NEXT_VERSION"
+          echo "Performing release and deploying to Maven Central"
           
-          # Update to next SNAPSHOT version
-          ./mvnw -B versions:set -DnewVersion="${NEXT_VERSION}" -DgenerateBackupPoms=false
-          
-          # Commit the version change
-          git add .
-          git commit -m "[maven-release-plugin] prepare for next development iteration"
+          # Run release:perform to build and deploy
+          ./mvnw -B release:perform \
+            -DlocalCheckout=true \
+            -DeployAtEnd=true
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       
-      - name: Update release tag to point to release commit
+      - name: Push changes to originating branch
         run: |
+          TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
           
-          # Delete the existing tag locally
-          git tag -d "$TAG_NAME"
+          echo "Pushing changes to branch: $TARGET_BRANCH"
           
-          # Get the commit hash of the release preparation commit (one before current)
-          RELEASE_COMMIT=$(git rev-parse HEAD~1)
+          # Push the commits created by release:prepare
+          git push origin "HEAD:${TARGET_BRANCH}"
           
-          # Create new tag pointing to the release commit
-          git tag -a "$TAG_NAME" "$RELEASE_COMMIT" -m "Release $TAG_NAME"
+          # Push the tag created by release:prepare
+          git push origin "$TAG_NAME"
           
-          # Force push the updated tag
-          git push -f origin "$TAG_NAME"
-          
-          echo "Updated tag $TAG_NAME to point to release commit: $RELEASE_COMMIT"
-      
-      - name: Push release branch
-        run: |
-          RELEASE_BRANCH="${{ steps.validate_tag.outputs.release_branch }}"
-          
-          # Push the release branch with all commits
-          git push -u origin "$RELEASE_BRANCH"
-          
-          echo "Pushed release branch: $RELEASE_BRANCH"
-      
-      - name: Update main branch with next development version
-        run: |
-          NEXT_VERSION="${{ steps.validate_tag.outputs.next_version }}"
-          
-          echo "Updating main branch to next development version: $NEXT_VERSION"
-          
-          # Fetch and checkout main branch
-          git fetch origin main
-          git checkout main
-          
-          # Update to next SNAPSHOT version
-          ./mvnw -B versions:set -DnewVersion="${NEXT_VERSION}" -DgenerateBackupPoms=false
-          
-          # Commit the version change
-          git add .
-          git commit -m "[maven-release-plugin] prepare for next development iteration"
-          
-          # Push to main
-          git push origin main
-          
-          echo "Updated main branch to version: $NEXT_VERSION"
+          echo "Pushed release commits and tag to $TARGET_BRANCH"
       
       - name: Clean up
         if: always()
         run: |
-          # Clean up any Maven artifacts
-          rm -f release.properties
-          find . -name "pom.xml.versionsBackup" -delete || true
+          # Clean up Maven release artifacts
+          rm -f release.properties pom.xml.releaseBackup
+          find . -name "pom.xml.releaseBackup" -delete || true
+          find . -name "pom.xml.tag" -delete || true

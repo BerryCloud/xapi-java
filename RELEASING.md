@@ -20,80 +20,85 @@ The release process is fully automated via GitHub Actions. To create a new relea
 
 1. Navigate to the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
 2. Click **"Draft a new release"**
-3. Enter the tag version in the format: `vX.Y.Z` (e.g., `v1.2.0`)
+3. **Choose a tag**: Enter the tag version in the format: `vX.Y.Z` (e.g., `v1.2.0`)
    - The tag **must** start with `v` followed by semantic version numbers
    - Example: `v1.1.16`, `v2.0.0`, `v1.2.3`
-4. Enter a release title (e.g., "Release 1.2.0")
-5. Add release notes describing the changes
-6. Click **"Publish release"**
+4. **Target**: Select the branch to release from (typically `main`)
+   - The workflow will automatically detect and use this branch
+5. Enter a release title (e.g., "Release 1.2.0")
+6. Add release notes describing the changes
+7. Click **"Publish release"**
 
 ### Step 2: Automated Workflow Execution
 
 Once you publish the release, the "Automated Release" workflow will:
 
 1. ✅ Validate the tag format (must be `vX.Y.Z`)
-2. ✅ Extract the version number from the tag
-3. ✅ Create a `release-X.Y.Z` branch from the release tag
-4. ✅ Update all `pom.xml` files to the release version
-5. ✅ Commit the version change
-6. ✅ **Run full test suite** to verify the release
-7. ✅ Build and deploy artifacts to Maven Central with:
-   - Compiled JARs
-   - Source JARs
-   - Javadoc JARs
-   - GPG signatures
-8. ✅ Update the release tag to point to the release commit
-9. ✅ Update `pom.xml` files to the next SNAPSHOT version on release branch
-10. ✅ Push all commits to the release branch
-11. ✅ Update `main` branch with the next SNAPSHOT version
+2. ✅ Detect the target branch (auto-detected from release)
+3. ✅ Delete the user-created tag (will be recreated properly)
+4. ✅ **Run Maven release:prepare** to:
+   - Update all `pom.xml` files to the release version
+   - Commit the version change
+   - Create the release tag pointing to the release commit
+   - Update `pom.xml` files to the next SNAPSHOT version
+   - Commit the next development iteration
+5. ✅ **Run Maven release:perform** to:
+   - Check out the release tag
+   - Build and test the release version
+   - Deploy artifacts to Maven Central with GPG signatures
+6. ✅ Push commits and tag back to the originating branch
 
 **Workflow Diagram:**
 ```
-User Action: Create Release (tag: v1.2.0)
+User Action: Create Release (tag: v1.2.0, target: main)
     ↓
 GitHub: Creates tag v1.2.0 → commit A (from main)
     ↓
-Workflow: Checkout tag v1.2.0
+Workflow: Detects target branch (main)
     ↓
-Workflow: Create branch release-1.2.0
+Workflow: Deletes user-created tag v1.2.0
     ↓
-Workflow: Update pom.xml to 1.2.0 → commit B
+Workflow: Runs release:prepare
     ↓
-Workflow: Run tests (mvn verify)
+  - Commit B: pom.xml → 1.2.0 (release version)
+  - Creates tag v1.2.0 → commit B
+  - Commit C: pom.xml → 1.2.1-SNAPSHOT (next dev version)
     ↓
-Workflow: Build & deploy to Maven Central
+Workflow: Runs release:perform
     ↓
-Workflow: Move tag v1.2.0 to commit B
+  - Checks out tag v1.2.0 (commit B)
+  - Builds and tests
+  - Deploys to Maven Central
     ↓
-Workflow: Update pom.xml to 1.2.1-SNAPSHOT → commit C
+Workflow: Pushes commits B & C to main
     ↓
-Workflow: Push branch release-1.2.0
-    ↓
-Workflow: Update main branch → pom.xml to 1.2.1-SNAPSHOT
+Workflow: Pushes tag v1.2.0 → commit B
     ↓
 Result:
   - Tag v1.2.0 → commit B (release version)
-  - Branch release-1.2.0 → commit C (next SNAPSHOT)
-  - Main branch → updated to 1.2.1-SNAPSHOT
+  - Main branch → commit C (next SNAPSHOT: 1.2.1-SNAPSHOT)
   - Artifacts deployed to Maven Central
 ```
 
 ### Step 3: Verify Release
 
 1. Check the [Actions tab](https://github.com/BerryCloud/xapi-java/actions) to ensure the workflow completed successfully
-2. Verify the release branch was created: `release-X.Y.Z`
+2. Verify the target branch (e.g., `main`) has two new commits:
+   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z`
+   - Development commit: `[maven-release-plugin] prepare for next development iteration`
 3. Verify artifacts are available on [Maven Central](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model)
 
 ## Release Branch Strategy
 
-- **Main branch (`main`)**: Contains development code with `-SNAPSHOT` versions
-  - Automatically updated to next SNAPSHOT version after each release
-- **Release branches (`release-X.Y.Z`)**: Created automatically for each release
-  - Contains two commits:
-    1. Version update to release version (X.Y.Z)
-    2. Version update to next development version (X.Y.Z+1-SNAPSHOT)
-  - The next development version commit is also applied to `main`
-- **Release tags (`vX.Y.Z`)**: Points to the release version commit
+- **Main branch (`main`)** (or other target branch): Contains development code with `-SNAPSHOT` versions
+  - After each release, receives two commits from Maven release plugin:
+    1. Release commit: Version update to release version (X.Y.Z)
+    2. Development commit: Version update to next development version (X.Y.Z+1-SNAPSHOT)
+  - The HEAD always points to the next development version
+- **Release tags (`vX.Y.Z`)**: Created by Maven release plugin
+  - Points to the release version commit (first commit)
+  - Used for reproducible builds and deployments
+- **No separate release branches**: The release workflow pushes directly to the originating branch
 
 ## Version Numbering
 
@@ -136,21 +141,34 @@ If the automated release workflow fails:
 
 4. **After fixing issues:**
    - Delete the failed release and tag in GitHub UI
-   - Delete the release branch if it was created: `git push origin --delete release-X.Y.Z`
+   - **Important**: Reset your target branch if commits were already pushed:
+     ```bash
+     # If release:prepare pushed commits before failure
+     git fetch origin
+     git checkout main  # or your target branch
+     git reset --hard origin/main~2  # Remove the 2 release commits
+     git push -f origin main
+     ```
    - Create a new release with the same tag
 
-### Release Branch Already Exists
+### Re-releasing the Same Version
 
-If you need to re-release the same version:
+If you need to re-release the same version after a failed release:
 
-1. Delete the existing release branch:
-   ```bash
-   git push origin --delete release-X.Y.Z
-   ```
-2. Delete the existing release in GitHub UI:
+1. Delete the existing release in GitHub UI:
    - Go to Releases → Click on the release → Delete release
-3. Delete the tag:
-   - Go to Tags → Find the tag → Delete tag
+2. Delete the tag (locally and remotely):
+   ```bash
+   git tag -d vX.Y.Z
+   git push origin :refs/tags/vX.Y.Z
+   ```
+3. Reset the target branch if commits were pushed:
+   ```bash
+   git fetch origin
+   git checkout main  # or your target branch
+   git reset --hard origin/main~2  # Remove the 2 release commits if they exist
+   git push -f origin main  # Only if commits were pushed
+   ```
 4. Create a new release with the same version tag
 
 ### Workflow Stuck or Taking Too Long
