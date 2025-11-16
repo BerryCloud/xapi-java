@@ -4,15 +4,14 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,19 +40,9 @@ public class StateController {
   Logger log = LoggerFactory.getLogger(StateController.class);
 
   private final StateService stateService;
-  private final ObjectMapper objectMapper;
 
-  public StateController(StateService stateService, ObjectMapper objectMapper) {
+  public StateController(StateService stateService) {
     this.stateService = stateService;
-    this.objectMapper = objectMapper;
-  }
-
-  private Agent parseAgent(String agentJson) {
-    try {
-      return objectMapper.readValue(agentJson, Agent.class);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Invalid agent JSON", e);
-    }
   }
 
   /**
@@ -70,17 +59,17 @@ public class StateController {
    *      Document</a>
    */
   @GetMapping(params = {"activityId", "agent", "stateId"})
-  public ResponseEntity<JsonNode> getState(@RequestParam(required = true) String activityId,
-      @RequestParam(required = true) String agent,
+  public ResponseEntity<String> getState(@RequestParam(required = true) String activityId,
+      @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
       @RequestParam(required = false) UUID registration) {
 
     log.debug("GET state");
 
-    final Agent agentObj = parseAgent(agent);
-    final var state = stateService.getState(activityId, agentObj, stateId, registration);
+    final var state = stateService.getState(activityId, agent, stateId, registration);
 
-    return state.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    return state.map(s -> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(s))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   /**
@@ -98,13 +87,12 @@ public class StateController {
   @GetMapping(params = {"activityId", "agent", "!stateId"})
   public ResponseEntity<List<String>> getStateIds(
       @RequestParam(required = true) String activityId,
-      @RequestParam(required = true) String agent,
+      @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = false) UUID registration) {
 
     log.debug("GET state ids");
 
-    final Agent agentObj = parseAgent(agent);
-    final var stateIds = stateService.getStateIds(activityId, agentObj, registration);
+    final var stateIds = stateService.getStateIds(activityId, agent, registration);
 
     return ResponseEntity.ok(stateIds);
   }
@@ -123,16 +111,15 @@ public class StateController {
    *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#single-document-put--post--get--delete">Single
    *      Document</a>
    */
-  @PutMapping(params = {"activityId", "agent", "stateId"}, consumes = {"application/json"})
+  @PutMapping(params = {"activityId", "agent", "stateId"})
   public ResponseEntity<Void> putState(@RequestParam(required = true) String activityId,
-      @RequestParam(required = true) String agent,
+      @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration, @RequestBody JsonNode stateDocument) {
+      @RequestParam(required = false) UUID registration, @RequestBody String stateDocument) {
 
     log.debug("PUT state");
 
-    final Agent agentObj = parseAgent(agent);
-    stateService.putState(activityId, agentObj, stateId, registration, stateDocument);
+    stateService.putState(activityId, agent, stateId, registration, stateDocument);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
@@ -151,16 +138,15 @@ public class StateController {
    *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#single-document-put--post--get--delete">Single
    *      Document</a>
    */
-  @PostMapping(params = {"activityId", "agent", "stateId"}, consumes = {"application/json"})
+  @PostMapping(params = {"activityId", "agent", "stateId"})
   public ResponseEntity<Void> postState(@RequestParam(required = true) String activityId,
-      @RequestParam(required = true) String agent,
+      @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration, @RequestBody JsonNode stateDocument) {
+      @RequestParam(required = false) UUID registration, @RequestBody String stateDocument) {
 
     log.debug("POST state");
 
-    final Agent agentObj = parseAgent(agent);
-    stateService.postState(activityId, agentObj, stateId, registration, stateDocument);
+    stateService.postState(activityId, agent, stateId, registration, stateDocument);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
@@ -180,14 +166,13 @@ public class StateController {
    */
   @DeleteMapping(params = {"activityId", "agent", "stateId"})
   public ResponseEntity<Void> deleteState(@RequestParam(required = true) String activityId,
-      @RequestParam(required = true) String agent,
+      @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
       @RequestParam(required = false) UUID registration) {
 
     log.debug("DELETE state");
 
-    final Agent agentObj = parseAgent(agent);
-    stateService.deleteState(activityId, agentObj, stateId, registration);
+    stateService.deleteState(activityId, agent, stateId, registration);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
@@ -206,13 +191,12 @@ public class StateController {
    */
   @DeleteMapping(params = {"activityId", "agent", "!stateId"})
   public ResponseEntity<Void> deleteStates(@RequestParam(required = true) String activityId,
-      @RequestParam(required = true) String agent,
+      @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = false) UUID registration) {
 
     log.debug("DELETE states");
 
-    final Agent agentObj = parseAgent(agent);
-    stateService.deleteStates(activityId, agentObj, registration);
+    stateService.deleteStates(activityId, agent, registration);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

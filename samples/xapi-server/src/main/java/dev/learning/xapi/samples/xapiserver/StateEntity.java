@@ -4,15 +4,13 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.Lob;
 import java.io.Serializable;
 import java.util.UUID;
-import org.hibernate.annotations.Type;
 
 /**
  * StateEntity.
@@ -36,9 +34,9 @@ public class StateEntity {
 
   private UUID registration;
 
-  @Type(JsonType.class)
-  @Column(columnDefinition = "BLOB")
-  private JsonNode stateDocument;
+  @Lob
+  @Column(columnDefinition = "CLOB")
+  private String stateDocument;
 
   /**
    * StateEntity Constructor.
@@ -49,7 +47,7 @@ public class StateEntity {
    * StateEntity Constructor.
    */
   public StateEntity(String activityId, String agentJson, String stateId, UUID registration,
-      JsonNode stateDocument) {
+      String stateDocument) {
     this.activityId = activityId;
     this.agentJson = agentJson;
     this.stateId = stateId;
@@ -134,7 +132,7 @@ public class StateEntity {
    *
    * @return the stateDocument
    */
-  public JsonNode getStateDocument() {
+  public String getStateDocument() {
     return stateDocument;
   }
 
@@ -143,7 +141,7 @@ public class StateEntity {
    *
    * @param stateDocument the stateDocument to set
    */
-  public void setStateDocument(JsonNode stateDocument) {
+  public void setStateDocument(String stateDocument) {
     this.stateDocument = stateDocument;
   }
 

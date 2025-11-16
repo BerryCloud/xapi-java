@@ -7,6 +7,7 @@ package dev.learning.xapi.samples.xapiserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.learning.xapi.model.Agent;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class StateService {
    * @param registration the registration (nullable)
    * @return the state document or Optional.empty() if not found
    */
-  public Optional<JsonNode> getState(String activityId, Agent agent, String stateId,
+  public Optional<String> getState(String activityId, Agent agent, String stateId,
       UUID registration) {
 
     log.info("get state: activityId={}, agent={}, stateId={}, registration={}", activityId, agent,
@@ -86,7 +87,7 @@ public class StateService {
    * @param stateDocument the state document
    */
   public void putState(String activityId, Agent agent, String stateId, UUID registration,
-      JsonNode stateDocument) {
+      String stateDocument) {
 
     log.info("put state: activityId={}, agent={}, stateId={}, registration={}", activityId, agent,
         stateId, registration);
@@ -108,7 +109,7 @@ public class StateService {
    * @param stateDocument the state document to merge
    */
   public void postState(String activityId, Agent agent, String stateId, UUID registration,
-      JsonNode stateDocument) {
+      String stateDocument) {
 
     log.info("post state: activityId={}, agent={}, stateId={}, registration={}", activityId, agent,
         stateId, registration);
@@ -118,11 +119,11 @@ public class StateService {
 
     final Optional<StateEntity> existingEntity = repository.findById(id);
 
-    JsonNode mergedDocument = stateDocument;
+    String mergedDocument = stateDocument;
     if (existingEntity.isPresent()) {
       // Merge the documents (for JSON objects, newer properties override)
-      final JsonNode existing = existingEntity.get().getStateDocument();
-      mergedDocument = mergeJsonNodes(existing, stateDocument);
+      final String existing = existingEntity.get().getStateDocument();
+      mergedDocument = mergeJsonDocuments(existing, stateDocument);
     }
 
     final StateEntity entity =
@@ -177,16 +178,23 @@ public class StateService {
     }
   }
 
-  private JsonNode mergeJsonNodes(JsonNode existing, JsonNode update) {
-    if (existing.isObject() && update.isObject()) {
-      final var existingObj = (com.fasterxml.jackson.databind.node.ObjectNode) existing;
-      final var updateObj = (com.fasterxml.jackson.databind.node.ObjectNode) update;
-      final var result = mapper.createObjectNode();
-      result.setAll(existingObj);
-      result.setAll(updateObj);
-      return result;
+  private String mergeJsonDocuments(String existing, String update) {
+    try {
+      final JsonNode existingNode = mapper.readTree(existing);
+      final JsonNode updateNode = mapper.readTree(update);
+
+      if (existingNode.isObject() && updateNode.isObject()) {
+        final ObjectNode result = mapper.createObjectNode();
+        result.setAll((ObjectNode) existingNode);
+        result.setAll((ObjectNode) updateNode);
+        return mapper.writeValueAsString(result);
+      }
+      // If not both objects, the update replaces the existing
+      return update;
+    } catch (JsonProcessingException e) {
+      log.error("Error merging JSON documents", e);
+      // If merge fails, just return the update
+      return update;
     }
-    // If not both objects, the update replaces the existing
-    return update;
   }
 }
