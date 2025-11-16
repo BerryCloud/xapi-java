@@ -78,11 +78,6 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
-          server-id: central
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
       
       - name: Configure Git
         run: |
@@ -102,8 +97,7 @@ jobs:
           ./mvnw -B release:prepare \
             -DreleaseVersion="${VERSION}" \
             -Dtag="${TAG_NAME}" \
-            -DpushChanges=false \
-            -DremoteTagging=false
+            -DpushChanges=false
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
