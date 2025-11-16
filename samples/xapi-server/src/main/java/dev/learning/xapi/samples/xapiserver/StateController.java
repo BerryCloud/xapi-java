@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,9 +68,14 @@ public class StateController {
 
     log.debug("GET state");
 
-    final var state = stateService.getState(activityId, agent, stateId, registration);
+    final var stateEntity = stateService.getState(activityId, agent, stateId, registration);
 
-    return state.map(s -> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(s))
+    return stateEntity
+        .map(entity -> ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(
+                entity.getContentType() != null ? entity.getContentType()
+                    : MediaType.APPLICATION_JSON_VALUE))
+            .body(entity.getStateDocument()))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
@@ -115,11 +122,14 @@ public class StateController {
   public ResponseEntity<Void> putState(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration, @RequestBody String stateDocument) {
+      @RequestParam(required = false) UUID registration,
+      @RequestHeader(value = HttpHeaders.CONTENT_TYPE,
+          defaultValue = MediaType.APPLICATION_JSON_VALUE) String contentType,
+      @RequestBody String stateDocument) {
 
     log.debug("PUT state");
 
-    stateService.putState(activityId, agent, stateId, registration, stateDocument);
+    stateService.putState(activityId, agent, stateId, registration, stateDocument, contentType);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
@@ -142,11 +152,14 @@ public class StateController {
   public ResponseEntity<Void> postState(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration, @RequestBody String stateDocument) {
+      @RequestParam(required = false) UUID registration,
+      @RequestHeader(value = HttpHeaders.CONTENT_TYPE,
+          defaultValue = MediaType.APPLICATION_JSON_VALUE) String contentType,
+      @RequestBody String stateDocument) {
 
     log.debug("POST state");
 
-    stateService.postState(activityId, agent, stateId, registration, stateDocument);
+    stateService.postState(activityId, agent, stateId, registration, stateDocument, contentType);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

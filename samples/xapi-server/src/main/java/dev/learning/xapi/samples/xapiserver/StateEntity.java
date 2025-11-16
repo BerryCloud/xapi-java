@@ -38,6 +38,8 @@ public class StateEntity {
   @Column(columnDefinition = "CLOB")
   private String stateDocument;
 
+  private String contentType;
+
   /**
    * StateEntity Constructor.
    */
@@ -47,12 +49,13 @@ public class StateEntity {
    * StateEntity Constructor.
    */
   public StateEntity(String activityId, String agentJson, String stateId, UUID registration,
-      String stateDocument) {
+      String stateDocument, String contentType) {
     this.activityId = activityId;
     this.agentJson = agentJson;
     this.stateId = stateId;
     this.registration = registration;
     this.stateDocument = stateDocument;
+    this.contentType = contentType;
   }
 
   /**
@@ -143,6 +146,24 @@ public class StateEntity {
    */
   public void setStateDocument(String stateDocument) {
     this.stateDocument = stateDocument;
+  }
+
+  /**
+   * Gets the contentType.
+   *
+   * @return the contentType
+   */
+  public String getContentType() {
+    return contentType;
+  }
+
+  /**
+   * Sets the contentType.
+   *
+   * @param contentType the contentType to set
+   */
+  public void setContentType(String contentType) {
+    this.contentType = contentType;
   }
 
   /**

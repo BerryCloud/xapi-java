@@ -45,9 +45,9 @@ public class StateService {
    * @param agent the agent
    * @param stateId the stateId
    * @param registration the registration (nullable)
-   * @return the state document or Optional.empty() if not found
+   * @return the state entity or Optional.empty() if not found
    */
-  public Optional<String> getState(String activityId, Agent agent, String stateId,
+  public Optional<StateEntity> getState(String activityId, Agent agent, String stateId,
       UUID registration) {
 
     log.info("get state: activityId={}, agent={}, stateId={}, registration={}", activityId, agent,
@@ -56,7 +56,7 @@ public class StateService {
     final String agentJson = serializeAgent(agent);
     final StateEntity.StateId id = new StateEntity.StateId(activityId, agentJson, stateId);
 
-    return repository.findById(id).map(StateEntity::getStateDocument);
+    return repository.findById(id);
   }
 
   /**
@@ -85,16 +85,17 @@ public class StateService {
    * @param stateId the stateId
    * @param registration the registration (nullable)
    * @param stateDocument the state document
+   * @param contentType the content type
    */
   public void putState(String activityId, Agent agent, String stateId, UUID registration,
-      String stateDocument) {
+      String stateDocument, String contentType) {
 
     log.info("put state: activityId={}, agent={}, stateId={}, registration={}", activityId, agent,
         stateId, registration);
 
     final String agentJson = serializeAgent(agent);
     final StateEntity entity =
-        new StateEntity(activityId, agentJson, stateId, registration, stateDocument);
+        new StateEntity(activityId, agentJson, stateId, registration, stateDocument, contentType);
 
     repository.save(entity);
   }
@@ -107,9 +108,10 @@ public class StateService {
    * @param stateId the stateId
    * @param registration the registration (nullable)
    * @param stateDocument the state document to merge
+   * @param contentType the content type
    */
   public void postState(String activityId, Agent agent, String stateId, UUID registration,
-      String stateDocument) {
+      String stateDocument, String contentType) {
 
     log.info("post state: activityId={}, agent={}, stateId={}, registration={}", activityId, agent,
         stateId, registration);
@@ -120,14 +122,18 @@ public class StateService {
     final Optional<StateEntity> existingEntity = repository.findById(id);
 
     String mergedDocument = stateDocument;
+    String finalContentType = contentType;
     if (existingEntity.isPresent()) {
       // Merge the documents (for JSON objects, newer properties override)
       final String existing = existingEntity.get().getStateDocument();
       mergedDocument = mergeJsonDocuments(existing, stateDocument);
+      // Keep the original content type if merging
+      finalContentType = existingEntity.get().getContentType();
     }
 
     final StateEntity entity =
-        new StateEntity(activityId, agentJson, stateId, registration, mergedDocument);
+        new StateEntity(activityId, agentJson, stateId, registration, mergedDocument,
+            finalContentType);
 
     repository.save(entity);
   }
