@@ -1,0 +1,247 @@
+/*
+ * Copyright 2016-2025 Berry Cloud Ltd. All rights reserved.
+ */
+
+package dev.learning.xapi.samples.xapiserver;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import java.io.Serializable;
+import java.util.UUID;
+import org.hibernate.annotations.Type;
+
+/**
+ * StateEntity.
+ *
+ * @author Thomas Turrell-Croft
+ */
+@Entity
+@IdClass(StateEntity.StateId.class)
+public class StateEntity {
+
+  @Id
+  @Column(length = 2048)
+  private String activityId;
+
+  @Id
+  @Column(length = 2048)
+  private String agentJson;
+
+  @Id
+  private String stateId;
+
+  private UUID registration;
+
+  @Type(JsonType.class)
+  @Column(columnDefinition = "BLOB")
+  private JsonNode stateDocument;
+
+  /**
+   * StateEntity Constructor.
+   */
+  public StateEntity() {}
+
+  /**
+   * StateEntity Constructor.
+   */
+  public StateEntity(String activityId, String agentJson, String stateId, UUID registration,
+      JsonNode stateDocument) {
+    this.activityId = activityId;
+    this.agentJson = agentJson;
+    this.stateId = stateId;
+    this.registration = registration;
+    this.stateDocument = stateDocument;
+  }
+
+  /**
+   * Gets the activityId.
+   *
+   * @return the activityId
+   */
+  public String getActivityId() {
+    return activityId;
+  }
+
+  /**
+   * Sets the activityId.
+   *
+   * @param activityId the activityId to set
+   */
+  public void setActivityId(String activityId) {
+    this.activityId = activityId;
+  }
+
+  /**
+   * Gets the agentJson.
+   *
+   * @return the agentJson
+   */
+  public String getAgentJson() {
+    return agentJson;
+  }
+
+  /**
+   * Sets the agentJson.
+   *
+   * @param agentJson the agentJson to set
+   */
+  public void setAgentJson(String agentJson) {
+    this.agentJson = agentJson;
+  }
+
+  /**
+   * Gets the stateId.
+   *
+   * @return the stateId
+   */
+  public String getStateId() {
+    return stateId;
+  }
+
+  /**
+   * Sets the stateId.
+   *
+   * @param stateId the stateId to set
+   */
+  public void setStateId(String stateId) {
+    this.stateId = stateId;
+  }
+
+  /**
+   * Gets the registration.
+   *
+   * @return the registration
+   */
+  public UUID getRegistration() {
+    return registration;
+  }
+
+  /**
+   * Sets the registration.
+   *
+   * @param registration the registration to set
+   */
+  public void setRegistration(UUID registration) {
+    this.registration = registration;
+  }
+
+  /**
+   * Gets the stateDocument.
+   *
+   * @return the stateDocument
+   */
+  public JsonNode getStateDocument() {
+    return stateDocument;
+  }
+
+  /**
+   * Sets the stateDocument.
+   *
+   * @param stateDocument the stateDocument to set
+   */
+  public void setStateDocument(JsonNode stateDocument) {
+    this.stateDocument = stateDocument;
+  }
+
+  /**
+   * Composite primary key for StateEntity.
+   */
+  public static class StateId implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String activityId;
+    private String agentJson;
+    private String stateId;
+
+    /**
+     * StateId Constructor.
+     */
+    public StateId() {}
+
+    /**
+     * StateId Constructor.
+     */
+    public StateId(String activityId, String agentJson, String stateId) {
+      this.activityId = activityId;
+      this.agentJson = agentJson;
+      this.stateId = stateId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof StateId)) {
+        return false;
+      }
+      StateId stateId1 = (StateId) o;
+      return activityId.equals(stateId1.activityId) && agentJson.equals(stateId1.agentJson)
+          && stateId.equals(stateId1.stateId);
+    }
+
+    @Override
+    public int hashCode() {
+      return activityId.hashCode() + agentJson.hashCode() + stateId.hashCode();
+    }
+
+    /**
+     * Gets the activityId.
+     *
+     * @return the activityId
+     */
+    public String getActivityId() {
+      return activityId;
+    }
+
+    /**
+     * Sets the activityId.
+     *
+     * @param activityId the activityId to set
+     */
+    public void setActivityId(String activityId) {
+      this.activityId = activityId;
+    }
+
+    /**
+     * Gets the agentJson.
+     *
+     * @return the agentJson
+     */
+    public String getAgentJson() {
+      return agentJson;
+    }
+
+    /**
+     * Sets the agentJson.
+     *
+     * @param agentJson the agentJson to set
+     */
+    public void setAgentJson(String agentJson) {
+      this.agentJson = agentJson;
+    }
+
+    /**
+     * Gets the stateId.
+     *
+     * @return the stateId
+     */
+    public String getStateId() {
+      return stateId;
+    }
+
+    /**
+     * Sets the stateId.
+     *
+     * @param stateId the stateId to set
+     */
+    public void setStateId(String stateId) {
+      this.stateId = stateId;
+    }
+  }
+}
