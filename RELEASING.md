@@ -116,8 +116,6 @@ If the automated release workflow fails:
    | Missing secrets | Ensure GPG keys and Maven credentials are configured in repository secrets |
    | Build failures | Fix build issues on main branch first, then retry release |
    | Test failures | Fix failing tests on main branch first, then retry release |
-   | Local branch already exists | Delete or rename your local branch before retrying. The automated workflow does not create separate release branches. |
-   | Permission denied | Ensure workflow has `contents: write` permission |
 
 4. **After fixing issues:**
    - Delete the failed release and tag in GitHub UI
@@ -130,26 +128,6 @@ If the automated release workflow fails:
      git push -f origin main
      ```
    - Create a new release with the same tag
-
-### Re-releasing the Same Version
-
-If you need to re-release the same version after a failed release:
-
-1. Delete the existing release in GitHub UI:
-   - Go to Releases → Click on the release → Delete release
-2. Delete the tag (locally and remotely):
-   ```bash
-   git tag -d vX.Y.Z
-   git push origin :refs/tags/vX.Y.Z
-   ```
-3. Reset the target branch if commits were pushed:
-   ```bash
-   git fetch origin
-   git checkout main  # or your target branch
-   git reset --hard origin/main~2  # Remove the 2 release commits if they exist
-   git push -f origin main  # Only if commits were pushed
-   ```
-4. Create a new release with the same version tag
 
 ### Workflow Stuck or Taking Too Long
 

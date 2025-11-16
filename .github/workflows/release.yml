@@ -40,16 +40,6 @@ jobs:
           VERSION="${TAG_NAME#v}"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
-          
-          # Calculate next development version (increment patch version)
-          IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
-          MAJOR="${VERSION_PARTS[0]}"
-          MINOR="${VERSION_PARTS[1]}"
-          PATCH="${VERSION_PARTS[2]}"
-          NEXT_PATCH=$((PATCH + 1))
-          NEXT_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT"
-          echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
-          echo "Next development version: $NEXT_VERSION"
       
       - name: Determine target branch
         id: target_branch
@@ -102,17 +92,15 @@ jobs:
       - name: Run Maven release:prepare
         run: |
           VERSION="${{ steps.validate_tag.outputs.version }}"
-          NEXT_VERSION="${{ steps.validate_tag.outputs.next_version }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
           
           echo "Preparing release version: $VERSION"
-          echo "Next development version: $NEXT_VERSION"
           echo "Tag name: $TAG_NAME"
           
-          # Run release:prepare with explicit versions
+          # Run release:prepare with explicit release version
+          # Maven will automatically calculate the next development version
           ./mvnw -B release:prepare \
             -DreleaseVersion="${VERSION}" \
-            -DdevelopmentVersion="${NEXT_VERSION}" \
             -Dtag="${TAG_NAME}" \
             -DpushChanges=false \
             -DremoteTagging=false
@@ -154,11 +142,3 @@ jobs:
           git push origin "$TAG_NAME"
           
           echo "Pushed release commits and tag to $TARGET_BRANCH"
-      
-      - name: Clean up
-        if: always()
-        run: |
-          # Clean up Maven release artifacts
-          rm -f release.properties pom.xml.releaseBackup
-          find . -name "pom.xml.releaseBackup" -delete || true
-          find . -name "pom.xml.tag" -delete || true
