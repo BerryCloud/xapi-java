@@ -6,6 +6,7 @@ package dev.learning.xapi.samples.xapiserver;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -38,6 +39,7 @@ public interface StateRepository extends CrudRepository<StateEntity, StateEntity
    * @param agentJson the agent in JSON format
    * @param registration the registration (nullable)
    */
+  @Modifying
   @Query("DELETE FROM StateEntity s WHERE s.activityId = :activityId "
       + "AND s.agentJson = :agentJson "
       + "AND (:registration IS NULL OR s.registration = :registration)")
