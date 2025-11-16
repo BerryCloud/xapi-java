@@ -1,0 +1,161 @@
+# This workflow automates the release process when a release is created on GitHub
+# It creates a release branch, updates versions, and deploys to Maven Central
+#
+# Usage:
+# 1. Create a new release in GitHub UI with tag format: vX.Y.Z (e.g., v1.2.0)
+# 2. This workflow will automatically:
+#    - Create a release-X.Y.Z branch
+#    - Update pom.xml versions to release version
+#    - Build and deploy artifacts to Maven Central
+#    - Update pom.xml to next development version
+#    - Push version commits back to the release branch
+
+name: Automated Release
+
+on:
+  release:
+    types: [created]  # Trigger when release is created (before it's published)
+
+permissions:
+  contents: write  # Required to create branches and push commits
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Validate release tag format
+        id: validate_tag
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          echo "Release tag: $TAG_NAME"
+          
+          # Validate tag format (should be vX.Y.Z)
+          if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid tag format. Expected format: vX.Y.Z (e.g., v1.2.0)"
+            exit 1
+          fi
+          
+          # Remove 'v' prefix to get the version number
+          VERSION="${TAG_NAME#v}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+          
+          # Create release branch name
+          RELEASE_BRANCH="release-${VERSION}"
+          echo "release_branch=${RELEASE_BRANCH}" >> $GITHUB_OUTPUT
+          echo "Release branch: $RELEASE_BRANCH"
+          
+          # Calculate next development version (increment patch version)
+          IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT"
+          echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+          echo "Next development version: $NEXT_VERSION"
+      
+      - name: Checkout repository at release tag
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create release branch
+        run: |
+          RELEASE_BRANCH="${{ steps.validate_tag.outputs.release_branch }}"
+          
+          # Create new branch from the release tag
+          git checkout -b "$RELEASE_BRANCH"
+          echo "Created branch $RELEASE_BRANCH from tag ${{ github.event.release.tag_name }}"
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      
+      - name: Set release version in POM
+        run: |
+          VERSION="${{ steps.validate_tag.outputs.version }}"
+          echo "Setting version to: $VERSION"
+          
+          # Use Maven versions plugin to set the version
+          ./mvnw -B versions:set -DnewVersion="${VERSION}" -DgenerateBackupPoms=false
+          
+          # Commit the version change
+          git add .
+          git commit -m "[maven-release-plugin] prepare release v${VERSION}"
+      
+      - name: Build and deploy release
+        run: |
+          VERSION="${{ steps.validate_tag.outputs.version }}"
+          echo "Building and deploying version: $VERSION"
+          
+          # Build and deploy with release profile (includes signing, sources, javadocs)
+          ./mvnw -B clean deploy -Prelease \
+            -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am \
+            -DskipTests
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      
+      - name: Update to next development version
+        run: |
+          NEXT_VERSION="${{ steps.validate_tag.outputs.next_version }}"
+          echo "Setting next development version to: $NEXT_VERSION"
+          
+          # Update to next SNAPSHOT version
+          ./mvnw -B versions:set -DnewVersion="${NEXT_VERSION}" -DgenerateBackupPoms=false
+          
+          # Commit the version change
+          git add .
+          git commit -m "[maven-release-plugin] prepare for next development iteration"
+      
+      - name: Update release tag to point to release commit
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          
+          # Delete the existing tag locally
+          git tag -d "$TAG_NAME"
+          
+          # Get the commit hash of the release preparation commit (one before current)
+          RELEASE_COMMIT=$(git rev-parse HEAD~1)
+          
+          # Create new tag pointing to the release commit
+          git tag -a "$TAG_NAME" "$RELEASE_COMMIT" -m "Release $TAG_NAME"
+          
+          # Force push the updated tag
+          git push -f origin "$TAG_NAME"
+          
+          echo "Updated tag $TAG_NAME to point to release commit: $RELEASE_COMMIT"
+      
+      - name: Push release branch
+        run: |
+          RELEASE_BRANCH="${{ steps.validate_tag.outputs.release_branch }}"
+          
+          # Push the release branch with all commits
+          git push -u origin "$RELEASE_BRANCH"
+          
+          echo "Pushed release branch: $RELEASE_BRANCH"
+      
+      - name: Clean up
+        if: always()
+        run: |
+          # Clean up any Maven artifacts
+          rm -f release.properties
+          find . -name "pom.xml.versionsBackup" -delete || true
