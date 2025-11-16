@@ -142,7 +142,13 @@ jobs:
           echo "Pushing changes to branch: $TARGET_BRANCH"
           
           # Push the commits created by release:prepare
-          git push origin "HEAD:${TARGET_BRANCH}"
+          if ! git push --force-with-lease origin "HEAD:${TARGET_BRANCH}"; then
+            echo "::error::Failed to push release commits to ${TARGET_BRANCH} due to branch divergence."
+            echo "The remote branch may have new commits. Please resolve the conflict manually:"
+            echo "  1. Fetch the latest changes: git fetch origin"
+            echo "  2. Rebase or merge as needed, then push again with --force-with-lease."
+            exit 1
+          fi
           
           # Push the tag created by release:prepare
           git push origin "$TAG_NAME"
