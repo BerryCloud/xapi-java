@@ -39,6 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/xapi/activities/state")
 public class StateController {
 
+  private static final UUID ZERO_UUID = new UUID(0L, 0L);
+
   Logger log = LoggerFactory.getLogger(StateController.class);
 
   private final StateService stateService;
@@ -64,7 +66,7 @@ public class StateController {
   public ResponseEntity<String> getState(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration) {
+      @RequestParam(defaultValue = "00000000-0000-0000-0000-000000000000") UUID registration) {
 
     log.debug("GET state");
 
@@ -95,7 +97,7 @@ public class StateController {
   public ResponseEntity<List<String>> getStateIds(
       @RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
-      @RequestParam(required = false) UUID registration) {
+      @RequestParam(defaultValue = "00000000-0000-0000-0000-000000000000") UUID registration) {
 
     log.debug("GET state ids");
 
@@ -122,7 +124,7 @@ public class StateController {
   public ResponseEntity<Void> putState(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration,
+      @RequestParam(defaultValue = "00000000-0000-0000-0000-000000000000") UUID registration,
       @RequestHeader(value = HttpHeaders.CONTENT_TYPE,
           defaultValue = MediaType.APPLICATION_JSON_VALUE) String contentType,
       @RequestBody String stateDocument) {
@@ -152,7 +154,7 @@ public class StateController {
   public ResponseEntity<Void> postState(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration,
+      @RequestParam(defaultValue = "00000000-0000-0000-0000-000000000000") UUID registration,
       @RequestHeader(value = HttpHeaders.CONTENT_TYPE,
           defaultValue = MediaType.APPLICATION_JSON_VALUE) String contentType,
       @RequestBody String stateDocument) {
@@ -181,7 +183,7 @@ public class StateController {
   public ResponseEntity<Void> deleteState(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
       @RequestParam(required = true) String stateId,
-      @RequestParam(required = false) UUID registration) {
+      @RequestParam(defaultValue = "00000000-0000-0000-0000-000000000000") UUID registration) {
 
     log.debug("DELETE state");
 
@@ -205,7 +207,7 @@ public class StateController {
   @DeleteMapping(params = {"activityId", "agent", "!stateId"})
   public ResponseEntity<Void> deleteStates(@RequestParam(required = true) String activityId,
       @Valid @RequestParam(required = true) Agent agent,
-      @RequestParam(required = false) UUID registration) {
+      @RequestParam(defaultValue = "00000000-0000-0000-0000-000000000000") UUID registration) {
 
     log.debug("DELETE states");
 
