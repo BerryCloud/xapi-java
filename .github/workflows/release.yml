@@ -95,10 +95,12 @@ jobs:
           # Run release:prepare with explicit release version
           # Maven will automatically calculate the next development version
           # Only prepare production modules, exclude all sample modules
+          # Pass -pl/-am to forked Maven invocations via -Darguments
           ./mvnw -B -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am release:prepare \
             -DreleaseVersion="${VERSION}" \
             -Dtag="${TAG_NAME}" \
-            -DpushChanges=false
+            -DpushChanges=false \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
@@ -110,9 +112,11 @@ jobs:
           
           # Run release:perform to build and deploy
           # Only release production modules, exclude all sample modules
+          # Pass -pl/-am to forked Maven invocations via -Darguments
           ./mvnw -B -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am release:perform \
             -DlocalCheckout=true \
-            -DeployAtEnd=true
+            -DeployAtEnd=true \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
