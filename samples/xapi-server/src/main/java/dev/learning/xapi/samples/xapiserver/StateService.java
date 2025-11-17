@@ -193,7 +193,10 @@ public class StateService {
 
   private String serializeAgent(Agent agent) {
     try {
-      return mapper.writeValueAsString(agent);
+      // Serialize agent to JSON tree and back to ensure consistent formatting
+      // This normalizes the JSON structure regardless of how the agent was constructed
+      final JsonNode agentNode = mapper.valueToTree(agent);
+      return mapper.writeValueAsString(agentNode);
     } catch (JsonProcessingException e) {
       log.error("Error serializing agent", e);
       throw new RuntimeException("Error serializing agent", e);
