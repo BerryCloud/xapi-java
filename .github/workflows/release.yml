@@ -108,9 +108,11 @@ jobs:
           echo "Performing release and deploying to Maven Central"
           
           # Run release:perform to build and deploy
+          # Only release production modules, exclude all sample modules
           ./mvnw -B release:perform \
             -DlocalCheckout=true \
-            -DeployAtEnd=true
+            -DeployAtEnd=true \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}

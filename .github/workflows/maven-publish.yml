@@ -31,7 +31,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mvn -B -batch-mode release:prepare release:perform --file pom.xml
+          # Only release production modules, exclude all sample modules
+          mvn -B -batch-mode release:prepare release:perform --file pom.xml \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
