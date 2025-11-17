@@ -44,7 +44,7 @@ public class StateService {
    * @param activityId the activityId
    * @param agent the agent
    * @param stateId the stateId
-   * @param registration the registration (nullable)
+   * @param registration the registration
    * @return the state entity or Optional.empty() if not found
    */
   public Optional<StateEntity> getState(String activityId, Agent agent, String stateId,
@@ -54,7 +54,8 @@ public class StateService {
         stateId, registration);
 
     final String agentJson = serializeAgent(agent);
-    final StateEntity.StateId id = new StateEntity.StateId(activityId, agentJson, stateId);
+    final StateEntity.StateId id =
+        new StateEntity.StateId(activityId, agentJson, stateId, registration);
 
     return repository.findById(id);
   }
@@ -64,7 +65,7 @@ public class StateService {
    *
    * @param activityId the activityId
    * @param agent the agent
-   * @param registration the registration (nullable)
+   * @param registration the registration
    * @return list of stateIds
    */
   public List<String> getStateIds(String activityId, Agent agent, UUID registration) {
@@ -74,7 +75,10 @@ public class StateService {
 
     final String agentJson = serializeAgent(agent);
 
-    return repository.findStateIds(activityId, agentJson, registration);
+    return repository
+        .findByActivityIdAndAgentJsonAndRegistration(activityId, agentJson, registration).stream()
+        .map(StateEntity::getStateId)
+        .toList();
   }
 
   /**
@@ -83,7 +87,7 @@ public class StateService {
    * @param activityId the activityId
    * @param agent the agent
    * @param stateId the stateId
-   * @param registration the registration (nullable)
+   * @param registration the registration
    * @param stateDocument the state document
    * @param contentType the content type
    */
@@ -106,7 +110,7 @@ public class StateService {
    * @param activityId the activityId
    * @param agent the agent
    * @param stateId the stateId
-   * @param registration the registration (nullable)
+   * @param registration the registration
    * @param stateDocument the state document to merge
    * @param contentType the content type
    */
@@ -117,7 +121,8 @@ public class StateService {
         stateId, registration);
 
     final String agentJson = serializeAgent(agent);
-    final StateEntity.StateId id = new StateEntity.StateId(activityId, agentJson, stateId);
+    final StateEntity.StateId id =
+        new StateEntity.StateId(activityId, agentJson, stateId, registration);
 
     final Optional<StateEntity> existingEntity = repository.findById(id);
 
@@ -144,7 +149,7 @@ public class StateService {
    * @param activityId the activityId
    * @param agent the agent
    * @param stateId the stateId
-   * @param registration the registration (nullable)
+   * @param registration the registration
    */
   public void deleteState(String activityId, Agent agent, String stateId, UUID registration) {
 
@@ -152,7 +157,8 @@ public class StateService {
         agent, stateId, registration);
 
     final String agentJson = serializeAgent(agent);
-    final StateEntity.StateId id = new StateEntity.StateId(activityId, agentJson, stateId);
+    final StateEntity.StateId id =
+        new StateEntity.StateId(activityId, agentJson, stateId, registration);
 
     repository.deleteById(id);
   }
@@ -162,7 +168,7 @@ public class StateService {
    *
    * @param activityId the activityId
    * @param agent the agent
-   * @param registration the registration (nullable)
+   * @param registration the registration
    */
   @Transactional
   public void deleteStates(String activityId, Agent agent, UUID registration) {
@@ -172,7 +178,7 @@ public class StateService {
 
     final String agentJson = serializeAgent(agent);
 
-    repository.deleteByActivityIdAndAgentJson(activityId, agentJson, registration);
+    repository.deleteByActivityIdAndAgentJsonAndRegistration(activityId, agentJson, registration);
   }
 
   private String serializeAgent(Agent agent) {

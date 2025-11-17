@@ -7,9 +7,6 @@ package dev.learning.xapi.samples.xapiserver;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 /**
  * State Repository.
@@ -19,31 +16,24 @@ import org.springframework.data.repository.query.Param;
 public interface StateRepository extends JpaRepository<StateEntity, StateEntity.StateId> {
 
   /**
-   * Find all stateIds for a given activityId and agent.
+   * Find all StateEntities by activityId, agentJson, and registration.
    *
    * @param activityId the activityId
    * @param agentJson the agent in JSON format
-   * @param registration the registration (nullable)
-   * @return list of stateIds
+   * @param registration the registration
+   * @return list of StateEntities
    */
-  @Query("SELECT s.stateId FROM StateEntity s WHERE s.activityId = :activityId "
-      + "AND s.agentJson = :agentJson "
-      + "AND (:registration IS NULL OR s.registration = :registration)")
-  List<String> findStateIds(@Param("activityId") String activityId,
-      @Param("agentJson") String agentJson, @Param("registration") UUID registration);
+  List<StateEntity> findByActivityIdAndAgentJsonAndRegistration(String activityId,
+      String agentJson, UUID registration);
 
   /**
-   * Delete all states for a given activityId and agent.
+   * Delete all states for a given activityId, agentJson, and registration.
    *
    * @param activityId the activityId
    * @param agentJson the agent in JSON format
-   * @param registration the registration (nullable)
+   * @param registration the registration
    */
-  @Modifying
-  @Query("DELETE FROM StateEntity s WHERE s.activityId = :activityId "
-      + "AND s.agentJson = :agentJson "
-      + "AND (:registration IS NULL OR s.registration = :registration)")
-  void deleteByActivityIdAndAgentJson(@Param("activityId") String activityId,
-      @Param("agentJson") String agentJson, @Param("registration") UUID registration);
+  void deleteByActivityIdAndAgentJsonAndRegistration(String activityId, String agentJson,
+      UUID registration);
 
 }

@@ -32,6 +32,7 @@ public class StateEntity {
   @Id
   private String stateId;
 
+  @Id
   private UUID registration;
 
   @Lob
@@ -176,6 +177,7 @@ public class StateEntity {
     private String activityId;
     private String agentJson;
     private String stateId;
+    private UUID registration;
 
     /**
      * StateId Constructor.
@@ -185,10 +187,11 @@ public class StateEntity {
     /**
      * StateId Constructor.
      */
-    public StateId(String activityId, String agentJson, String stateId) {
+    public StateId(String activityId, String agentJson, String stateId, UUID registration) {
       this.activityId = activityId;
       this.agentJson = agentJson;
       this.stateId = stateId;
+      this.registration = registration;
     }
 
     @Override
@@ -201,12 +204,13 @@ public class StateEntity {
       }
       StateId stateId1 = (StateId) o;
       return activityId.equals(stateId1.activityId) && agentJson.equals(stateId1.agentJson)
-          && stateId.equals(stateId1.stateId);
+          && stateId.equals(stateId1.stateId) && registration.equals(stateId1.registration);
     }
 
     @Override
     public int hashCode() {
-      return activityId.hashCode() + agentJson.hashCode() + stateId.hashCode();
+      return activityId.hashCode() + agentJson.hashCode() + stateId.hashCode()
+          + registration.hashCode();
     }
 
     /**
@@ -261,6 +265,24 @@ public class StateEntity {
      */
     public void setStateId(String stateId) {
       this.stateId = stateId;
+    }
+
+    /**
+     * Gets the registration.
+     *
+     * @return the registration
+     */
+    public UUID getRegistration() {
+      return registration;
+    }
+
+    /**
+     * Sets the registration.
+     *
+     * @param registration the registration to set
+     */
+    public void setRegistration(UUID registration) {
+      this.registration = registration;
     }
   }
 }
