@@ -94,7 +94,8 @@ jobs:
           
           # Run release:prepare with explicit release version
           # Maven will automatically calculate the next development version
-          ./mvnw -B release:prepare \
+          # Only prepare production modules, exclude all sample modules
+          ./mvnw -B -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am release:prepare \
             -DreleaseVersion="${VERSION}" \
             -Dtag="${TAG_NAME}" \
             -DpushChanges=false
@@ -108,7 +109,8 @@ jobs:
           echo "Performing release and deploying to Maven Central"
           
           # Run release:perform to build and deploy
-          ./mvnw -B release:perform \
+          # Only release production modules, exclude all sample modules
+          ./mvnw -B -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am release:perform \
             -DlocalCheckout=true \
             -DeployAtEnd=true
         env:
