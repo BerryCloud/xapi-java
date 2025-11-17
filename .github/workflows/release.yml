@@ -94,7 +94,8 @@ jobs:
           
           # Run release:prepare with explicit release version
           # Maven will automatically calculate the next development version
-          ./mvnw -B release:prepare \
+          # Only prepare production modules, exclude all sample modules
+          ./mvnw -B -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am release:prepare \
             -DreleaseVersion="${VERSION}" \
             -Dtag="${TAG_NAME}" \
             -DpushChanges=false
