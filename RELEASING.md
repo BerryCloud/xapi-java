@@ -100,6 +100,15 @@ Result:
   - Used for reproducible builds and deployments
 - **No separate release branches**: The release workflow pushes directly to the originating branch
 
+## Branch Protection and Automated Commits
+
+The release workflow needs to push commits to the `main` branch (or target branch). If branch protection rules prevent this, see [RELEASE_WORKFLOW_AUTHENTICATION.md](RELEASE_WORKFLOW_AUTHENTICATION.md) for detailed instructions on configuring the workflow to bypass branch protection using GitHub Apps or Personal Access Tokens.
+
+**Quick links:**
+- [Quick Start Guide](QUICK_START_GUIDE.md) - Fast setup (15 minutes)
+- [Implementation Summary](IMPLEMENTATION_SUMMARY.md) - Research and recommendations
+- [Rulesets Migration Guide](RULESETS_MIGRATION_GUIDE.md) - Modern branch protection
+
 ## Troubleshooting
 
 ### Release Workflow Failed
@@ -116,6 +125,7 @@ If the automated release workflow fails:
    | Missing secrets | Ensure GPG keys and Maven credentials are configured in repository secrets |
    | Build failures | Fix build issues on main branch first, then retry release |
    | Test failures | Fix failing tests on main branch first, then retry release |
+   | Branch protection blocks push | See [RELEASE_WORKFLOW_AUTHENTICATION.md](RELEASE_WORKFLOW_AUTHENTICATION.md) for setup instructions |
 
 4. **After fixing issues:**
    - Delete the failed release and tag in GitHub UI
