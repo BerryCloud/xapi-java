@@ -105,7 +105,10 @@ public class StateService {
   }
 
   /**
-   * Post a State document (merges with existing).
+   * Post a State document (merges with existing if JSON).
+   *
+   * <p>According to the xAPI specification, POST can only merge JSON documents. If the content
+   * type is not JSON, the document will replace the existing one instead of merging.
    *
    * @param activityId the activityId
    * @param agent the agent
@@ -128,12 +131,19 @@ public class StateService {
 
     String mergedDocument = stateDocument;
     String finalContentType = contentType;
+    
     if (existingEntity.isPresent()) {
-      // Merge the documents (for JSON objects, newer properties override)
-      final String existing = existingEntity.get().getStateDocument();
-      mergedDocument = mergeJsonDocuments(existing, stateDocument);
-      // Keep the original content type if merging
-      finalContentType = existingEntity.get().getContentType();
+      final String existingContentType = existingEntity.get().getContentType();
+      
+      // Only merge if both existing and new documents are JSON
+      if (isJsonContentType(existingContentType) && isJsonContentType(contentType)) {
+        // Merge the documents (for JSON objects, newer properties override)
+        final String existing = existingEntity.get().getStateDocument();
+        mergedDocument = mergeJsonDocuments(existing, stateDocument);
+        // Keep the original content type if merging
+        finalContentType = existingContentType;
+      }
+      // If not both JSON, the new document replaces the existing one
     }
 
     final StateEntity entity =
@@ -188,6 +198,13 @@ public class StateService {
       log.error("Error serializing agent", e);
       throw new RuntimeException("Error serializing agent", e);
     }
+  }
+
+  private boolean isJsonContentType(String contentType) {
+    if (contentType == null) {
+      return false;
+    }
+    return contentType.toLowerCase().contains("application/json");
   }
 
   private String mergeJsonDocuments(String existing, String update) {
