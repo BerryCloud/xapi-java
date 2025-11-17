@@ -188,10 +188,15 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
    */
   private Stream<Attachment> getRealAttachments(Statement statement) {
 
+    Stream<Attachment> stream;
+
     // handle the rare scenario when a sub-statement has an attachment
-    var stream = statement.getObject() instanceof final SubStatement substatement
-        && substatement.getAttachments() != null ? substatement.getAttachments().stream()
-            : Stream.<Attachment>empty();
+    if (statement.getObject() instanceof final SubStatement substatement
+        && substatement.getAttachments() != null) {
+      stream = substatement.getAttachments().stream();
+    } else {
+      stream = Stream.empty();
+    }
 
     if (statement.getAttachments() != null) {
       stream = Stream.concat(stream, statement.getAttachments().stream());

@@ -27,6 +27,11 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
   private static final long serialVersionUID = 7375610804995032187L;
 
   /**
+   * Cached undefined locale instance to avoid repeated object creation.
+   */
+  private static final Locale UNDEFINED_LOCALE = new Locale("und");
+
+  /**
    * Constructs an empty LanguageMap.
    */
   public LanguageMap() {
@@ -49,7 +54,7 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
    * @param value to be added with the undefined locale as a key
    */
   public void put(String value) {
-    this.put(new Locale("und"), value);
+    this.put(UNDEFINED_LOCALE, value);
   }
 
   /**
@@ -83,15 +88,15 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
     }
 
     // Otherwise return UND
-    final var und = get(new Locale("und"));
+    final var und = get(UNDEFINED_LOCALE);
     if (und != null) {
       return und;
     }
 
     // Otherwise return first
-    final var first = keySet().stream().findFirst();
-    if (first.isPresent()) {
-      return get(first.get());
+    final var iterator = keySet().iterator();
+    if (iterator.hasNext()) {
+      return get(iterator.next());
     }
 
     // Map must be empty
