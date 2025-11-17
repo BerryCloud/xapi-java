@@ -55,12 +55,19 @@ jobs:
           echo "target_branch=${TARGET}" >> $GITHUB_OUTPUT
           echo "Target branch: $TARGET"
       
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }}
       
       - name: Delete user-created tag
         run: |
