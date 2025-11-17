@@ -110,10 +110,9 @@ jobs:
           
           # Run release:perform to build and deploy
           # Only release production modules, exclude all sample modules
-          ./mvnw -B release:perform \
+          ./mvnw -B -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am release:perform \
             -DlocalCheckout=true \
-            -DeployAtEnd=true \
-            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
+            -DeployAtEnd=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
