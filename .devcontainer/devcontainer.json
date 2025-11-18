@@ -33,7 +33,5 @@
     }
   },
 
-  "postCreateCommand": "bash -c 'java -version || (curl -s \"https://get.sdkman.io\" | bash && source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk install java 25.0.1-tem && sdk default java 25.0.1-tem)'",
-
   "remoteUser": "vscode"
 }
