@@ -23,20 +23,22 @@ steps:
   - name: Build with Maven
     shell: bash
     run: |
-      # Run a full build with tests to verify everything works
-      ./mvnw -B clean verify --file pom.xml
+      # Build and download dependencies, skip tests for faster setup
+      ./mvnw -B clean verify -DskipTests --file pom.xml
     notes: |
-      Runs a full Maven build including CheckStyle validation and all tests.
+      Runs a Maven build to verify the environment and download dependencies.
+      Tests and integration tests are skipped during setup for faster execution.
+      Tests can be run later as needed.
+      
       The -B flag runs Maven in batch (non-interactive) mode.
+      The -DskipTests flag skips both unit tests and integration tests.
       
       Build process includes:
       - CheckStyle validation (Google Java Style Guide)
       - Compilation of all modules (xapi-model, xapi-client, samples, xapi-model-spring-boot-starter)
-      - Unit tests (300+ tests)
-      - Integration tests
-      - Code coverage analysis (JaCoCo)
+      - Dependency resolution and caching
       
-      Expected duration: 2-3 minutes on first run, faster with cached dependencies.
+      Expected duration: 1-2 minutes on first run, faster with cached dependencies.
       
       Key dependencies automatically downloaded and cached:
       - Spring Boot 3.5.7
@@ -51,4 +53,4 @@ steps:
       Troubleshooting:
       - If build fails with "release version 25 not supported", the Java setup may have failed
       - If dependencies fail to download, check network connectivity
-      - If tests fail, this may indicate an environment-specific issue
+      - If CheckStyle fails, there may be code style violations
