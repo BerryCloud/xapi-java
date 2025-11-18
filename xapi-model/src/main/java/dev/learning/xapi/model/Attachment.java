@@ -210,11 +210,10 @@ public class Attachment {
       final var hash = digest.digest(data);
       final var hexString = new StringBuilder(2 * hash.length);
       for (final byte element : hash) {
-        final var hex = Integer.toHexString(0xff & element);
-        if (hex.length() == 1) {
-          hexString.append('0');
-        }
-        hexString.append(hex);
+        // Use bitwise operations to avoid string allocation per byte
+        final int value = 0xff & element;
+        hexString.append(Character.forDigit(value >>> 4, 16));
+        hexString.append(Character.forDigit(value & 0x0f, 16));
       }
       return hexString.toString();
     }

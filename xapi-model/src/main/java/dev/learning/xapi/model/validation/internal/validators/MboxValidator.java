@@ -21,12 +21,14 @@ public class MboxValidator extends DisableableValidator<Mbox, String> {
 
   public static final String PREFIX = "mailto:";
 
-  EmailValidator emailValidator;
+  /**
+   * Cached email validator instance to avoid repeated object creation.
+   */
+  private static final EmailValidator EMAIL_VALIDATOR = new EmailValidator();
 
   @Override
   public void initialize(Mbox mbox) {
-
-    emailValidator = new EmailValidator();
+    // No initialization needed - using static validator
   }
 
   @Override
@@ -36,7 +38,7 @@ public class MboxValidator extends DisableableValidator<Mbox, String> {
     }
 
     return value.startsWith(PREFIX)
-        && emailValidator.isValid(value.substring(PREFIX.length()), context);
+        && EMAIL_VALIDATOR.isValid(value.substring(PREFIX.length()), context);
   }
 
 }
