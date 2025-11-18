@@ -6,28 +6,9 @@ There are two projects in this [Monorepo](https://en.wikipedia.org/wiki/Monorepo
 
 Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Objects are [immutable](https://en.wikipedia.org/wiki/Immutable_object).
 
-[CheckStyle](https://checkstyle.sourceforge.io) is used to enforce the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html). Sonar performs automatic pull request reviews. [CodeQL](https://codeql.github.com) scans for vulnerabilities. The number of bugs, code smells and vulnerabilities in the codebase can be viewed in SonarCloud. The code coverage and code duplication percentages can also be viewed in SonarCloud. Over three-hundred unit tests ensure conformance with the xAPI specification.
-
 ## Requirements
 
-xAPI Java requires Java 25 or newer.
-
-### Installing Java 25
-
-We recommend using [SDKMAN!](https://sdkman.io/) to install and manage Java versions:
-
-```bash
-# Install SDKMAN (if not already installed)
-curl -s "https://get.sdkman.io" | bash
-
-# Install Java 25 (Temurin distribution recommended)
-sdk install java 25.0.1-tem
-
-# Verify installation
-java -version
-```
-
-**Note**: The exact identifier (e.g., `25.0.1-tem`) may vary by platform and availability. Run `sdk list java` to see available Java 25 versions for your system and choose the appropriate one for your platform.
+xAPI Java requires **Java 25 or newer**. See [CONTRIBUTING.md](CONTRIBUTING.md#prerequisites) for detailed installation instructions.
 
 ## xAPI Java Client
 
@@ -510,4 +491,10 @@ public ResponseEntity<Collection<UUID>> postStatements(
 
 ## Contributing
 
-For information about creating releases, see [RELEASING.md](RELEASING.md).
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- Development environment setup
+- Code style guidelines
+- Building and testing procedures
+- Pull request process
+
+For information about creating releases, see [RELEASING.md](RELEASING.md) (maintainers only).
