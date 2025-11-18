@@ -29,7 +29,7 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
   /**
    * Cached undefined locale instance to avoid repeated object creation.
    */
-  private static final Locale UNDEFINED_LOCALE = new Locale("und");
+  private static final Locale UNDEFINED_LOCALE = Locale.forLanguageTag("und");
 
   /**
    * Constructs an empty LanguageMap.
