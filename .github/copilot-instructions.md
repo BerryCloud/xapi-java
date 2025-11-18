@@ -22,27 +22,7 @@ xAPI Java is a library that helps you create applications that send or receive x
 
 ## Environment Setup
 
-**Note**: For GitHub Copilot agents, automated environment setup is configured in [copilot-setup-steps.yml](workflows/copilot-setup-steps.yml). The setup steps below are for manual configuration.
-
-### Java Installation with SDKMAN
-
-This project requires Java 25. We recommend using [SDKMAN!](https://sdkman.io/) to manage Java versions:
-
-```bash
-# Install SDKMAN (if not already installed)
-curl -s "https://get.sdkman.io" | bash
-
-# Install Java 25 (Temurin distribution recommended)
-sdk install java 25.0.1-tem
-
-# Set as default (optional)
-sdk default java 25.0.1-tem
-
-# Verify installation
-java -version
-```
-
-**Note**: The exact identifier (e.g., `25.0.1-tem`) may vary by platform and availability. Use `sdk list java` to see available Java 25 versions for your system.
+**Note**: For GitHub Copilot agents, automated environment setup is configured in [copilot-setup-steps.yml](workflows/copilot-setup-steps.yml). The workflow automatically sets up Java 25 (Temurin distribution) and caches Maven dependencies.
 
 ## Building and Testing
 
