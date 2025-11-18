@@ -142,7 +142,7 @@ class VerbTests {
     final var verb = new Verb("http://adlnet.gov/expapi/verbs/answered", "answered");
 
     // When Getting Display For Locale UND
-    final var result = verb.getDisplay().get(Locale.forLanguageTag("UND"));
+    final var result = verb.getDisplay().get(Locale.forLanguageTag("und"));
 
     // Then Result Is Expected
     assertThat(result, is("answered"));

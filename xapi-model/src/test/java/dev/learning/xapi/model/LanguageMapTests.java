@@ -115,7 +115,7 @@ class LanguageMapTests {
 
     // Given US And UND Key
     languageMap.put(Locale.US, "Color");
-    languageMap.put(new Locale("und"), "Colour");
+    languageMap.put(Locale.forLanguageTag("und"), "Colour");
 
     // When Getting German Value
     final var value = languageMap.get(LanguageRange.parse("de"));
