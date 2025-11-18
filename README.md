@@ -343,16 +343,7 @@ The default value is **TRUE** for all of the above properties.
 
 The xAPI model can be used by clients that send xAPI data or by servers that receive xAPI data.
 
-### Lightweight and Efficient
-
-**The xAPI Model JAR is remarkably lightweight at just ~120 KB (122,692 bytes).** This compact size makes it ideal for:
-
-- Resource-constrained environments
-- Microservices architectures
-- Mobile and embedded applications
-- Applications with strict dependency size requirements
-
-The model JAR is available for direct download from the [Maven Central Repository](https://repo.maven.apache.org/maven2/dev/learning/xapi/xapi-model/1.1.11/xapi-model-1.1.11.jar).
+**The xAPI Model JAR is approximately 120 KB.** This makes it suitable for simple projects that only require basic serialisation and deserialisation.
 
 ### Getting started
 
