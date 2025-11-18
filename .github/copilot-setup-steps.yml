@@ -3,76 +3,42 @@
 # See: https://docs.github.com/en/enterprise-cloud@latest/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment
 
 steps:
-  # Step 1: Install SDKMAN (Java version manager)
-  - name: Install SDKMAN
-    shell: bash
-    run: |
-      # Install SDKMAN if not already installed
-      if [ ! -d "$HOME/.sdkman" ]; then
-        curl -s "https://get.sdkman.io" | bash
-        source "$HOME/.sdkman/bin/sdkman-init.sh"
-      else
-        source "$HOME/.sdkman/bin/sdkman-init.sh"
-      fi
-      
-      # Verify SDKMAN installation
-      sdk version
+  # Step 1: Set up Java 25 using the setup-java action
+  - name: Set up JDK 25
+    uses: actions/setup-java@v5
+    with:
+      java-version: "25"
+      distribution: "temurin"
+      cache: maven
     notes: |
-      SDKMAN is a tool for managing parallel versions of multiple Software Development Kits.
-      It's used to install and manage Java versions on Unix-based systems.
+      Sets up Java 25 (Temurin distribution) for the build environment.
       
-      OS-specific notes:
-      - Linux/macOS: Works out of the box
-      - Windows: Use WSL (Windows Subsystem for Linux) or Git Bash
-      - Windows alternative: Download Java 25 directly from https://adoptium.net/temurin/releases/
+      This uses the same approach as the project's CI/CD workflows (maven_push.yml, maven_pull_request.yml).
+      The 'cache: maven' option automatically caches Maven dependencies in ~/.m2/repository
+      to speed up subsequent builds.
+      
+      Java 25 or newer is required for this project as specified in pom.xml.
 
-  # Step 2: Install Java 25 using SDKMAN
-  - name: Install Java 25
+  # Step 2: Build with Maven to verify environment
+  - name: Build with Maven
     shell: bash
     run: |
-      # Source SDKMAN
-      source "$HOME/.sdkman/bin/sdkman-init.sh"
-      
-      # Install Java 25 (Temurin distribution)
-      # The exact version identifier may vary by platform
-      sdk install java 25.0.1-tem || sdk install java 25.0.0-tem || sdk install java 25-tem
-      
-      # Set Java 25 as the default version for this shell
-      sdk use java 25.0.1-tem || sdk use java 25.0.0-tem || sdk use java 25-tem
-      
-      # Verify Java installation
-      java -version
-      
-      # Verify Maven can use Java 25
-      ./mvnw --version
+      # Run a full build with tests to verify everything works
+      ./mvnw -B clean verify --file pom.xml
     notes: |
-      Java 25 or newer is required for this project.
+      Runs a full Maven build including CheckStyle validation and all tests.
+      The -B flag runs Maven in batch (non-interactive) mode.
       
-      OS-specific notes:
-      - The exact Java 25 identifier varies by platform and availability
-      - Use 'sdk list java' to see available Java 25 versions for your system
-      - Common identifiers: 25.0.1-tem, 25.0.0-tem, 25-tem
-      - For Windows without WSL, download from https://adoptium.net/temurin/releases/?version=25
-
-  # Step 3: Download and cache Maven dependencies
-  - name: Download Maven dependencies
-    shell: bash
-    run: |
-      # Source SDKMAN to ensure Java 25 is active
-      source "$HOME/.sdkman/bin/sdkman-init.sh"
-      sdk use java 25.0.1-tem || sdk use java 25.0.0-tem || sdk use java 25-tem
+      Build process includes:
+      - CheckStyle validation (Google Java Style Guide)
+      - Compilation of all modules (xapi-model, xapi-client, samples, xapi-model-spring-boot-starter)
+      - Unit tests (300+ tests)
+      - Integration tests
+      - Code coverage analysis (JaCoCo)
       
-      # Download dependencies without running tests
-      # This populates the local Maven cache (~/.m2/repository)
-      ./mvnw dependency:go-offline -DskipTests
+      Expected duration: 2-3 minutes on first run, faster with cached dependencies.
       
-      # Alternative: Download and compile without running tests
-      ./mvnw clean compile -DskipTests
-    notes: |
-      Maven dependencies are cached in ~/.m2/repository directory.
-      This step downloads all required dependencies to avoid repeated downloads.
-      
-      Key dependencies include:
+      Key dependencies automatically downloaded and cached:
       - Spring Boot 3.5.7
       - Spring WebClient (reactive)
       - Jackson (JSON serialization)
@@ -82,41 +48,7 @@ steps:
       - OkHttp (HTTP client for testing)
       - CheckStyle (code style enforcement)
       
-      Cache location:
-      - Linux/macOS: ~/.m2/repository
-      - Windows: %USERPROFILE%\.m2\repository
-
-  # Step 4: Verify the environment setup
-  - name: Verify build environment
-    shell: bash
-    run: |
-      # Source SDKMAN to ensure Java 25 is active
-      source "$HOME/.sdkman/bin/sdkman-init.sh"
-      sdk use java 25.0.1-tem || sdk use java 25.0.0-tem || sdk use java 25-tem
-      
-      # Run a clean build with tests to verify everything works
-      ./mvnw clean verify
-    notes: |
-      This step verifies that the environment is properly configured by running
-      a full build including CheckStyle validation and all tests.
-      
-      Build process includes:
-      - CheckStyle validation (Google Java Style Guide)
-      - Compilation of all modules (xapi-model, xapi-client, samples, xapi-model-spring-boot-starter)
-      - Unit tests (300+ tests)
-      - Integration tests
-      - Code coverage analysis (JaCoCo)
-      
-      Expected duration: 2-3 minutes on first run, faster with cached dependencies
-      
       Troubleshooting:
-      - If build fails with "release version 25 not supported", verify Java 25 is active with 'java -version'
+      - If build fails with "release version 25 not supported", the Java setup may have failed
       - If dependencies fail to download, check network connectivity
       - If tests fail, this may indicate an environment-specific issue
-
-# Cache configuration
-cache:
-  - path: ~/.m2/repository
-    key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-    restore-keys: |
-      maven-${{ runner.os }}-
