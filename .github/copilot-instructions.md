@@ -76,38 +76,6 @@ Always run the full build before starting work to ensure you understand the curr
 
 For contributors using GitHub Codespaces or local devcontainers, this project includes a `.devcontainer/devcontainer.json` configuration that automatically sets up Java 25. This ensures a consistent development environment across all contributors.
 
-### Example DevContainer Configuration
-
-The project's devcontainer uses the official DevContainers Java feature to install Java 25 and includes SDKMAN for flexibility:
-
-```json
-{
-  "name": "xapi-java (Java 25)",
-  "image": "mcr.microsoft.com/devcontainers/base:latest",
-  "features": {
-    "ghcr.io/devcontainers/features/java:2": {
-      "version": "25"
-    },
-    "ghcr.io/devcontainers/features/sdkman:1": {}
-  },
-  "postCreateCommand": "sdk install java 25.0.1-tem || true",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "vscjava.vscode-java-pack",
-        "redhat.java"
-      ]
-    }
-  }
-}
-```
-
-The configuration:
-- Uses the official DevContainers Java feature to install Java 25
-- Includes SDKMAN for manual version management if needed
-- Attempts to install a specific Temurin 25 build as a fallback (the `|| true` ensures the container still builds if the specific identifier isn't available)
-- Pre-installs useful VS Code Java extensions
-
 ## Code Style and Quality
 
 ### Style Guide
