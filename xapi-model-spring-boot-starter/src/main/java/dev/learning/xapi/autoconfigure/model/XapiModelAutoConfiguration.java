@@ -45,6 +45,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * SingleValueArrayCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer singleValueArrayCustomizer() {
@@ -55,6 +57,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateObjectTypeCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateObjectType", havingValue = "true",
@@ -67,6 +71,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateLocaleCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateLocale", havingValue = "true",
@@ -79,6 +85,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateTimestampCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateTimestamp", havingValue = "true",
@@ -91,6 +99,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateNullValuesCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateNullValues", havingValue = "true",
@@ -103,6 +113,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidatePropertiesCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateProperties", havingValue = "true",
@@ -115,6 +127,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateJsonCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateJson", havingValue = "true",
@@ -127,6 +141,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateLiteralsCustomizer.
+   *
+   * @return the customizer bean
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateLiterals", havingValue = "true",
@@ -156,6 +172,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateActivityDefinitionPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateActivityDefinition", havingValue = "false")
@@ -173,6 +191,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateActorPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateActor", havingValue = "false")
@@ -190,6 +210,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateAuthorityPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateAuthority", havingValue = "false")
@@ -207,6 +229,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateUriSchemePostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateUriScheme", havingValue = "false")
@@ -224,6 +248,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateMboxPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateMbox", havingValue = "false")
@@ -241,6 +267,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateLocaleNotUndeterminedPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateLocaleNotUndetermined", havingValue = "false")
@@ -258,6 +286,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateScaledScorePostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateScaledScore", havingValue = "false")
@@ -275,6 +305,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateScorePostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateScore", havingValue = "false")
@@ -292,6 +324,8 @@ public class XapiModelAutoConfiguration {
 
   /**
    * ValidateStatementPlatformPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateStatementPlatform", havingValue = "false")
@@ -309,6 +343,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateStatementRevisionPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateStatementRevision", havingValue = "false")
@@ -326,6 +362,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateStatementListIdsPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateStatementListIds", havingValue = "false")
@@ -343,6 +381,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateStatementVerbPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateStatementVerb", havingValue = "false")
@@ -360,6 +400,8 @@ public class XapiModelAutoConfiguration {
   
   /**
    * ValidateUuidVariantPostProcessor.
+   *
+   * @return the bean post processor
    */
   @Bean
   @ConditionalOnProperty(name = "xapi.model.validateUuidVariant", havingValue = "false")

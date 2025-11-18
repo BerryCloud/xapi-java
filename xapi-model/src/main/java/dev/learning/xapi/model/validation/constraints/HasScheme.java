@@ -33,16 +33,22 @@ public @interface HasScheme {
 
   /**
    * Error Message.
+   *
+   * @return the error message
    */
   String message() default "must have a scheme";
 
   /**
    * Groups.
+   *
+   * @return the validation groups
    */
   Class<?>[] groups() default {};
 
   /**
    * Payload.
+   *
+   * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
 

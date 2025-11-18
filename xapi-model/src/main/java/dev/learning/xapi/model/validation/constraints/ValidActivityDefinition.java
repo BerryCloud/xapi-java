@@ -37,16 +37,22 @@ public @interface ValidActivityDefinition {
 
   /**
    * Error Message.
+   *
+   * @return the error message
    */
   String message() default "must be a valid Activity Definition";
 
   /**
    * Groups.
+   *
+   * @return the validation groups
    */
   Class<?>[] groups() default {};
 
   /**
    * Payload.
+   *
+   * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
 }

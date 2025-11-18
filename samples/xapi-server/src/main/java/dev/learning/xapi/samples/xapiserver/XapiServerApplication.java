@@ -24,6 +24,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class XapiServerApplication {
 
+  /**
+   * Main method to start the application.
+   *
+   * @param args command line arguments
+   */
   public static void main(String[] args) {
     SpringApplication.run(XapiServerApplication.class, args);
   }

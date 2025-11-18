@@ -36,6 +36,9 @@ public class StatementService {
 
   /**
    * StatementService Constructor.
+   *
+   * @param repository the statement repository
+   * @param mapper the object mapper
    */
   public StatementService(StatementRepository repository, ObjectMapper mapper) {
 

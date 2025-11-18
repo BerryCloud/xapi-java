@@ -80,6 +80,8 @@ public class XapiClient {
    * The returned ResponseEntity contains the response headers and the Statement.
    * </p>
    *
+   * @param request the get statement request
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
@@ -104,6 +106,8 @@ public class XapiClient {
    * The returned ResponseEntity contains the response headers and the Statement.
    * </p>
    *
+   * @param request the consumer builder for the get statement request
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(
@@ -122,6 +126,8 @@ public class XapiClient {
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
    * </p>
+   *
+   * @param request the post statement request
    *
    * @return the ResponseEntity
    *

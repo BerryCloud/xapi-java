@@ -44,6 +44,11 @@ public class StatementController {
 
   private final StatementService statementService;
 
+  /**
+   * Constructor for StatementController.
+   *
+   * @param statementService the statement service
+   */
   public StatementController(StatementService statementService) {
 
     this.statementService = statementService;
@@ -74,6 +79,8 @@ public class StatementController {
 
   /**
    * Get Statements.
+   *
+   * @param since the instant since when to get statements
    *
    * @return the ResponseEntity
    *

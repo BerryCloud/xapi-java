@@ -24,6 +24,9 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
 
   private static final long serialVersionUID = 7182941951585541965L;
 
+  /**
+   * Default constructor.
+   */
   public StrictLocaleDeserializer() {
     super(String.class);
   }

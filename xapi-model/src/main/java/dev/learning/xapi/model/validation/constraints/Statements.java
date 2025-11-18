@@ -28,16 +28,22 @@ public @interface Statements {
 
   /**
    * The default message.
+   *
+   * @return the error message
    */
   String message() default "all statements must have a unique id";
 
   /**
    * Groups.
+   *
+   * @return the validation groups
    */
   Class<?>[] groups() default {};
 
   /**
    * Payload.
+   *
+   * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
 }
