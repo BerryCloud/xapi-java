@@ -343,6 +343,8 @@ The default value is **TRUE** for all of the above properties.
 
 The xAPI model can be used by clients that send xAPI data or by servers that receive xAPI data.
 
+**The xAPI Model JAR is approximately 120 KB.** This makes it suitable for simple projects that only require basic serialisation and deserialisation.
+
 ### Getting started
 
 To use the xAPI Model include the appropriate XML in the `dependencies` section of your `pom.xml`, as shown in the following example:
