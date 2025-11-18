@@ -23,7 +23,9 @@ public class XapiTimestamp {
   }
 
   /**
-   * {@inheritDoc} Converts ISO 8601 string to {@link java.time.Instant}.
+   * Converts ISO 8601 string to {@link java.time.Instant}.
+   *
+   * @param text the ISO 8601 timestamp string
    *
    * @return {@link java.time.Instant} of text input
    */
