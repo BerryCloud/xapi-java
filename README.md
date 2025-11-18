@@ -10,7 +10,24 @@ Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedi
 
 ## Requirements
 
-xAPI Java requires Java 17 or newer.
+xAPI Java requires Java 25 or newer.
+
+### Installing Java 25
+
+We recommend using [SDKMAN!](https://sdkman.io/) to install and manage Java versions:
+
+```bash
+# Install SDKMAN (if not already installed)
+curl -s "https://get.sdkman.io" | bash
+
+# Install Java 25 (Temurin distribution recommended)
+sdk install java 25.0.1-tem
+
+# Verify installation
+java -version
+```
+
+**Note**: The exact identifier (e.g., `25.0.1-tem`) may vary by platform and availability. Run `sdk list java` to see available Java 25 versions for your system and choose the appropriate one for your platform.
 
 ## xAPI Java Client
 

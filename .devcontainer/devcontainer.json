@@ -1,0 +1,39 @@
+{
+  "name": "xAPI Java Development",
+  "image": "mcr.microsoft.com/devcontainers/java:1-25-bookworm",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "25",
+      "jdkDistro": "tem",
+      "installMaven": "true"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven",
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-spring-boot-dashboard",
+        "pivotal.vscode-spring-boot"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-25",
+            "path": "/usr/local/sdkman/candidates/java/current"
+          }
+        ],
+        "java.jdt.ls.java.home": "/usr/local/sdkman/candidates/java/current"
+      }
+    }
+  },
+
+  "postCreateCommand": "bash -c 'java -version || (curl -s \"https://get.sdkman.io\" | bash && source \"$HOME/.sdkman/bin/sdkman-init.sh\" && sdk install java 25.0.1-tem && sdk default java 25.0.1-tem)'",
+
+  "remoteUser": "vscode"
+}
