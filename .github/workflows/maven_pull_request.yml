@@ -1,10 +1,10 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
-name: Java CI with Maven on Push
+name: Java CI with Maven on Pull Request
 
 on:
-  push:
+  pull_request:
     branches: ["main"]
 
 jobs:
@@ -20,12 +20,16 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: ./mvnw -B verify
+      - name: Check documentation
+        run: ./mvnw -B javadoc:javadoc -pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am # This checks that the Javadoc is valid
       - name: Scan with Sonar
-        run: ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud
+        run: |
+          if [ $FORK = false ] && [ "$ACTOR" != "dependabot[bot]" ]
+          then
+            ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud
+          fi
         env:
+          FORK: ${{ github.event.pull_request.head.repo.fork }}
+          ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-      - name: Update dependency graph
-        uses: advanced-security/maven-dependency-submission-action@v5
