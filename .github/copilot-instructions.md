@@ -11,7 +11,7 @@ xAPI Java is a library that helps you create applications that send or receive x
 
 ## Technology Stack
 
-- **Language**: Java 17 or newer (required)
+- **Language**: Java 25 (required)
 - **Build Tool**: Maven (using Maven Wrapper `./mvnw`)
 - **Framework**: Spring Boot 3.5.7, Spring WebClient (reactive)
 - **Code Style**: Google Java Style Guide enforced via CheckStyle
@@ -21,6 +21,32 @@ xAPI Java is a library that helps you create applications that send or receive x
 - **Serialization**: Jackson (with custom modules for strict xAPI compliance)
 
 ## Building and Testing
+
+### Setting Up Java 25
+
+#### Using SDKMAN (Recommended)
+
+To ensure you have the correct Java version, use SDKMAN to pin a specific JVM identifier. SDKMAN identifiers vary by OS and CPU architecture, so first discover available Java 25 builds:
+
+```bash
+# List all Java 25 versions available for your platform
+sdk list java | grep 25
+
+# Install a specific Temurin 25 build (example identifier - check your platform)
+sdk install java 25.0.1-tem
+
+# Set it as default
+sdk default java 25.0.1-tem
+
+# Or use it just for this shell session
+sdk use java 25.0.1-tem
+```
+
+**Note**: The identifier `25.0.1-tem` is an example for Eclipse Temurin. Run `sdk list java` to find the exact identifier for your platform (OS and architecture). Other distributions like GraalVM, Amazon Corretto, or Zulu may use different identifiers like `25.0.1-graal`, `25.0.1-amzn`, or `25.0.1-zulu`.
+
+#### Using GitHub Codespaces or DevContainers
+
+If you're using GitHub Codespaces or a local devcontainer, Java 25 will be automatically configured. See the [DevContainer Setup](#devcontainer-setup) section below.
 
 ### Build Commands
 
@@ -45,6 +71,42 @@ Always run the full build before starting work to ensure you understand the curr
 ```bash
 ./mvnw clean verify
 ```
+
+## DevContainer Setup
+
+For contributors using GitHub Codespaces or local devcontainers, this project includes a `.devcontainer/devcontainer.json` configuration that automatically sets up Java 25. This ensures a consistent development environment across all contributors.
+
+### Example DevContainer Configuration
+
+The project's devcontainer uses the official DevContainers Java feature to install Java 25 and includes SDKMAN for flexibility:
+
+```json
+{
+  "name": "xapi-java (Java 25)",
+  "image": "mcr.microsoft.com/devcontainers/base:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/java:2": {
+      "version": "25"
+    },
+    "ghcr.io/devcontainers/features/sdkman:1": {}
+  },
+  "postCreateCommand": "sdk install java 25.0.1-tem || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.java"
+      ]
+    }
+  }
+}
+```
+
+The configuration:
+- Uses the official DevContainers Java feature to install Java 25
+- Includes SDKMAN for manual version management if needed
+- Attempts to install a specific Temurin 25 build as a fallback (the `|| true` ensures the container still builds if the specific identifier isn't available)
+- Pre-installs useful VS Code Java extensions
 
 ## Code Style and Quality
 

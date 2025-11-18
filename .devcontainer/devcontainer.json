@@ -1,0 +1,19 @@
+{
+  "name": "xapi-java (Java 25)",
+  "image": "mcr.microsoft.com/devcontainers/base:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/java:2": {
+      "version": "25"
+    },
+    "ghcr.io/devcontainers/features/sdkman:1": {}
+  },
+  "postCreateCommand": "sdk install java 25.0.1-tem || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.java"
+      ]
+    }
+  }
+}
