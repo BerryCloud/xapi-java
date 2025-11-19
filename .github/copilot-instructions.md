@@ -22,7 +22,7 @@ xAPI Java is a library that helps you create applications that send or receive x
 
 ## Environment Setup
 
-**Note**: For GitHub Copilot agents, automated environment setup is configured in [copilot-setup-steps.yml](workflows/copilot-setup-steps.yml). The workflow automatically sets up Java 25 (Temurin distribution) and caches Maven dependencies.
+**Note**: For GitHub Copilot agents, automated environment setup is configured in <a>copilot-setup-steps.yml</a>. The workflow automatically sets up Java 25 (Temurin distribution) and caches Maven dependencies.
 
 ## Building and Testing
 
