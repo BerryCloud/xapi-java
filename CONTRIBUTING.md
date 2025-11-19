@@ -249,7 +249,7 @@ Example:
  *
  * @param request the get statement request
  *
- * @return the ResponseEntity containing the statement
+ * @return the ResponseEntity
  *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">xAPI GET Statements</a>
  */
