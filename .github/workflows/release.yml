@@ -63,7 +63,7 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
@@ -85,6 +85,11 @@ jobs:
           java-version: "25"
           distribution: "temurin"
           cache: maven
+          cache-dependency-path: |
+            pom.xml
+            xapi-model/pom.xml
+            xapi-client/pom.xml
+            xapi-model-spring-boot-starter/pom.xml
           server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
