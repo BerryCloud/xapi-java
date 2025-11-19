@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Set up JDK 25
@@ -20,6 +20,11 @@ jobs:
           java-version: "25"
           distribution: "temurin"
           cache: maven
+          cache-dependency-path: |
+            pom.xml
+            xapi-model/pom.xml
+            xapi-client/pom.xml
+            xapi-model-spring-boot-starter/pom.xml
       - name: Build with Maven
         run: ./mvnw -B verify
       - name: Scan with Sonar
