@@ -80,6 +80,8 @@ public class XapiClient {
    * The returned ResponseEntity contains the response headers and the Statement.
    * </p>
    *
+   * @param request the get statement request
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
@@ -104,6 +106,8 @@ public class XapiClient {
    * The returned ResponseEntity contains the response headers and the Statement.
    * </p>
    *
+   * @param request the consumer builder for the get statement request
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(
@@ -122,6 +126,8 @@ public class XapiClient {
    * <p>
    * The returned ResponseEntity contains the response headers and the Statement identifier.
    * </p>
+   *
+   * @param request the post statement request
    *
    * @return the ResponseEntity
    *
@@ -154,6 +160,8 @@ public class XapiClient {
    * The returned ResponseEntity contains the response headers and the Statement identifier.
    * </p>
    *
+   * @param request the consumer builder for the post statement request
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> postStatement(Consumer<PostStatementRequest.Builder> request) {
@@ -172,6 +180,8 @@ public class XapiClient {
    * The returned ResponseEntity contains the response headers and an array of Statement
    * identifiers.
    * </p>
+   *
+   * @param request the post statements request
    *
    * @return the ResponseEntity
    */
@@ -200,6 +210,8 @@ public class XapiClient {
    * identifiers.
    * </p>
    *
+   * @param request the consumer builder for the post statements request
+   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<UUID>>> postStatements(
@@ -218,6 +230,8 @@ public class XapiClient {
    * <p>
    * The returned ResponseEntity contains the response headers and the voided Statement.
    * </p>
+   *
+   * @param request the get voided statement request
    *
    * @return the ResponseEntity
    */
@@ -242,6 +256,8 @@ public class XapiClient {
    * <p>
    * The returned ResponseEntity contains the response headers and the voided Statement.
    * </p>
+   *
+   * @param request the consumer builder for the get voided statement request
    *
    * @return the ResponseEntity
    */

@@ -52,11 +52,27 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
     private static final HashSet<String> validObjectTypes = new HashSet<>(
         Arrays.asList("Activity", "Agent", "Person", "Group", "SubStatement", "StatementRef"));
 
+    /**
+     * Constructor for StrictObjectTypePropertyDeserializer.
+     *
+     * @param baseType the base type
+     * @param idRes the type id resolver
+     * @param typeProperty the type property name
+     * @param typeIdVisible whether type id is visible
+     * @param defaultImpl the default implementation
+     * @param includeAs the inclusion type
+     */
     public StrictObjectTypePropertyDeserializer(JavaType baseType, TypeIdResolver idRes,
         String typeProperty, boolean typeIdVisible, JavaType defaultImpl, As includeAs) {
       super(baseType, idRes, typeProperty, typeIdVisible, defaultImpl, includeAs, true);
     }
 
+    /**
+     * Constructor for StrictObjectTypePropertyDeserializer.
+     *
+     * @param src the source deserializer
+     * @param property the bean property
+     */
     public StrictObjectTypePropertyDeserializer(AsPropertyTypeDeserializer src,
         BeanProperty property) {
       super(src, property);

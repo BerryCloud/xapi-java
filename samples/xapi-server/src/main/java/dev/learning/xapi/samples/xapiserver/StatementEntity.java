@@ -34,6 +34,9 @@ public class StatementEntity {
 
   /**
    * StatementEntity Constructor.
+   *
+   * @param id the statement id
+   * @param statement the statement as JSON
    */
   public StatementEntity(UUID id, JsonNode statement) {
 

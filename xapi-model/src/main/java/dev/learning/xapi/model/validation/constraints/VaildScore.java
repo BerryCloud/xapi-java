@@ -31,16 +31,22 @@ public @interface VaildScore {
 
   /**
    * Error Message.
+   *
+   * @return the error message
    */
   String message() default "must be a valid score";
 
   /**
    * Groups.
+   *
+   * @return the validation groups
    */
   Class<?>[] groups() default {};
 
   /**
    * Payload.
+   *
+   * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
 }

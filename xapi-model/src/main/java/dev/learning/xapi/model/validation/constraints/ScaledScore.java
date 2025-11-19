@@ -35,16 +35,22 @@ public @interface ScaledScore {
 
   /**
    * Error Message.
+   *
+   * @return the error message
    */
   String message() default "scaled score must be between -1 and 1";
 
   /**
    * Groups.
+   *
+   * @return the validation groups
    */
   Class<?>[] groups() default {};
 
   /**
    * Payload.
+   *
+   * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
 }

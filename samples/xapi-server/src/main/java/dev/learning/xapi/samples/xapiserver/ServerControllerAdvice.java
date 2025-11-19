@@ -22,6 +22,11 @@ public class ServerControllerAdvice extends ResponseEntityExceptionHandler {
   /**
    * Handles bean validation (JSR 380) exceptions and transforms them into errors that confirm to
    * RFC 7807.
+   *
+   * @param request the HTTP servlet request
+   * @param e the throwable exception
+   *
+   * @return the error response
    */
   @ResponseBody
   @ExceptionHandler(ConstraintViolationException.class)

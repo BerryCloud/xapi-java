@@ -21,10 +21,18 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
 
   private static final long serialVersionUID = -2025907823340425934L;
 
+  /**
+   * Default constructor.
+   */
   public StrictTimestampDeserializer() {
     this(null);
   }
 
+  /**
+   * Constructor with value class.
+   *
+   * @param vc the value class
+   */
   protected StrictTimestampDeserializer(Class<?> vc) {
     super(vc);
   }

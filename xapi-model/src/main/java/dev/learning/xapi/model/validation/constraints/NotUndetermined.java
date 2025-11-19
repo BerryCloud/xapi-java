@@ -33,16 +33,22 @@ public @interface NotUndetermined {
 
   /**
    * Error Message.
+   *
+   * @return the error message
    */
   String message() default "undetermined (und) locale is not allowed";
 
   /**
    * Groups.
+   *
+   * @return the validation groups
    */
   Class<?>[] groups() default {};
 
   /**
    * Payload.
+   *
+   * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
 
