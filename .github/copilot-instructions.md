@@ -20,10 +20,6 @@ xAPI Java is a library that helps you create applications that send or receive x
 - **Validation**: Jakarta Bean Validation
 - **Serialization**: Jackson (with custom modules for strict xAPI compliance)
 
-## Environment Setup
-
-**Note**: For GitHub Copilot agents, automated environment setup is configured in [copilot-setup-steps.yml](workflows/copilot-setup-steps.yml). The workflow automatically sets up Java 25 (Temurin distribution) and caches Maven dependencies.
-
 ## Building and Testing
 
 ### Build Commands
@@ -236,7 +232,6 @@ When working with xapi-client:
 - **maven_push.yml**: Runs on push to main (build, test, Sonar scan)
 - **maven_pull_request.yml**: Runs on PRs (build, test, conditional Sonar scan)
 - **codeql.yml**: Security scanning
-- **maven-publish.yml**: Maven Central publishing
 
 ### Quality Gates
 
