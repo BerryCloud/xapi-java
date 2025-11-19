@@ -121,8 +121,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <configuration>
             <!-- Suppress warnings for Lombok-generated code -->
-            <doclint>all</doclint>
-            <excludeAnnotations>lombok.Generated</excludeAnnotations>
+            <doclint>all,-missing</doclint>
             <quiet>true</quiet>
           </configuration>
           <executions>
