@@ -228,7 +228,38 @@ void testStatementSerialization() throws JsonProcessingException {
 
 ### Documentation
 
-- **JavaDoc**: Document all public APIs with comprehensive JavaDoc comments
+#### JavaDoc Guidelines
+
+All public APIs must be documented with comprehensive JavaDoc comments:
+
+- **Classes and interfaces**: Include a brief description and link to relevant xAPI specification sections
+- **Public methods**: Document purpose, parameters (`@param`), return values (`@return`), and exceptions (`@throws`)
+- **Validation annotations**: Include `@return` tags for `message()`, `groups()`, and `payload()` methods
+- **Constructor parameters**: Document all constructor parameters with `@param` tags
+
+**Important**: Lombok-generated code (builders, constructors) may produce unavoidable javadoc warnings. These are suppressed via Maven configuration and do not need manual documentation.
+
+Example:
+```java
+/**
+ * Gets a Statement from the LRS.
+ * <p>
+ * The returned ResponseEntity contains the response headers and the Statement.
+ * </p>
+ *
+ * @param request the get statement request
+ *
+ * @return the ResponseEntity containing the statement
+ *
+ * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">xAPI GET Statements</a>
+ */
+public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
+  // implementation
+}
+```
+
+**Generating JavaDoc**: Run `./mvnw javadoc:javadoc` to verify documentation quality.
+
 - **README**: Update if your changes affect usage examples or getting started instructions
 - **Code Comments**: Add comments only when necessary to explain complex logic (match existing style)
 - Maintain copyright headers in all source files: `Copyright 2016-2025 Berry Cloud Ltd. All rights reserved.`
