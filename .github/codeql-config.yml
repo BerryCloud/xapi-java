@@ -1,0 +1,21 @@
+# CodeQL Configuration
+# This configuration excludes test directories from CodeQL security scanning
+# to focus analysis on production code and reduce noise from test files.
+#
+# For more information, see:
+# - https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#excluding-directories-from-code-scanning
+# - https://github.com/github/codeql-action
+
+name: "CodeQL Config for xAPI Java"
+
+# Exclude test directories from analysis
+paths-ignore:
+  - "**/src/test/**"
+  - "**/test/**"
+  - "**/*Test.java"
+  - "**/*Tests.java"
+
+# Additional paths to ignore (build outputs, dependencies)
+  - "**/target/**"
+  - "**/build/**"
+  - "**/.mvn/**"
