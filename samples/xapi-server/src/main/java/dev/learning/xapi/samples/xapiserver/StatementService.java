@@ -9,13 +9,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.StreamSupport;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,6 +34,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StatementService {
+
+  private static final int PAGE_SIZE = 10;
 
   private final Logger log = LoggerFactory.getLogger(StatementService.class);
 
@@ -73,12 +81,63 @@ public class StatementService {
 
     log.info("get statements");
 
-    // add custom logic here...
+    return buildStatementResult(0, null);
 
-    final var statements = StreamSupport.stream(repository.findAll().spliterator(), false).limit(10)
-        .map(e -> convertToStatement(e)).toList();
+  }
 
-    return StatementResult.builder().statements(statements).more(URI.create("")).build();
+  /**
+   * Get multiple Statements since a specific time.
+   *
+   * @param since return statements stored since this instant (inclusive)
+   *
+   * @return populated StatementResults
+   */
+  public StatementResult getStatementsSince(Instant since) {
+
+    log.info("get statements since: {}", since);
+
+    return buildStatementResult(0, since);
+
+  }
+
+  /**
+   * Get multiple Statements using a more token.
+   *
+   * @param moreToken the more token indicating where to continue retrieval
+   *
+   * @return populated StatementResults
+   */
+  public StatementResult getStatementsMore(String moreToken) {
+
+    log.info("get statements more: {}", moreToken);
+
+    final var more = decodeMoreToken(moreToken);
+
+    return buildStatementResult(more.page(), more.since());
+
+  }
+
+  private StatementResult buildStatementResult(int page, Instant since) {
+
+    final Pageable pageable = PageRequest.of(page, PAGE_SIZE,
+        Sort.by(Sort.Direction.ASC, "stored").and(Sort.by("id")));
+
+    final Slice<StatementEntity> slice;
+    if (since == null) {
+      slice = repository.findAllByOrderByStoredAscIdAsc(pageable);
+    } else {
+      slice = repository.findByStoredGreaterThanEqualOrderByStoredAscIdAsc(since, pageable);
+    }
+
+    final var statements = slice.getContent().stream()
+        .map(this::convertToStatement)
+        .filter(Objects::nonNull)
+        .toList();
+
+    final var more = slice.hasNext() ? URI.create("/xapi/statements?more="
+        + encodeMoreToken(page + 1, since)) : URI.create("");
+
+    return StatementResult.builder().statements(statements).more(more).build();
 
   }
 
@@ -94,8 +153,10 @@ public class StatementService {
 
     // add custom logic here...
 
+    final Instant stored = Instant.now();
+
     repository.save(new StatementEntity(statementId,
-        mapper.valueToTree(statement.withId(statementId).withStored(Instant.now()))));
+        mapper.valueToTree(statement.withId(statementId).withStored(stored)), stored));
 
   }
 
@@ -113,19 +174,54 @@ public class StatementService {
     for (final Statement statement : statements) {
       log.info("processing statement: {}", statement);
 
+      final Instant stored = Instant.now();
+
       if (statement.getId() == null) {
-        processedStatements.add(statement.withId(UUID.randomUUID()).withStored(Instant.now()));
+        processedStatements.add(statement.withId(UUID.randomUUID()).withStored(stored));
       } else {
-        processedStatements.add(statement.withStored(Instant.now()));
+        processedStatements.add(statement.withStored(stored));
       }
     }
 
     // add custom logic here...
 
     repository.saveAll(processedStatements.stream()
-        .map(s -> new StatementEntity(s.getId(), mapper.valueToTree(s))).toList());
+        .map(s -> new StatementEntity(s.getId(), mapper.valueToTree(s), s.getStored())).toList());
 
     return processedStatements.stream().map(s -> s.getId()).toList();
+  }
+
+  private String encodeMoreToken(int page, Instant since) {
+
+    final var sinceValue = since == null ? "" : since.toString();
+    final var payload = page + "|" + sinceValue;
+
+    return Base64.getUrlEncoder().encodeToString(payload.getBytes(StandardCharsets.UTF_8));
+
+  }
+
+  private MoreToken decodeMoreToken(String token) {
+
+    try {
+      final var decoded = new String(Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
+      final var parts = decoded.split("\\|", -1);
+
+      final var page = Integer.parseInt(parts[0]);
+      final Instant since;
+
+      if (parts.length > 1 && !parts[1].isBlank()) {
+        since = Instant.parse(parts[1]);
+      } else {
+        since = null;
+      }
+
+      return new MoreToken(page, since);
+    } catch (IllegalArgumentException ex) {
+      throw ex;
+    } catch (Exception ex) {
+      throw new IllegalArgumentException("Invalid more token", ex);
+    }
+
   }
 
   private Statement convertToStatement(StatementEntity statementEntity) {
@@ -141,5 +237,7 @@ public class StatementService {
     }
 
   }
+
+  private record MoreToken(int page, Instant since) {}
 
 }

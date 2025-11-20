@@ -9,6 +9,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.time.Instant;
 import java.util.UUID;
 import org.hibernate.annotations.Type;
 
@@ -27,6 +28,9 @@ public class StatementEntity {
   @Column(columnDefinition = "BLOB")
   private JsonNode statement;
 
+  @Column
+  private Instant stored;
+
   /**
    * StatementEntity Constructor.
    */
@@ -38,10 +42,11 @@ public class StatementEntity {
    * @param id the statement id
    * @param statement the statement as JSON
    */
-  public StatementEntity(UUID id, JsonNode statement) {
+  public StatementEntity(UUID id, JsonNode statement, Instant stored) {
 
     this.id = id;
     this.statement = statement;
+    this.stored = stored;
 
   }
 
@@ -79,6 +84,14 @@ public class StatementEntity {
    */
   public void setStatement(JsonNode statement) {
     this.statement = statement;
+  }
+
+  public Instant getStored() {
+    return stored;
+  }
+
+  public void setStored(Instant stored) {
+    this.stored = stored;
   }
 
 }

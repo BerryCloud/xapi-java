@@ -4,11 +4,16 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import dev.learning.xapi.model.StatementResult;
+import java.net.URI;
+import java.time.Instant;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -71,14 +76,45 @@ class StatementControllerTest {
   }
 
   @Test
-  void whenGettingMultipleStatementsWithSinceParameterThenStatusIsNotImplemented()
-      throws Exception {
+  void whenGettingMultipleStatementsWithSinceParameterThenStatusIsOk() throws Exception {
+
+    // Given Statements After Date
+    final var since = Instant.parse("2017-03-01T12:30:00.000Z");
+    when(statementService.getStatementsSince(since)).thenReturn(StatementResult.builder()
+        .statements(Collections.emptyList()).more(URI.create("")).build());
 
     // When Getting Multiple Statements With Since Parameter
     mvc.perform(get("/xapi/statements?since=2017-03-01T12:30:00.000+00"))
 
-        // Then Status Is Not Implemented
-        .andExpect(status().isNotImplemented());
+        // Then Status Is Ok
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void whenGettingStatementsWithMoreTokenThenStatusIsOk() throws Exception {
+
+    // Given More Token
+    when(statementService.getStatementsMore("moreToken")).thenReturn(StatementResult.builder()
+        .statements(Collections.emptyList()).more(URI.create("")).build());
+
+    // When Getting Statements With More Token
+    mvc.perform(get("/xapi/statements?more=moreToken"))
+
+        // Then Status Is Ok
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void whenGettingStatementsWithInvalidMoreTokenThenStatusIsBadRequest() throws Exception {
+
+    // Given Invalid More Token
+    when(statementService.getStatementsMore("invalid")).thenThrow(new IllegalArgumentException());
+
+    // When Getting Statements With Invalid More Token
+    mvc.perform(get("/xapi/statements?more=invalid"))
+
+        // Then Status Is Bad Request
+        .andExpect(status().isBadRequest());
   }
 
   @Test

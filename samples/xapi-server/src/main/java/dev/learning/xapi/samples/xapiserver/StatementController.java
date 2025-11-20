@@ -78,6 +78,27 @@ public class StatementController {
   }
 
   /**
+   * Get Statements using more token.
+   *
+   * @param more the token indicating the next page of statements to retrieve
+   *
+   * @return the ResponseEntity
+   */
+  @GetMapping(params = "more")
+  public ResponseEntity<StatementResult> getStatementsMore(@RequestParam String more) {
+
+    log.debug("GET statements more");
+
+    try {
+      return ResponseEntity.ok(statementService.getStatementsMore(more));
+    } catch (IllegalArgumentException ex) {
+      log.warn("Invalid more token received", ex);
+
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  /**
    * Get Statements.
    *
    * @param since the instant since when to get statements
@@ -89,11 +110,11 @@ public class StatementController {
    *      Statements</a>
    */
   @GetMapping(params = "since")
-  public ResponseEntity<Void> getStatementsSince(@RequestParam Instant since) {
+  public ResponseEntity<StatementResult> getStatementsSince(@RequestParam Instant since) {
 
     log.debug("GET statements since");
 
-    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    return ResponseEntity.ok(statementService.getStatementsSince(since));
   }
 
   /**
