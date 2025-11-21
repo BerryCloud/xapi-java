@@ -28,7 +28,7 @@ public class StatementEntity {
   @Column(columnDefinition = "BLOB")
   private JsonNode statement;
 
-  @Column
+  @Column(nullable = false)
   private Instant stored;
 
   /**
@@ -41,6 +41,7 @@ public class StatementEntity {
    *
    * @param id the statement id
    * @param statement the statement as JSON
+   * @param stored the stored timestamp
    */
   public StatementEntity(UUID id, JsonNode statement, Instant stored) {
 
@@ -86,10 +87,20 @@ public class StatementEntity {
     this.statement = statement;
   }
 
+  /**
+   * Gets the stored timestamp.
+   *
+   * @return the stored timestamp
+   */
   public Instant getStored() {
     return stored;
   }
 
+  /**
+   * Sets the stored timestamp.
+   *
+   * @param stored the stored timestamp to set
+   */
   public void setStored(Instant stored) {
     this.stored = stored;
   }
