@@ -8,14 +8,14 @@ import java.time.Instant;
 import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Statement Repository.
  *
  * @author Thomas Turrell-Croft
  */
-public interface StatementRepository extends PagingAndSortingRepository<StatementEntity, UUID> {
+public interface StatementRepository extends JpaRepository<StatementEntity, UUID> {
 
   Slice<StatementEntity> findAllByOrderByStoredAscIdAsc(Pageable pageable);
 

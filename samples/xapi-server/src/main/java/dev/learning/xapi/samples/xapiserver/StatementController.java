@@ -93,7 +93,6 @@ public class StatementController {
       return ResponseEntity.ok(statementService.getStatementsMore(more));
     } catch (IllegalArgumentException ex) {
       log.warn("Invalid more token received", ex);
-
       return ResponseEntity.badRequest().build();
     }
   }
