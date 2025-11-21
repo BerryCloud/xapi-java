@@ -104,7 +104,10 @@ class StatementControllerTest {
         .andExpect(status().isOk());
   }
 
-  // TODO: Fix this test - mock isn't throwing exception as expected
+  // TODO: Fix this test - @MockitoBean with @WebMvcTest isn't throwing exception as expected
+  // The mock returns 200 OK instead of throwing IllegalArgumentException. This may be related to
+  // Spring Boot 3.4+ bean override mechanism changes. Try: @MockBean, explicit mock configuration,
+  // or integration test approach instead of slice test.
   // @Test
   // void whenGettingStatementsWithInvalidMoreTokenThenStatusIsBadRequest() throws Exception {
   //
