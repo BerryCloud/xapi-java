@@ -204,7 +204,7 @@ public class StatementService {
       final var decoded = new String(Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
       final var parts = decoded.split("\\|", -1);
 
-      if (parts.length < 1 || parts[0].isBlank()) {
+      if (parts[0].isBlank()) {
         throw new IllegalArgumentException("Invalid more token format: missing page number");
       }
 
