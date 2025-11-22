@@ -7,7 +7,7 @@ xAPI Java is a library that helps you create applications that send or receive x
 - **xapi-model**: Core data models for xAPI statements, actors, verbs, activities, and related objects
 - **xapi-client**: Client library for communicating with Learning Record Stores (LRS)
 - **xapi-model-spring-boot-starter**: Spring Boot autoconfiguration for xAPI model validation
-- **samples**: Example applications demonstrating xAPI client usage
+- **samples**: Example applications demonstrating xAPI client usage and a simple Learning Record Store (LRS).
 
 ## Technology Stack
 
@@ -30,12 +30,6 @@ xAPI Java is a library that helps you create applications that send or receive x
 
 # Build without tests
 ./mvnw clean verify -DskipTests
-
-# Run tests only
-./mvnw test
-
-# Run integration tests
-./mvnw verify
 ```
 
 ### Before Making Changes
@@ -46,20 +40,24 @@ Always run the full build before starting work to ensure you understand the curr
 ./mvnw clean verify
 ```
 
+### After Making Changes
+
+Always run the full build after making changes to ensure your change don't break the build:
+
+```bash
+./mvnw clean verify
+```
+
 ## Code Style and Quality
 
 ### Style Guide
 
 - **Strictly follow the Google Java Style Guide**
-- CheckStyle is configured and enforced in the build
-- Code is automatically scanned with SonarCloud
-- CodeQL performs security vulnerability scanning
 
 ### Validation
 
 - CheckStyle validation runs automatically during Maven build
 - Over 300 unit tests ensure xAPI specification conformance
-- Sonar performs automatic pull request reviews
 
 ## Development Guidelines
 
@@ -143,6 +141,7 @@ void testStatementSerialization() throws JsonProcessingException {
 - Integration tests for client functionality
 - Tests verify xAPI specification compliance
 - Use MockWebServer (OkHttp) for testing HTTP interactions in xapi-client
+- Tests use Given When Then pattern or When Then if there is no current state.
 
 ## Module-Specific Guidelines
 
@@ -175,6 +174,7 @@ void testStatementSerialization() throws JsonProcessingException {
 - Each sample shows a specific xAPI operation
 - Use samples as reference for common patterns
 - Located in `samples/` directory
+- The is a simple learning record store which uses the xAPI model implements a subset of the xAPI specification. 
 
 ## Common Patterns
 
