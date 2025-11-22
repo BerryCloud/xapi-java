@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -119,8 +118,7 @@ public class StatementService {
 
   private StatementResult buildStatementResult(int page, Instant since) {
 
-    final Pageable pageable = PageRequest.of(page, PAGE_SIZE,
-        Sort.by(Sort.Direction.ASC, "stored").and(Sort.by("id")));
+    final Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
     final Slice<StatementEntity> slice;
     if (since == null) {
@@ -171,10 +169,10 @@ public class StatementService {
 
     final List<Statement> processedStatements = new ArrayList<>();
 
+    final Instant stored = Instant.now();
+
     for (final Statement statement : statements) {
       log.info("processing statement: {}", statement);
-
-      final Instant stored = Instant.now();
 
       if (statement.getId() == null) {
         processedStatements.add(statement.withId(UUID.randomUUID()).withStored(stored));
@@ -206,6 +204,10 @@ public class StatementService {
       final var decoded = new String(Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
       final var parts = decoded.split("\\|", -1);
 
+      if (parts[0].isBlank()) {
+        throw new IllegalArgumentException("Invalid more token format: missing page number");
+      }
+
       final var page = Integer.parseInt(parts[0]);
       final Instant since;
 
@@ -216,8 +218,6 @@ public class StatementService {
       }
 
       return new MoreToken(page, since);
-    } catch (IllegalArgumentException ex) {
-      throw ex;
     } catch (Exception ex) {
       throw new IllegalArgumentException("Invalid more token", ex);
     }

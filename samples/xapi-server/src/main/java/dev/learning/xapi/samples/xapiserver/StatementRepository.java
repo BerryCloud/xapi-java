@@ -16,7 +16,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  *
  * @author Thomas Turrell-Croft
  */
-public interface StatementRepository extends PagingAndSortingRepository<StatementEntity, UUID> {
+public interface StatementRepository extends PagingAndSortingRepository<StatementEntity, UUID>,
+    CrudRepository<StatementEntity, UUID> {
 
   Slice<StatementEntity> findAllByOrderByStoredAscIdAsc(Pageable pageable);
 
