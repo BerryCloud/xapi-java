@@ -42,7 +42,7 @@ Always run the full build before starting work to ensure you understand the curr
 
 ### After Making Changes
 
-Always run the full build after making changes to ensure your change don't break the build:
+Always run the full build after making changes to ensure your changes don't break the build:
 
 ```bash
 ./mvnw clean verify
