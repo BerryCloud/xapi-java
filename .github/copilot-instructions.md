@@ -174,7 +174,7 @@ void testStatementSerialization() throws JsonProcessingException {
 - Each sample shows a specific xAPI operation
 - Use samples as reference for common patterns
 - Located in `samples/` directory
-- The is a simple learning record store which uses the xAPI model implements a subset of the xAPI specification. 
+- There is a simple learning record store that uses the xAPI model and implements a subset of the xAPI specification.
 
 ## Common Patterns
 
