@@ -42,6 +42,7 @@ public class StatementEntity {
    * @param id the statement id
    * @param statement the statement as JSON
    * @param stored the stored timestamp
+   * @param stored the stored timestamp
    */
   public StatementEntity(UUID id, JsonNode statement, Instant stored) {
 
