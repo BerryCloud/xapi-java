@@ -92,11 +92,21 @@ public class StatementEntity {
    * Gets the stored timestamp.
    *
    * @return the stored timestamp
+
+  /**
+   * Gets the stored timestamp.
+   *
+   * @return the stored timestamp
    */
   public Instant getStored() {
     return stored;
   }
 
+  /**
+   * Sets the stored timestamp.
+   *
+   * @param stored the stored timestamp to set
+   */
   /**
    * Sets the stored timestamp.
    *
