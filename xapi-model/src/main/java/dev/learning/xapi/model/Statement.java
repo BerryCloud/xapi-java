@@ -144,7 +144,7 @@ public class Statement implements CoreStatement {
             </dependency>
             <dependency>
               <groupId>io.jsonwebtoken</groupId>
-              <artifactId>jjwt-jackson</artifactId>
+              <artifactId>jjwt-gson</artifactId>
             </dependency>
             """,
             e);

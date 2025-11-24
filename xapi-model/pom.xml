@@ -21,19 +21,8 @@
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-jackson</artifactId>
+      <artifactId>jjwt-gson</artifactId>
       <optional>true</optional>
-      <exclusions>
-        <!-- Exclude both Jackson 2.x and 3.0 from jjwt-jackson to use only the Jackson 3.0 version managed by Spring Boot 4.0 -->
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>tools.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>tools.jackson.core</groupId>
