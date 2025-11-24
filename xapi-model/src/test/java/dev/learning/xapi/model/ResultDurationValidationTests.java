@@ -25,7 +25,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * validates durations and is not vulnerable to ReDoS (Regular Expression Denial of Service)
  * attacks.
  *
- * @author GitHub Copilot
+ * @author Berry Cloud
  */
 @DisplayName("Result Duration Validation Tests")
 class ResultDurationValidationTests {
@@ -162,6 +162,7 @@ class ResultDurationValidationTests {
 
     // Then Validation Passes And Completes In Reasonable Time
     assertThat(violations, empty());
+    // Validation should complete quickly - 100ms is generous for a regex match
     assertThat("Validation should complete in less than 100ms", durationMs < 100);
   }
 
@@ -183,6 +184,7 @@ class ResultDurationValidationTests {
 
     // Then Validation Fails Quickly (not vulnerable to ReDoS)
     assertThat(violations, not(empty()));
+    // Validation should complete quickly even with adversarial input - 100ms is generous
     assertThat("Validation should complete in less than 100ms even with adversarial input",
         durationMs < 100);
   }
@@ -204,6 +206,7 @@ class ResultDurationValidationTests {
 
     // Then Validation Fails Quickly Without Excessive Backtracking
     assertThat(violations, not(empty()));
+    // Validation should complete quickly - 100ms is generous for a regex match
     assertThat("Validation should complete in less than 100ms", durationMs < 100);
   }
 }
