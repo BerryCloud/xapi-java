@@ -26,6 +26,7 @@ public class GetStatementApplication implements CommandLineRunner {
   /** Default xAPI client. Properties are picked automatically from application.properties. */
   @Autowired private XapiClient client;
 
+  /** Main method to start the application. */
   public static void main(String[] args) {
     SpringApplication.run(GetStatementApplication.class, args).close();
   }
