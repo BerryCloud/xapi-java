@@ -9,6 +9,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.time.Instant;
 import java.util.UUID;
 import org.hibernate.annotations.Type;
 
@@ -27,6 +28,9 @@ public class StatementEntity {
   @Column(columnDefinition = "BLOB")
   private JsonNode statement;
 
+  @Column(nullable = false)
+  private Instant stored;
+
   /**
    * StatementEntity Constructor.
    */
@@ -37,11 +41,14 @@ public class StatementEntity {
    *
    * @param id the statement id
    * @param statement the statement as JSON
+   * @param stored the stored timestamp
+   * @param stored the stored timestamp
    */
-  public StatementEntity(UUID id, JsonNode statement) {
+  public StatementEntity(UUID id, JsonNode statement, Instant stored) {
 
     this.id = id;
     this.statement = statement;
+    this.stored = stored;
 
   }
 
@@ -79,6 +86,34 @@ public class StatementEntity {
    */
   public void setStatement(JsonNode statement) {
     this.statement = statement;
+  }
+
+  /**
+   * Gets the stored timestamp.
+   *
+   * @return the stored timestamp
+
+  /**
+   * Gets the stored timestamp.
+   *
+   * @return the stored timestamp
+   */
+  public Instant getStored() {
+    return stored;
+  }
+
+  /**
+   * Sets the stored timestamp.
+   *
+   * @param stored the stored timestamp to set
+   */
+  /**
+   * Sets the stored timestamp.
+   *
+   * @param stored the stored timestamp to set
+   */
+  public void setStored(Instant stored) {
+    this.stored = stored;
   }
 
 }
