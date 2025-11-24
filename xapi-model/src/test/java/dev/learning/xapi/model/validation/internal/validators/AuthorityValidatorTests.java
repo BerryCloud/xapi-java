@@ -54,12 +54,8 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithIdentifiedGroupWithMembersThenResultIsFalse() {
 
-    final Group group =
-        Group.builder()
-            .name("A N Other")
-            .mbox("mailto:another@example.com")
-            .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com"))
-            .build();
+    final Group group = Group.builder().name("A N Other").mbox("mailto:another@example.com")
+        .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com")).build();
 
     // When Calling Is Valid With Identified Group
     final var result = constraintValidator.isValid(group, null);
@@ -71,10 +67,8 @@ class AuthorityValidatorTests {
   @Test
   void whenCallingIsValidWithGroupWithOneMemberThenResultIsFalse() {
 
-    final Group group =
-        Group.builder()
-            .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com"))
-            .build();
+    final Group group = Group.builder()
+        .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com")).build();
 
     // When Calling Is Valid With Group With One Member
     final var result = constraintValidator.isValid(group, null);
@@ -87,15 +81,15 @@ class AuthorityValidatorTests {
   void whenCallingIsValidWithGroupWithTwoMembersThenResultIsTrue() {
 
     final Group group =
-        Group.builder()
-            .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com"))
-            .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com"))
-            .build();
+        Group.builder().addMember(m -> m.name("A N Other").mbox("mailto:another@example.com"))
+            .addMember(m -> m.name("A N Other").mbox("mailto:another@example.com")).build();
 
     // When Calling IsValid With Group With Two Members
     final var result = constraintValidator.isValid(group, null);
 
     // Then Result Is True
     assertThat(result, is(true));
+
   }
+
 }

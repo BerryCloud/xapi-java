@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model.validation.internal.validators;
 
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -74,11 +75,11 @@ class StatementRevisionValidatorTest {
   void whenValueHasContextRevisionAndInvalidObjectThenResultIsFalse() {
 
     // When Value has Context Revision And Invalid Object
-    final var value =
-        Statement.builder()
-            .context(c -> c.revision("revision"))
-            .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
-            .build();
+    final var value = Statement.builder().context(c -> c.revision("revision"))
+
+        .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
+
+        .build();
 
     final var result = validator.isValid(value, null);
 
@@ -90,15 +91,16 @@ class StatementRevisionValidatorTest {
   void whenValueHasContextRevisionAndValidObjectThenResultIsTrue() {
 
     // When Value has Context Revision And Valid Object
-    final var value =
-        Statement.builder()
-            .context(c -> c.revision("revision"))
-            .activityObject(a -> a.id(URI.create("http://example.com/activity")))
-            .build();
+    final var value = Statement.builder().context(c -> c.revision("revision"))
+
+        .activityObject(a -> a.id(URI.create("http://example.com/activity")))
+
+        .build();
 
     final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
   }
+
 }

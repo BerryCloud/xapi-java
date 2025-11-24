@@ -35,4 +35,5 @@ class HasSchemeValidatorForUriTests {
     // Then Result Is True
     assertThat(result, is(true));
   }
+
 }

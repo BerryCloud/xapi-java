@@ -126,10 +126,8 @@ class ActorValidatorTests {
   void whenAgentValueHasOnlyAccountThenResultIsTrue() {
 
     // When Agent Value Has Only Account
-    final var value =
-        Agent.builder()
-            .account(a -> a.homePage(URI.create("http://example.com")).name("fred"))
-            .build();
+    final var value = Agent.builder()
+        .account(a -> a.homePage(URI.create("http://example.com")).name("fred")).build();
 
     final var result = validator.isValid(value, null);
 
@@ -141,11 +139,8 @@ class ActorValidatorTests {
   void whenAgentValueHasMoreThanOneIdentifierThenResultIsFalse() {
 
     // When Agent Value Has More Than One Identifier
-    final var value =
-        Agent.builder()
-            .mbox("mailto:fred@example.com")
-            .mboxSha1sum("121212121212121212121212")
-            .build();
+    final var value = Agent.builder().mbox("mailto:fred@example.com")
+        .mboxSha1sum("121212121212121212121212").build();
 
     final var result = validator.isValid(value, null);
 
@@ -230,10 +225,8 @@ class ActorValidatorTests {
   void whenGroupValueHasOnlyAccountThenResultIsTrue() {
 
     // When Group Value Has Only Account
-    final var value =
-        Group.builder()
-            .account(a -> a.homePage(URI.create("http://example.com")).name("fred"))
-            .build();
+    final var value = Group.builder()
+        .account(a -> a.homePage(URI.create("http://example.com")).name("fred")).build();
 
     final var result = validator.isValid(value, null);
 
@@ -245,15 +238,13 @@ class ActorValidatorTests {
   void whenGroupValueHasMoreThanOneIdentifierThenResultIsFalse() {
 
     // When Group Value Has More Than One Identifier
-    final var value =
-        Group.builder()
-            .mbox("mailto:fred@example.com")
-            .mboxSha1sum("121212121212121212121212")
-            .build();
+    final var value = Group.builder().mbox("mailto:fred@example.com")
+        .mboxSha1sum("121212121212121212121212").build();
 
     final var result = validator.isValid(value, null);
 
     // Then Result Is False
     assertFalse(result);
   }
+
 }

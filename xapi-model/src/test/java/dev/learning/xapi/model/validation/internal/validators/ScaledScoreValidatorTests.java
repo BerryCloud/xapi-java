@@ -89,4 +89,5 @@ class ScaledScoreValidatorTests {
     // Then Result Is False
     assertFalse(result);
   }
+
 }

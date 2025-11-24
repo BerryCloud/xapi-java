@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model.validation.internal.validators;
 
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -74,11 +75,11 @@ class StatementVerbValidatorTest {
   void whenValueHasVoidedVerbAndInvalidObjectThenResultIsFalse() {
 
     // When Value has Voided Verb And Invalid Object
-    final var value =
-        Statement.builder()
-            .verb(Verb.VOIDED)
-            .activityObject(a -> a.id(URI.create("http://example.com/activity")))
-            .build();
+    final var value = Statement.builder().verb(Verb.VOIDED)
+
+        .activityObject(a -> a.id(URI.create("http://example.com/activity")))
+
+        .build();
 
     final var result = validator.isValid(value, null);
 
@@ -90,11 +91,11 @@ class StatementVerbValidatorTest {
   void whenValueHasVoidedVerbAndValidObjectThenResultIsTrue() {
 
     // When Value has Voided Verb And Valid Object
-    final var value =
-        Statement.builder()
-            .verb(Verb.VOIDED)
-            .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
-            .build();
+    final var value = Statement.builder().verb(Verb.VOIDED)
+
+        .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
+
+        .build();
 
     final var result = validator.isValid(value, null);
 

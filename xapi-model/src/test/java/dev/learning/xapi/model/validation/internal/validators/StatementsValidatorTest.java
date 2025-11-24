@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.model.validation.internal.validators;
 
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -48,12 +49,15 @@ class StatementsValidatorTest {
   @Test
   void whenValidatingOneStatementWithoutIdThenValidIsTrue() {
 
-    final var statement =
-        Statement.builder()
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+    final var statement = Statement.builder()
+
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
 
     // When Validating One Statement Without Id
     final var valid = validator.isValid(Arrays.asList(statement), null);
@@ -65,19 +69,26 @@ class StatementsValidatorTest {
   @Test
   void whenValidatingTwoStatementsWithoutIdThenValidIsTrue() {
 
-    final var statement1 =
-        Statement.builder()
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+    final var statement1 = Statement.builder()
 
-    final var statement2 =
-        Statement.builder()
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
+    final var statement2 = Statement.builder()
+
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
 
     // When Validating Two Statements Without Id
     final var valid = validator.isValid(Arrays.asList(statement1, statement2), null);
@@ -89,21 +100,30 @@ class StatementsValidatorTest {
   @Test
   void whenValidatingTwoStatementsWithIdThenValidIsTrue() {
 
-    final var statement1 =
-        Statement.builder()
-            .id(UUID.randomUUID())
-            .groupActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+    final var statement1 = Statement.builder()
 
-    final var statement2 =
-        Statement.builder()
-            .id(UUID.randomUUID())
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+        .id(UUID.randomUUID())
+
+        .groupActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
+    final var statement2 = Statement.builder()
+
+        .id(UUID.randomUUID())
+
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
 
     // When Validating Two Statements Without Id
     final var valid = validator.isValid(Arrays.asList(statement1, statement2), null);
@@ -112,24 +132,33 @@ class StatementsValidatorTest {
     assertTrue(valid);
   }
 
+
   @Test
   void whenValidatingTwoStatementsWithSameIdThenValidIsFalse() {
 
-    final var statement1 =
-        Statement.builder()
-            .id(UUID.fromString("b79a5a9b-d9f5-470b-afba-97228e26a031"))
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+    final var statement1 = Statement.builder()
 
-    final var statement2 =
-        Statement.builder()
-            .id(UUID.fromString("b79a5a9b-d9f5-470b-afba-97228e26a031"))
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
-            .build();
+        .id(UUID.fromString("b79a5a9b-d9f5-470b-afba-97228e26a031"))
+
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
+
+    final var statement2 = Statement.builder()
+
+        .id(UUID.fromString("b79a5a9b-d9f5-470b-afba-97228e26a031"))
+
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .verb(Verb.ATTEMPTED)
+
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement"))
+
+        .build();
 
     // When Validating Two Statements With Same Id
     final var valid = validator.isValid(Arrays.asList(statement1, statement2), null);
@@ -137,4 +166,6 @@ class StatementsValidatorTest {
     // Then Valid Is False
     assertFalse(valid);
   }
+
+
 }

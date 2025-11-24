@@ -28,29 +28,28 @@ class MboxValidatorTests {
 
   @BeforeAll
   static void init() {
-    validator.initialize(
-        new Mbox() {
+    validator.initialize(new Mbox() {
 
-          @Override
-          public Class<? extends Annotation> annotationType() {
-            return null;
-          }
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return null;
+      }
 
-          @Override
-          public Class<? extends Payload>[] payload() {
-            return null;
-          }
+      @Override
+      public Class<? extends Payload>[] payload() {
+        return null;
+      }
 
-          @Override
-          public String message() {
-            return null;
-          }
+      @Override
+      public String message() {
+        return null;
+      }
 
-          @Override
-          public Class<?>[] groups() {
-            return null;
-          }
-        });
+      @Override
+      public Class<?>[] groups() {
+        return null;
+      }
+    });
   }
 
   @Test
@@ -83,4 +82,5 @@ class MboxValidatorTests {
     // Then Result Is False
     assertFalse(result);
   }
+
 }

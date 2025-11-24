@@ -44,9 +44,8 @@ class VariantValidatorForUuidTests {
       throws Exception {
 
     // Given Validator Is Initialized With 2
-    constraintValidator.initialize(
-        AnnotationUtils.findAnnotation(getClass().getDeclaredField("variant2"), Variant.class)
-            .get());
+    constraintValidator.initialize(AnnotationUtils
+        .findAnnotation(getClass().getDeclaredField("variant2"), Variant.class).get());
 
     // When IsValid Is Called With Version 4 Variant 2 UUID
     final var valid =
@@ -57,14 +56,12 @@ class VariantValidatorForUuidTests {
   }
 
   @Test
-  void
-      GivenValidatorIsInitializedWith2whenIsValidIsCalledWithVersion4VariantMicrosoftGUIDUUIDThenResultIsFalse()
-          throws Exception {
+  void GivenValidatorIsInitializedWith2whenIsValidIsCalledWithVersion4VariantMicrosoftGUIDUUIDThenResultIsFalse()
+      throws Exception {
 
     // Given Validator Is Initialized With 2
-    constraintValidator.initialize(
-        AnnotationUtils.findAnnotation(getClass().getDeclaredField("variant2"), Variant.class)
-            .get());
+    constraintValidator.initialize(AnnotationUtils
+        .findAnnotation(getClass().getDeclaredField("variant2"), Variant.class).get());
 
     // When IsValid Is Called With Version 4 Variant Microsoft GUID UUID
     final var valid =
@@ -74,15 +71,14 @@ class VariantValidatorForUuidTests {
     assertFalse(valid);
   }
 
+
   @Test
-  void
-      GivenValidatorIsInitializedWith6whenIsValidIsCalledWithVersion4VariantMicrosoftGUIDUUIDThenResultIsTrue()
-          throws Exception {
+  void GivenValidatorIsInitializedWith6whenIsValidIsCalledWithVersion4VariantMicrosoftGUIDUUIDThenResultIsTrue()
+      throws Exception {
 
     // Given Validator Is Initialized With 6
-    constraintValidator.initialize(
-        AnnotationUtils.findAnnotation(getClass().getDeclaredField("variant6"), Variant.class)
-            .get());
+    constraintValidator.initialize(AnnotationUtils
+        .findAnnotation(getClass().getDeclaredField("variant6"), Variant.class).get());
 
     // When IsValid Is Called With Version 4 Variant Microsoft GUID UUID
     final var valid =
@@ -91,4 +87,5 @@ class VariantValidatorForUuidTests {
     // Then Valid Is False
     assertTrue(valid);
   }
+
 }

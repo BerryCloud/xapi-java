@@ -74,11 +74,11 @@ class StatementPlatformValidatorTest {
   void whenValueHasContextPlatformAndInvalidObjectThenResultIsFalse() {
 
     // When Value has Context Platform And Invalid Object
-    final var value =
-        Statement.builder()
-            .context(c -> c.platform("platform"))
-            .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
-            .build();
+    final var value = Statement.builder().context(c -> c.platform("platform"))
+
+        .statementReferenceObject(sr -> sr.id(UUID.randomUUID()))
+
+        .build();
 
     final var result = validator.isValid(value, null);
 
@@ -90,15 +90,16 @@ class StatementPlatformValidatorTest {
   void whenValueHasContextPlatformAndValidObjectThenResultIsTrue() {
 
     // When Value has Context Platform And Valid Object
-    final var value =
-        Statement.builder()
-            .context(c -> c.platform("platform"))
-            .activityObject(a -> a.id(URI.create("http://example.com/activity")))
-            .build();
+    final var value = Statement.builder().context(c -> c.platform("platform"))
+
+        .activityObject(a -> a.id(URI.create("http://example.com/activity")))
+
+        .build();
 
     final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
   }
+
 }
