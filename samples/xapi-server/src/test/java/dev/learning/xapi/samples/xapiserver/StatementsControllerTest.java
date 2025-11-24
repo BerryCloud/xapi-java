@@ -92,4 +92,59 @@ class StatementControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  @Test
+  void whenGettingMultipleStatementsWithUtcTimestampThenStatusIsNotImplemented()
+      throws Exception {
+
+    // When Getting Multiple Statements With UTC Timestamp
+    mvc.perform(get("/xapi/statements").param("since", "2017-03-01T12:30:00.000Z"))
+
+        // Then Status Is Not Implemented
+        .andExpect(status().isNotImplemented());
+  }
+
+  @Test
+  void whenGettingMultipleStatementsWithTimestampWithColonThenStatusIsNotImplemented()
+      throws Exception {
+
+    // When Getting Multiple Statements With Timestamp With Colon
+    mvc.perform(get("/xapi/statements").param("since", "2017-03-01T12:30:00.000+00:00"))
+
+        // Then Status Is Not Implemented
+        .andExpect(status().isNotImplemented());
+  }
+
+  @Test
+  void whenGettingMultipleStatementsWithFourDigitOffsetThenStatusIsNotImplemented()
+      throws Exception {
+
+    // When Getting Multiple Statements With Four Digit Offset
+    mvc.perform(get("/xapi/statements").param("since", "2017-03-01T12:30:00.000+0000"))
+
+        // Then Status Is Not Implemented
+        .andExpect(status().isNotImplemented());
+  }
+
+  @Test
+  void whenGettingMultipleStatementsWithNonZeroOffsetThenStatusIsNotImplemented()
+      throws Exception {
+
+    // When Getting Multiple Statements With Non-Zero Offset
+    mvc.perform(get("/xapi/statements").param("since", "2017-03-01T12:30:00.000+05:00"))
+
+        // Then Status Is Not Implemented
+        .andExpect(status().isNotImplemented());
+  }
+
+  @Test
+  void whenGettingMultipleStatementsWithNoTimezoneThenStatusIsNotImplemented()
+      throws Exception {
+
+    // When Getting Multiple Statements With No Timezone
+    mvc.perform(get("/xapi/statements").param("since", "2017-03-01T12:30:00.000"))
+
+        // Then Status Is Not Implemented
+        .andExpect(status().isNotImplemented());
+  }
+
 }
