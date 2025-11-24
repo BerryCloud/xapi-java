@@ -16,8 +16,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.http.codec.autoconfigure.CodecsAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.reactor.autoconfigure.ReactorAutoConfiguration;
+import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
@@ -31,7 +33,9 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
 @SpringBootTest(
     classes = {
       XapiClientAutoConfiguration.class,
-      WebClientAutoConfiguration.class,
+      WebClientTestConfiguration.class,
+      CodecsAutoConfiguration.class,
+      ReactorAutoConfiguration.class,
       XapiTestClientConfiguration2.class,
       JacksonAutoConfiguration.class
     },
