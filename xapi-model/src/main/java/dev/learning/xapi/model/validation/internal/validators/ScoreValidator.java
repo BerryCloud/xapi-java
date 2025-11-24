@@ -26,4 +26,5 @@ public class ScoreValidator extends DisableableValidator<VaildScore, Score> {
     return (value.getMax() == null || value.getMax() >= value.getRaw())
         && (value.getMin() == null || value.getMin() <= value.getRaw());
   }
+
 }

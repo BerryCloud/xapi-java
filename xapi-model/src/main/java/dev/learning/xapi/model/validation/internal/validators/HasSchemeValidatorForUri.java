@@ -24,5 +24,7 @@ public class HasSchemeValidatorForUri extends DisableableValidator<HasScheme, UR
     }
 
     return value.getScheme() != null;
+
   }
+
 }

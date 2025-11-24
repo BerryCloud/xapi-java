@@ -12,13 +12,15 @@ import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * The Statement being validated must have a valid verb.
- *
- * <p>If the verb is 'voided' then the object must be a {@link StatementReference}.
+ * <p>
+ * If the verb is 'voided' then the object must be a {@link StatementReference}.
+ * </p>
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#requirements-1">
- *     Voiding Statement Requirements</a>
+ *      Voiding Statement Requirements</a>
  */
 public class StatementVerbValidator
     extends DisableableValidator<ValidStatementVerb, CoreStatement> {
@@ -26,9 +28,9 @@ public class StatementVerbValidator
   @Override
   public boolean isValidIfEnabled(CoreStatement value, ConstraintValidatorContext context) {
 
-    return value == null
-        || value.getVerb() == null
-        || !value.getVerb().isVoided()
+    return value == null || value.getVerb() == null || !value.getVerb().isVoided()
         || value.getObject() instanceof StatementReference;
+
   }
+
 }

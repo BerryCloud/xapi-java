@@ -12,13 +12,15 @@ import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * The Statement being validated must have a valid revision.
- *
- * <p>If context.revision present, then object must be an {@link Activity}.
+ * <p>
+ * If context.revision present, then object must be an {@link Activity}.
+ * </p>
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#requirements-10">
- *     Statement Context Requirements</a>
+ *      Statement Context Requirements</a>
  */
 public class StatementRevisionValidator
     extends DisableableValidator<ValidStatementRevision, CoreStatement> {
@@ -26,9 +28,8 @@ public class StatementRevisionValidator
   @Override
   public boolean isValidIfEnabled(CoreStatement value, ConstraintValidatorContext context) {
 
-    return value == null
-        || value.getContext() == null
-        || value.getContext().getRevision() == null
+    return value == null || value.getContext() == null || value.getContext().getRevision() == null
         || value.getObject() instanceof Activity;
   }
+
 }

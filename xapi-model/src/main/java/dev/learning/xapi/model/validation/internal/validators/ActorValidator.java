@@ -16,6 +16,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * The {@link StatementObject} being validated must be valid.
  *
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">Actor</a>
  */
 public class ActorValidator extends DisableableValidator<ValidActor, Object> {
@@ -29,17 +30,15 @@ public class ActorValidator extends DisableableValidator<ValidActor, Object> {
   public boolean isValidIfEnabled(Object value, ConstraintValidatorContext context) {
 
     if (value instanceof final Group group) {
-      return group.getAccount() == null
-              && group.getMbox() == null
-              && group.getMboxSha1sum() == null
-              && group.getOpenid() == null
-          ? group.getMember() != null && !group.getMember().isEmpty()
-          : hasSingleIdentifier(group);
+      return group.getAccount() == null && group.getMbox() == null && group.getMboxSha1sum() == null
+          && group.getOpenid() == null ? group.getMember() != null && !group.getMember().isEmpty()
+              : hasSingleIdentifier(group);
     } else if (value instanceof final Agent agent) {
       return hasSingleIdentifier(agent);
     }
 
     return true;
+
   }
 
   private boolean hasSingleIdentifier(Actor value) {
@@ -61,4 +60,5 @@ public class ActorValidator extends DisableableValidator<ValidActor, Object> {
 
     return n == 1;
   }
+
 }

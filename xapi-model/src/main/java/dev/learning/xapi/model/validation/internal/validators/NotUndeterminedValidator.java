@@ -24,5 +24,7 @@ public class NotUndeterminedValidator extends DisableableValidator<NotUndetermin
     }
 
     return !value.toLanguageTag().equalsIgnoreCase("und");
+
   }
+
 }
