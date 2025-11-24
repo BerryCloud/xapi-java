@@ -17,10 +17,9 @@ import lombok.Value;
  * This class represents the xAPI Statement Result object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#25-retrieval-of-statements">xAPI
- *      Statement Result</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#25-retrieval-of-statements">xAPI
+ *     Statement Result</a>
  */
 @Value
 @Builder
@@ -35,9 +34,7 @@ public class StatementResult {
    */
   private List<Statement> statements;
 
-  /**
-   * Relative IRL that can be used to fetch more results.
-   */
+  /** Relative IRL that can be used to fetch more results. */
   private URI more;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
@@ -54,9 +51,7 @@ public class StatementResult {
     return !(NO_MORE.equals(more) || more == null);
   }
 
-  /**
-   * Builder for Statement.
-   */
+  /** Builder for Statement. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -65,9 +60,7 @@ public class StatementResult {
      * Consumer Builder for adding a statement.
      *
      * @param statement The Consumer Builder for statement.
-     *
      * @return This builder
-     *
      * @see StatementResult#statements
      */
     public Builder addStatement(Consumer<Statement.Builder> statement) {
@@ -83,9 +76,7 @@ public class StatementResult {
      * Adds a statement.
      *
      * @param statement The statement to add.
-     *
      * @return This builder
-     *
      * @see StatementResult#statements
      */
     public Builder addStatement(Statement statement) {
@@ -97,9 +88,6 @@ public class StatementResult {
       statements.add(statement);
 
       return this;
-
     }
-
   }
-
 }

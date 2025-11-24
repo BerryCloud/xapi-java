@@ -20,11 +20,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PostAgentProfileApplication implements CommandLineRunner {
 
-  /**
-   * Default xAPI client. Properties are picked automatically from application.properties.
-   */
-  @Autowired
-  private XapiClient client;
+  /** Default xAPI client. Properties are picked automatically from application.properties. */
+  @Autowired private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(PostAgentProfileApplication.class, args).close();
@@ -35,13 +32,11 @@ public class PostAgentProfileApplication implements CommandLineRunner {
 
     // Post Profile
     client
-        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-            .profileId("bookmark")
-
-            .profile(new ExampleState("Hello World!", Instant.now())))
-
+        .postAgentProfile(
+            r ->
+                r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+                    .profileId("bookmark")
+                    .profile(new ExampleState("Hello World!", Instant.now())))
         .block();
   }
-
 }

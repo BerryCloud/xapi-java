@@ -24,35 +24,22 @@ class GetStatementsRequestTests {
   void whenBuildingGetStatementsRequestWithAllParametersThenNoExceptionIsThrown() {
 
     // When Building GetStatementsRequest With All Parameters
-    GetStatementsRequest.Builder builder = GetStatementsRequest.builder()
-
-        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-        .verb(URI.create("http://adlnet.gov/expapi/verbs/answered"))
-
-        .activity(URI.create("https://example.com/activity/1"))
-
-        .registration(UUID.fromString("dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3"))
-
-        .relatedActivities(true)
-
-        .relatedAgents(true)
-
-        .since(Instant.parse("2016-01-01T00:00:00Z"))
-
-        .until(Instant.parse("2018-01-01T00:00:00Z"))
-
-        .limit(10)
-
-        .format(StatementFormat.CANONICAL)
-
-        .attachments(true)
-
-        .ascending(true);
+    GetStatementsRequest.Builder builder =
+        GetStatementsRequest.builder()
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+            .verb(URI.create("http://adlnet.gov/expapi/verbs/answered"))
+            .activity(URI.create("https://example.com/activity/1"))
+            .registration(UUID.fromString("dbf5d9e8-d2aa-4d57-9754-b11e3f195fe3"))
+            .relatedActivities(true)
+            .relatedAgents(true)
+            .since(Instant.parse("2016-01-01T00:00:00Z"))
+            .until(Instant.parse("2018-01-01T00:00:00Z"))
+            .limit(10)
+            .format(StatementFormat.CANONICAL)
+            .attachments(true)
+            .ascending(true);
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
-
   }
-
 }

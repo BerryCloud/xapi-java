@@ -50,9 +50,10 @@ public class XapiModelAutoConfiguration {
    */
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer singleValueArrayCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper ->
+                objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true));
   }
 
   /**
@@ -61,26 +62,30 @@ public class XapiModelAutoConfiguration {
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateObjectType", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateObjectType",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validateObjectTypeCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.registerModule(new XapiStrictObjectTypeModule())
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper -> objectMapper.registerModule(new XapiStrictObjectTypeModule()));
   }
-  
+
   /**
    * ValidateLocaleCustomizer.
    *
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateLocale", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateLocale",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validateLocaleCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.registerModule(new XapiStrictLocaleModule())
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper -> objectMapper.registerModule(new XapiStrictLocaleModule()));
   }
 
   /**
@@ -89,12 +94,14 @@ public class XapiModelAutoConfiguration {
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateTimestamp", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateTimestamp",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validateTimestampCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.registerModule(new XapiStrictTimestampModule())
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper -> objectMapper.registerModule(new XapiStrictTimestampModule()));
   }
 
   /**
@@ -103,26 +110,31 @@ public class XapiModelAutoConfiguration {
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateNullValues", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateNullValues",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validateNullValuesCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.registerModule(new XapiStrictNullValuesModule())
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper -> objectMapper.registerModule(new XapiStrictNullValuesModule()));
   }
-  
+
   /**
    * ValidatePropertiesCustomizer.
    *
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateProperties", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateProperties",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validatePropertiesCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper ->
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true));
   }
 
   /**
@@ -131,43 +143,47 @@ public class XapiModelAutoConfiguration {
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateJson", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateJson",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validateJsonCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> 
-      objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true)
-    );
+    return builder ->
+        builder.postConfigurer(
+            objectMapper ->
+                objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true));
   }
-  
+
   /**
    * ValidateLiteralsCustomizer.
    *
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(name = "xapi.model.validateLiterals", havingValue = "true",
+  @ConditionalOnProperty(
+      name = "xapi.model.validateLiterals",
+      havingValue = "true",
       matchIfMissing = true)
   public Jackson2ObjectMapperBuilderCustomizer validateLiteralsCustomizer() {
-    return builder -> builder.postConfigurer(objectMapper -> {
+    return builder ->
+        builder.postConfigurer(
+            objectMapper -> {
+              objectMapper
+                  .coercionConfigFor(LogicalType.Boolean)
+                  .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
 
-      objectMapper.coercionConfigFor(LogicalType.Boolean)
+              objectMapper
+                  .coercionConfigFor(LogicalType.Textual)
+                  .setCoercion(CoercionInputShape.Integer, CoercionAction.Fail);
 
-          .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
+              objectMapper
+                  .coercionConfigFor(LogicalType.Float)
+                  .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
 
-      objectMapper.coercionConfigFor(LogicalType.Textual)
-
-          .setCoercion(CoercionInputShape.Integer, CoercionAction.Fail);
-
-      objectMapper.coercionConfigFor(LogicalType.Float)
-
-          .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
-
-      objectMapper.coercionConfigFor(LogicalType.Integer)
-
-          .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
-
-    });
-
+              objectMapper
+                  .coercionConfigFor(LogicalType.Integer)
+                  .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
+            });
   }
 
   /**
@@ -188,7 +204,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateActorPostProcessor.
    *
@@ -207,7 +223,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateAuthorityPostProcessor.
    *
@@ -226,7 +242,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateUriSchemePostProcessor.
    *
@@ -245,7 +261,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateMboxPostProcessor.
    *
@@ -283,7 +299,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateScaledScorePostProcessor.
    *
@@ -302,7 +318,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateScorePostProcessor.
    *
@@ -340,7 +356,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateStatementRevisionPostProcessor.
    *
@@ -359,7 +375,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateStatementListIdsPostProcessor.
    *
@@ -378,7 +394,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateStatementVerbPostProcessor.
    *
@@ -397,7 +413,7 @@ public class XapiModelAutoConfiguration {
       }
     };
   }
-  
+
   /**
    * ValidateUuidVariantPostProcessor.
    *

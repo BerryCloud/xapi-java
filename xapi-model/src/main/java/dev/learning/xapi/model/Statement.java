@@ -39,10 +39,9 @@ import lombok.With;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-properties">xAPI
- *      Statement</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#statement-properties">xAPI
+ *     Statement</a>
  */
 @With
 @Value
@@ -54,100 +53,60 @@ import lombok.With;
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
 public class Statement implements CoreStatement {
 
-  /**
-   * UUID assigned by LRS if not set by the Learning Record Provider.
-   */
+  /** UUID assigned by LRS if not set by the Learning Record Provider. */
   @Variant(2)
   private UUID id;
 
-  /**
-   * Whom the Statement is about, as an Agent or Group Object.
-   */
-  @NotNull
-  @Valid
-  @ValidActor
-  private Actor actor;
+  /** Whom the Statement is about, as an Agent or Group Object. */
+  @NotNull @Valid @ValidActor private Actor actor;
 
-  /**
-   * Action taken by the Actor.
-   */
-  @NotNull
-  @Valid
-  private Verb verb;
+  /** Action taken by the Actor. */
+  @NotNull @Valid private Verb verb;
 
-  /**
-   * Activity, Agent, or another Statement that is the Object of the Statement.
-   */
-  @NotNull
-  @Valid
-  @ValidActor
-  private StatementObject object;
+  /** Activity, Agent, or another Statement that is the Object of the Statement. */
+  @NotNull @Valid @ValidActor private StatementObject object;
 
-  /**
-   * Result Object, further details representing a measured outcome.
-   */
-  @Valid
-  private Result result;
+  /** Result Object, further details representing a measured outcome. */
+  @Valid private Result result;
 
-  /**
-   * Context that gives the Statement more meaning.
-   */
-  @Valid
-  private Context context;
+  /** Context that gives the Statement more meaning. */
+  @Valid private Context context;
 
-  /**
-   * Timestamp of when the events described within this Statement occurred.
-   */
+  /** Timestamp of when the events described within this Statement occurred. */
   private Instant timestamp;
 
-  /**
-   * Timestamp of when this Statement was recorded.
-   */
+  /** Timestamp of when this Statement was recorded. */
   private Instant stored;
 
-  /**
-   * Agent or Group who is asserting this Statement is true.
-   */
-  @Valid
-  @ValidActor
-  @ValidAuthority
-  private Actor authority;
+  /** Agent or Group who is asserting this Statement is true. */
+  @Valid @ValidActor @ValidAuthority private Actor authority;
 
-  /**
-   * The Statement’s associated xAPI version.
-   */
+  /** The Statement’s associated xAPI version. */
   @Pattern(regexp = "^1\\.0(\\.\\d)?$")
   private String version;
 
-  /**
-   * Headers for Attachments to the Statement.
-   */
+  /** Headers for Attachments to the Statement. */
   @Valid
   @JsonFormat(without = {JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY})
   private List<Attachment> attachments;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Statement.
-   */
+  /** Builder for Statement. */
   public static class Builder {
 
     // This static class extends the lombok builder.
 
     /**
      * Special build method for signing and building a {@link Statement}.
-     * <p>
-     * An signature attachment is automatically added to the Statement's attachments.
-     * </p>
+     *
+     * <p>An signature attachment is automatically added to the Statement's attachments.
      *
      * @param privateKey a {@link PrivateKey} for signing the {@link Statement}.
-     *
      * @return an immutable, signed {@link Statement} object.
-     *
      * @see <a href=
-     *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#26-signed-statements">
-     *      Signed Statements</a>
+     *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#26-signed-statements">
+     *     Signed Statements</a>
      */
     public Statement signAndBuild(PrivateKey privateKey) {
       final Map<String, Object> claims = new HashMap<>();
@@ -161,21 +120,20 @@ public class Statement implements CoreStatement {
       claims.put("context", this.context);
 
       try {
-        final var token = Jwts.builder().claims(claims)
-            .signWith(privateKey, Jwts.SIG.RS512).compact();
+        final var token =
+            Jwts.builder().claims(claims).signWith(privateKey, Jwts.SIG.RS512).compact();
 
-        addAttachment(a -> a.usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
-
-            .addDisplay(Locale.ENGLISH, "JSW signature")
-
-            .content(token)
-
-            .length(token.length())
-
-            .contentType("application/octet-stream"));
+        addAttachment(
+            a ->
+                a.usageType(URI.create("http://adlnet.gov/expapi/attachments/signature"))
+                    .addDisplay(Locale.ENGLISH, "JSW signature")
+                    .content(token)
+                    .length(token.length())
+                    .contentType("application/octet-stream"));
 
       } catch (final UnknownClassException e) {
-        throw new IllegalStateException("""
+        throw new IllegalStateException(
+            """
 
             Statement cannot be signed, because an optional dependency was NOT provided.
             Please add the following dependencies into your project:
@@ -188,7 +146,8 @@ public class Statement implements CoreStatement {
               <groupId>io.jsonwebtoken</groupId>
               <artifactId>jjwt-jackson</artifactId>
             </dependency>
-            """, e);
+            """,
+            e);
       }
 
       return build();
@@ -198,9 +157,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for agent.
      *
      * @param agent The Consumer Builder for agent
-     *
      * @return This builder
-     *
      * @see Statement#actor
      */
     public Builder agentActor(Consumer<Agent.Builder<?, ?>> agent) {
@@ -216,9 +173,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for group.
      *
      * @param group The Consumer Builder for group
-     *
      * @return This builder
-     *
      * @see Statement#actor
      */
     public Builder groupActor(Consumer<Group.Builder<?, ?>> group) {
@@ -234,9 +189,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for verb.
      *
      * @param verb The Consumer Builder for verb
-     *
      * @return This builder
-     *
      * @see Statement#verb
      */
     public Builder verb(Consumer<Verb.Builder> verb) {
@@ -252,9 +205,7 @@ public class Statement implements CoreStatement {
      * Sets the verb.
      *
      * @param verb The definition of the Statement
-     *
      * @return This builder
-     *
      * @see Statement#verb
      */
     public Builder verb(Verb verb) {
@@ -268,9 +219,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for result.
      *
      * @param result The Consumer Builder for result
-     *
      * @return This builder
-     *
      * @see Statement#result
      */
     public Builder result(Consumer<Result.Builder> result) {
@@ -286,9 +235,7 @@ public class Statement implements CoreStatement {
      * Sets the result.
      *
      * @param result The result of the Statement
-     *
      * @return This builder
-     *
      * @see Statement#result
      */
     public Builder result(Result result) {
@@ -298,14 +245,11 @@ public class Statement implements CoreStatement {
       return this;
     }
 
-
     /**
      * Consumer Builder for context.
      *
      * @param authority The Consumer Builder for authority
-     *
      * @return This builder
-     *
      * @see Statement#authority
      */
     public Builder agentAuthority(Consumer<Agent.Builder<?, ?>> authority) {
@@ -322,7 +266,6 @@ public class Statement implements CoreStatement {
      * objectType property was set properly. </b>
      *
      * @param object The object of the Statement.
-     *
      * @return This builder.
      */
     public Builder object(StatementObject object) {
@@ -340,9 +283,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for activity object.
      *
      * @param activity The Consumer Builder for activity object
-     *
      * @return This builder
-     *
      * @see Statement#object
      */
     public Builder activityObject(Consumer<Activity.Builder> activity) {
@@ -358,9 +299,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for statement reference object.
      *
      * @param statementReference The Consumer Builder for statement reference object
-     *
      * @return This builder
-     *
      * @see Statement#object
      */
     public Builder statementReferenceObject(
@@ -377,9 +316,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for context.
      *
      * @param context The Consumer Builder for context
-     *
      * @return This builder
-     *
      * @see Statement#context
      */
     public Builder context(Consumer<Context.Builder> context) {
@@ -395,9 +332,7 @@ public class Statement implements CoreStatement {
      * Sets the context.
      *
      * @param context The context of the Statement
-     *
      * @return This builder
-     *
      * @see Statement#context
      */
     public Builder context(Context context) {
@@ -411,9 +346,7 @@ public class Statement implements CoreStatement {
      * Adds an attachment.
      *
      * @param attachment An {@link Attachment} object.
-     *
      * @return This builder
-     *
      * @see Statement#attachments
      */
     public Builder addAttachment(Attachment attachment) {
@@ -430,9 +363,7 @@ public class Statement implements CoreStatement {
      * Consumer Builder for attachment.
      *
      * @param attachment The Consumer Builder for attachment
-     *
      * @return This builder
-     *
      * @see Statement#attachments
      */
     public Builder addAttachment(Consumer<Attachment.Builder> attachment) {
@@ -444,5 +375,4 @@ public class Statement implements CoreStatement {
       return addAttachment(builder.build());
     }
   }
-
 }

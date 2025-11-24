@@ -24,10 +24,9 @@ import java.lang.annotation.Target;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">Activity
- *      Definition</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">Activity
+ *     Definition</a>
  */
 @Documented
 @Constraint(validatedBy = {ActivityDefinitionValidator.class})

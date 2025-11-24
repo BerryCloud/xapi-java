@@ -45,7 +45,6 @@ class StatementReferenceTest {
 
     // Then Result Is Instance Of StatementReference
     assertThat(result, instanceOf(StatementReference.class));
-
   }
 
   @Test
@@ -59,45 +58,52 @@ class StatementReferenceTest {
 
     // Then Id Is Expected
     assertThat(result.getId(), is(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")));
-
   }
 
   @Test
   void whenSerializingContextThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var statementReference = StatementReference.builder()
-        .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")).build();
+    final var statementReference =
+        StatementReference.builder()
+            .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53"))
+            .build();
 
     // When Serializing Context
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(statementReference));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result, is(objectMapper.readTree(
-        ResourceUtils.getFile("classpath:statement_reference/statement_reference.json"))));
-
+    assertThat(
+        result,
+        is(
+            objectMapper.readTree(
+                ResourceUtils.getFile("classpath:statement_reference/statement_reference.json"))));
   }
 
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final var statementReference = objectMapper.readValue(
-        ResourceUtils.getFile("classpath:statement_reference/statement_reference.json"),
-        StatementReference.class);
+    final var statementReference =
+        objectMapper.readValue(
+            ResourceUtils.getFile("classpath:statement_reference/statement_reference.json"),
+            StatementReference.class);
 
     // When Calling ToString
     final var result = statementReference.toString();
 
     // Then Result Is Expected
-    assertThat(result,
+    assertThat(
+        result,
         is("StatementReference(objectType=StatementRef, id=099bbde8-780e-483f-8181-128393db0f53)"));
-
   }
 
   @Test
-  void whenValidatingStatementReferenceWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void
+      whenValidatingStatementReferenceWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
-    final var statementReference = StatementReference.builder()
-        .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53")).build();
+    final var statementReference =
+        StatementReference.builder()
+            .id(UUID.fromString("099bbde8-780e-483f-8181-128393db0f53"))
+            .build();
 
     // When Validating Statement Reference With All Required Properties
     final Set<ConstraintViolation<StatementReference>> constraintViolations =
@@ -105,7 +111,6 @@ class StatementReferenceTest {
 
     // Then ConstraintViolations Size Is Zero
     assertThat(constraintViolations, hasSize(0));
-
   }
 
   @Test
@@ -120,5 +125,4 @@ class StatementReferenceTest {
     // Then ConstraintViolations Size Is One
     assertThat(constraintViolations, hasSize(1));
   }
-
 }

@@ -18,10 +18,9 @@ import lombok.Value;
  * This class represents the xAPI Activity State object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">xAPI
- *      Activity State</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">xAPI
+ *     Activity State</a>
  */
 @Value
 @Builder
@@ -32,9 +31,7 @@ public class ActivityState {
 
   private String stateId;
 
-  @Valid
-  @ValidActor
-  private Agent agent;
+  @Valid @ValidActor private Agent agent;
 
   @Variant(2)
   private UUID registration;

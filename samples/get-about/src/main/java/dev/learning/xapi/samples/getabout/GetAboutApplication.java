@@ -20,11 +20,8 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetAboutApplication implements CommandLineRunner {
 
-  /**
-   * Default xAPI client. Properties are picked automatically from application.properties.
-   */
-  @Autowired
-  private XapiClient client;
+  /** Default xAPI client. Properties are picked automatically from application.properties. */
+  @Autowired private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetAboutApplication.class, args).close();
@@ -39,5 +36,4 @@ public class GetAboutApplication implements CommandLineRunner {
     // Print the returned activity to the console
     System.out.println(response.getBody());
   }
-
 }

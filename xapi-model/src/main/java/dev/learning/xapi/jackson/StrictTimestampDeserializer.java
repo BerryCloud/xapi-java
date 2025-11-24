@@ -21,9 +21,7 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
 
   private static final long serialVersionUID = -2025907823340425934L;
 
-  /**
-   * Default constructor.
-   */
+  /** Default constructor. */
   public StrictTimestampDeserializer() {
     this(null);
   }
@@ -51,5 +49,4 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
       throw ctxt.instantiationException(handledType(), ex.getMessage());
     }
   }
-
 }

@@ -17,38 +17,27 @@ import lombok.Value;
  * This class represents the xAPI Account object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2424-account-object">xAPI
- *      Account</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2424-account-object">xAPI
+ *     Account</a>
  */
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Account {
 
-  /**
-   * The canonical home page for the system the account is on.
-   */
-  @NotNull
-  @HasScheme
-  private URI homePage;
+  /** The canonical home page for the system the account is on. */
+  @NotNull @HasScheme private URI homePage;
 
-  /**
-   * The unique id or name used to log in to this account.
-   */
-  @NotBlank
-  private String name;
+  /** The unique id or name used to log in to this account. */
+  @NotBlank private String name;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Account.
-   */
+  /** Builder for Account. */
   public static class Builder {
 
     // This static class extends the lombok builder.
 
   }
-
 }
