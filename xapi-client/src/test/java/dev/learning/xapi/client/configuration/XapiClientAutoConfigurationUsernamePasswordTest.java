@@ -49,7 +49,7 @@ class XapiClientAutoConfigurationUsernamePasswordTest {
       mockWebServer = new MockWebServer();
       try {
         mockWebServer.start();
-      } catch (final IOException _) {
+      } catch (final IOException e) { // Named parameter required by Google Java Style
         // Ignore - test will fail if server doesn't start
       }
       builder.baseUrl(mockWebServer.url("").toString());

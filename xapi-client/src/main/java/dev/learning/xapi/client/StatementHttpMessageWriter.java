@@ -169,7 +169,7 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
           case Statement statement -> getRealAttachments(statement);
           case List<?> statements
               when !statements.isEmpty() && statements.get(0) instanceof Statement ->
-                  ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
+              ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
           default -> null;
         };
 

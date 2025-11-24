@@ -15,5 +15,11 @@ public interface ValidatorDisabler {
   public static final ValidatorDisabler DEFAULT_DISABLER = v -> true;
   public static final ValidatorDisabler DEFAULT_ENABLER = v -> false;
 
+  /**
+   * Checks whether the given validator is disabled.
+   *
+   * @param validator the validator to check
+   * @return true if the validator is disabled, false otherwise
+   */
   public boolean isDisabled(DisableableValidator<?, ?> validator);
 }

@@ -53,7 +53,7 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
       // test validity of language and country codes (throws exception)
       locale.getISO3Language();
       locale.getISO3Country();
-    } catch (final MissingResourceException _) {
+    } catch (final MissingResourceException e) { // Named parameter required by Google Java Style
       locale = null;
     }
     // test the validity of the whole key
