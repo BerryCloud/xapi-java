@@ -18,17 +18,15 @@ import org.springframework.web.util.UriBuilder;
  * Request for getting a Statement.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
- *      Statements</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+ *     Statements</a>
  * @author Thomas Turrell-Croft
  */
 @SuperBuilder
 @Getter
 public class GetStatementRequest implements Request {
 
-  @NonNull
-  protected final UUID id;
+  @NonNull protected final UUID id;
 
   protected final StatementFormat format;
 
@@ -42,28 +40,21 @@ public class GetStatementRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    return uriBuilder.path("/statements")
-
+    return uriBuilder
+        .path("/statements")
         .queryParam("statementId", id)
-
         .queryParamIfPresent("format", Optional.ofNullable(format))
-
         .queryParamIfPresent("attachments", Optional.ofNullable(attachments));
-
   }
 
-  /**
-   * Builder for GetStatementRequest.
-   */
+  /** Builder for GetStatementRequest. */
   public abstract static class Builder<C extends GetStatementRequest, B extends Builder<C, B>> {
 
     /**
      * Sets the id.
      *
      * @param id The id of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementRequest#id
      */
     public Builder<C, B> id(UUID id) {
@@ -75,9 +66,7 @@ public class GetStatementRequest implements Request {
      * Sets the id.
      *
      * @param id The id of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementRequest#id
      */
     public Builder<C, B> id(String id) {
@@ -88,5 +77,4 @@ public class GetStatementRequest implements Request {
     // This static class extends the lombok builder.
 
   }
-
 }

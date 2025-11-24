@@ -24,9 +24,8 @@ import lombok.With;
  * This class represents the xAPI Attachment object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#attachments">xAPI
- *      Attachment</a>
+ *     Attachment</a>
  */
 @Value
 @Builder
@@ -34,64 +33,39 @@ import lombok.With;
 @EqualsAndHashCode(of = "sha2")
 public class Attachment {
 
-  /**
-   * Identifies the usage of this Attachment.
-   */
-  @NotNull
-  @HasScheme
-  private URI usageType;
+  /** Identifies the usage of this Attachment. */
+  @NotNull @HasScheme private URI usageType;
 
-  /**
-   * Display name of this Attachment.
-   */
+  /** Display name of this Attachment. */
   @NotNull(payload = Unwrapping.Skip.class)
   private LanguageMap display;
 
-  /**
-   * A description of the Attachment.
-   */
+  /** A description of the Attachment. */
   private LanguageMap description;
 
-  /**
-   * The content type of the Attachment.
-   */
-  @NotNull
-  private String contentType;
+  /** The content type of the Attachment. */
+  @NotNull private String contentType;
 
-  /**
-   * The length of the Attachment data in octets.
-   */
-  @NotNull
-  private Integer length;
+  /** The length of the Attachment data in octets. */
+  @NotNull private Integer length;
 
-  /**
-   * The SHA-2 hash of the Attachment data.
-   */
-  @NotNull
-  private String sha2;
+  /** The SHA-2 hash of the Attachment data. */
+  @NotNull private String sha2;
 
   /**
    * An IRL at which the Attachment data can be retrieved, or from which it used to be retrievable.
-   * <p>
-   * <strong>Note:</strong> The required type in the specification is URL however, the Java URL type
-   * performs DNS lookups when calling equals and hashcode.
-   * </p>
+   *
+   * <p><strong>Note:</strong> The required type in the specification is URL however, the Java URL
+   * type performs DNS lookups when calling equals and hashcode.
    */
-  @HasScheme
-  private URI fileUrl;
+  @HasScheme private URI fileUrl;
 
-  /**
-   * The data of the attachment as byte array.
-   */
-  @JsonIgnore
-  @With
-  private byte[] content;
+  /** The data of the attachment as byte array. */
+  @JsonIgnore @With private byte[] content;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Attachment.
-   */
+  /** Builder for Attachment. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -101,9 +75,7 @@ public class Attachment {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     *
      * @return This builder
-     *
      * @see Attachment#description
      */
     public Builder addDisplay(Locale key, String value) {
@@ -121,9 +93,7 @@ public class Attachment {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     *
      * @return This builder
-     *
      * @see Attachment#description
      */
     public Builder addDescription(Locale key, String value) {
@@ -133,20 +103,15 @@ public class Attachment {
 
       this.description.put(key, value);
       return this;
-
     }
 
     /**
-     * <p>
      * Sets SHA-2 hash of the Attachment.
-     * </p>
-     * <p>
-     * The sha2 is set ONLY if the content property was not set yet. (otherwise the sha2 is
+     *
+     * <p>The sha2 is set ONLY if the content property was not set yet. (otherwise the sha2 is
      * calculated automatically)
-     * </p>
      *
      * @param sha2 The SHA-2 hash of the Attachment data.
-     *
      * @return This builder
      */
     public Builder sha2(String sha2) {
@@ -155,19 +120,14 @@ public class Attachment {
       }
 
       return this;
-
     }
 
     /**
-     * <p>
      * Sets data of the Attachment.
-     * </p>
-     * <p>
-     * This method also automatically calculates the SHA-2 hash for the data.
-     * </p>
+     *
+     * <p>This method also automatically calculates the SHA-2 hash for the data.
      *
      * @param content The data of the Attachment as a byte array.
-     *
      * @return This builder
      */
     public Builder content(byte[] content) {
@@ -177,21 +137,15 @@ public class Attachment {
       }
 
       return this;
-
     }
 
     /**
-     * <p>
      * Sets data of the Attachment as a String.
-     * </p>
-     * <p>
-     * This is a convenient method for creating text attachments.
-     * </p>
+     *
+     * <p>This is a convenient method for creating text attachments.
      *
      * @param content The data of the Attachment as a String.
-     *
      * @return This builder
-     *
      * @see Builder#content(byte[])
      */
     public Builder content(String content) {
@@ -201,7 +155,6 @@ public class Attachment {
       }
 
       return content((byte[]) null);
-
     }
 
     @SneakyThrows
@@ -218,5 +171,4 @@ public class Attachment {
       return hexString.toString();
     }
   }
-
 }

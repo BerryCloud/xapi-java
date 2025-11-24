@@ -20,9 +20,8 @@ import org.springframework.web.util.UriBuilder;
  * value, and it is legal to include multiple identifying properties.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#24-agents-resource">Agents
- *      Resource</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#24-agents-resource">Agents
+ *     Resource</a>
  * @author Thomas Turrell-Croft
  */
 @Builder
@@ -30,11 +29,8 @@ public class GetAgentsRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
-  /**
-   * The Agent representation to use in fetching expanded Agent information.
-   */
-  @NonNull
-  private final Agent agent;
+  /** The Agent representation to use in fetching expanded Agent information. */
+  @NonNull private final Agent agent;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
@@ -49,18 +45,14 @@ public class GetAgentsRequest implements Request {
     return HttpMethod.GET;
   }
 
-  /**
-   * Builder for GetAgentsRequest.
-   */
+  /** Builder for GetAgentsRequest. */
   public static class Builder {
 
     /**
      * Consumer Builder for agent.
      *
      * @param agent The Consumer Builder for agent.
-     *
      * @return This builder
-     *
      * @see GetAgentsRequest#agent
      */
     public Builder agent(Consumer<Agent.Builder<?, ?>> agent) {
@@ -70,16 +62,13 @@ public class GetAgentsRequest implements Request {
       agent.accept(builder);
 
       return agent(builder.build());
-
     }
 
     /**
      * Sets the agent.
      *
      * @param agent The Agent of the GetAgentsRequest.
-     *
      * @return This builder
-     *
      * @see GetAgentsRequest#agent
      */
     public Builder agent(Agent agent) {
@@ -87,19 +76,13 @@ public class GetAgentsRequest implements Request {
       this.agent = agent;
 
       return this;
-
     }
-
   }
-
 
   // Exception in write value as string should be impossible.
   @SneakyThrows
   private String agentToJsonString() {
 
     return objectMapper.writeValueAsString(agent);
-
   }
-
-
 }

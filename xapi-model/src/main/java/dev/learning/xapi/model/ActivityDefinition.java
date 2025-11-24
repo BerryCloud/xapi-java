@@ -19,57 +19,42 @@ import lombok.Value;
 
 /**
  * This class represents the xAPI Activity Definition object.
- * <p>
- * Upon receiving a Statement with an Activity Definition that differs from the one stored, an LRS
- * SHOULD ... change the definition and SHOULD update the stored Activity Definition.
- * </p>
- * <p>
- * When two ActivityDefinitions are merged, the properties and lists are replaced and the maps are
- * merged.
- * </p>
+ *
+ * <p>Upon receiving a Statement with an Activity Definition that differs from the one stored, an
+ * LRS SHOULD ... change the definition and SHOULD update the stored Activity Definition.
+ *
+ * <p>When two ActivityDefinitions are merged, the properties and lists are replaced and the maps
+ * are merged.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">xAPI
- *      Activity Definition</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#activity-definition">xAPI
+ *     Activity Definition</a>
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lrs-requirements-1">LRS
- *      Requirements</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lrs-requirements-1">LRS
+ *     Requirements</a>
  */
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 public class ActivityDefinition {
 
-  /**
-   * The human readable/visual name of the Activity.
-   */
-  @JsonMerge
-  private LanguageMap name;
+  /** The human readable/visual name of the Activity. */
+  @JsonMerge private LanguageMap name;
 
-  /**
-   * A description of the Activity.
-   */
-  @JsonMerge
-  private LanguageMap description;
+  /** A description of the Activity. */
+  @JsonMerge private LanguageMap description;
 
-  /**
-   * The type of Activity.
-   */
-  @HasScheme
-  private URI type;
+  /** The type of Activity. */
+  @HasScheme private URI type;
 
   /**
    * Resolves to a document with human-readable information about the Activity, which could include
    * a way to launch the activity.
    */
-  @HasScheme
-  private URI moreInfo;
+  @HasScheme private URI moreInfo;
 
-  /**
-   * The type of interaction.
-   */
+  /** The type of interaction. */
   private InteractionType interactionType;
 
   /**
@@ -78,43 +63,28 @@ public class ActivityDefinition {
    */
   private List<String> correctResponsesPattern;
 
-  /**
-   * A list of the options available in the interaction for selection or ordering.
-   */
+  /** A list of the options available in the interaction for selection or ordering. */
   private List<InteractionComponent> choices;
 
-  /**
-   * A list of the options on the likert scale.
-   */
+  /** A list of the options on the likert scale. */
   private List<InteractionComponent> scale;
 
-  /**
-   * Lists of sources to be matched.
-   */
+  /** Lists of sources to be matched. */
   private List<InteractionComponent> source;
 
-  /**
-   * Lists of targets to be matched.
-   */
+  /** Lists of targets to be matched. */
   private List<InteractionComponent> target;
 
-  /**
-   * A list of the elements making up the performance interaction.
-   */
+  /** A list of the elements making up the performance interaction. */
   private List<InteractionComponent> steps;
 
-  /**
-   * A map of other properties as needed.
-   */
-  @JsonMerge
-  private Map<@HasScheme URI, Object> extensions;
+  /** A map of other properties as needed. */
+  @JsonMerge private Map<@HasScheme URI, Object> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI
   // specification.
 
-  /**
-   * Builder for ActivityDefinition.
-   */
+  /** Builder for ActivityDefinition. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -124,9 +94,7 @@ public class ActivityDefinition {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     *
      * @return This builder
-     *
      * @see ActivityDefinition#name
      */
     public Builder addName(Locale key, String value) {
@@ -144,9 +112,7 @@ public class ActivityDefinition {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     *
      * @return This builder
-     *
      * @see ActivityDefinition#description
      */
     public Builder addDescription(Locale key, String value) {
@@ -156,16 +122,13 @@ public class ActivityDefinition {
 
       this.description.put(key, value);
       return this;
-
     }
 
     /**
      * Consumer Builder for adding a choice option.
      *
      * @param interactionComponent The Consumer Builder for interactionComponent.
-     *
      * @return This builder
-     *
      * @see ActivityDefinition#choices
      */
     public Builder addChoice(Consumer<InteractionComponent.Builder> interactionComponent) {
@@ -181,9 +144,7 @@ public class ActivityDefinition {
      * Adds a choice option.
      *
      * @param interactionComponent The interactionComponent to add.
-     *
      * @return This builder
-     *
      * @see ActivityDefinition#choices
      */
     public Builder addChoice(InteractionComponent interactionComponent) {
@@ -193,9 +154,6 @@ public class ActivityDefinition {
       }
       choices.add(interactionComponent);
       return this;
-
     }
-
   }
-
 }

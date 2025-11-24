@@ -16,9 +16,8 @@ import org.springframework.web.util.UriBuilder;
  * Request for getting multiple Statements.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
- *      Statements</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+ *     Statements</a>
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
@@ -26,8 +25,7 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 public class GetMoreStatementsRequest implements Request {
 
-  @NonNull
-  private final URI more;
+  @NonNull private final URI more;
 
   @Override
   public HttpMethod getMethod() {
@@ -38,19 +36,15 @@ public class GetMoreStatementsRequest implements Request {
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     return uriBuilder.replacePath(more.getPath()).replaceQuery(more.getQuery());
-
   }
 
-  /**
-   * Builder for GetMoreStatementsRequest.
-   */
+  /** Builder for GetMoreStatementsRequest. */
   public static class Builder {
 
     /**
      * Sets the more token.
      *
      * @param more The more token of the GetMoreStatementsRequest.
-     *
      * @return This builder
      */
     public Builder more(String more) {
@@ -58,14 +52,12 @@ public class GetMoreStatementsRequest implements Request {
       this.more = URI.create(more);
 
       return this;
-
     }
 
     /**
      * Sets the more token.
      *
      * @param more The more token of the GetMoreStatementsRequest.
-     *
      * @return This builder
      */
     public Builder more(URI more) {
@@ -73,11 +65,9 @@ public class GetMoreStatementsRequest implements Request {
       this.more = more;
 
       return this;
-
     }
 
     // This static class extends the lombok builder.
 
   }
-
 }

@@ -117,6 +117,31 @@ To run tests:
 
 xAPI Java strictly follows the **[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)**.
 
+#### Automated Formatting
+
+The project uses the **[Spotify fmt-maven-plugin](https://github.com/spotify/fmt-maven-plugin)** to automatically format Java code according to the Google Java Style Guide.
+
+**Recommended: Install Git Hooks**
+
+To automatically format your code before each commit, install the pre-commit hook:
+
+```bash
+./install-git-hooks.sh
+```
+
+This ensures your code is always formatted correctly before committing. The hook runs `./mvnw com.spotify.fmt:fmt-maven-plugin:format` automatically.
+
+**Manual Formatting**
+
+If you prefer not to use the git hook, you can manually format your code at any time:
+
+```bash
+# Format all Java files in the project
+./mvnw com.spotify.fmt:fmt-maven-plugin:format
+```
+
+**Important**: Run the formatter before committing your changes to avoid formatting issues in pull requests.
+
 #### Automated Enforcement
 
 - **[CheckStyle](https://checkstyle.sourceforge.io)** is configured to enforce the Google Java Style Guide automatically during the build
@@ -294,6 +319,7 @@ public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request)
 
 Before submitting your pull request, verify:
 
+- [ ] Code has been formatted using `./mvnw com.spotify.fmt:fmt-maven-plugin:format` (or use the git hook)
 - [ ] Public methods are documented with JavaDoc
 - [ ] Public methods are tested with unit tests
 - [ ] New and existing tests pass when run locally (`./mvnw clean verify`)

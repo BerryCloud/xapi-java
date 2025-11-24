@@ -71,10 +71,14 @@ class ActivityDefinitionValidatorTests {
   }
 
   @Test
-  void whenIsValidIsCalledWithActivityDefinitionThatHasCorrectResponsesPatternAndInteractionTypeThenResultIsTrue() {
+  void
+      whenIsValidIsCalledWithActivityDefinitionThatHasCorrectResponsesPatternAndInteractionTypeThenResultIsTrue() {
 
-    final var value = ActivityDefinition.builder().correctResponsesPattern(new ArrayList<>())
-        .interactionType(InteractionType.CHOICE).build();
+    final var value =
+        ActivityDefinition.builder()
+            .correctResponsesPattern(new ArrayList<>())
+            .interactionType(InteractionType.CHOICE)
+            .build();
 
     // When IsValid Is Called With Activity Definition That Has Correct Responses Pattern And
     // InteractionType
@@ -99,8 +103,11 @@ class ActivityDefinitionValidatorTests {
   @Test
   void whenIsValidIsCalledWithActivityDefinitionThatHasChoicesAndInteractionTypeThenResultIsTrue() {
 
-    final var value = ActivityDefinition.builder().choices(new ArrayList<>())
-        .interactionType(InteractionType.CHOICE).build();
+    final var value =
+        ActivityDefinition.builder()
+            .choices(new ArrayList<>())
+            .interactionType(InteractionType.CHOICE)
+            .build();
 
     // When IsValid Is Called With Activity Definition That Has Choices And InteractionType
     final var result = validator.isValid(value, null);
@@ -124,8 +131,11 @@ class ActivityDefinitionValidatorTests {
   @Test
   void whenIsValidIsCalledWithActivityDefinitionThatHasScaleAndInteractionTypeThenResultIsTrue() {
 
-    final var value = ActivityDefinition.builder().scale(new ArrayList<>())
-        .interactionType(InteractionType.LIKERT).build();
+    final var value =
+        ActivityDefinition.builder()
+            .scale(new ArrayList<>())
+            .interactionType(InteractionType.LIKERT)
+            .build();
 
     // When IsValid Is Called With Activity Definition That Has Scale And InteractionType
     final var result = validator.isValid(value, null);
@@ -149,8 +159,11 @@ class ActivityDefinitionValidatorTests {
   @Test
   void whenIsValidIsCalledWithActivityDefinitionAndInteractionTypeThatHasSourceThenResultIsTrue() {
 
-    final var value = ActivityDefinition.builder().source(new ArrayList<>())
-        .interactionType(InteractionType.MATCHING).build();
+    final var value =
+        ActivityDefinition.builder()
+            .source(new ArrayList<>())
+            .interactionType(InteractionType.MATCHING)
+            .build();
 
     // When IsValid Is Called With Activity Definition That Has Source And InteractionType
     final var result = validator.isValid(value, null);
@@ -175,15 +188,17 @@ class ActivityDefinitionValidatorTests {
   void whenIsValidIsCalledWithActivityDefinitionThatHasTargetAndInteractionTypeThenResultIsTrue() {
 
     // When IsValid Is Called With Activity Definition That Has Target And InteractionType
-    final var value = ActivityDefinition.builder().target(new ArrayList<>())
-        .interactionType(InteractionType.MATCHING).build();
+    final var value =
+        ActivityDefinition.builder()
+            .target(new ArrayList<>())
+            .interactionType(InteractionType.MATCHING)
+            .build();
 
     final var result = validator.isValid(value, null);
 
     // Then Result Is True
     assertTrue(result);
   }
-
 
   @Test
   void whenIsValidIsCalledWithActivityDefinitionThatHasStepsThenResultIsFalse() {
@@ -200,8 +215,11 @@ class ActivityDefinitionValidatorTests {
   @Test
   void whenIsValidIsCalledWithActivityDefinitionThatHasStepsAndInteractionTypeThenResultIsTrue() {
 
-    final var value = ActivityDefinition.builder().steps(new ArrayList<>())
-        .interactionType(InteractionType.PERFORMANCE).build();
+    final var value =
+        ActivityDefinition.builder()
+            .steps(new ArrayList<>())
+            .interactionType(InteractionType.PERFORMANCE)
+            .build();
 
     // When IsValid Is Called With Activity Definition That Has Steps And InteractionType
     final var result = validator.isValid(value, null);
@@ -209,6 +227,4 @@ class ActivityDefinitionValidatorTests {
     // Then Result Is True
     assertTrue(result);
   }
-
-
 }

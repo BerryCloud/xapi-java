@@ -29,41 +29,36 @@ class GetActivityProfilesRequestTests {
   void whenBuildingGetActivityProfilesRequestWithAllParametersThenNoExceptionIsThrown() {
 
     // When Building GetActivityProfilesRequest With All Parameters
-    Builder builder = GetActivityProfilesRequest.builder()
-
-        .activityId("https://example.com/activity/1")
-
-        .since(Instant.parse("2016-01-01T00:00:00Z"));
+    Builder builder =
+        GetActivityProfilesRequest.builder()
+            .activityId("https://example.com/activity/1")
+            .since(Instant.parse("2016-01-01T00:00:00Z"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
-
   }
 
   @Test
   void whenBuildingGetActivityProfilesRequestWithActivityIdAsURITypeThenNoExceptionIsThrown() {
 
     // When Building GetActivityProfilesRequest With ActivityId As URI Type
-    Builder builder = GetActivityProfilesRequest.builder()
-
-        .activityId(URI.create("https://example.com/activity/1"));
+    Builder builder =
+        GetActivityProfilesRequest.builder()
+            .activityId(URI.create("https://example.com/activity/1"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
-
   }
 
   @Test
   void whenBuildingGetActivityProfilesRequestWithoutRegistrationThenNoExceptionIsThrown() {
 
     // When Building GetActivityProfilesRequest Without Since
-    Builder builder = GetActivityProfilesRequest.builder()
-
-        .activityId("https://example.com/activity/1");
+    Builder builder =
+        GetActivityProfilesRequest.builder().activityId("https://example.com/activity/1");
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
-
   }
 
   @Test
@@ -74,32 +69,31 @@ class GetActivityProfilesRequestTests {
 
     // Then NullPointerException Is Thrown
     assertThrows(NullPointerException.class, builder::build);
-
   }
 
   @Test
   void givenGetActivityProfilesRequestWithAllParametersWhenGettingURLThenResultIsExpected() {
 
     // Given GetActivityProfilesRequest With All Parameters
-    GetActivityProfilesRequest request = GetActivityProfilesRequest.builder()
-
-        .activityId("https://example.com/activity/1")
-
-        .since(Instant.parse("2016-01-01T00:00:00Z"))
-
-        .build();
+    GetActivityProfilesRequest request =
+        GetActivityProfilesRequest.builder()
+            .activityId("https://example.com/activity/1")
+            .since(Instant.parse("2016-01-01T00:00:00Z"))
+            .build();
 
     Map<String, Object> queryParams = new HashMap<>();
 
     // When Getting URL
     URI url =
-        request.url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
+        request
+            .url(UriComponentsBuilder.fromUriString("https://example.com/xapi/"), queryParams)
             .build(queryParams);
 
     // Then Result Is Expected
-    assertThat(url, is(URI.create(
-        "https://example.com/xapi/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&since=2016-01-01T00%3A00%3A00Z")));
-
+    assertThat(
+        url,
+        is(
+            URI.create(
+                "https://example.com/xapi/activities/profile?activityId=https%3A%2F%2Fexample.com%2Factivity%2F1&since=2016-01-01T00%3A00%3A00Z")));
   }
-
 }

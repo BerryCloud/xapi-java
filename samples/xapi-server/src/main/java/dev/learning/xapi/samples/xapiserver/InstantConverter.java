@@ -10,9 +10,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
  * InstantConverter class.
- * </p>
  *
  * @author István Rátkai (Selindek)
  * @author Thomas Turrell-Croft
@@ -25,8 +23,7 @@ public class InstantConverter implements Converter<String, Instant> {
    * will be used.
    *
    * @param source the String representation of the datetime in ISO 8601 format (e.q.
-   *        '2011-12-03T10:15:30+01:00')
-   *
+   *     '2011-12-03T10:15:30+01:00')
    * @return {@link java.time.Instant} of source input
    */
   @Override
@@ -34,5 +31,4 @@ public class InstantConverter implements Converter<String, Instant> {
 
     return XapiTimestamp.parse(source);
   }
-
 }
