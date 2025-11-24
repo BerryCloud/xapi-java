@@ -27,47 +27,49 @@ import reactor.core.publisher.Mono;
 public class AttachmentHttpMessageWriter extends MultipartWriterSupport
     implements HttpMessageWriter<Attachment> {
 
-  /** Default constructor. */
+  /**
+   * Default constructor.
+   */
   public AttachmentHttpMessageWriter() {
     super(List.of(MediaType.MULTIPART_MIXED));
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean canWrite(ResolvableType elementType, @Nullable MediaType mediaType) {
     return Attachment.class.isAssignableFrom(elementType.toClass());
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public Mono<Void> write(
-      Publisher<? extends Attachment> parts,
-      ResolvableType elementType,
-      @Nullable MediaType mediaType,
-      ReactiveHttpOutputMessage outputMessage,
+  public Mono<Void> write(Publisher<? extends Attachment> parts, ResolvableType elementType,
+      @Nullable MediaType mediaType, ReactiveHttpOutputMessage outputMessage,
       Map<String, Object> hints) {
 
-    return Mono.from(parts)
-        .flatMap(
-            part -> {
-              // set attachment part headers
-              outputMessage.getHeaders().setContentType(MediaType.valueOf(part.getContentType()));
-              outputMessage.getHeaders().set("Content-Transfer-Encoding", "binary");
-              outputMessage.getHeaders().set("X-Experience-API-Hash", part.getSha2());
+    return Mono.from(parts).flatMap(part -> {
+      // set attachment part headers
+      outputMessage.getHeaders().setContentType(MediaType.valueOf(part.getContentType()));
+      outputMessage.getHeaders().set("Content-Transfer-Encoding", "binary");
+      outputMessage.getHeaders().set("X-Experience-API-Hash", part.getSha2());
 
-              // write attachment content
-              return outputMessage.writeWith(encodePart(part, outputMessage.bufferFactory()));
-            })
-        .doOnDiscard(DataBuffer.class, DataBufferUtils::release);
+      // write attachment content
+      return outputMessage.writeWith(encodePart(part, outputMessage.bufferFactory()));
+    }).doOnDiscard(DataBuffer.class, DataBufferUtils::release);
+
   }
 
   private Mono<DataBuffer> encodePart(Attachment part, DataBufferFactory bufferFactory) {
 
-    return Mono.fromCallable(
-        () -> {
-          final var buffer = bufferFactory.allocateBuffer(part.getContent().length);
-          buffer.write(part.getContent());
-          return buffer;
-        });
+    return Mono.fromCallable(() -> {
+      final var buffer = bufferFactory.allocateBuffer(part.getContent().length);
+      buffer.write(part.getContent());
+      return buffer;
+    });
+
   }
+
 }

@@ -18,15 +18,19 @@ import org.springframework.web.util.UriBuilder;
  * (exclusive).
  *
  * @see <a href=
- *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get-2">Multiple
- *     Document GET</a>
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get-2">Multiple
+ *      Document GET</a>
+ *
  * @author Thomas Turrell-Croft
  */
 @Builder
 public class GetActivityProfilesRequest implements Request {
 
-  /** The Activity id associated with these Profile documents. */
-  @NonNull private final URI activityId;
+  /**
+   * The Activity id associated with these Profile documents.
+   */
+  @NonNull
+  private final URI activityId;
 
   /**
    * Only ids of Profile documents stored since the specified Timestamp (exclusive) are returned.
@@ -52,14 +56,18 @@ public class GetActivityProfilesRequest implements Request {
     return HttpMethod.GET;
   }
 
-  /** Builder for GetActivityProfilesRequest. */
+  /**
+   * Builder for GetActivityProfilesRequest.
+   */
   public static class Builder {
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the GetActivityProfilesRequest.
+     *
      * @return This builder
+     *
      * @see GetActivityProfilesRequest#activityId
      */
     public Builder activityId(URI activityId) {
@@ -71,7 +79,9 @@ public class GetActivityProfilesRequest implements Request {
      * Sets the activityId.
      *
      * @param activityId The activity of the GetActivityProfilesRequest.
+     *
      * @return This builder
+     *
      * @see GetActivityProfilesRequest#activityId
      */
     public Builder activityId(String activityId) {

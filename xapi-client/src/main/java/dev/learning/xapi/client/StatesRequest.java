@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.net.URI;
 import java.util.Map;
@@ -15,14 +16,14 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import org.springframework.web.util.UriBuilder;
-import tools.jackson.databind.ObjectMapper;
 
 /**
  * Abstract superclass of xAPI state resource request.
  *
  * @see <a href=
- *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">State
- *     Resource</a>
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">State
+ *      Resource</a>
+ *
  * @author István Rátkai (Selindek)
  */
 @SuperBuilder
@@ -31,13 +32,21 @@ abstract class StatesRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
-  /** The <strong>activityId</strong> query parameter. */
-  @NonNull private final URI activityId;
+  /**
+   * The <strong>activityId</strong> query parameter.
+   */
+  @NonNull
+  private final URI activityId;
 
-  /** The <strong>agent</strong> query parameter. */
-  @NonNull private final Agent agent;
+  /**
+   * The <strong>agent</strong> query parameter.
+   */
+  @NonNull
+  private final Agent agent;
 
-  /** The optional <strong>registration</strong> query parameter. */
+  /**
+   * The optional <strong>registration</strong> query parameter.
+   */
   private final UUID registration;
 
   @Override
@@ -46,10 +55,12 @@ abstract class StatesRequest implements Request {
     queryParams.put("activityId", activityId);
     queryParams.put("agent", agentToJsonString());
 
-    return uriBuilder
-        .path("/activities/state")
+    return uriBuilder.path("/activities/state")
+
         .queryParam("activityId", "{activityId}")
+
         .queryParam("agent", "{agent}")
+
         .queryParamIfPresent("registration", Optional.ofNullable(registration));
   }
 
@@ -58,16 +69,21 @@ abstract class StatesRequest implements Request {
   private String agentToJsonString() {
 
     return objectMapper.writeValueAsString(agent);
+
   }
 
-  /** Builder for StatesRequest. */
+  /**
+   * Builder for StatesRequest.
+   */
   public abstract static class Builder<C extends StatesRequest, B extends Builder<C, B>> {
 
     /**
      * Consumer Builder for agent.
      *
      * @param agent The Consumer Builder for agent.
+     *
      * @return This builder
+     *
      * @see StatesRequest#agent
      */
     public B agent(Consumer<Agent.Builder<?, ?>> agent) {
@@ -77,13 +93,16 @@ abstract class StatesRequest implements Request {
       agent.accept(builder);
 
       return agent(builder.build());
+
     }
 
     /**
      * Sets the agent.
      *
      * @param agent The Agent of the StatesRequest.
+     *
      * @return This builder
+     *
      * @see StatesRequest#agent
      */
     public B agent(Agent agent) {
@@ -91,13 +110,16 @@ abstract class StatesRequest implements Request {
       this.agent = agent;
 
       return self();
+
     }
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the StatesRequest.
+     *
      * @return This builder
+     *
      * @see StatesRequest#activityId
      */
     public B activityId(String activityId) {
@@ -105,13 +127,16 @@ abstract class StatesRequest implements Request {
       this.activityId = URI.create(activityId);
 
       return self();
+
     }
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the StatesRequest.
+     *
      * @return This builder
+     *
      * @see StatesRequest#activityId
      */
     public B activityId(URI activityId) {
@@ -119,13 +144,16 @@ abstract class StatesRequest implements Request {
       this.activityId = activityId;
 
       return self();
+
     }
 
     /**
      * Sets the registration.
      *
      * @param registration The registration of the StatesRequest.
+     *
      * @return This builder
+     *
      * @see StatesRequest#registration
      */
     public B registration(String registration) {
@@ -133,13 +161,16 @@ abstract class StatesRequest implements Request {
       this.registration = UUID.fromString(registration);
 
       return self();
+
     }
 
     /**
      * Sets the registration.
      *
      * @param registration The registration of the StatesRequest.
+     *
      * @return This builder
+     *
      * @see StatesRequest#registration
      */
     public B registration(UUID registration) {
@@ -147,6 +178,9 @@ abstract class StatesRequest implements Request {
       this.registration = registration;
 
       return self();
+
     }
+
   }
+
 }

@@ -17,8 +17,9 @@ import org.springframework.web.util.UriBuilder;
  * Request for posting multiple Statements.
  *
  * @see <a href=
- *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
- *     Statements</a>
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
+ *      Statements</a>
+ *
  * @author Thomas Turrell-Croft
  */
 @Builder
@@ -36,9 +37,12 @@ public class PostStatementRequest implements Request {
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     return uriBuilder.path("/statements");
+
   }
 
-  /** Builder for PostStatementRequest. */
+  /**
+   * Builder for PostStatementRequest.
+   */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -47,7 +51,9 @@ public class PostStatementRequest implements Request {
      * Consumer Builder for statement.
      *
      * @param statement The Consumer Builder for statement
+     *
      * @return This builder
+     *
      * @see PostStatementRequest#statement
      */
     public Builder statement(Consumer<Statement.Builder> statement) {
@@ -63,7 +69,9 @@ public class PostStatementRequest implements Request {
      * Sets the statement.
      *
      * @param statement The Statement to post
+     *
      * @return This builder
+     *
      * @see PostStatementRequest#statement
      */
     public Builder statement(Statement statement) {
@@ -78,7 +86,9 @@ public class PostStatementRequest implements Request {
      *
      * @param statement The Consumer Builder for signed-statement
      * @param privateKey a PrivateKey for signing the Statement
+     *
      * @return This builder
+     *
      * @see PostStatementRequest#statement
      */
     public Builder signedStatement(Consumer<Statement.Builder> statement, PrivateKey privateKey) {
@@ -90,4 +100,5 @@ public class PostStatementRequest implements Request {
       return statement(builder.signAndBuild(privateKey));
     }
   }
+
 }

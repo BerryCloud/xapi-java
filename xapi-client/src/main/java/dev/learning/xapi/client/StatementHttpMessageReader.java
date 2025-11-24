@@ -26,8 +26,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * {@link HttpMessageReader} for reading {@code "multipart/mixed"} responses into a {@link
- * Statement} or {@link StatementResult}s object.
+ * {@link HttpMessageReader} for reading {@code "multipart/mixed"} responses into a
+ * {@link Statement} or {@link StatementResult}s object.
  *
  * @author István Rátkai (Selindek)
  */
@@ -38,13 +38,17 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
 
   private final HttpMessageReader<Part> partReader = new DefaultPartHttpMessageReader();
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<MediaType> getReadableMediaTypes() {
     return MIME_TYPES;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean canRead(ResolvableType elementType, @Nullable MediaType mediaType) {
     if (Statement.class.equals(elementType.toClass())
@@ -61,24 +65,24 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
     return false;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public Flux<Object> read(
-      ResolvableType elementType, ReactiveHttpInputMessage message, Map<String, Object> hints) {
+  public Flux<Object> read(ResolvableType elementType, ReactiveHttpInputMessage message,
+      Map<String, Object> hints) {
 
     return Flux.from(readMono(elementType, message, hints));
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public Mono<Object> readMono(
-      ResolvableType elementType,
-      ReactiveHttpInputMessage inputMessage,
+  public Mono<Object> readMono(ResolvableType elementType, ReactiveHttpInputMessage inputMessage,
       Map<String, Object> hints) {
 
-    return this.partReader
-        .read(elementType, inputMessage, hints)
-        .collectList()
+    return this.partReader.read(elementType, inputMessage, hints).collectList()
         .flatMap(list -> toStatement(elementType, list));
   }
 
@@ -96,11 +100,8 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
     }
 
     // Create a virtual response from the the first (json) part...
-    final var jsonResponse =
-        ClientResponse.create(HttpStatusCode.valueOf(200))
-            .body(jsonPart.content())
-            .headers(headers -> headers.addAll(jsonPart.headers()))
-            .build();
+    final var jsonResponse = ClientResponse.create(HttpStatusCode.valueOf(200))
+        .body(jsonPart.content()).headers(headers -> headers.addAll(jsonPart.headers())).build();
 
     // ... and use the default extractors to extract its content to a Statement/StatementResult
     Flux<Object> partDataFlux = jsonResponse.bodyToFlux(elementType.toClass());
@@ -111,31 +112,29 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
     }
 
     // Now we have direct access to all the data
-    return partDataFlux
-        .collectList()
-        .map(
-            partData -> {
-              // the first part's data is the Statement / StatementResult
-              final var object = partData.get(0);
-              final var statements =
-                  object instanceof final Statement statement
-                      ? Arrays.asList(statement)
-                      : ((StatementResult) object).getStatements();
+    return partDataFlux.collectList().map(partData -> {
+      // the first part's data is the Statement / StatementResult
+      final var object = partData.get(0);
+      final var statements = object instanceof final Statement statement ? Arrays.asList(statement)
+          : ((StatementResult) object).getStatements();
 
-              for (var i = 1; i < partData.size(); i++) {
-                final var buffer = (DataBuffer) partData.get(i);
-                final var content = new byte[buffer.readableByteCount()];
-                buffer.read(content);
-                DataBufferUtils.release(buffer);
-                final var sha2 = parts.get(i).headers().getFirst("X-Experience-API-Hash");
-                injectAttachmentContent(statements, sha2, content);
-              }
+      for (var i = 1; i < partData.size(); i++) {
+        final var buffer = (DataBuffer) partData.get(i);
+        final var content = new byte[buffer.readableByteCount()];
+        buffer.read(content);
+        DataBufferUtils.release(buffer);
+        final var sha2 = parts.get(i).headers().getFirst("X-Experience-API-Hash");
+        injectAttachmentContent(statements, sha2, content);
+      }
 
-              return object;
-            });
+      return object;
+    });
+
   }
 
-  /** Inject the content into each {@link Attachment} in each statements with the matching sha2. */
+  /**
+   * Inject the content into each {@link Attachment} in each statements with the matching sha2.
+   */
   private void injectAttachmentContent(List<Statement> statements, String sha2, byte[] content) {
     for (final var statement : statements) {
       final var attachments = statement.getAttachments();
@@ -150,4 +149,5 @@ public class StatementHttpMessageReader extends LoggingCodecSupport
       }
     }
   }
+
 }

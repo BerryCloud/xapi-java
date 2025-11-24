@@ -13,11 +13,17 @@ import org.springframework.web.util.UriBuilder;
 @SuperBuilder
 abstract class ActivityProfileRequest implements Request {
 
-  /** The Activity id associated with this Profile document. */
-  @NonNull private final URI activityId;
+  /**
+   * The Activity id associated with this Profile document.
+   */
+  @NonNull
+  private final URI activityId;
 
-  /** The profile id associated with this Profile document. */
-  @NonNull private final String profileId;
+  /**
+   * The profile id associated with this Profile document.
+   */
+  @NonNull
+  private final String profileId;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
@@ -25,20 +31,23 @@ abstract class ActivityProfileRequest implements Request {
     queryParams.put("activityId", activityId);
     queryParams.put("profileId", profileId);
 
-    return uriBuilder
-        .path("/activities/profile")
-        .queryParam("activityId", "{activityId}")
+    return uriBuilder.path("/activities/profile").queryParam("activityId", "{activityId}")
         .queryParam("profileId", "{profileId}");
+
   }
 
-  /** Builder for ActivityProfileRequest. */
+  /**
+   * Builder for ActivityProfileRequest.
+   */
   public abstract static class Builder<C extends ActivityProfileRequest, B extends Builder<C, B>> {
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the ActivityProfileRequest.
+     *
      * @return This builder
+     *
      * @see ActivityProfileRequest#activityId
      */
     public B activityId(String activityId) {
@@ -46,13 +55,16 @@ abstract class ActivityProfileRequest implements Request {
       this.activityId = URI.create(activityId);
 
       return self();
+
     }
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the ActivityProfileRequest.
+     *
      * @return This builder
+     *
      * @see ActivityProfileRequest#activityId
      */
     public B activityId(URI activityId) {
@@ -60,6 +72,9 @@ abstract class ActivityProfileRequest implements Request {
       this.activityId = activityId;
 
       return self();
+
     }
+
   }
+
 }

@@ -17,8 +17,9 @@ import org.springframework.web.util.UriBuilder;
  * Request for posting multiple Statements.
  *
  * @see <a href=
- *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
- *     Statements</a>
+ *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
+ *      Statements</a>
+ *
  * @author Thomas Turrell-Croft
  */
 @Builder
@@ -36,9 +37,12 @@ public class PostStatementsRequest implements Request {
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     return uriBuilder.path("/statements");
+
   }
 
-  /** Builder for PostStatementsRequest. */
+  /**
+   * Builder for PostStatementsRequest.
+   */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -47,7 +51,9 @@ public class PostStatementsRequest implements Request {
      * Sets the statements.
      *
      * @param statements The statements of the PostStatementsRequest.
+     *
      * @return This builder
+     *
      * @see PostStatementsRequest#statements
      */
     public Builder statements(List<Statement> statements) {
@@ -59,12 +65,16 @@ public class PostStatementsRequest implements Request {
      * Sets the statements.
      *
      * @param statements The statements of the PostStatementsRequest.
+     *
      * @return This builder
+     *
      * @see PostStatementsRequest#statements
      */
     public Builder statements(Statement... statements) {
       this.statements = Arrays.asList(statements);
       return this;
     }
+
   }
+
 }

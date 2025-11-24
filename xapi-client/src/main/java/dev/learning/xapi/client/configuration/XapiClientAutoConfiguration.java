@@ -22,20 +22,20 @@ import org.springframework.web.reactive.function.client.WebClient;
 @EnableConfigurationProperties(XapiClientProperties.class)
 public class XapiClientAutoConfiguration {
 
-  /** Creates a default xAPI client bean. */
+  /**
+   * Creates a default xAPI client bean.
+   */
   @Bean
   @ConditionalOnMissingBean
-  public XapiClient xapiClient(
-      XapiClientProperties properties,
-      WebClient.Builder builder,
+  public XapiClient xapiClient(XapiClientProperties properties, WebClient.Builder builder,
       List<XapiClientConfigurer> configurers) {
 
     if (properties.getAuthorization() != null) {
       builder.defaultHeader(HttpHeaders.AUTHORIZATION, properties.getAuthorization());
 
     } else if (properties.getUsername() != null && properties.getPassword() != null) {
-      builder.defaultHeaders(
-          h -> h.setBasicAuth(properties.getUsername(), properties.getPassword()));
+      builder
+          .defaultHeaders(h -> h.setBasicAuth(properties.getUsername(), properties.getPassword()));
     }
 
     if (properties.getBaseUrl() != null) {
@@ -45,5 +45,7 @@ public class XapiClientAutoConfiguration {
     configurers.forEach(c -> c.accept(builder));
 
     return new XapiClient(builder);
+
   }
+
 }

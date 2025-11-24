@@ -19,8 +19,11 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 abstract class StateRequest extends StatesRequest {
 
-  /** The <strong>stateId</strong> query parameter. */
-  @NonNull private final String stateId;
+  /**
+   * The <strong>stateId</strong> query parameter.
+   */
+  @NonNull
+  private final String stateId;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
@@ -28,13 +31,17 @@ abstract class StateRequest extends StatesRequest {
     queryParams.put("stateId", stateId);
 
     return super.url(uriBuilder, queryParams).queryParam("stateId", "{stateId}");
+
   }
 
-  /** Builder for StateRequest. */
+  /**
+   * Builder for StateRequest.
+   */
   public abstract static class Builder<C extends StateRequest, B extends Builder<C, B>>
       extends StatesRequest.Builder<C, B> {
 
     // This static class extends the lombok builder.
 
   }
+
 }

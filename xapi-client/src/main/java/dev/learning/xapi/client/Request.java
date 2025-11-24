@@ -23,4 +23,5 @@ interface Request {
    * @return the request method as a {@link HttpMethod} object.
    */
   HttpMethod getMethod();
+
 }
