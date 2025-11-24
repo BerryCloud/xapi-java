@@ -51,4 +51,5 @@ public @interface HasScheme {
    * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
+
 }

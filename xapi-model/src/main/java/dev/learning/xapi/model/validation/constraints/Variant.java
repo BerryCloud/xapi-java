@@ -31,15 +31,25 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Variant {
 
-  /** Error Message. */
+  /**
+   * Error Message.
+   */
   String message() default "variant must be {variant}";
 
-  /** Groups. */
+  /**
+   * Groups.
+   */
   Class<?>[] groups() default {};
 
-  /** Payload. */
+  /**
+   * Payload.
+   */
   Class<? extends Payload>[] payload() default {};
 
-  /** The valid variant, defaults to 2. */
+  /**
+   * The valid variant, defaults to 2.
+   */
   int value() default 2;
+
+
 }

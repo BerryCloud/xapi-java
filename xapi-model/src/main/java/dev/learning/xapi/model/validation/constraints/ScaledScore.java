@@ -23,8 +23,9 @@ import java.lang.annotation.Target;
  * The annotated element must be a valid scaled score.
  *
  * @author István Rátkai (Selindek)
+ *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#details-13">xAPI Score
- *     details</a>
+ *      details</a>
  */
 @Documented
 @Constraint(validatedBy = {ScaledScoreValidator.class})

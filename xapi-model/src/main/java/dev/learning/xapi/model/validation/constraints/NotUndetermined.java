@@ -51,4 +51,5 @@ public @interface NotUndetermined {
    * @return the payload
    */
   Class<? extends Payload>[] payload() default {};
+
 }

@@ -25,12 +25,19 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface ValidStatementRevision {
 
-  /** Error Message. */
+  /**
+   * Error Message.
+   */
   String message() default "invalid Statement Revision (Object must be an Activity)";
 
-  /** Groups. */
+  /**
+   * Groups.
+   */
   Class<?>[] groups() default {};
 
-  /** Payload. */
+  /**
+   * Payload.
+   */
   Class<? extends Payload>[] payload() default {};
+
 }

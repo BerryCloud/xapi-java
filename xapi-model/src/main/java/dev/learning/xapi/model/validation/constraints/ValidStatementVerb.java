@@ -25,12 +25,19 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface ValidStatementVerb {
 
-  /** Error Message. */
+  /**
+   * Error Message.
+   */
   String message() default "voiding statement must have a statement reference";
 
-  /** Groups. */
+  /**
+   * Groups.
+   */
   Class<?>[] groups() default {};
 
-  /** Payload. */
+  /**
+   * Payload.
+   */
   Class<? extends Payload>[] payload() default {};
+
 }

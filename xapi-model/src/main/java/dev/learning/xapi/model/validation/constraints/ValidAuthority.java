@@ -31,12 +31,19 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface ValidAuthority {
 
-  /** Error Message. */
+  /**
+   * Error Message.
+   */
   String message() default "must be of type agent or a group with two agents";
 
-  /** Groups. */
+  /**
+   * Groups.
+   */
   Class<?>[] groups() default {};
 
-  /** Payload. */
+  /**
+   * Payload.
+   */
   Class<? extends Payload>[] payload() default {};
+
 }
