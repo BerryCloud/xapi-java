@@ -1,5 +1,5 @@
 {
-  "name": "Java 25",
+  "name": "xAPI Java Development",
   "image": "mcr.microsoft.com/devcontainers/java:25",
 
   "features": {
