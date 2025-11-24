@@ -4,13 +4,13 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonMappingException;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.MissingResourceException;

@@ -4,12 +4,12 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import tools.jackson.annotation.JsonInclude;
+import tools.jackson.annotation.JsonInclude.Include;
+import tools.jackson.annotation.JsonProperty;
+import tools.jackson.annotation.JsonSubTypes;
+import tools.jackson.annotation.JsonTypeInfo;
+import tools.jackson.annotation.JsonTypeInfo.As;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.Mbox;
 import jakarta.validation.Valid;

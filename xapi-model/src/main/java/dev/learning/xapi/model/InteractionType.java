@@ -4,7 +4,7 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import tools.jackson.annotation.JsonProperty;
 
 /**
  * This enumeration class represents all valid xAPI interaction types.

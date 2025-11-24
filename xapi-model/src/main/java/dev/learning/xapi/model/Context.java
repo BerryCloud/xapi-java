@@ -4,9 +4,9 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.annotation.JsonInclude;
+import tools.jackson.annotation.JsonInclude.Include;
+import tools.jackson.databind.annotation.JsonSerialize;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.NotUndetermined;

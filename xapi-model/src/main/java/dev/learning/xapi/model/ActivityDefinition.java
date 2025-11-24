@@ -4,9 +4,9 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonMerge;
+import tools.jackson.annotation.JsonInclude;
+import tools.jackson.annotation.JsonInclude.Include;
+import tools.jackson.annotation.JsonMerge;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import java.net.URI;
 import java.util.ArrayList;

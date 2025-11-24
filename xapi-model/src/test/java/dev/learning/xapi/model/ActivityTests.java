@@ -9,8 +9,8 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.ConstraintViolation;
