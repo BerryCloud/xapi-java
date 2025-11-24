@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @WebMvcTest(
     value = {StatementController.class},
-    properties = "spring.jackson.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
+    properties = "spring.jackson2.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
 class StatementControllerTest {
 
   @Autowired private MockMvc mvc;
