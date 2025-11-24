@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.STATEMENTS_PATH;
+
 import dev.learning.xapi.model.Statement;
 import java.security.PrivateKey;
 import java.util.Map;
@@ -35,7 +37,7 @@ public class PostStatementRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    return uriBuilder.path("/statements");
+    return uriBuilder.path(STATEMENTS_PATH);
   }
 
   /** Builder for PostStatementRequest. */

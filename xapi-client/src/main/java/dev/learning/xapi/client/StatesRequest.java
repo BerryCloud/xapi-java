@@ -4,6 +4,13 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITIES_STATE_PATH;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_TEMPLATE;
+import static dev.learning.xapi.client.XapiClientConstants.AGENT_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.AGENT_TEMPLATE;
+import static dev.learning.xapi.client.XapiClientConstants.REGISTRATION_PARAM;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.net.URI;
@@ -43,14 +50,14 @@ abstract class StatesRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    queryParams.put("activityId", activityId);
-    queryParams.put("agent", agentToJsonString());
+    queryParams.put(ACTIVITY_ID_PARAM, activityId);
+    queryParams.put(AGENT_PARAM, agentToJsonString());
 
     return uriBuilder
-        .path("/activities/state")
-        .queryParam("activityId", "{activityId}")
-        .queryParam("agent", "{agent}")
-        .queryParamIfPresent("registration", Optional.ofNullable(registration));
+        .path(ACTIVITIES_STATE_PATH)
+        .queryParam(ACTIVITY_ID_PARAM, ACTIVITY_ID_TEMPLATE)
+        .queryParam(AGENT_PARAM, AGENT_TEMPLATE)
+        .queryParamIfPresent(REGISTRATION_PARAM, Optional.ofNullable(registration));
   }
 
   // Exception in write value as string should be impossible.

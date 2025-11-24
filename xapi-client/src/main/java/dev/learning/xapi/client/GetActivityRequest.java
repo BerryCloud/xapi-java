@@ -4,6 +4,10 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITIES_PATH;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_TEMPLATE;
+
 import java.net.URI;
 import java.util.Map;
 import lombok.Builder;
@@ -30,9 +34,9 @@ public class GetActivityRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    queryParams.put("activityId", activityId);
+    queryParams.put(ACTIVITY_ID_PARAM, activityId);
 
-    return uriBuilder.path("/activities").queryParam("activityId", "{activityId}");
+    return uriBuilder.path(ACTIVITIES_PATH).queryParam(ACTIVITY_ID_PARAM, ACTIVITY_ID_TEMPLATE);
   }
 
   @Override

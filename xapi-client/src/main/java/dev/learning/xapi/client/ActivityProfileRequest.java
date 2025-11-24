@@ -4,6 +4,12 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITIES_PROFILE_PATH;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_TEMPLATE;
+import static dev.learning.xapi.client.XapiClientConstants.PROFILE_ID_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.PROFILE_ID_TEMPLATE;
+
 import java.net.URI;
 import java.util.Map;
 import lombok.NonNull;
@@ -22,13 +28,13 @@ abstract class ActivityProfileRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    queryParams.put("activityId", activityId);
-    queryParams.put("profileId", profileId);
+    queryParams.put(ACTIVITY_ID_PARAM, activityId);
+    queryParams.put(PROFILE_ID_PARAM, profileId);
 
     return uriBuilder
-        .path("/activities/profile")
-        .queryParam("activityId", "{activityId}")
-        .queryParam("profileId", "{profileId}");
+        .path(ACTIVITIES_PROFILE_PATH)
+        .queryParam(ACTIVITY_ID_PARAM, ACTIVITY_ID_TEMPLATE)
+        .queryParam(PROFILE_ID_PARAM, PROFILE_ID_TEMPLATE);
   }
 
   /** Builder for ActivityProfileRequest. */

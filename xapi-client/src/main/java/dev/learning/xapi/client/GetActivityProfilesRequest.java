@@ -4,6 +4,10 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITIES_PROFILE_PATH;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.ACTIVITY_ID_TEMPLATE;
+
 import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
@@ -36,8 +40,8 @@ public class GetActivityProfilesRequest implements Request {
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    queryParams.put("activityId", activityId);
-    uriBuilder.path("/activities/profile").queryParam("activityId", "{activityId}");
+    queryParams.put(ACTIVITY_ID_PARAM, activityId);
+    uriBuilder.path(ACTIVITIES_PROFILE_PATH).queryParam(ACTIVITY_ID_PARAM, ACTIVITY_ID_TEMPLATE);
 
     if (since != null) {
       queryParams.put("since", since);
