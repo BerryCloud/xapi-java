@@ -47,8 +47,6 @@ public class LocaleSerializer extends StdSerializer<Locale> {
     @Override
     public void serialize(Locale value, JsonGenerator gen, SerializerProvider provider)
         throws IOException {
-      // For Map keys, Jackson calls this method but the JSON generator is in a state
-      // where we should write a string value that will be used as the field name
       gen.writeFieldName(value.toLanguageTag());
     }
   }
