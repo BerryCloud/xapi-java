@@ -3,9 +3,9 @@
   "image": "mcr.microsoft.com/devcontainers/java:25",
 
   "features": {
-    // Official Maven feature
-    "ghcr.io/devcontainers/features/maven:1": {
-      "version": "latest"
+     "ghcr.io/devcontainers/features/java:1": {
+        "version": "none",
+        "installMaven": "true"
     }
   },
 
