@@ -42,10 +42,11 @@ public class Result {
 
   /** Period of time over which the Statement occurred. */
   // Java Duration does not store ISO 8601:2004 durations.
+  // Using possessive quantifiers on digits to prevent ReDoS (Regular Expression Denial of Service)
   @Pattern(
       regexp =
-          "^(P\\d+W)?$|^P(?!$)(\\d+Y)?(\\d+M)?" // NOSONAR
-              + "(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d*\\.?\\d+S)?)?$", // NOSONAR
+          "^P\\d++W$|^P(?!$)(\\d++Y)?(\\d++M)?"
+              + "(\\d++D)?(T(?=\\d)(\\d++H)?(\\d++M)?((?:\\d++\\.\\d++|\\d++)S)?)?$",
       flags = Pattern.Flag.CASE_INSENSITIVE,
       message = "Must be a valid ISO 8601:2004 duration format.")
   private String duration;
