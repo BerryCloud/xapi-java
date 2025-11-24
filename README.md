@@ -489,12 +489,6 @@ public ResponseEntity<Collection<UUID>> postStatements(
 
 ```
 
-## Security
-
-For security best practices and credential management guidelines, see [SECURITY.md](SECURITY.md).
-
-**Important**: The sample applications contain hardcoded credentials for demonstration purposes only. Never use these credentials in production. See [SECURITY.md](SECURITY.md) for secure configuration approaches.
-
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
