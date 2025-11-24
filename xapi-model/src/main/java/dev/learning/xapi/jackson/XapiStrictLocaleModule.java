@@ -4,7 +4,7 @@
 
 package dev.learning.xapi.jackson;
 
-import tools.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import dev.learning.xapi.jackson.StrictLocaleDeserializer.StrictLocaleKeyDeserializer;
 import java.util.Locale;
 

@@ -4,9 +4,9 @@
 
 package dev.learning.xapi.model;
 
-import tools.jackson.annotation.JsonInclude;
-import tools.jackson.annotation.JsonInclude.Include;
-import tools.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;

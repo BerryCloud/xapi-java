@@ -17,9 +17,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.http.codec.autoconfigure.CodecsAutoConfiguration;
-import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
 import org.springframework.boot.reactor.autoconfigure.ReactorAutoConfiguration;
-import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
@@ -37,7 +36,7 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
       CodecsAutoConfiguration.class,
       ReactorAutoConfiguration.class,
       XapiTestClientConfiguration2.class,
-      JacksonAutoConfiguration.class
+      Jackson2AutoConfiguration.class
     },
     properties = "xapi.client.authorization = bearer 1234")
 class XapiClientAutoConfigurationAuthorizationTest {

@@ -4,10 +4,10 @@
 
 package dev.learning.xapi.autoconfigure.model;
 
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.cfg.CoercionAction;
-import tools.jackson.databind.cfg.CoercionInputShape;
-import tools.jackson.databind.type.LogicalType;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
+import com.fasterxml.jackson.databind.type.LogicalType;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
@@ -29,8 +29,8 @@ import dev.learning.xapi.model.validation.internal.validators.VariantValidatorFo
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2Properties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,7 +40,7 @@ import org.springframework.context.annotation.Configuration;
  * @author István Rátkai (Selindek)
  */
 @Configuration
-@AutoConfigureBefore(JacksonProperties.class)
+@AutoConfigureBefore(Jackson2Properties.class)
 public class XapiModelAutoConfiguration {
 
   /**

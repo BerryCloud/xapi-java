@@ -4,7 +4,7 @@
 
 package dev.learning.xapi.client;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.util.Map;
 import java.util.function.Consumer;

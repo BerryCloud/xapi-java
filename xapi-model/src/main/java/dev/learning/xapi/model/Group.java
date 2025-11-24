@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.model;
 
-import tools.jackson.annotation.JsonFormat;
-import tools.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import jakarta.validation.Valid;
 import java.util.ArrayList;

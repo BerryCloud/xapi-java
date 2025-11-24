@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.model;
 
-import tools.jackson.annotation.JsonInclude;
-import tools.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
 import java.util.Locale;
 import lombok.Builder;

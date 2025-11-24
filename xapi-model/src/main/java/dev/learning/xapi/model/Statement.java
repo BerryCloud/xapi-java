@@ -4,9 +4,9 @@
 
 package dev.learning.xapi.model;
 
-import tools.jackson.annotation.JsonFormat;
-import tools.jackson.annotation.JsonInclude;
-import tools.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.Agent.AgentObjectType;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidAuthority;

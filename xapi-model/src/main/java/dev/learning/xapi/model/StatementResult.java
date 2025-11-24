@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.model;
 
-import tools.jackson.annotation.JsonInclude;
-import tools.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;

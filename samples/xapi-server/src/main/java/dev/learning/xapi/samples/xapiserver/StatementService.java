@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import tools.jackson.core.JsonProcessingException;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.net.URI;

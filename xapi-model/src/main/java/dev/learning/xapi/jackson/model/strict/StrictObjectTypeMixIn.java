@@ -4,7 +4,7 @@
 
 package dev.learning.xapi.jackson.model.strict;
 
-import tools.jackson.databind.annotation.JsonTypeResolver;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import dev.learning.xapi.jackson.StrictObjectTypeResolverBuilder;
 
 /**

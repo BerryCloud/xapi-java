@@ -4,7 +4,7 @@
 
 package dev.learning.xapi.model;
 
-import tools.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import java.util.LinkedHashMap;
 import java.util.List;

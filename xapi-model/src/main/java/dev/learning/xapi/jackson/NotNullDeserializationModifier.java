@@ -4,15 +4,15 @@
 
 package dev.learning.xapi.jackson;
 
-import tools.jackson.core.JsonParser;
-import tools.jackson.databind.BeanDescription;
-import tools.jackson.databind.DeserializationConfig;
-import tools.jackson.databind.DeserializationContext;
-import tools.jackson.databind.JsonDeserializer;
-import tools.jackson.databind.JsonMappingException;
-import tools.jackson.databind.deser.BeanDeserializerModifier;
-import tools.jackson.databind.deser.ResolvableDeserializer;
-import tools.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 
 /**
