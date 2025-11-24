@@ -30,7 +30,5 @@ public class AuthorityValidator extends DisableableValidator<ValidAuthority, Act
     final var group = (Group) value;
     // ... or must be an anonymous Group with exactly two members
     return group.isAnonymous() && group.getMember().size() == 2;
-
   }
-
 }

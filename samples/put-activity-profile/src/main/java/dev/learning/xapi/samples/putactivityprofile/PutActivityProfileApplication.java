@@ -20,11 +20,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PutActivityProfileApplication implements CommandLineRunner {
 
-  /**
-   * Default xAPI client. Properties are picked automatically from application.properties.
-   */
-  @Autowired
-  private XapiClient client;
+  /** Default xAPI client. Properties are picked automatically from application.properties. */
+  @Autowired private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(PutActivityProfileApplication.class, args).close();
@@ -34,16 +31,12 @@ public class PutActivityProfileApplication implements CommandLineRunner {
   public void run(String... args) {
 
     // Put activity profile
-    client.putActivityProfile(r -> r
-
-        .activityId("https://example.com/activity/1")
-
-        .profileId("bookmark")
-
-        .activityProfile(new ExampleState("Hello World!", Instant.now())))
-
+    client
+        .putActivityProfile(
+            r ->
+                r.activityId("https://example.com/activity/1")
+                    .profileId("bookmark")
+                    .activityProfile(new ExampleState("Hello World!", Instant.now())))
         .block();
-
   }
-
 }

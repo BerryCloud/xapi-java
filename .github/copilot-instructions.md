@@ -54,6 +54,18 @@ Always run the full build after making changes to ensure your changes don't brea
 
 - **Strictly follow the Google Java Style Guide**
 
+### Code Formatting
+
+**IMPORTANT**: All Java code must be formatted using the Spotify fmt-maven-plugin before committing:
+
+```bash
+./mvnw com.spotify.fmt:fmt-maven-plugin:format
+```
+
+- Run this command after making code changes and before committing
+- The formatter automatically applies Google Java Style formatting
+- A git pre-commit hook is available via `./install-git-hooks.sh` to automate this
+
 ### Validation
 
 - CheckStyle validation runs automatically during Maven build

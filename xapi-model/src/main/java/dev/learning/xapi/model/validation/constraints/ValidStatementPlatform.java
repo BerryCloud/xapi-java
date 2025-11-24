@@ -25,19 +25,12 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface ValidStatementPlatform {
 
-  /**
-   * Error Message.
-   */
+  /** Error Message. */
   String message() default "invalid Statement Platform (Object must be an Activity)";
 
-  /**
-   * Groups.
-   */
+  /** Groups. */
   Class<?>[] groups() default {};
 
-  /**
-   * Payload.
-   */
+  /** Payload. */
   Class<? extends Payload>[] payload() default {};
-
 }

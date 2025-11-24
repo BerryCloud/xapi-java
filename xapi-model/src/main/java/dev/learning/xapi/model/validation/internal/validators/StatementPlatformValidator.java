@@ -12,15 +12,13 @@ import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * The Statement being validated must have a valid platform.
- * <p>
- * If context.platform present, then object must be an {@link Activity}.
- * </p>
+ *
+ * <p>If context.platform present, then object must be an {@link Activity}.
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#requirements-10">
- *      Statement Context Requirements</a>
+ *     Statement Context Requirements</a>
  */
 public class StatementPlatformValidator
     extends DisableableValidator<ValidStatementPlatform, CoreStatement> {
@@ -28,8 +26,9 @@ public class StatementPlatformValidator
   @Override
   public boolean isValidIfEnabled(CoreStatement value, ConstraintValidatorContext context) {
 
-    return value == null || value.getContext() == null || value.getContext().getPlatform() == null
+    return value == null
+        || value.getContext() == null
+        || value.getContext().getPlatform() == null
         || value.getObject() instanceof Activity;
   }
-
 }

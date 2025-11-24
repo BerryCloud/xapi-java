@@ -16,5 +16,4 @@ public interface ValidatorDisabler {
   public static final ValidatorDisabler DEFAULT_ENABLER = v -> false;
 
   public boolean isDisabled(DisableableValidator<?, ?> validator);
-
 }

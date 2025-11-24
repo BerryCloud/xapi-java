@@ -21,11 +21,8 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetMoreStatementsApplication implements CommandLineRunner {
 
-  /**
-   * Default xAPI client. Properties are picked automatically from application.properties.
-   */
-  @Autowired
-  private XapiClient client;
+  /** Default xAPI client. Properties are picked automatically from application.properties. */
+  @Autowired private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetMoreStatementsApplication.class, args).close();
@@ -51,5 +48,4 @@ public class GetMoreStatementsApplication implements CommandLineRunner {
       Arrays.asList(more.getBody().getStatements()).forEach(System.out::println);
     }
   }
-
 }

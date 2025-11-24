@@ -24,22 +24,21 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
 
   private static final long serialVersionUID = 7182941951585541965L;
 
-  /**
-   * Default constructor.
-   */
+  /** Default constructor. */
   public StrictLocaleDeserializer() {
     super(String.class);
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public Locale deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
       throws IOException {
     if (jsonParser.getCurrentToken() != JsonToken.VALUE_STRING) {
-      throw deserializationContext.wrongTokenException(jsonParser, (JavaType) null,
-          JsonToken.VALUE_STRING, "Attempted to parse non-String value to Locale");
+      throw deserializationContext.wrongTokenException(
+          jsonParser,
+          (JavaType) null,
+          JsonToken.VALUE_STRING,
+          "Attempted to parse non-String value to Locale");
     }
 
     return validateLocale(jsonParser.getValueAsString(), deserializationContext);
@@ -59,30 +58,25 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
     }
     // test the validity of the whole key
     if (locale == null || !locale.toLanguageTag().equalsIgnoreCase(localeString)) {
-      throw deserializationContext.weirdStringException(localeString, Locale.class,
-          "Invalid locale");
+      throw deserializationContext.weirdStringException(
+          localeString, Locale.class, "Invalid locale");
     }
     return locale;
   }
 
   /**
-   * <p>
    * Strict Locale Key deserializer.
-   * </p>
    *
    * @author István Rátkai (Selindek)
    */
   public static class StrictLocaleKeyDeserializer extends KeyDeserializer {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Object deserializeKey(String key, DeserializationContext deserializationContext)
         throws IOException {
 
       return validateLocale(key, deserializationContext);
     }
-
   }
 }

@@ -30,15 +30,14 @@ import java.util.HashSet;
 public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
   @Override
-  public TypeDeserializer buildTypeDeserializer(DeserializationConfig config, JavaType baseType,
-      Collection<NamedType> subtypes) {
+  public TypeDeserializer buildTypeDeserializer(
+      DeserializationConfig config, JavaType baseType, Collection<NamedType> subtypes) {
     final var subTypeValidator = verifyBaseTypeValidity(config, baseType);
     final var idRes = idResolver(config, baseType, subTypeValidator, subtypes, false, true);
     final var defaultImpl = defineDefaultImpl(config, baseType);
 
-    return new StrictObjectTypePropertyDeserializer(baseType, idRes, _typeProperty, _typeIdVisible,
-        defaultImpl, _includeAs);
-
+    return new StrictObjectTypePropertyDeserializer(
+        baseType, idRes, _typeProperty, _typeIdVisible, defaultImpl, _includeAs);
   }
 
   /**
@@ -49,8 +48,9 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
     private static final long serialVersionUID = 1139909729567678431L;
 
-    private static final HashSet<String> validObjectTypes = new HashSet<>(
-        Arrays.asList("Activity", "Agent", "Person", "Group", "SubStatement", "StatementRef"));
+    private static final HashSet<String> validObjectTypes =
+        new HashSet<>(
+            Arrays.asList("Activity", "Agent", "Person", "Group", "SubStatement", "StatementRef"));
 
     /**
      * Constructor for StrictObjectTypePropertyDeserializer.
@@ -62,8 +62,13 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
      * @param defaultImpl the default implementation
      * @param includeAs the inclusion type
      */
-    public StrictObjectTypePropertyDeserializer(JavaType baseType, TypeIdResolver idRes,
-        String typeProperty, boolean typeIdVisible, JavaType defaultImpl, As includeAs) {
+    public StrictObjectTypePropertyDeserializer(
+        JavaType baseType,
+        TypeIdResolver idRes,
+        String typeProperty,
+        boolean typeIdVisible,
+        JavaType defaultImpl,
+        As includeAs) {
       super(baseType, idRes, typeProperty, typeIdVisible, defaultImpl, includeAs, true);
     }
 
@@ -73,8 +78,8 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
      * @param src the source deserializer
      * @param property the bean property
      */
-    public StrictObjectTypePropertyDeserializer(AsPropertyTypeDeserializer src,
-        BeanProperty property) {
+    public StrictObjectTypePropertyDeserializer(
+        AsPropertyTypeDeserializer src, BeanProperty property) {
       super(src, property);
     }
 
@@ -84,8 +89,9 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
     }
 
     @Override
-    protected Object _deserializeTypedForId(JsonParser p, DeserializationContext ctxt,
-        TokenBuffer tb, String typeId) throws IOException {
+    protected Object _deserializeTypedForId(
+        JsonParser p, DeserializationContext ctxt, TokenBuffer tb, String typeId)
+        throws IOException {
 
       // This is the actual custom logic.
       if (!validObjectTypes.contains(typeId)) {
@@ -95,7 +101,5 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
       return super._deserializeTypedForId(p, ctxt, tb, typeId);
     }
-
   }
-
 }

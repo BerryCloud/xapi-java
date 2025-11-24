@@ -22,9 +22,8 @@ import lombok.Value;
  * This class represents the xAPI SubStatement object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#substatements">xAPI
- *      SubStatement</a>
+ *     SubStatement</a>
  */
 @Value
 @Builder
@@ -35,60 +34,34 @@ public class SubStatement implements StatementObject, CoreStatement {
 
   private final String objectType = "SubStatement"; // NOSONAR
 
-  /**
-   * {@inheritDoc}
-   */
-  @NotNull
-  @Valid
-  @ValidActor
-  private Actor actor;
+  /** {@inheritDoc} */
+  @NotNull @Valid @ValidActor private Actor actor;
+
+  /** {@inheritDoc} */
+  @NotNull @Valid private Verb verb;
 
   /**
    * {@inheritDoc}
+   *
+   * <p>A SubStatement MUST NOT contain a SubStatement of its own, i.e., cannot be nested.
    */
-  @NotNull
-  @Valid
-  private Verb verb;
+  @NotNull @Valid @ValidActor private SubStatementObject object;
 
-  /**
-   * {@inheritDoc}
-   * <p>
-   * A SubStatement MUST NOT contain a SubStatement of its own, i.e., cannot be nested.
-   * </p>
-   */
-  @NotNull
-  @Valid
-  @ValidActor
-  private SubStatementObject object;
+  /** {@inheritDoc} */
+  @Valid private Result result;
 
-  /**
-   * {@inheritDoc}
-   */
-  @Valid
-  private Result result;
+  /** {@inheritDoc} */
+  @Valid private Context context;
 
-  /**
-   * {@inheritDoc}
-   */
-  @Valid
-  private Context context;
-
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   private Instant timestamp;
 
-  /**
-   * {@inheritDoc}
-   */
-  @Valid
-  private List<Attachment> attachments;
+  /** {@inheritDoc} */
+  @Valid private List<Attachment> attachments;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for SubStatement.
-   */
+  /** Builder for SubStatement. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -97,9 +70,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      * Consumer Builder for agent.
      *
      * @param agent The Consumer Builder for agent
-     *
      * @return This builder
-     *
      * @see SubStatement#actor
      */
     public Builder agentActor(Consumer<Agent.Builder<?, ?>> agent) {
@@ -115,9 +86,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      * Consumer Builder for group.
      *
      * @param group The Consumer Builder for group
-     *
      * @return This builder
-     *
      * @see SubStatement#actor
      */
     public Builder groupActor(Consumer<Group.Builder<?, ?>> group) {
@@ -133,9 +102,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      * Consumer Builder for verb.
      *
      * @param verb The Consumer Builder for verb
-     *
      * @return This builder
-     *
      * @see SubStatement#verb
      */
     public Builder verb(Consumer<Verb.Builder> verb) {
@@ -151,9 +118,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      * Sets the verb.
      *
      * @param verb The definition of the SubStatement
-     *
      * @return This builder
-     *
      * @see SubStatement#verb
      */
     public Builder verb(Verb verb) {
@@ -168,7 +133,6 @@ public class SubStatement implements StatementObject, CoreStatement {
      * objectType property was set properly. </b>
      *
      * @param object The object of the SubStatement.
-     *
      * @return This builder.
      */
     public Builder object(SubStatementObject object) {
@@ -186,9 +150,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      * Consumer Builder for attachment.
      *
      * @param attachment The Consumer Builder for attachment
-     *
      * @return This builder
-     *
      * @see SubStatement#attachments
      */
     public Builder addAttachment(Consumer<Attachment.Builder> attachment) {
@@ -204,9 +166,7 @@ public class SubStatement implements StatementObject, CoreStatement {
      * Adds an attachment.
      *
      * @param attachment An {@link Attachment} object.
-     *
      * @return This builder
-     *
      * @see SubStatement#attachments
      */
     public Builder addAttachment(Attachment attachment) {
@@ -219,5 +179,4 @@ public class SubStatement implements StatementObject, CoreStatement {
       return this;
     }
   }
-
 }

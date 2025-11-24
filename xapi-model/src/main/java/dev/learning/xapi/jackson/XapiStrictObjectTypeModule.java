@@ -24,9 +24,7 @@ public class XapiStrictObjectTypeModule extends SimpleModule {
 
   private static final long serialVersionUID = -5943467400927276326L;
 
-  /**
-   * XapiStrictObjectTypeModule constructor.
-   */
+  /** XapiStrictObjectTypeModule constructor. */
   public XapiStrictObjectTypeModule() {
     super("xAPI Strict ObjectType Module");
 
