@@ -24,9 +24,7 @@
       <artifactId>jjwt-jackson</artifactId>
       <optional>true</optional>
       <exclusions>
-        <!-- This will upgrade the version of Jackson that jjwt-jackson uses. In 
-          future if jjwt-jackson does not work with the same version of Jackson as Spring then 
-          downgrade the version of Jackson that Spring uses instead. -->
+        <!-- Exclude both Jackson 2.x and 3.0 from jjwt-jackson to use only the Jackson 3.0 version managed by Spring Boot 4.0 -->
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-databind</artifactId>
