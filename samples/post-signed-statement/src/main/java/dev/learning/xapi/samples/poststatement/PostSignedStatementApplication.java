@@ -17,8 +17,9 @@ import org.springframework.http.ResponseEntity;
 
 /**
  * Sample using xAPI client to post a statement.
- *
- * <p>See <code>pom.xml</code> for extra dependencies.
+ * <p>
+ * See <code>pom.xml</code> for extra dependencies.
+ * </p>
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
@@ -26,8 +27,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class PostSignedStatementApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(PostSignedStatementApplication.class, args).close();
@@ -39,27 +43,24 @@ public class PostSignedStatementApplication implements CommandLineRunner {
     final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
     final var keyPair = keyPairGenerator.generateKeyPair();
-
+    
     // Post a statement
-    ResponseEntity<UUID> response =
-        client
-            .postStatement(
-                r ->
-                    r.signedStatement(
-                        s ->
-                            s.agentActor(
-                                    a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                                .verb(Verb.ATTEMPTED)
-                                .activityObject(
-                                    o ->
-                                        o.id("https://example.com/activity/simplestatement")
-                                            .definition(
-                                                d ->
-                                                    d.addName(Locale.ENGLISH, "Simple Statement"))),
-                        keyPair.getPrivate()))
-            .block();
+    ResponseEntity<
+        UUID> response =
+            client
+                .postStatement(r -> r.signedStatement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+                        .verb(Verb.ATTEMPTED)
+
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement"))),
+                        
+                    keyPair.getPrivate()))
+                .block();
 
     // Print the statementId of the newly created statement to the console
     System.out.println("StatementId " + response.getBody());
   }
+
 }

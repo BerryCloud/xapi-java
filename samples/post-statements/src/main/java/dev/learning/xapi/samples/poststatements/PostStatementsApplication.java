@@ -21,8 +21,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PostStatementsApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(PostStatementsApplication.class, args).close();
@@ -31,19 +34,17 @@ public class PostStatementsApplication implements CommandLineRunner {
   @Override
   public void run(String... args) {
 
-    Statement attemptedStatement =
-        Statement.builder()
-            .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-            .verb(Verb.ATTEMPTED)
-            .activityObject(
-                o ->
-                    o.id("https://example.com/activity/simplestatement")
-                        .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
-            .build();
+    Statement attemptedStatement = Statement.builder()
+        .agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+        .verb(Verb.ATTEMPTED)
+        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))
+        .build();
 
     Statement passedStatement = attemptedStatement.toBuilder().verb(Verb.PASSED).build();
 
     // Post multiple statements
     client.postStatements(r -> r.statements(attemptedStatement, passedStatement)).block();
   }
+
 }

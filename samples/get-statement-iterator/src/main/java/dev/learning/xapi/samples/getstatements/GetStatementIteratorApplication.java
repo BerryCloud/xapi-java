@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+ 
 /**
  * Sample using xAPI client to get multiple statements as StatementIterator.
  *
@@ -20,8 +20,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GetStatementIteratorApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetStatementIteratorApplication.class, args).close();
@@ -37,9 +40,12 @@ public class GetStatementIteratorApplication implements CommandLineRunner {
     statements.toStream().forEach(System.out::println);
 
     // Get Statements with Verb filter as StatementIterator
-    var filteredStatements = client.getStatementIterator(r -> r.verb(Verb.ATTEMPTED)).block();
+    var filteredStatements =
+        client.getStatementIterator(r -> r.verb(Verb.ATTEMPTED)).block();
 
     // Print the returned statements to the console
     filteredStatements.toStream().forEach(System.out::println);
+
   }
+
 }

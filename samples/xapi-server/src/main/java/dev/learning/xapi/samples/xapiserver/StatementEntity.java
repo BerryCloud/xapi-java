@@ -4,13 +4,13 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.util.UUID;
 import org.hibernate.annotations.Type;
-import tools.jackson.databind.JsonNode;
 
 /**
  * StatementEntity.
@@ -20,13 +20,16 @@ import tools.jackson.databind.JsonNode;
 @Entity
 public class StatementEntity {
 
-  @Id private UUID id;
+  @Id
+  private UUID id;
 
   @Type(JsonType.class)
   @Column(columnDefinition = "BLOB")
   private JsonNode statement;
 
-  /** StatementEntity Constructor. */
+  /**
+   * StatementEntity Constructor.
+   */
   public StatementEntity() {}
 
   /**
@@ -39,6 +42,7 @@ public class StatementEntity {
 
     this.id = id;
     this.statement = statement;
+
   }
 
   /**
@@ -76,4 +80,5 @@ public class StatementEntity {
   public void setStatement(JsonNode statement) {
     this.statement = statement;
   }
+
 }

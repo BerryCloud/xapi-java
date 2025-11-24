@@ -21,8 +21,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetStatementsApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetStatementsApplication.class, args).close();
@@ -37,11 +40,15 @@ public class GetStatementsApplication implements CommandLineRunner {
     // Print the returned statements to the console
     response.getBody().getStatements().forEach(System.out::println);
 
+
+
     // Get Statements with Verb filter
     ResponseEntity<StatementResult> filteredResponse =
         client.getStatements(r -> r.verb(Verb.ATTEMPTED.getId())).block();
 
     // Print the returned statements to the console
     filteredResponse.getBody().getStatements().forEach(System.out::println);
+
   }
+
 }

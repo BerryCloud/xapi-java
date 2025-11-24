@@ -23,8 +23,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetAgentsApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetAgentsApplication.class, args).close();
@@ -38,8 +41,7 @@ public class GetAgentsApplication implements CommandLineRunner {
 
     // Get Agents
     ResponseEntity<Person> response =
-        client
-            .getAgents(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
+        client.getAgents(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
             .block();
 
     // Print the returned Person to the console
@@ -49,24 +51,19 @@ public class GetAgentsApplication implements CommandLineRunner {
   private UUID postStatement() {
 
     // Post a statement
-    ResponseEntity<UUID> response =
-        client
-            .postStatement(
-                r ->
-                    r.statement(
-                        s ->
-                            s.agentActor(
-                                    a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                                .verb(Verb.ATTEMPTED)
-                                .activityObject(
-                                    o ->
-                                        o.id("https://example.com/activity/simplestatement")
-                                            .definition(
-                                                d ->
-                                                    d.addName(
-                                                        Locale.ENGLISH, "Simple Statement")))))
-            .block();
+    ResponseEntity<
+        UUID> response =
+            client
+                .postStatement(r -> r.statement(
+                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+                        .verb(Verb.ATTEMPTED)
+
+                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
+                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
+                .block();
 
     return response.getBody();
   }
+
 }

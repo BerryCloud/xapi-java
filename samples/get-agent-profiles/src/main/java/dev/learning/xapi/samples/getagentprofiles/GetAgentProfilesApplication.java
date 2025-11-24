@@ -20,8 +20,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetAgentProfilesApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetAgentProfilesApplication.class, args).close();
@@ -31,13 +34,14 @@ public class GetAgentProfilesApplication implements CommandLineRunner {
   public void run(String... args) {
 
     // Get Profiles
-    ResponseEntity<List<String>> response =
-        client
-            .getAgentProfiles(
-                r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
-            .block();
+    ResponseEntity<List<String>> response = client
+        .getAgentProfiles(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com")))
+
+        .block();
 
     // Print the each returned profile id to the console
     response.getBody().stream().forEach(System.out::println);
+
   }
+
 }

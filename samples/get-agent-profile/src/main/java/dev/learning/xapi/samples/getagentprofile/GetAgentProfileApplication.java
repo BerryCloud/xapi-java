@@ -21,8 +21,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetAgentProfileApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetAgentProfileApplication.class, args).close();
@@ -35,28 +38,30 @@ public class GetAgentProfileApplication implements CommandLineRunner {
     postAgentProfile();
 
     // Get Profile
-    ResponseEntity<ExampleState> response =
-        client
-            .getAgentProfile(
-                r ->
-                    r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                        .profileId("bookmark"),
-                ExampleState.class)
-            .block();
+    ResponseEntity<ExampleState> response = client
+        .getAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("bookmark"), ExampleState.class)
+
+        .block();
 
     // Print the returned profile to the console
     System.out.println(response.getBody());
+
   }
 
   private void postAgentProfile() {
 
     // Post Profile
     client
-        .postAgentProfile(
-            r ->
-                r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                    .profileId("bookmark")
-                    .profile(new ExampleState("Hello World!", Instant.now())))
+        .postAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+            .profileId("bookmark")
+
+            .profile(new ExampleState("Hello World!", Instant.now())))
+
         .block();
+
   }
+
 }

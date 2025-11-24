@@ -4,6 +4,8 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.net.URI;
@@ -17,8 +19,6 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tools.jackson.core.JsonProcessingException;
-import tools.jackson.databind.ObjectMapper;
 
 /**
  * Sample Statement Service.
@@ -44,12 +44,14 @@ public class StatementService {
 
     this.repository = repository;
     this.mapper = mapper;
+
   }
 
   /**
    * Get a single Statement.
    *
    * @param statementId the id of the Statement to get
+   *
    * @return the statement with the given id or Optional#empty() no statement was found.
    */
   public Optional<Statement> getStatement(UUID statementId) {
@@ -59,6 +61,7 @@ public class StatementService {
     // add custom logic here...
 
     return repository.findById(statementId).map(e -> convertToStatement(e));
+
   }
 
   /**
@@ -72,13 +75,11 @@ public class StatementService {
 
     // add custom logic here...
 
-    final var statements =
-        StreamSupport.stream(repository.findAll().spliterator(), false)
-            .limit(10)
-            .map(e -> convertToStatement(e))
-            .toList();
+    final var statements = StreamSupport.stream(repository.findAll().spliterator(), false).limit(10)
+        .map(e -> convertToStatement(e)).toList();
 
     return StatementResult.builder().statements(statements).more(URI.create("")).build();
+
   }
 
   /**
@@ -93,16 +94,16 @@ public class StatementService {
 
     // add custom logic here...
 
-    repository.save(
-        new StatementEntity(
-            statementId,
-            mapper.valueToTree(statement.withId(statementId).withStored(Instant.now()))));
+    repository.save(new StatementEntity(statementId,
+        mapper.valueToTree(statement.withId(statementId).withStored(Instant.now()))));
+
   }
 
   /**
    * Processes multiple Statements.
    *
    * @param statements the Statements to process
+   *
    * @return the statement id's that were processed
    */
   public Collection<UUID> processStatements(List<Statement> statements) {
@@ -121,10 +122,8 @@ public class StatementService {
 
     // add custom logic here...
 
-    repository.saveAll(
-        processedStatements.stream()
-            .map(s -> new StatementEntity(s.getId(), mapper.valueToTree(s)))
-            .toList());
+    repository.saveAll(processedStatements.stream()
+        .map(s -> new StatementEntity(s.getId(), mapper.valueToTree(s))).toList());
 
     return processedStatements.stream().map(s -> s.getId()).toList();
   }
@@ -140,5 +139,7 @@ public class StatementService {
 
       return null;
     }
+
   }
+
 }

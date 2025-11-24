@@ -20,8 +20,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DeleteStatesApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(DeleteStatesApplication.class, args).close();
@@ -34,26 +37,31 @@ public class DeleteStatesApplication implements CommandLineRunner {
     postState();
 
     // Delete states
-    client
-        .deleteStates(
-            r ->
-                r.activityId("https://example.com/activity/1")
-                    .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                    .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
+    client.deleteStates(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6"))
+
         .block();
+
   }
 
   private void postState() {
 
     // Post State
-    client
-        .postState(
-            r ->
-                r.activityId("https://example.com/activity/1")
-                    .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                    .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
-                    .stateId("bookmark")
-                    .state(new ExampleState("Hello World!", Instant.now())))
+    client.postState(r -> r.activityId("https://example.com/activity/1")
+
+        .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .registration("67828e3a-d116-4e18-8af3-2d2c59e27be6")
+
+        .stateId("bookmark")
+
+        .state(new ExampleState("Hello World!", Instant.now())))
+
         .block();
+
   }
+
 }

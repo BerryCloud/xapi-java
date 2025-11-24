@@ -16,7 +16,9 @@ public class ExampleState {
   private String message;
   private Instant timestamp;
 
-  /** Constructor for ExampleState. */
+  /**
+   * Constructor for ExampleState.
+   */
   public ExampleState(String message, Instant timestamp) {
     super();
     this.message = message;
@@ -43,4 +45,5 @@ public class ExampleState {
   public String toString() {
     return "ExampleState [message=" + message + ", timestamp=" + timestamp + "]";
   }
+
 }

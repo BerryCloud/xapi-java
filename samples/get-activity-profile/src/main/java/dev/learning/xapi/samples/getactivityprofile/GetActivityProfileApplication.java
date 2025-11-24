@@ -21,8 +21,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetActivityProfileApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetActivityProfileApplication.class, args).close();
@@ -35,26 +38,29 @@ public class GetActivityProfileApplication implements CommandLineRunner {
     postActivityProfile();
 
     // Get activity profile
-    ResponseEntity<ExampleState> response =
-        client
-            .getActivityProfile(
-                r -> r.activityId("https://example.com/activity/1").profileId("bookmark"),
-                ExampleState.class)
-            .block();
+    ResponseEntity<ExampleState> response = client
+        .getActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+            .profileId("bookmark"), ExampleState.class)
+
+        .block();
 
     // Print the returned activity profile to the console
     System.out.println(response.getBody());
+
   }
 
   private void postActivityProfile() {
 
     // Post Profile
-    client
-        .postActivityProfile(
-            r ->
-                r.activityId("https://example.com/activity/1")
-                    .profileId("bookmark")
-                    .activityProfile(new ExampleState("Hello World!", Instant.now())))
+    client.postActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile(new ExampleState("Hello World!", Instant.now())))
+
         .block();
+
   }
+
 }

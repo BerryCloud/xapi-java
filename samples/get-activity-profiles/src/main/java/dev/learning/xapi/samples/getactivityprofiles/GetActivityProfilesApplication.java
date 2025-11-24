@@ -22,8 +22,11 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetActivityProfilesApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetActivityProfilesApplication.class, args).close();
@@ -37,7 +40,9 @@ public class GetActivityProfilesApplication implements CommandLineRunner {
 
     // Get Activity Profiles
     ResponseEntity<List<String>> response =
-        client.getActivityProfiles(r -> r.activityId("https://example.com/activity/1")).block();
+        client.getActivityProfiles(r -> r.activityId("https://example.com/activity/1"))
+
+            .block();
 
     // Print the each returned activity profile id to the console
     response.getBody().stream().forEach(System.out::println);
@@ -46,12 +51,14 @@ public class GetActivityProfilesApplication implements CommandLineRunner {
   private void postActivityProfile() {
 
     // Post Profile
-    client
-        .postActivityProfile(
-            r ->
-                r.activityId("https://example.com/activity/1")
-                    .profileId("bookmark")
-                    .activityProfile(new ExampleState("Hello World!", Instant.now())))
+    client.postActivityProfile(r -> r.activityId("https://example.com/activity/1")
+
+        .profileId("bookmark")
+
+        .activityProfile(new ExampleState("Hello World!", Instant.now())))
+
         .block();
+
   }
+
 }

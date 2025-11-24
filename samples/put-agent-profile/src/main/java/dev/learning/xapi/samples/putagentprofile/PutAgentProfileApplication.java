@@ -20,8 +20,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PutAgentProfileApplication implements CommandLineRunner {
 
-  /** Default xAPI client. Properties are picked automatically from application.properties. */
-  @Autowired private XapiClient client;
+  /**
+   * Default xAPI client. Properties are picked automatically from application.properties.
+   */
+  @Autowired
+  private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(PutAgentProfileApplication.class, args).close();
@@ -31,12 +34,13 @@ public class PutAgentProfileApplication implements CommandLineRunner {
   public void run(String... args) {
 
     // Put Profile
-    client
-        .putAgentProfile(
-            r ->
-                r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-                    .profileId("bookmark")
-                    .profile(new ExampleState("Hello World!", Instant.now())))
+    client.putAgentProfile(r -> r.agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+
+        .profileId("bookmark")
+
+        .profile(new ExampleState("Hello World!", Instant.now())))
+
         .block();
   }
+
 }

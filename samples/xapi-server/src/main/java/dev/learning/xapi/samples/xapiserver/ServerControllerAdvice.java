@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-/** Handles exceptions in third party dependencies. */
+/**
+ * Handles exceptions in third party dependencies.
+ */
 @RestControllerAdvice
 public class ServerControllerAdvice extends ResponseEntityExceptionHandler {
 
@@ -23,6 +25,7 @@ public class ServerControllerAdvice extends ResponseEntityExceptionHandler {
    *
    * @param request the HTTP servlet request
    * @param e the throwable exception
+   *
    * @return the error response
    */
   @ResponseBody
@@ -30,6 +33,9 @@ public class ServerControllerAdvice extends ResponseEntityExceptionHandler {
   public ErrorResponse handleControllerException(HttpServletRequest request, Throwable e) {
 
     // RFC 7807 error response.
-    return ErrorResponse.builder(e, HttpStatus.BAD_REQUEST, e.getMessage()).build();
+    return ErrorResponse.builder(e, HttpStatus.BAD_REQUEST, e.getMessage())
+
+        .build();
   }
+
 }
