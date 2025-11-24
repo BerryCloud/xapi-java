@@ -1,35 +1,32 @@
 {
   "name": "xAPI Java Development",
-  "image": "mcr.microsoft.com/devcontainers/java:1-25-bookworm",
-  
+  "image": "mcr.microsoft.com/devcontainers/java:25",
+
   "features": {
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "25",
-      "jdkDistro": "tem",
-      "installMaven": "true"
+     "ghcr.io/devcontainers/features/java:1": {
+        "version": "none",
+        "installMaven": "true"
     }
   },
 
   "customizations": {
     "vscode": {
-      "extensions": [
-        "vscjava.vscode-java-pack",
-        "vscjava.vscode-maven",
-        "redhat.java",
-        "vscjava.vscode-java-debug",
-        "vscjava.vscode-java-test",
-        "vscjava.vscode-spring-boot-dashboard",
-        "pivotal.vscode-spring-boot"
-      ],
       "settings": {
+        "java.jdt.ls.java.home": "/usr/lib/jvm/msopenjdk-current",
         "java.configuration.runtimes": [
           {
             "name": "JavaSE-25",
-            "path": "/usr/local/sdkman/candidates/java/current"
+            "path": "/usr/lib/jvm/msopenjdk-current"
           }
-        ],
-        "java.jdt.ls.java.home": "/usr/local/sdkman/candidates/java/current"
-      }
+        ]
+      },
+      "extensions": [
+        "redhat.java",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-java-debug"
+      ]
     }
   },
 
