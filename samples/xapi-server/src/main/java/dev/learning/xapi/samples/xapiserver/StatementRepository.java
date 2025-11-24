@@ -12,7 +12,4 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Thomas Turrell-Croft
  */
-public interface StatementRepository extends CrudRepository<StatementEntity, UUID> {
-
-
-}
+public interface StatementRepository extends CrudRepository<StatementEntity, UUID> {}

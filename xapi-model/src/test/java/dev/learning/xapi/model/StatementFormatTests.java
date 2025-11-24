@@ -70,5 +70,4 @@ class StatementFormatTests {
     // Result Is Lower Case
     assertThat(result, is("ids"));
   }
-
 }

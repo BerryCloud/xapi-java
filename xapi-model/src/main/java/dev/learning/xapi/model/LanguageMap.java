@@ -4,36 +4,31 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Locale.LanguageRange;
 import java.util.Map;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * A language map is a dictionary where the key is a RFC 5646 Language Tag, and the value is a
  * string in the language specified in the tag.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#lang-maps">Language
- *      Maps</a>
+ *     Maps</a>
  */
 @JsonSerialize(keyUsing = LocaleSerializer.LocaleKeySerializer.class)
 public class LanguageMap extends LinkedHashMap<Locale, String> {
 
   private static final long serialVersionUID = 7375610804995032187L;
 
-  /**
-   * Cached undefined locale instance to avoid repeated object creation.
-   */
+  /** Cached undefined locale instance to avoid repeated object creation. */
   private static final Locale UNDEFINED_LOCALE = Locale.forLanguageTag("und");
 
-  /**
-   * Constructs an empty LanguageMap.
-   */
+  /** Constructs an empty LanguageMap. */
   public LanguageMap() {
     super();
   }
@@ -58,26 +53,22 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
   }
 
   /**
-   * <p>
    * Returns the value which best matches one of the specified language ranges.
-   * </p>
-   * <p>
-   * The return value could be:
-   * </p>
+   *
+   * <p>The return value could be:
+   *
    * <ol>
-   * <li>Best matching locale key using the lookup mechanism defined in RFC 4647</li>
-   * <li>Locale with undefined language key</li>
-   * <li>First value in language map</li>
-   * <li>null</li>
+   *   <li>Best matching locale key using the lookup mechanism defined in RFC 4647
+   *   <li>Locale with undefined language key
+   *   <li>First value in language map
+   *   <li>null
    * </ol>
-   * <p>
-   * <strong>Note</strong>: This helper method is not defined in the xAPI specification.
-   * </p>
+   *
+   * <p><strong>Note</strong>: This helper method is not defined in the xAPI specification.
    *
    * @param languageRanges used for matching a locale key
-   *
    * @return the value which best matches one of the specified language ranges, or null if this map
-   *         is empty
+   *     is empty
    */
   public String get(List<LanguageRange> languageRanges) {
 
@@ -101,7 +92,5 @@ public class LanguageMap extends LinkedHashMap<Locale, String> {
 
     // Map must be empty
     return null;
-
   }
-
 }

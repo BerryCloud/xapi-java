@@ -9,8 +9,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.ConstraintViolation;
@@ -27,6 +25,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 /**
  * Activity Tests.
@@ -51,7 +51,6 @@ class ActivityTests {
 
     // Then Result Is Instance Of Activity
     assertThat(result, instanceOf(Activity.class));
-
   }
 
   @Test
@@ -64,7 +63,6 @@ class ActivityTests {
 
     // Then Id Is Expected
     assertThat(result.getId(), is(URI.create("http://example.com/xapi/activity/simplestatement")));
-
   }
 
   @Test
@@ -77,7 +75,6 @@ class ActivityTests {
 
     // Then Definition Is Instance Of Activity Definition
     assertThat(result.getDefinition(), instanceOf(ActivityDefinition.class));
-
   }
 
   @Test
@@ -86,47 +83,47 @@ class ActivityTests {
     // This test uses the English locale because Jackson uses underscores instead of hyphens to
     // separate variants
 
-    final var activity = Activity.builder()
-
-        .id(URI.create("http://example.com/xapi/activity/simplestatement"))
-
-        .definition(d -> d
-
-            .addName(Locale.US, "simple statement")
-
-            .addDescription(Locale.US,
-                "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
-
-        .build();
+    final var activity =
+        Activity.builder()
+            .id(URI.create("http://example.com/xapi/activity/simplestatement"))
+            .definition(
+                d ->
+                    d.addName(Locale.US, "simple statement")
+                        .addDescription(
+                            Locale.US,
+                            "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
+            .build();
 
     // When Serializing Activity
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(activity));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result,
+    assertThat(
+        result,
         is((objectMapper.readTree(ResourceUtils.getFile("classpath:activity/activity.json")))));
-
   }
 
   @Test
   void whenCallingToStringThenResultIsExpected() {
 
-    final var activity = Activity.builder()
-
-        .id(URI.create("http://www.example.co.uk/exampleactivity"))
-
-        .definition(d -> d.addDescription(Locale.US,
-            "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
-
-        .build();
+    final var activity =
+        Activity.builder()
+            .id(URI.create("http://www.example.co.uk/exampleactivity"))
+            .definition(
+                d ->
+                    d.addDescription(
+                        Locale.US,
+                        "A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object."))
+            .build();
 
     // When Calling ToString
     final var result = activity.toString();
 
     // Then Result Is Expected
-    assertThat(result, is(
-        "Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=ActivityDefinition(name=null, description={en_US=A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.}, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null))"));
-
+    assertThat(
+        result,
+        is(
+            "Activity(objectType=null, id=http://www.example.co.uk/exampleactivity, definition=ActivityDefinition(name=null, description={en_US=A simple Experience API statement. Note that the LRS does not need to have any prior information about the Actor (learner), the verb, or the Activity/object.}, type=null, moreInfo=null, interactionType=null, correctResponsesPattern=null, choices=null, scale=null, source=null, target=null, steps=null, extensions=null))"));
   }
 
   /*
@@ -141,7 +138,6 @@ class ActivityTests {
 
     // Then Id Is Expected
     assertThat(activity.getId(), is(URI.create("http://www.example.co.uk/exampleactivity")));
-
   }
 
   /*
@@ -156,7 +152,6 @@ class ActivityTests {
 
     // Then Id Is Expected
     assertThat(activity.getId(), is(URI.create("http://www.example.co.uk/exampleactivity")));
-
   }
 
   @Test
@@ -165,9 +160,12 @@ class ActivityTests {
     final var json =
         "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";
 
-    Assertions.assertThrows(InvalidFormatException.class, () -> objectMapper
-        .registerModule(new XapiStrictLocaleModule()).readValue(json, Activity.class));
-
+    Assertions.assertThrows(
+        InvalidFormatException.class,
+        () ->
+            objectMapper
+                .registerModule(new XapiStrictLocaleModule())
+                .readValue(json, Activity.class));
   }
 
   @Test
@@ -176,8 +174,9 @@ class ActivityTests {
 
     final var activity1 = Activity.builder().definition(d -> d.addName(Locale.US, "Color")).build();
 
-    final var x = objectMapper
-        .valueToTree(Activity.builder().definition(d -> d.addName(Locale.UK, "Colour")).build());
+    final var x =
+        objectMapper.valueToTree(
+            Activity.builder().definition(d -> d.addName(Locale.UK, "Colour")).build());
 
     final var expected = new LanguageMap();
     expected.put(Locale.UK, "Colour");
@@ -188,7 +187,6 @@ class ActivityTests {
 
     // Then Merged Name Is Expected
     assertThat(merged.getDefinition().getName(), hasAllEntries(expected));
-
   }
 
   @Test
@@ -198,8 +196,9 @@ class ActivityTests {
     final var activity1 =
         Activity.builder().definition(d -> d.addDescription(Locale.US, "flavor")).build();
 
-    final var x = objectMapper.valueToTree(
-        Activity.builder().definition(d -> d.addDescription(Locale.UK, "flavour")).build());
+    final var x =
+        objectMapper.valueToTree(
+            Activity.builder().definition(d -> d.addDescription(Locale.UK, "flavour")).build());
 
     final var expected = new LanguageMap();
     expected.put(Locale.UK, "flavour");
@@ -210,22 +209,32 @@ class ActivityTests {
 
     // Then Merged Definition Is Expected
     assertThat(merged.getDefinition().getDescription(), hasAllEntries(expected));
-
   }
 
   @Test
   void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
       throws IOException {
 
-    final var activity1 = Activity.builder().definition(d -> d.extensions(new HashMap<>(
-        Collections.singletonMap(URI.create("https://example.com/extensions/a"), "a")))
+    final var activity1 =
+        Activity.builder()
+            .definition(
+                d ->
+                    d.extensions(
+                        new HashMap<>(
+                            Collections.singletonMap(
+                                URI.create("https://example.com/extensions/a"), "a"))))
+            .build();
 
-    ).build();
-
-    final var x = objectMapper.valueToTree(Activity.builder()
-        .definition(d -> d.extensions(new HashMap<>(
-            Collections.singletonMap(URI.create("https://example.com/extensions/b"), "b"))))
-        .build());
+    final var x =
+        objectMapper.valueToTree(
+            Activity.builder()
+                .definition(
+                    d ->
+                        d.extensions(
+                            new HashMap<>(
+                                Collections.singletonMap(
+                                    URI.create("https://example.com/extensions/b"), "b"))))
+                .build());
 
     final Map<@HasScheme URI, Object> expected = new HashMap<>();
     expected.put(URI.create("https://example.com/extensions/a"), "a");
@@ -236,24 +245,17 @@ class ActivityTests {
 
     // Then Merged Extensions Are Expected
     assertThat(merged.getDefinition().getExtensions(), hasAllEntries(expected));
-
   }
 
   @Test
   void whenValidatingActivityWithIdWithNoSchemeThenConstraintViolationsSizeIsOne() {
 
-    final var activity = Activity.builder()
-
-        .id(URI.create("www.example.com"))
-
-        .build();
+    final var activity = Activity.builder().id(URI.create("www.example.com")).build();
 
     // When Validating Activity With Id With No Scheme
     final Set<ConstraintViolation<Activity>> constraintViolations = validator.validate(activity);
 
     // Then Constraint Violations Size Is One
     assertThat(constraintViolations.size(), is(1));
-
   }
-
 }

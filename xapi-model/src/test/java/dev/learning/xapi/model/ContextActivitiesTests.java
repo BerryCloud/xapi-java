@@ -9,12 +9,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * ContextActivities Tests.
@@ -38,7 +38,6 @@ class ContextActivitiesTests {
 
     // Then Result Is Instance Of ContextActivities
     assertThat(result, instanceOf(ContextActivities.class));
-
   }
 
   @Test
@@ -51,7 +50,6 @@ class ContextActivitiesTests {
 
     // Then Parent Is Instance Of Activity
     assertThat(result.getParent().get(0), instanceOf(Activity.class));
-
   }
 
   @Test
@@ -64,7 +62,6 @@ class ContextActivitiesTests {
 
     // Then Grouping Is Instance Of Activity
     assertThat(result.getGrouping().get(0), instanceOf(Activity.class));
-
   }
 
   @Test
@@ -77,7 +74,6 @@ class ContextActivitiesTests {
 
     // Then Category Is Instance Of Activity
     assertThat(result.getCategory().get(0), instanceOf(Activity.class));
-
   }
 
   @Test
@@ -90,132 +86,115 @@ class ContextActivitiesTests {
 
     // Then Other Is Instance Of Activity
     assertThat(result.getOther().get(0), instanceOf(Activity.class));
-
   }
 
   @Test
   void whenSerializingAttachmentThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var contextActivities = ContextActivities.builder()
-
-        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .addGrouping(g -> g.id(URI.create("https://example.com/activity/2")))
-
-        .addCategory(c -> c.id(URI.create("https://example.com/activity/3")))
-
-        .addOther(o -> o.id(URI.create("https://example.com/activity/4")))
-
-        .build();
+    final var contextActivities =
+        ContextActivities.builder()
+            .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addGrouping(g -> g.id(URI.create("https://example.com/activity/2")))
+            .addCategory(c -> c.id(URI.create("https://example.com/activity/3")))
+            .addOther(o -> o.id(URI.create("https://example.com/activity/4")))
+            .build();
 
     // When Serializing Attachment
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(contextActivities));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result, is(objectMapper
-        .readTree(ResourceUtils.getFile("classpath:context_activities/context_activities.json"))));
-
+    assertThat(
+        result,
+        is(
+            objectMapper.readTree(
+                ResourceUtils.getFile("classpath:context_activities/context_activities.json"))));
   }
 
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final var contextActivities = objectMapper.readValue(
-        ResourceUtils.getFile("classpath:context_activities/context_activities.json"),
-        ContextActivities.class);
+    final var contextActivities =
+        objectMapper.readValue(
+            ResourceUtils.getFile("classpath:context_activities/context_activities.json"),
+            ContextActivities.class);
 
     // When Calling ToString
     final var result = contextActivities.toString();
 
     // Then Result Is Expected
-    assertThat(result, is(
-        "ContextActivities(parent=[Activity(objectType=null, id=https://example.com/activity/1, definition=null)], grouping=[Activity(objectType=null, id=https://example.com/activity/2, definition=null)], category=[Activity(objectType=null, id=https://example.com/activity/3, definition=null)], other=[Activity(objectType=null, id=https://example.com/activity/4, definition=null)])"));
-
+    assertThat(
+        result,
+        is(
+            "ContextActivities(parent=[Activity(objectType=null, id=https://example.com/activity/1, definition=null)], grouping=[Activity(objectType=null, id=https://example.com/activity/2, definition=null)], category=[Activity(objectType=null, id=https://example.com/activity/3, definition=null)], other=[Activity(objectType=null, id=https://example.com/activity/4, definition=null)])"));
   }
 
   @Test
   void whenBuildingContextActivitiesWithTwoParentsThenParentIshasSizeTwo() {
 
     // When Building ContextActivities With Two Parents
-    final var contextActivities = ContextActivities.builder()
-
-        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .addParent(p -> p.id(URI.create("https://example.com/activity/2")))
-
-        .build();
+    final var contextActivities =
+        ContextActivities.builder()
+            .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addParent(p -> p.id(URI.create("https://example.com/activity/2")))
+            .build();
 
     // Then Parent Is Array With Size Two
     assertThat(contextActivities.getParent(), hasSize(2));
-
   }
 
   @Test
   void whenBuildingContextActivitiesWithTwoGroupingThenGroupingIshasSizeTwo() {
 
     // When Building ContextActivities With Two Groupings
-    final var contextActivities = ContextActivities.builder()
-
-        .addGrouping(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .addGrouping(p -> p.id(URI.create("https://example.com/activity/2")))
-
-        .build();
+    final var contextActivities =
+        ContextActivities.builder()
+            .addGrouping(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addGrouping(p -> p.id(URI.create("https://example.com/activity/2")))
+            .build();
 
     // Then Grouping Is Array With Size Two
     assertThat(contextActivities.getGrouping(), hasSize(2));
-
   }
 
   @Test
   void whenBuildingContextActivitiesWithTwoOtherThenOtherIshasSizeTwo() {
 
     // When Building ContextActivities With Two Others
-    final var contextActivities = ContextActivities.builder()
-
-        .addOther(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .addOther(p -> p.id(URI.create("https://example.com/activity/2")))
-
-        .build();
+    final var contextActivities =
+        ContextActivities.builder()
+            .addOther(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addOther(p -> p.id(URI.create("https://example.com/activity/2")))
+            .build();
 
     // Then Other Is Array With Size Two
     assertThat(contextActivities.getOther(), hasSize(2));
-
   }
 
   @Test
   void whenBuildingContextActivitiesWithTwoCategoriesThenCategoryIshasSizeTwo() {
 
     // When Building ContextActivities With Two Categories
-    final var contextActivities = ContextActivities.builder()
-
-        .addCategory(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .addCategory(p -> p.id(URI.create("https://example.com/activity/2")))
-
-        .build();
+    final var contextActivities =
+        ContextActivities.builder()
+            .addCategory(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addCategory(p -> p.id(URI.create("https://example.com/activity/2")))
+            .build();
 
     // Then Category Is Array With Size Two
     assertThat(contextActivities.getCategory(), hasSize(2));
-
   }
 
   @Test
   void whenBuildingContextActivitiesWithTwoParentsWithSameIdThenParentIshasSizeTwo() {
 
     // When Building ContextActivities With Two Parents With Same Id
-    final var contextActivities = ContextActivities.builder()
-
-        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
-
-        .build();
+    final var contextActivities =
+        ContextActivities.builder()
+            .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
+            .addParent(p -> p.id(URI.create("https://example.com/activity/1")))
+            .build();
 
     // Then Parent Is Array With Size Two
     assertThat(contextActivities.getParent(), hasSize(2));
-
   }
-
 }

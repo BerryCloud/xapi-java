@@ -4,13 +4,13 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import dev.learning.xapi.jackson.model.strict.XapiTimestamp;
 import dev.learning.xapi.jackson.model.strict.XapiTimestamp.XapiTimestampParseException;
 import java.io.IOException;
 import java.time.Instant;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
  * Strict Timestamp deserializer.
@@ -21,9 +21,7 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
 
   private static final long serialVersionUID = -2025907823340425934L;
 
-  /**
-   * Default constructor.
-   */
+  /** Default constructor. */
   public StrictTimestampDeserializer() {
     this(null);
   }
@@ -51,5 +49,4 @@ public class StrictTimestampDeserializer extends StdDeserializer<Instant> {
       throw ctxt.instantiationException(handledType(), ex.getMessage());
     }
   }
-
 }

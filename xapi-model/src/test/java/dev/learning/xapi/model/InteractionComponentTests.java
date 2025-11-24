@@ -10,7 +10,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -20,6 +19,7 @@ import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Interaction Component Tests.
@@ -47,7 +47,6 @@ class InteractionComponentTests {
 
     // Then Result Is Instance Of InteractionComponent
     assertThat(result, instanceOf(InteractionComponent.class));
-
   }
 
   @Test
@@ -61,7 +60,6 @@ class InteractionComponentTests {
 
     // Then ID Is Expected
     assertThat(result.getId(), is("1"));
-
   }
 
   @Test
@@ -75,59 +73,60 @@ class InteractionComponentTests {
 
     // Then Description Is Expected
     assertThat(result.getDescription().get(Locale.US), is("value"));
-
   }
 
   @Test
   void whenSerializingInteractionComponentThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var interactionComponent = InteractionComponent.builder()
-
-        .id("1")
-
-        .addDescription(Locale.US, "value")
-
-        .build();
+    final var interactionComponent =
+        InteractionComponent.builder().id("1").addDescription(Locale.US, "value").build();
 
     // When Serializing InteractionComponent
-    final var result =
-        objectMapper.readTree(objectMapper.writeValueAsString(interactionComponent));
+    final var result = objectMapper.readTree(objectMapper.writeValueAsString(interactionComponent));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result, is(objectMapper.readTree(
-        ResourceUtils.getFile("classpath:interaction_component/interaction_component.json"))));
-
+    assertThat(
+        result,
+        is(
+            objectMapper.readTree(
+                ResourceUtils.getFile(
+                    "classpath:interaction_component/interaction_component.json"))));
   }
 
   @Test
   void whenCallingToStringThenResultIsExpected() throws IOException {
 
-    final var interactionComponent = objectMapper.readValue(
-        ResourceUtils.getFile("classpath:interaction_component/interaction_component.json"),
-        InteractionComponent.class);
+    final var interactionComponent =
+        objectMapper.readValue(
+            ResourceUtils.getFile("classpath:interaction_component/interaction_component.json"),
+            InteractionComponent.class);
 
     // When Calling ToString
     final var result = interactionComponent.toString();
 
     // Then Result Is Expected
     assertThat(result, is("InteractionComponent(id=1, description={en_US=value})"));
-
   }
 
   @Test
-  void whenBuildingInteractionComponentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
+  void
+      whenBuildingInteractionComponentWithTwoDescriptionValuesThenDisplayLanguageMapHasTwoEntries() {
 
     // When Building InteractionComponent With Two Description Values
-    final var interactionComponent = InteractionComponent.builder().id("1")
-        .addDescription(Locale.US, "value").addDescription(Locale.GERMAN, "Wert").build();
+    final var interactionComponent =
+        InteractionComponent.builder()
+            .id("1")
+            .addDescription(Locale.US, "value")
+            .addDescription(Locale.GERMAN, "Wert")
+            .build();
 
     // Then Description Language Map Has Two Entries
     assertThat(interactionComponent.getDescription(), aMapWithSize(2));
-
   }
 
   @Test
-  void whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
+  void
+      whenValidatingInteractionComponentWithAllRequiredPropertiesThenConstraintViolationsSizeIsZero() {
 
     final var interactionComponent =
         InteractionComponent.builder().id("1").addDescription(Locale.US, "value").build();
@@ -138,7 +137,6 @@ class InteractionComponentTests {
 
     // Then ConstraintViolations Size Is Zero
     assertThat(constraintViolations, hasSize(0));
-
   }
 
   @Test
@@ -153,7 +151,5 @@ class InteractionComponentTests {
 
     // Then ConstraintViolations Size Is One
     assertThat(constraintViolations, hasSize(1));
-
   }
-
 }

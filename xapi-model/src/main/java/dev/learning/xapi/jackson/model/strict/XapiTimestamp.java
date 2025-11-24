@@ -26,7 +26,6 @@ public class XapiTimestamp {
    * Converts ISO 8601 string to {@link java.time.Instant}.
    *
    * @param text the ISO 8601 timestamp string
-   *
    * @return {@link java.time.Instant} of text input
    */
   public static Instant parse(String text) {
@@ -40,8 +39,10 @@ public class XapiTimestamp {
 
     // Permit +00:00, +0000 and +00
     final var formatter =
-        new DateTimeFormatterBuilder().append(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-            .appendPattern("[XXXXX][XXXX][X]").toFormatter();
+        new DateTimeFormatterBuilder()
+            .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            .appendPattern("[XXXXX][XXXX][X]")
+            .toFormatter();
 
     final var dt = formatter.parseBest(text, Instant::from, LocalDateTime::from);
 
@@ -65,8 +66,5 @@ public class XapiTimestamp {
 
       super(message);
     }
-
   }
-
-
 }

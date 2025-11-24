@@ -17,9 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/**
- * LanguageMap Tests.
- */
+/** LanguageMap Tests. */
 @DisplayName("LanguageMap tests")
 class LanguageMapTests {
 
@@ -38,7 +36,6 @@ class LanguageMapTests {
 
     // Then Value Is Expected
     assertThat(value, is(expected));
-
   }
 
   @Test
@@ -56,7 +53,6 @@ class LanguageMapTests {
 
     // Then Value Is English
     assertThat(value, is("Color"));
-
   }
 
   @Test
@@ -73,7 +69,6 @@ class LanguageMapTests {
 
     // Then Value Is English
     assertThat(value, is("Color"));
-
   }
 
   @Test
@@ -90,7 +85,6 @@ class LanguageMapTests {
 
     // Then Value Is French
     assertThat(value, is("Couleur"));
-
   }
 
   @Test
@@ -105,7 +99,6 @@ class LanguageMapTests {
 
     // Then Value Is Null
     assertNull(value);
-
   }
 
   @Test
@@ -122,7 +115,6 @@ class LanguageMapTests {
 
     // Then Value Is UND
     assertThat(value, is("Colour"));
-
   }
 
   @Test
@@ -140,7 +132,5 @@ class LanguageMapTests {
 
     // Then Value Is UK
     assertThat(value, is("Colour"));
-
   }
-
 }

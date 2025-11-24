@@ -16,10 +16,9 @@ import lombok.Value;
  * This class represents the xAPI Interaction Component object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#interaction-components">xAPI
- *      Interaction Components</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#interaction-components">xAPI
+ *     Interaction Components</a>
  */
 @Value
 @Builder
@@ -27,22 +26,15 @@ import lombok.Value;
 @EqualsAndHashCode(of = "id")
 public class InteractionComponent {
 
-  /**
-   * Identifies the interaction component within the list.
-   */
-  @NotNull
-  private String id;
+  /** Identifies the interaction component within the list. */
+  @NotNull private String id;
 
-  /**
-   * A description of the interaction component.
-   */
+  /** A description of the interaction component. */
   private LanguageMap description;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Group.
-   */
+  /** Builder for Group. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -52,9 +44,7 @@ public class InteractionComponent {
      *
      * @param key The key of the entry.
      * @param value The value of the entry.
-     *
      * @return This builder
-     *
      * @see InteractionComponent#description
      */
     public Builder addDescription(Locale key, String value) {
@@ -65,7 +55,5 @@ public class InteractionComponent {
       this.description.put(key, value);
       return this;
     }
-
   }
-
 }

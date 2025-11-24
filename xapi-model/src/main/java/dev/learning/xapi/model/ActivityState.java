@@ -6,22 +6,21 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Value;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * This class represents the xAPI Activity State object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">xAPI
- *      Activity State</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#23-state-resource">xAPI
+ *     Activity State</a>
  */
 @Value
 @Builder
@@ -32,9 +31,7 @@ public class ActivityState {
 
   private String stateId;
 
-  @Valid
-  @ValidActor
-  private Agent agent;
+  @Valid @ValidActor private Agent agent;
 
   @Variant(2)
   private UUID registration;

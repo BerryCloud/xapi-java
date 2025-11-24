@@ -21,10 +21,9 @@ import lombok.Value;
  * This class represents the xAPI Person object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#person-properties">xAPI
- *      Person</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#person-properties">xAPI
+ *     Person</a>
  */
 @Value
 @Builder
@@ -34,38 +33,25 @@ public class Person {
 
   private final String objectType = "Person"; // NOSONAR
 
-  /**
-   * List of names.
-   */
+  /** List of names. */
   private List<String> name;
 
-  /**
-   * List of e-mail addresses.
-   */
+  /** List of e-mail addresses. */
   private List<@Mbox String> mbox;
 
-  /**
-   * List of the SHA1 hashes of mailto IRIs.
-   */
+  /** List of the SHA1 hashes of mailto IRIs. */
   @JsonProperty("mbox_sha1sum")
   private List<String> mboxSha1sum;
 
-  /**
-   * List of openids that uniquely identify the Agents retrieved.
-   */
+  /** List of openids that uniquely identify the Agents retrieved. */
   private List<URI> openid;
 
-  /**
-   * List of accounts.
-   */
-  @Valid
-  private List<Account> account;
+  /** List of accounts. */
+  @Valid private List<Account> account;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Person.
-   */
+  /** Builder for Person. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -74,9 +60,7 @@ public class Person {
      * Consumer Builder for account.
      *
      * @param account The Consumer Builder for account.
-     *
      * @return This builder
-     *
      * @see Person#account
      */
     public Builder addAccount(Consumer<Account.Builder> account) {
@@ -92,9 +76,7 @@ public class Person {
      * Adds an account entry.
      *
      * @param account The account to add.
-     *
      * @return This builder
-     *
      * @see Person#account
      */
     public Builder addAccount(Account account) {
@@ -105,8 +87,6 @@ public class Person {
       this.account.add(account);
 
       return this;
-
     }
   }
-
 }

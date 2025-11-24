@@ -21,10 +21,9 @@ import lombok.Value;
  * This class represents the xAPI Activity object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2441-when-the-objecttype-is-activity">xAPI
- *      Activity</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#2441-when-the-objecttype-is-activity">xAPI
+ *     Activity</a>
  */
 @Value
 @Builder
@@ -34,20 +33,11 @@ public class Activity implements StatementObject, SubStatementObject {
 
   private ActivityObjectType objectType;
 
-  /**
-   * An identifier for a single unique Activity.
-   */
-  @NotNull
-  @HasScheme
-  private URI id;
+  /** An identifier for a single unique Activity. */
+  @NotNull @HasScheme private URI id;
 
-  /**
-   * Metadata.
-   */
-  @Valid
-  @ValidActivityDefinition
-  @JsonMerge
-  private ActivityDefinition definition;
+  /** Metadata. */
+  @Valid @ValidActivityDefinition @JsonMerge private ActivityDefinition definition;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
@@ -62,9 +52,7 @@ public class Activity implements StatementObject, SubStatementObject {
     this.definition = null;
   }
 
-  /**
-   * Builder for Activity.
-   */
+  /** Builder for Activity. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -73,9 +61,7 @@ public class Activity implements StatementObject, SubStatementObject {
      * Sets the identifier.
      *
      * @param id The identifier of the Activity.
-     *
      * @return This builder
-     *
      * @see Activity#id
      */
     public Builder id(URI id) {
@@ -89,9 +75,7 @@ public class Activity implements StatementObject, SubStatementObject {
      * Sets the identifier.
      *
      * @param id The identifier of the Activity.
-     *
      * @return This builder
-     *
      * @see Activity#id
      */
     public Builder id(String id) {
@@ -105,9 +89,7 @@ public class Activity implements StatementObject, SubStatementObject {
      * Consumer Builder for definition.
      *
      * @param definition The Consumer Builder for definition
-     *
      * @return This builder
-     *
      * @see Activity#definition
      */
     public Builder definition(Consumer<ActivityDefinition.Builder> definition) {
@@ -123,9 +105,7 @@ public class Activity implements StatementObject, SubStatementObject {
      * Sets the definition.
      *
      * @param definition The definition of the Activity
-     *
      * @return This builder
-     *
      * @see Activity#definition
      */
     public Builder definition(ActivityDefinition definition) {
@@ -134,7 +114,6 @@ public class Activity implements StatementObject, SubStatementObject {
 
       return this;
     }
-
   }
 
   /**
@@ -144,12 +123,8 @@ public class Activity implements StatementObject, SubStatementObject {
    */
   public enum ActivityObjectType {
 
-    /**
-     * Activity object type.
-     */
+    /** Activity object type. */
     @JsonProperty("Activity")
     ACTIVITY;
-
   }
-
 }

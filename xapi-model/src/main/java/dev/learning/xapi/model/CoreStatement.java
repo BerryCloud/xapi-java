@@ -14,39 +14,24 @@ import java.util.List;
  */
 public interface CoreStatement {
 
-  /**
-   * Whom the Statement is about, as an Agent or Group Object.
-   */
+  /** Whom the Statement is about, as an Agent or Group Object. */
   Actor getActor();
 
-  /**
-   * Action taken by the Actor.
-   */
+  /** Action taken by the Actor. */
   Verb getVerb();
 
-  /**
-   * Activity, Agent, or another Statement that is the Object of the Statement.
-   */
+  /** Activity, Agent, or another Statement that is the Object of the Statement. */
   Object getObject();
 
-  /**
-   * Result Object, further details representing a measured outcome.
-   */
+  /** Result Object, further details representing a measured outcome. */
   Result getResult();
 
-  /**
-   * Context that gives the Statement more meaning.
-   */
+  /** Context that gives the Statement more meaning. */
   Context getContext();
 
-  /**
-   * Timestamp of when the events described within this Statement occurred.
-   */
+  /** Timestamp of when the events described within this Statement occurred. */
   Instant getTimestamp();
 
-  /**
-   * Headers for Attachments to the Statement.
-   */
+  /** Headers for Attachments to the Statement. */
   List<Attachment> getAttachments();
-
 }

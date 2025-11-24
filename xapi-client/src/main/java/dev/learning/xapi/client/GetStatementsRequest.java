@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.StatementFormat;
 import dev.learning.xapi.model.Verb;
@@ -19,14 +18,14 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Request for getting multiple Statements.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
- *      Statements</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+ *     Statements</a>
  * @author Thomas Turrell-Croft
  */
 @Builder
@@ -97,36 +96,23 @@ public class GetStatementsRequest implements Request {
     }
 
     return uriBuilder
-
         .queryParamIfPresent("registration", Optional.ofNullable(registration))
-
         .queryParamIfPresent("related_activities", Optional.ofNullable(relatedActivities))
-
         .queryParamIfPresent("related_agents", Optional.ofNullable(relatedAgents))
-
         .queryParamIfPresent("limit", Optional.ofNullable(limit))
-
         .queryParamIfPresent("format", Optional.ofNullable(format))
-
         .queryParamIfPresent("attachments", Optional.ofNullable(attachments))
-
         .queryParamIfPresent("ascending", Optional.ofNullable(ascending));
-
   }
 
-  /**
-   * Builder for GetStatementsRequest.
-   */
+  /** Builder for GetStatementsRequest. */
   public static class Builder {
-
 
     /**
      * Sets the agent.
      *
      * @param agent The agent of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#agent
      */
     public Builder agent(Agent agent) {
@@ -138,9 +124,7 @@ public class GetStatementsRequest implements Request {
      * Sets the agent.
      *
      * @param agent The agent of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#agent
      */
     public Builder agent(Consumer<Agent.Builder<?, ?>> agent) {
@@ -156,9 +140,7 @@ public class GetStatementsRequest implements Request {
      * Sets the verb.
      *
      * @param verb The verb of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#verb
      */
     public Builder verb(URI verb) {
@@ -170,9 +152,7 @@ public class GetStatementsRequest implements Request {
      * Sets the verb.
      *
      * @param verb The verb of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#verb
      */
     public Builder verb(String verb) {
@@ -184,9 +164,7 @@ public class GetStatementsRequest implements Request {
      * Sets the verb.
      *
      * @param verb The verb of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#verb
      */
     public Builder verb(Verb verb) {
@@ -198,9 +176,7 @@ public class GetStatementsRequest implements Request {
      * Sets the activity.
      *
      * @param activity The activity of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#activity
      */
     public Builder activity(URI activity) {
@@ -212,9 +188,7 @@ public class GetStatementsRequest implements Request {
      * Sets the activity.
      *
      * @param activity The activity of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#activity
      */
     public Builder activity(String activity) {
@@ -226,9 +200,7 @@ public class GetStatementsRequest implements Request {
      * Sets the registration.
      *
      * @param registration The registration of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#registration
      */
     public Builder registration(UUID registration) {
@@ -240,9 +212,7 @@ public class GetStatementsRequest implements Request {
      * Sets the registration.
      *
      * @param registration The registration of the GetStatementRequest.
-     *
      * @return This builder
-     *
      * @see GetStatementsRequest#registration
      */
     public Builder registration(String registration) {
@@ -259,8 +229,5 @@ public class GetStatementsRequest implements Request {
   private String agentToJsonString() {
 
     return objectMapper.writeValueAsString(agent);
-
   }
-
-
 }

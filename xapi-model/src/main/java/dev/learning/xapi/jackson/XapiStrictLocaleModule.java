@@ -4,9 +4,9 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import dev.learning.xapi.jackson.StrictLocaleDeserializer.StrictLocaleKeyDeserializer;
 import java.util.Locale;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * xAPI JSON module for registering custom deserializer {@link Locale} objects.
@@ -26,6 +26,5 @@ public class XapiStrictLocaleModule extends SimpleModule {
 
     addDeserializer(Locale.class, new StrictLocaleDeserializer());
     addKeyDeserializer(Locale.class, new StrictLocaleKeyDeserializer());
-
   }
 }

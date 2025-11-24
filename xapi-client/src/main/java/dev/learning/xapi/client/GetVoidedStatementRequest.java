@@ -15,9 +15,8 @@ import org.springframework.web.util.UriBuilder;
  * Request for getting a voided Statement.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#214-voided-statements">Voided
- *      Statements</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#214-voided-statements">Voided
+ *     Statements</a>
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
@@ -25,23 +24,17 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 public class GetVoidedStatementRequest extends GetStatementRequest {
 
-
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
-    return uriBuilder.path("/statements")
-
+    return uriBuilder
+        .path("/statements")
         .queryParam("voidedStatementId", id)
-
         .queryParamIfPresent("format", Optional.ofNullable(format))
-
         .queryParamIfPresent("attachments", Optional.ofNullable(attachments));
-
   }
 
-  /**
-   * Builder for GetVoidedStatementRequest.
-   */
+  /** Builder for GetVoidedStatementRequest. */
   public abstract static class Builder<C extends GetVoidedStatementRequest, B extends Builder<C, B>>
       extends GetStatementRequest.Builder<C, B> {
 
@@ -49,7 +42,6 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
      * Sets the voidedId.
      *
      * @param voidedId The voidedId of the GetVoidedStatementRequest.
-     *
      * @return This builder
      */
     public Builder<C, B> voidedId(UUID voidedId) {
@@ -61,7 +53,6 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
      * Sets the voidedId.
      *
      * @param voidedId The voidedId of the GetVoidedStatementRequest.
-     *
      * @return This builder
      */
     public Builder<C, B> voidedId(String voidedId) {
@@ -72,5 +63,4 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
     // This static class extends the lombok builder.
 
   }
-
 }

@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.time.Instant;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * xAPI JSON module for registering custom deserializer {@link Instant} objects.
@@ -24,6 +24,5 @@ public class XapiStrictTimestampModule extends SimpleModule {
     super("xApi Strict Timestamp Module");
 
     addDeserializer(Instant.class, new StrictTimestampDeserializer());
-
   }
 }

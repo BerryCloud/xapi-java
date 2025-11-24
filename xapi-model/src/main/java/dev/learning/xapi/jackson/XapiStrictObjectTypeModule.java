@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import dev.learning.xapi.jackson.model.strict.StrictObjectTypeMixIn;
 import dev.learning.xapi.model.Activity;
 import dev.learning.xapi.model.Actor;
@@ -14,6 +13,7 @@ import dev.learning.xapi.model.StatementObject;
 import dev.learning.xapi.model.StatementReference;
 import dev.learning.xapi.model.SubStatement;
 import dev.learning.xapi.model.SubStatementObject;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * xAPI JSON module for enabling strict ObjectTypeResolver.
@@ -24,9 +24,7 @@ public class XapiStrictObjectTypeModule extends SimpleModule {
 
   private static final long serialVersionUID = -5943467400927276326L;
 
-  /**
-   * XapiStrictObjectTypeModule constructor.
-   */
+  /** XapiStrictObjectTypeModule constructor. */
   public XapiStrictObjectTypeModule() {
     super("xAPI Strict ObjectType Module");
 

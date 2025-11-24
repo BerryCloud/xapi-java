@@ -26,7 +26,6 @@ import lombok.experimental.SuperBuilder;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#actor">xAPI Actor</a>
  */
 @Getter
@@ -34,57 +33,46 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "name")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "objectType", defaultImpl = Agent.class,
-    visible = true, include = As.EXISTING_PROPERTY)
-@JsonSubTypes({@JsonSubTypes.Type(value = Agent.class, name = "Agent"),
-    @JsonSubTypes.Type(value = Agent.class, name = "Person"),
-    @JsonSubTypes.Type(value = Group.class, name = "Group")})
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = Agent.class,
+    visible = true,
+    include = As.EXISTING_PROPERTY)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Agent.class, name = "Agent"),
+  @JsonSubTypes.Type(value = Agent.class, name = "Person"),
+  @JsonSubTypes.Type(value = Group.class, name = "Group")
+})
 @JsonInclude(Include.NON_EMPTY)
 public abstract class Actor implements StatementObject, SubStatementObject {
 
-  /**
-   * Full name.
-   */
+  /** Full name. */
   String name;
 
-  /**
-   * An email address. The required format is "mailto:email address".
-   */
-  @Mbox
-  String mbox;
+  /** An email address. The required format is "mailto:email address". */
+  @Mbox String mbox;
 
-  /**
-   * Hex-encoded SHA1 hash of a mailto IRI.
-   */
+  /** Hex-encoded SHA1 hash of a mailto IRI. */
   @JsonProperty("mbox_sha1sum")
   String mboxSha1sum;
 
-  /**
-   * An openID.
-   */
-  @HasScheme
-  URI openid;
+  /** An openID. */
+  @HasScheme URI openid;
 
-  /**
-   * An account on an existing system e.g. an LMS or intranet.
-   */
-  @Valid
-  Account account;
+  /** An account on an existing system e.g. an LMS or intranet. */
+  @Valid Account account;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Actor.
-   */
+  /** Builder for Actor. */
   public abstract static class Builder<C extends Actor, B extends Builder<C, B>> {
 
     /**
      * Consumer Builder for account.
      *
      * @param account The Consumer Builder for account.
-     *
      * @return This builder
-     *
      * @see Actor#account
      */
     public Builder<C, B> account(Consumer<Account.Builder> account) {
@@ -100,9 +88,7 @@ public abstract class Actor implements StatementObject, SubStatementObject {
      * Sets the account.
      *
      * @param account The Account of the Actor.
-     *
      * @return This builder
-     *
      * @see Actor#account
      */
     public Builder<C, B> account(Account account) {
@@ -111,7 +97,5 @@ public abstract class Actor implements StatementObject, SubStatementObject {
 
       return self();
     }
-
   }
-
 }

@@ -16,8 +16,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.http.codec.autoconfigure.CodecsAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
@@ -29,13 +29,16 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
  */
 @DisplayName("XapiClientAutoConfigurationUsernamePassword Test")
 @SpringBootTest(
-    classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
-        XapiTestClientConfiguration.class, JacksonAutoConfiguration.class },
-    properties = { "xapi.client.username = username", "xapi.client.password = password" })
+    classes = {
+      XapiClientAutoConfiguration.class,
+      CodecsAutoConfiguration.class,
+      XapiTestClientConfiguration.class,
+      JacksonAutoConfiguration.class
+    },
+    properties = {"xapi.client.username = username", "xapi.client.password = password"})
 class XapiClientAutoConfigurationUsernamePasswordTest {
 
-  @Autowired
-  private XapiClient client;
+  @Autowired private XapiClient client;
 
   private static MockWebServer mockWebServer;
 
@@ -50,9 +53,7 @@ class XapiClientAutoConfigurationUsernamePasswordTest {
         // Ignore - test will fail if server doesn't start
       }
       builder.baseUrl(mockWebServer.url("").toString());
-
     }
-
   }
 
   @AfterAll
@@ -69,8 +70,8 @@ class XapiClientAutoConfigurationUsernamePasswordTest {
     final RecordedRequest recordedRequest = mockWebServer.takeRequest();
 
     // Then Authorization Is Set
-    assertThat(recordedRequest.getHeaders().get(HttpHeaders.AUTHORIZATION),
+    assertThat(
+        recordedRequest.getHeaders().get(HttpHeaders.AUTHORIZATION),
         is("Basic dXNlcm5hbWU6cGFzc3dvcmQ="));
   }
-
 }

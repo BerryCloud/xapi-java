@@ -15,8 +15,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.http.codec.autoconfigure.CodecsAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -26,13 +26,15 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @DisplayName("XapiClientAutoConfigurationBaseUrl Test")
 @SpringBootTest(
-    classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
-        JacksonAutoConfiguration.class },
-    properties = { "xapi.client.baseUrl = http://127.0.0.1:55123/" })
+    classes = {
+      XapiClientAutoConfiguration.class,
+      CodecsAutoConfiguration.class,
+      JacksonAutoConfiguration.class
+    },
+    properties = {"xapi.client.baseUrl = http://127.0.0.1:55123/"})
 class XapiClientAutoConfigurationBaseUrlTest {
 
-  @Autowired
-  private XapiClient client;
+  @Autowired private XapiClient client;
 
   private static MockWebServer mockWebServer;
 
@@ -56,9 +58,12 @@ class XapiClientAutoConfigurationBaseUrlTest {
     final var recordedRequest = mockWebServer.takeRequest();
 
     // Then BaseUrl Is Set (Request was sent to the proper url)
-    assertThat(recordedRequest.getRequestUrl().toString(), anyOf(
-        is("http://127.0.0.1:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"),
-        is("http://localhost:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6")));
+    assertThat(
+        recordedRequest.getRequestUrl().toString(),
+        anyOf(
+            is(
+                "http://127.0.0.1:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6"),
+            is(
+                "http://localhost:55123/statements?statementId=4df42866-40e7-45b6-bf7c-8d5fccbdccd6")));
   }
-
 }

@@ -4,16 +4,16 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializerProvider;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 /**
- * Specific Locale serializer using {@link Locale#toLanguageTag()} instead of
- * {@link Locale#toString()}.
+ * Specific Locale serializer using {@link Locale#toLanguageTag()} instead of {@link
+ * Locale#toString()}.
  *
  * @author István Rátkai (Selindek)
  */
@@ -32,10 +32,7 @@ public class LocaleSerializer extends StdSerializer<Locale> {
   }
 
   /**
-   * <p>
-   * Locale Key Serializer.
-   * </p>
-   * For serializing Locale keys in {@link Map}s
+   * Locale Key Serializer. For serializing Locale keys in {@link Map}s
    *
    * @author István Rátkai (Selindek)
    */
@@ -52,7 +49,5 @@ public class LocaleSerializer extends StdSerializer<Locale> {
         throws IOException {
       gen.writeFieldName(value.toLanguageTag());
     }
-
   }
-
 }

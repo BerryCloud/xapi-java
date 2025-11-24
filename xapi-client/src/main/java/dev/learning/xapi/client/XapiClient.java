@@ -36,10 +36,9 @@ import reactor.core.publisher.Mono;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
- *      communication resources</a>
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
+ *     communication resources</a>
  */
 public class XapiClient {
 
@@ -55,33 +54,31 @@ public class XapiClient {
    * Default constructor for XapiClient.
    *
    * @param builder a {@link WebClient.Builder} object. The caller must set the baseUrl and the
-   *        authorization header.
+   *     authorization header.
    */
   public XapiClient(WebClient.Builder builder) {
-    this.webClient = builder
+    this.webClient =
+        builder
+            .defaultHeader("X-Experience-API-Version", "1.0.3")
+            .codecs(
+                configurer -> {
+                  configurer
+                      .customCodecs()
+                      .register(new StatementHttpMessageWriter(configurer.getWriters()));
 
-        .defaultHeader("X-Experience-API-Version", "1.0.3")
-
-        .codecs(configurer -> {
-
-          configurer.customCodecs()
-              .register(new StatementHttpMessageWriter(configurer.getWriters()));
-
-          configurer.customCodecs().register(new StatementHttpMessageReader());
-
-        }).build();
+                  configurer.customCodecs().register(new StatementHttpMessageReader());
+                })
+            .build();
   }
 
   // Statement Resource
 
   /**
    * Gets a Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement.
    *
    * @param request the get statement request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(GetStatementRequest request) {
@@ -89,25 +86,18 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(Statement.class);
-
   }
 
   /**
    * Gets a Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement.
    *
    * @param request the consumer builder for the get statement request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getStatement(
@@ -118,19 +108,15 @@ public class XapiClient {
     request.accept(builder);
 
     return getStatement(builder.build());
-
   }
 
   /**
    * Posts Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement identifier.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement identifier.
    *
    * @param request the post statement request
-   *
    * @return the ResponseEntity
-   *
    * @throws MissingResponseBodyException if the response body is missing
    */
   public Mono<ResponseEntity<UUID>> postStatement(PostStatementRequest request) {
@@ -138,30 +124,27 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .bodyValue(request.getStatement())
-
         .retrieve()
-
         .toEntity(LIST_UUID_TYPE)
-
-        .map(i -> ResponseEntity.ok().headers(i.getHeaders()).body(Optional.ofNullable(i.getBody())
-            .map(l -> l.get(0)).orElseThrow(MissingResponseBodyException::new)));
-
+        .map(
+            i ->
+                ResponseEntity.ok()
+                    .headers(i.getHeaders())
+                    .body(
+                        Optional.ofNullable(i.getBody())
+                            .map(l -> l.get(0))
+                            .orElseThrow(MissingResponseBodyException::new)));
   }
 
   /**
    * Posts Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement identifier.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement identifier.
    *
    * @param request the consumer builder for the post statement request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> postStatement(Consumer<PostStatementRequest.Builder> request) {
@@ -171,18 +154,15 @@ public class XapiClient {
     request.accept(builder);
 
     return postStatement(builder.build());
-
   }
 
   /**
    * Post Statements.
-   * <p>
-   * The returned ResponseEntity contains the response headers and an array of Statement
+   *
+   * <p>The returned ResponseEntity contains the response headers and an array of Statement
    * identifiers.
-   * </p>
    *
    * @param request the post statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<UUID>>> postStatements(PostStatementsRequest request) {
@@ -190,28 +170,20 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .bodyValue(request.getStatements())
-
         .retrieve()
-
         .toEntity(LIST_UUID_TYPE);
-
   }
 
   /**
    * Posts Statements.
-   * <p>
-   * The returned ResponseEntity contains the response headers and an array of Statement
+   *
+   * <p>The returned ResponseEntity contains the response headers and an array of Statement
    * identifiers.
-   * </p>
    *
    * @param request the consumer builder for the post statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<UUID>>> postStatements(
@@ -222,17 +194,14 @@ public class XapiClient {
     request.accept(builder);
 
     return postStatements(builder.build());
-
   }
 
   /**
    * Gets a voided Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the voided Statement.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the voided Statement.
    *
    * @param request the get voided statement request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getVoidedStatement(GetVoidedStatementRequest request) {
@@ -240,25 +209,18 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(Statement.class);
-
   }
 
   /**
    * Gets a voided Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the voided Statement.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the voided Statement.
    *
    * @param request the consumer builder for the get voided statement request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Statement>> getVoidedStatement(
@@ -269,15 +231,13 @@ public class XapiClient {
     request.accept(builder);
 
     return getVoidedStatement(builder.build());
-
   }
 
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   * <p>
-   * The returned ResponseEntity contains the response headers and StatementResult.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and StatementResult.
    *
    * @return the ResponseEntity
    */
@@ -289,12 +249,10 @@ public class XapiClient {
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   * <p>
-   * The returned ResponseEntity contains the response headers and StatementResult.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and StatementResult.
    *
    * @param request The parameters of the get statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getStatements(GetStatementsRequest request) {
@@ -302,26 +260,19 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(StatementResult.class);
-
   }
 
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   * <p>
-   * The returned ResponseEntity contains the response headers and StatementResult.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and StatementResult.
    *
    * @param request The Consumer Builder for the get statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getStatements(
@@ -332,18 +283,15 @@ public class XapiClient {
     request.accept(builder);
 
     return getStatements(builder.build());
-
   }
 
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   * <p>
-   * The returned ResponseEntity contains the response headers and StatementResult.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and StatementResult.
    *
    * @param request The parameters of the get more statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(GetMoreStatementsRequest request) {
@@ -351,26 +299,19 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(StatementResult.class);
-
   }
 
   /**
    * Gets a StatementResult object, a list of Statements. If additional results are available, an
    * URL to retrieve them will be included in the StatementResult Object.
-   * <p>
-   * The returned ResponseEntity contains the response headers and StatementResult.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and StatementResult.
    *
    * @param request The Consumer Builder for the get more statements request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<StatementResult>> getMoreStatements(
@@ -381,7 +322,6 @@ public class XapiClient {
     request.accept(builder);
 
     return getMoreStatements(builder.build());
-
   }
 
   // State Resource
@@ -389,12 +329,10 @@ public class XapiClient {
   /**
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The parameters of the get state request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getState(GetStateRequest request, Class<T> bodyType) {
@@ -402,48 +340,38 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(bodyType);
-
   }
 
   /**
    * Gets a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The Consumer Builder for the get state request
-   *
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getState(Consumer<GetStateRequest.Builder<?, ?>> request,
-      Class<T> bodyType) {
+  public <T> Mono<ResponseEntity<T>> getState(
+      Consumer<GetStateRequest.Builder<?, ?>> request, Class<T> bodyType) {
 
     final GetStateRequest.Builder<?, ?> builder = GetStateRequest.builder();
 
     request.accept(builder);
 
     return getState(builder.build(), bodyType);
-
   }
 
   /**
    * Posts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The parameters of the post state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postState(PostStateRequest request) {
@@ -451,30 +379,21 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .contentType(request.getContentType())
-
         .bodyValue(request.getState())
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Posts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The Consumer Builder for the post state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postState(Consumer<PostStateRequest.Builder<?, ?>> request) {
@@ -484,18 +403,15 @@ public class XapiClient {
     request.accept(builder);
 
     return postState(builder.build());
-
   }
 
   /**
    * Puts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The parameters of the put state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putState(PutStateRequest request) {
@@ -503,30 +419,21 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .contentType(request.getContentType())
-
         .bodyValue(request.getState())
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Puts a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The Consumer Builder for the put state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putState(Consumer<PutStateRequest.Builder<?, ?>> request) {
@@ -536,18 +443,15 @@ public class XapiClient {
     request.accept(builder);
 
     return putState(builder.build());
-
   }
 
   /**
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the delete state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteState(DeleteStateRequest request) {
@@ -555,26 +459,19 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Deletes a single document specified by the given stateId activity, agent, and optional
    * registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the delete state request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteState(
@@ -585,7 +482,6 @@ public class XapiClient {
     request.accept(builder);
 
     return deleteState(builder.build());
-
   }
 
   /**
@@ -593,7 +489,6 @@ public class XapiClient {
    * parameters.
    *
    * @param request The parameters of the get states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getStates(GetStatesRequest request) {
@@ -601,26 +496,19 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(LIST_STRING_TYPE);
-
   }
 
   /**
    * Gets all stateId's specified by the given activityId, agent and optional registration and since
    * parameters.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the get states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getStates(
@@ -631,17 +519,14 @@ public class XapiClient {
     request.accept(builder);
 
     return getStates(builder.build());
-
   }
 
   /**
    * Deletes all documents specified by the given activityId, agent and optional registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the delete states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteStates(DeleteStatesRequest request) {
@@ -649,25 +534,18 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Deletes all documents specified by the given activityId, agent and optional registration.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the delete states request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteStates(
@@ -678,7 +556,6 @@ public class XapiClient {
     request.accept(builder);
 
     return deleteStates(builder.build());
-
   }
 
   // Agents Resource
@@ -689,7 +566,6 @@ public class XapiClient {
    * value, and it is legal to include multiple identifying properties.
    *
    * @param request The parameters of the get agents request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Person>> getAgents(GetAgentsRequest request) {
@@ -697,15 +573,10 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(Person.class);
-
   }
 
   /**
@@ -714,7 +585,6 @@ public class XapiClient {
    * value, and it is legal to include multiple identifying properties.
    *
    * @param request The Consumer Builder for the get agents request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Person>> getAgents(Consumer<GetAgentsRequest.Builder> request) {
@@ -724,7 +594,6 @@ public class XapiClient {
     request.accept(builder);
 
     return getAgents(builder.build());
-
   }
 
   // Activities Resource
@@ -733,7 +602,6 @@ public class XapiClient {
    * Loads the complete Activity Object specified.
    *
    * @param request The parameters of the get activity request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Activity>> getActivity(GetActivityRequest request) {
@@ -741,22 +609,16 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(Activity.class);
-
   }
 
   /**
    * Loads the complete Activity Object specified.
    *
    * @param request The Consumer Builder for the get activity request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Activity>> getActivity(Consumer<GetActivityRequest.Builder> request) {
@@ -766,46 +628,36 @@ public class XapiClient {
     request.accept(builder);
 
     return getActivity(builder.build());
-
   }
 
   // Agent Profile Resource
 
   /**
    * Gets a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the get agent profile request
-   *
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getAgentProfile(GetAgentProfileRequest request,
-      Class<T> bodyType) {
+  public <T> Mono<ResponseEntity<T>> getAgentProfile(
+      GetAgentProfileRequest request, Class<T> bodyType) {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(bodyType);
-
   }
 
   /**
    * Gets a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the get agent profile request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getAgentProfile(
@@ -816,17 +668,14 @@ public class XapiClient {
     request.accept(builder);
 
     return getAgentProfile(builder.build(), bodyType);
-
   }
 
   /**
    * Deletes a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the delete agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(DeleteAgentProfileRequest request) {
@@ -834,25 +683,18 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Deletes a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the delete agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteAgentProfile(
@@ -863,17 +705,14 @@ public class XapiClient {
     request.accept(builder);
 
     return deleteAgentProfile(builder.build());
-
   }
 
   /**
    * Puts a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the put agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putAgentProfile(PutAgentProfileRequest request) {
@@ -881,29 +720,20 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .contentType(request.getContentType())
-
         .bodyValue(request.getProfile())
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Puts a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the put agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putAgentProfile(
@@ -914,17 +744,14 @@ public class XapiClient {
     request.accept(builder);
 
     return putAgentProfile(builder.build());
-
   }
 
   /**
    * Posts a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the post agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postAgentProfile(PostAgentProfileRequest request) {
@@ -932,29 +759,20 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .contentType(request.getContentType())
-
         .bodyValue(request.getProfile())
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Posts a single agent profile by the given agent and profileId.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the post agent profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postAgentProfile(
@@ -965,7 +783,6 @@ public class XapiClient {
     request.accept(builder);
 
     return postAgentProfile(builder.build());
-
   }
 
   /**
@@ -974,7 +791,6 @@ public class XapiClient {
    * (exclusive).
    *
    * @param request The parameters of the get agent profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(GetAgentProfilesRequest request) {
@@ -982,15 +798,10 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(LIST_STRING_TYPE);
-
   }
 
   /**
@@ -999,7 +810,6 @@ public class XapiClient {
    * (exclusive).
    *
    * @param request The Consumer Builder for the get agent profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getAgentProfiles(
@@ -1010,46 +820,36 @@ public class XapiClient {
     request.accept(builder);
 
     return getAgentProfiles(builder.build());
-
   }
 
   // Activity Profile Resource
 
   /**
    * Fetches the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The parameters of the get activity profile request
-   *
    * @return the ResponseEntity
    */
-  public <T> Mono<ResponseEntity<T>> getActivityProfile(GetActivityProfileRequest request,
-      Class<T> bodyType) {
+  public <T> Mono<ResponseEntity<T>> getActivityProfile(
+      GetActivityProfileRequest request, Class<T> bodyType) {
 
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(bodyType);
-
   }
 
   /**
    * Fetches the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The Consumer Builder for the get activity profile request
-   *
    * @return the ResponseEntity
    */
   public <T> Mono<ResponseEntity<T>> getActivityProfile(
@@ -1060,17 +860,14 @@ public class XapiClient {
     request.accept(builder);
 
     return getActivityProfile(builder.build(), bodyType);
-
   }
 
   /**
    * Changes or stores the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The parameters of the post activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postActivityProfile(PostActivityProfileRequest request) {
@@ -1078,29 +875,20 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .contentType(request.getContentType())
-
         .bodyValue(request.getActivityProfile())
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Changes or stores the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The Consumer Builder for the post activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> postActivityProfile(
@@ -1111,17 +899,14 @@ public class XapiClient {
     request.accept(builder);
 
     return postActivityProfile(builder.build());
-
   }
 
   /**
    * Stores the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The parameters of the put activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putActivityProfile(PutActivityProfileRequest request) {
@@ -1129,29 +914,20 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .contentType(request.getContentType())
-
         .bodyValue(request.getActivityProfile())
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Stores the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers and body.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and body.
    *
    * @param request The Consumer Builder for the put activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> putActivityProfile(
@@ -1162,17 +938,14 @@ public class XapiClient {
     request.accept(builder);
 
     return putActivityProfile(builder.build());
-
   }
 
   /**
    * Deletes the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the delete activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteActivityProfile(DeleteActivityProfileRequest request) {
@@ -1180,25 +953,18 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toBodilessEntity();
-
   }
 
   /**
    * Deletes the specified Profile document in the context of the specified Activity.
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the delete activity profile request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<Void>> deleteActivityProfile(
@@ -1210,19 +976,16 @@ public class XapiClient {
     request.accept(builder);
 
     return deleteActivityProfile(builder.build());
-
   }
 
   /**
    * Fetches Profile ids of all Profile documents for an Activity. If "since" parameter is
    * specified, this is limited to entries that have been stored or updated since the specified
    * Timestamp (exclusive).
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The parameters of the get activity profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(
@@ -1231,27 +994,20 @@ public class XapiClient {
     final Map<String, Object> queryParams = new HashMap<>();
 
     return this.webClient
-
         .method(request.getMethod())
-
         .uri(u -> request.url(u, queryParams).build(queryParams))
-
         .retrieve()
-
         .toEntity(LIST_STRING_TYPE);
-
   }
 
   /**
    * Fetches Profile ids of all Profile documents for an Activity. If "since" parameter is
    * specified, this is limited to entries that have been stored or updated since the specified
    * Timestamp (exclusive).
-   * <p>
-   * The returned ResponseEntity contains the response headers.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers.
    *
    * @param request The Consumer Builder for the get activity profiles request
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<List<String>>> getActivityProfiles(
@@ -1262,7 +1018,6 @@ public class XapiClient {
     request.accept(builder);
 
     return getActivityProfiles(builder.build());
-
   }
 
   // About Resource
@@ -1275,50 +1030,36 @@ public class XapiClient {
    */
   public Mono<ResponseEntity<About>> getAbout() {
 
-    return this.webClient
-
-        .get()
-
-        .uri(u -> u.path("/about").build())
-
-        .retrieve()
-
-        .toEntity(About.class);
-
+    return this.webClient.get().uri(u -> u.path("/about").build()).retrieve().toEntity(About.class);
   }
 
   // Enhanced features
 
   /**
    * Gets a list of Statements as a {@link StatementIterator}.
-   * <p>
-   * This method loads ALL of Statements which fullfills the request filters from the LRS
-   * dynamically. (It sends additional
-   * {@link XapiClient#getMoreStatements(java.util.function.Consumer)} request if all the previously
-   * loaded Statements were processed from the iterator.)
-   * </p>
+   *
+   * <p>This method loads ALL of Statements which fullfills the request filters from the LRS
+   * dynamically. (It sends additional {@link
+   * XapiClient#getMoreStatements(java.util.function.Consumer)} request if all the previously loaded
+   * Statements were processed from the iterator.)
    *
    * @param request The parameters of the get statements request
-   *
    * @return a {@link StatementIterator} object as a {@link Mono}.
    */
   public Mono<StatementIterator> getStatementIterator(GetStatementsRequest request) {
 
     return getStatements(request).map(result -> new StatementIterator(result));
-
   }
 
   /**
    * Gets a list of Statements as a {@link StatementIterator}.
-   * <p>
-   * This method loads ALL of Statements which fullfills the request filters from the LRS
-   * dynamically. (It sends additional
-   * {@link XapiClient#getMoreStatements(java.util.function.Consumer)} request if all the previously
-   * loaded Statements were processed from the iterator.)
-   * </p>
+   *
+   * <p>This method loads ALL of Statements which fullfills the request filters from the LRS
+   * dynamically. (It sends additional {@link
+   * XapiClient#getMoreStatements(java.util.function.Consumer)} request if all the previously loaded
+   * Statements were processed from the iterator.)
    *
    * @param request The parameters of the get statements request
-   *
    * @return a {@link StatementIterator} object as a {@link Mono}.
    */
   public Mono<StatementIterator> getStatementIterator(
@@ -1329,39 +1070,31 @@ public class XapiClient {
     request.accept(builder);
 
     return getStatementIterator(builder.build());
-
   }
 
   /**
    * Gets all of the Statements as a {@link StatementIterator}.
-   * <p>
-   * This method loads ALL of Statements which fullfills the request filters from the LRS
-   * dynamically. (It sends additional
-   * {@link XapiClient#getMoreStatements(java.util.function.Consumer)} request if all the previously
-   * loaded Statements were processed from the iterator.)
-   * </p>
+   *
+   * <p>This method loads ALL of Statements which fullfills the request filters from the LRS
+   * dynamically. (It sends additional {@link
+   * XapiClient#getMoreStatements(java.util.function.Consumer)} request if all the previously loaded
+   * Statements were processed from the iterator.)
    *
    * @return a {@link StatementIterator} object as a {@link Mono}.
    */
   public Mono<StatementIterator> getStatementIterator() {
 
-    return getStatementIterator(r -> {
-    });
-
+    return getStatementIterator(r -> {});
   }
 
   /**
-   * <p>
-   * Voids a {@link Statement}.
-   * </p>
-   * The Actor of the voiding statement will be the same as the Actor of the target Statement.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement identifier of the
-   * generated voiding Statement.
-   * </p>
+   * Voids a {@link Statement}. The Actor of the voiding statement will be the same as the Actor of
+   * the target Statement.
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement identifier of
+   * the generated voiding Statement.
    *
    * @param targetStatement The {@link Statement} to be voided
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> voidStatement(Statement targetStatement) {
@@ -1370,14 +1103,12 @@ public class XapiClient {
 
   /**
    * Voids a {@link Statement}.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement identifier of the
-   * generated voiding Statement.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement identifier of
+   * the generated voiding Statement.
    *
    * @param targetStatement The {@link Statement} to be voided
    * @param actor the Actor of the voiding Statement
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> voidStatement(Statement targetStatement, Actor actor) {
@@ -1386,46 +1117,30 @@ public class XapiClient {
 
   /**
    * Voids a {@link Statement}.
-   * <p>
-   * The returned ResponseEntity contains the response headers and the Statement identifier of the
-   * generated voiding Statement.
-   * </p>
+   *
+   * <p>The returned ResponseEntity contains the response headers and the Statement identifier of
+   * the generated voiding Statement.
    *
    * @param targetStatementId The id of the {@link Statement} to be voided
    * @param actor the Actor of the voiding Statement
-   *
    * @return the ResponseEntity
    */
   public Mono<ResponseEntity<UUID>> voidStatement(UUID targetStatementId, Actor actor) {
     Assert.notNull(targetStatementId, "Target Statement id cannot be null");
     Assert.notNull(actor, "Actor cannot be null");
 
-    return postStatement(r -> r
-
-        .statement(s -> s
-
-            .actor(actor)
-
-            .verb(Verb.VOIDED)
-
-            .statementReferenceObject(o -> o
-
-                .id(targetStatementId)
-
-            )
-
-        )
-
-    );
-
+    return postStatement(
+        r ->
+            r.statement(
+                s ->
+                    s.actor(actor)
+                        .verb(Verb.VOIDED)
+                        .statementReferenceObject(o -> o.id(targetStatementId))));
   }
 
   /**
-   * <p>
-   * StatementIterator.
-   * </p>
-   * Iterates through the Statements of the result of a
-   * {@link XapiClient#getStatements(GetStatementsRequest)}. If more Statements are available it
+   * StatementIterator. Iterates through the Statements of the result of a {@link
+   * XapiClient#getStatements(GetStatementsRequest)}. If more Statements are available it
    * automatically loads them from the server.
    *
    * @author István Rátkai (Selindek)
@@ -1475,6 +1190,5 @@ public class XapiClient {
       }
       return statements.next();
     }
-
   }
 }

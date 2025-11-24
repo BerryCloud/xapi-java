@@ -16,9 +16,8 @@ import org.springframework.web.util.UriBuilder;
  * Request for getting a single Activity.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#full-activity-object-get">Full
- *      Activity Object GET</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#full-activity-object-get">Full
+ *     Activity Object GET</a>
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
@@ -26,8 +25,7 @@ import org.springframework.web.util.UriBuilder;
 @Builder
 public class GetActivityRequest implements Request {
 
-  @NonNull
-  private final URI activityId;
+  @NonNull private final URI activityId;
 
   @Override
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
@@ -43,18 +41,14 @@ public class GetActivityRequest implements Request {
     return HttpMethod.GET;
   }
 
-  /**
-   * Builder for GetActivityRequest.
-   */
+  /** Builder for GetActivityRequest. */
   public static class Builder {
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the GetActivityRequest.
-     *
      * @return This builder
-     *
      * @see GetActivityRequest#activityId
      */
     public Builder activityId(String activityId) {
@@ -62,16 +56,13 @@ public class GetActivityRequest implements Request {
       this.activityId = URI.create(activityId);
 
       return this;
-
     }
 
     /**
      * Sets the activityId.
      *
      * @param activityId The activityId of the GetActivityRequest.
-     *
      * @return This builder
-     *
      * @see GetActivityRequest#activityId
      */
     public Builder activityId(URI activityId) {
@@ -79,8 +70,6 @@ public class GetActivityRequest implements Request {
       this.activityId = activityId;
 
       return this;
-
     }
   }
-
 }

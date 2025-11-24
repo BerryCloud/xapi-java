@@ -23,11 +23,8 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetStatementApplication implements CommandLineRunner {
 
-  /**
-   * Default xAPI client. Properties are picked automatically from application.properties.
-   */
-  @Autowired
-  private XapiClient client;
+  /** Default xAPI client. Properties are picked automatically from application.properties. */
+  @Autowired private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetStatementApplication.class, args).close();
@@ -46,19 +43,24 @@ public class GetStatementApplication implements CommandLineRunner {
   private UUID postStatement() {
 
     // Post a statement
-    ResponseEntity<
-        UUID> response =
-            client
-                .postStatement(r -> r.statement(
-                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-                        .verb(Verb.ATTEMPTED)
-
-                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-                .block();
+    ResponseEntity<UUID> response =
+        client
+            .postStatement(
+                r ->
+                    r.statement(
+                        s ->
+                            s.agentActor(
+                                    a -> a.name("A N Other").mbox("mailto:another@example.com"))
+                                .verb(Verb.ATTEMPTED)
+                                .activityObject(
+                                    o ->
+                                        o.id("https://example.com/activity/simplestatement")
+                                            .definition(
+                                                d ->
+                                                    d.addName(
+                                                        Locale.ENGLISH, "Simple Statement")))))
+            .block();
 
     return response.getBody();
   }
-
 }

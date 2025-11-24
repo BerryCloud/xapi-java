@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import java.time.Instant;
 import java.util.Map;
@@ -15,14 +14,14 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Request for getting multiple agent profiles.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get-1">Multiple
- *      Document GET</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#multiple-document-get-1">Multiple
+ *     Document GET</a>
  * @author Thomas Turrell-Croft
  */
 @Getter
@@ -31,8 +30,7 @@ public class GetAgentProfilesRequest implements Request {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
-  @NonNull
-  private final Agent agent;
+  @NonNull private final Agent agent;
 
   private final Instant since;
 
@@ -56,18 +54,14 @@ public class GetAgentProfilesRequest implements Request {
     return HttpMethod.GET;
   }
 
-  /**
-   * Builder for GetAgentProfilesRequest.
-   */
+  /** Builder for GetAgentProfilesRequest. */
   public static class Builder {
 
     /**
      * Consumer Builder for agent.
      *
      * @param agent The Consumer Builder for agent.
-     *
      * @return This builder
-     *
      * @see GetAgentProfilesRequest#agent
      */
     public Builder agent(Consumer<Agent.Builder<?, ?>> agent) {
@@ -77,16 +71,13 @@ public class GetAgentProfilesRequest implements Request {
       agent.accept(builder);
 
       return agent(builder.build());
-
     }
 
     /**
      * Sets the agent.
      *
      * @param agent The Agent of the AgentProfileRequest.
-     *
      * @return This builder
-     *
      * @see GetAgentProfilesRequest#agent
      */
     public Builder agent(Agent agent) {
@@ -94,9 +85,7 @@ public class GetAgentProfilesRequest implements Request {
       this.agent = agent;
 
       return this;
-
     }
-
   }
 
   // Exception in write value as string should be impossible.
@@ -104,8 +93,5 @@ public class GetAgentProfilesRequest implements Request {
   private String agentToJsonString() {
 
     return objectMapper.writeValueAsString(agent);
-
   }
-
-
 }

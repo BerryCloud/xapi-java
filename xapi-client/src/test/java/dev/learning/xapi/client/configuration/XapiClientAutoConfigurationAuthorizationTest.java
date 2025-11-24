@@ -16,8 +16,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.http.codec.autoconfigure.CodecsAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
@@ -29,13 +29,16 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
  */
 @DisplayName("XapiClientAutoConfigurationAuthorization Test")
 @SpringBootTest(
-    classes = { XapiClientAutoConfiguration.class, WebClientAutoConfiguration.class,
-        XapiTestClientConfiguration2.class, JacksonAutoConfiguration.class },
+    classes = {
+      XapiClientAutoConfiguration.class,
+      CodecsAutoConfiguration.class,
+      XapiTestClientConfiguration2.class,
+      JacksonAutoConfiguration.class
+    },
     properties = "xapi.client.authorization = bearer 1234")
 class XapiClientAutoConfigurationAuthorizationTest {
 
-  @Autowired
-  private XapiClient client;
+  @Autowired private XapiClient client;
 
   private static MockWebServer mockWebServer;
 
@@ -51,7 +54,6 @@ class XapiClientAutoConfigurationAuthorizationTest {
       }
       builder.baseUrl(mockWebServer.url("").toString());
     }
-
   }
 
   @AfterAll
@@ -70,5 +72,4 @@ class XapiClientAutoConfigurationAuthorizationTest {
     // Then Authorization Is Set
     assertThat(recordedRequest.getHeaders().get(HttpHeaders.AUTHORIZATION), is("bearer 1234"));
   }
-
 }

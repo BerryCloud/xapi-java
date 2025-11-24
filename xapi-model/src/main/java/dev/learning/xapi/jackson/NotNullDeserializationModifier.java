@@ -4,16 +4,16 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DeserializationConfig;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonDeserializer;
+import tools.jackson.databind.JsonMappingException;
+import tools.jackson.databind.deser.BeanDeserializerModifier;
+import tools.jackson.databind.deser.ResolvableDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
  * Deserialization Modifier for restricting <code>null</code> literals in Statements.
@@ -22,12 +22,10 @@ import java.io.IOException;
  */
 public class NotNullDeserializationModifier extends BeanDeserializerModifier {
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
-  public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-      BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+  public JsonDeserializer<?> modifyDeserializer(
+      DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
 
     // Use standard deserializer on explicit Object class. it happens only in Extensions
     if (beanDesc.getBeanClass() == Object.class) {
@@ -46,43 +44,33 @@ public class NotNullDeserializationModifier extends BeanDeserializerModifier {
     private NotNullDeserializer(JsonDeserializer<T> defaultDeserializer, Class<?> vc) {
       super(vc);
       this.defaultDeserializer = defaultDeserializer;
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
       return defaultDeserializer.deserialize(p, ctxt);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
-      throw ctxt.instantiationException(defaultDeserializer.handledType(),
-          "null literal is not allowed");
+      throw ctxt.instantiationException(
+          defaultDeserializer.handledType(), "null literal is not allowed");
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public T getAbsentValue(DeserializationContext ctxt) throws JsonMappingException {
       return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
       if (defaultDeserializer instanceof final ResolvableDeserializer resolvableDeserializer) {
         resolvableDeserializer.resolve(ctxt);
       }
     }
-
   }
 }

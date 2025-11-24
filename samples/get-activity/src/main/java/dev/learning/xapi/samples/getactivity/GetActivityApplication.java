@@ -24,11 +24,8 @@ import org.springframework.http.ResponseEntity;
 @SpringBootApplication
 public class GetActivityApplication implements CommandLineRunner {
 
-  /**
-   * Default xAPI client. Properties are picked automatically from application.properties.
-   */
-  @Autowired
-  private XapiClient client;
+  /** Default xAPI client. Properties are picked automatically from application.properties. */
+  @Autowired private XapiClient client;
 
   public static void main(String[] args) {
     SpringApplication.run(GetActivityApplication.class, args).close();
@@ -41,9 +38,11 @@ public class GetActivityApplication implements CommandLineRunner {
     postStatement();
 
     // Get Activity
-    ResponseEntity<Activity> response = client
-        .getActivity(r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
-        .block();
+    ResponseEntity<Activity> response =
+        client
+            .getActivity(
+                r -> r.activityId(URI.create("https://example.com/activity/simplestatement")))
+            .block();
 
     // Print the returned activity to the console
     System.out.println(response.getBody());
@@ -52,19 +51,24 @@ public class GetActivityApplication implements CommandLineRunner {
   private UUID postStatement() {
 
     // Post a statement
-    ResponseEntity<
-        UUID> response =
-            client
-                .postStatement(r -> r.statement(
-                    s -> s.agentActor(a -> a.name("A N Other").mbox("mailto:another@example.com"))
-
-                        .verb(Verb.ATTEMPTED)
-
-                        .activityObject(o -> o.id("https://example.com/activity/simplestatement")
-                            .definition(d -> d.addName(Locale.ENGLISH, "Simple Statement")))))
-                .block();
+    ResponseEntity<UUID> response =
+        client
+            .postStatement(
+                r ->
+                    r.statement(
+                        s ->
+                            s.agentActor(
+                                    a -> a.name("A N Other").mbox("mailto:another@example.com"))
+                                .verb(Verb.ATTEMPTED)
+                                .activityObject(
+                                    o ->
+                                        o.id("https://example.com/activity/simplestatement")
+                                            .definition(
+                                                d ->
+                                                    d.addName(
+                                                        Locale.ENGLISH, "Simple Statement")))))
+            .block();
 
     return response.getBody();
   }
-
 }

@@ -6,7 +6,6 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.NotUndetermined;
@@ -20,80 +19,53 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.Value;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * This class represents the xAPI Context object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#context">xAPI
- *      Context</a>
+ *     Context</a>
  */
 @Value
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Context {
 
-  /**
-   * The registration that the Statement is associated with.
-   */
+  /** The registration that the Statement is associated with. */
   @Variant(2)
   private UUID registration;
 
+  /** Instructor that the Statement relates to, if not included as the Actor of the Statement. */
+  @Valid @ValidActor private Actor instructor;
 
-  /**
-   * Instructor that the Statement relates to, if not included as the Actor of the Statement.
-   */
-  @Valid
-  @ValidActor
-  private Actor instructor;
+  /** Team that this Statement relates to, if not included as the Actor of the Statement. */
+  @Valid @ValidActor private Group team;
 
-  /**
-   * Team that this Statement relates to, if not included as the Actor of the Statement.
-   */
-  @Valid
-  @ValidActor
-  private Group team;
+  /** A map of the types of learning activity context that this Statement is related to. */
+  @Valid private ContextActivities contextActivities;
 
-  /**
-   * A map of the types of learning activity context that this Statement is related to.
-   */
-  @Valid
-  private ContextActivities contextActivities;
-
-  /**
-   * Revision of the learning activity associated with this Statement. Format is free.
-   */
+  /** Revision of the learning activity associated with this Statement. Format is free. */
   private String revision;
 
-  /**
-   * Platform used in the experience of this learning activity.
-   */
+  /** Platform used in the experience of this learning activity. */
   private String platform;
 
-  /**
-   * The language in which the experience being recorded in this Statement (mainly) occurred in.
-   */
+  /** The language in which the experience being recorded in this Statement (mainly) occurred in. */
   @NotUndetermined
   @JsonSerialize(using = LocaleSerializer.class)
   private Locale language;
 
-  /**
-   * Another Statement to be considered as context for this Statement.
-   */
-  @Valid
-  private StatementReference statement;
+  /** Another Statement to be considered as context for this Statement. */
+  @Valid private StatementReference statement;
 
-  /**
-   * A map of any other domain-specific context relevant to this Statement.
-   */
+  /** A map of any other domain-specific context relevant to this Statement. */
   private LinkedHashMap<@HasScheme URI, Object> extensions;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Context.
-   */
+  /** Builder for Context. */
   public static class Builder {
 
     // This static class extends the lombok builder.
@@ -102,9 +74,7 @@ public class Context {
      * Consumer Builder for instructor.
      *
      * @param instructor The Consumer Builder for instructor.
-     *
      * @return This builder
-     *
      * @see Context#instructor
      */
     public Builder groupInstructor(Consumer<Group.Builder<?, ?>> instructor) {
@@ -120,9 +90,7 @@ public class Context {
      * Sets the instructor.
      *
      * @param instructor The instructor of the Context.
-     *
      * @return This builder
-     *
      * @see Context#instructor
      */
     public Builder agentInstructor(Consumer<Agent.Builder<?, ?>> instructor) {
@@ -138,9 +106,7 @@ public class Context {
      * Consumer Builder for team.
      *
      * @param team The Consumer Builder for team.
-     *
      * @return This builder
-     *
      * @see Context#team
      */
     public Builder team(Consumer<Group.Builder<?, ?>> team) {
@@ -156,9 +122,7 @@ public class Context {
      * Sets the team.
      *
      * @param team The team of the Context.
-     *
      * @return This builder
-     *
      * @see Context#team
      */
     public Builder team(Group team) {
@@ -171,9 +135,7 @@ public class Context {
      * Consumer Builder for contextActivities.
      *
      * @param contextActivities The Consumer Builder for contextActivities.
-     *
      * @return This builder
-     *
      * @see Context#contextActivities
      */
     public Builder contextActivities(Consumer<ContextActivities.Builder> contextActivities) {
@@ -189,9 +151,7 @@ public class Context {
      * Sets the contextActivities.
      *
      * @param contextActivities The contextActivities of the Context.
-     *
      * @return This builder
-     *
      * @see Context#contextActivities
      */
     public Builder contextActivities(ContextActivities contextActivities) {
@@ -204,9 +164,7 @@ public class Context {
      * Consumer Builder for statementReference.
      *
      * @param statementReference The Consumer Builder for statementReference.
-     *
      * @return This builder
-     *
      * @see Context#statement
      */
     public Builder statementReference(Consumer<StatementReference.Builder> statementReference) {
@@ -217,7 +175,5 @@ public class Context {
 
       return statement(builder.build());
     }
-
   }
-
 }
