@@ -57,13 +57,13 @@ jobs:
       
       - name: Generate GitHub App Token
         id: generate_token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
