@@ -4,6 +4,11 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.AGENT_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.AGENT_TEMPLATE;
+import static dev.learning.xapi.client.XapiClientConstants.ATTACHMENTS_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.STATEMENTS_PATH;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.StatementFormat;
@@ -68,11 +73,11 @@ public class GetStatementsRequest implements Request {
 
     // All queryParams are optional
 
-    uriBuilder.path("/statements");
+    uriBuilder.path(STATEMENTS_PATH);
 
     if (agent != null) {
-      queryParams.put("agent", agentToJsonString());
-      uriBuilder.queryParam("agent", "{agent}");
+      queryParams.put(AGENT_PARAM, agentToJsonString());
+      uriBuilder.queryParam(AGENT_PARAM, AGENT_TEMPLATE);
     }
 
     if (verb != null) {
@@ -101,7 +106,7 @@ public class GetStatementsRequest implements Request {
         .queryParamIfPresent("related_agents", Optional.ofNullable(relatedAgents))
         .queryParamIfPresent("limit", Optional.ofNullable(limit))
         .queryParamIfPresent("format", Optional.ofNullable(format))
-        .queryParamIfPresent("attachments", Optional.ofNullable(attachments))
+        .queryParamIfPresent(ATTACHMENTS_PARAM, Optional.ofNullable(attachments))
         .queryParamIfPresent("ascending", Optional.ofNullable(ascending));
   }
 

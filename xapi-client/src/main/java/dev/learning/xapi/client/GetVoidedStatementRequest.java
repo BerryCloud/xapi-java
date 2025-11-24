@@ -4,6 +4,9 @@
 
 package dev.learning.xapi.client;
 
+import static dev.learning.xapi.client.XapiClientConstants.ATTACHMENTS_PARAM;
+import static dev.learning.xapi.client.XapiClientConstants.STATEMENTS_PATH;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,10 +31,10 @@ public class GetVoidedStatementRequest extends GetStatementRequest {
   public UriBuilder url(UriBuilder uriBuilder, Map<String, Object> queryParams) {
 
     return uriBuilder
-        .path("/statements")
+        .path(STATEMENTS_PATH)
         .queryParam("voidedStatementId", id)
         .queryParamIfPresent("format", Optional.ofNullable(format))
-        .queryParamIfPresent("attachments", Optional.ofNullable(attachments));
+        .queryParamIfPresent(ATTACHMENTS_PARAM, Optional.ofNullable(attachments));
   }
 
   /** Builder for GetVoidedStatementRequest. */
