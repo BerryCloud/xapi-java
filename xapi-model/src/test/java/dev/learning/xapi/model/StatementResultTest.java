@@ -39,7 +39,6 @@ class StatementResultTest {
 
     // Then Result Is Instance Of StatementResult
     assertThat(result, instanceOf(StatementResult.class));
-
   }
 
   @Test
@@ -52,7 +51,6 @@ class StatementResultTest {
 
     // Then Statements Is Instance Of Statement
     assertThat(result.getStatements().get(0), instanceOf(Statement.class));
-
   }
 
   @Test
@@ -65,116 +63,90 @@ class StatementResultTest {
 
     // Then More Is Expected
     assertThat(result.getMore(), is(URI.create("123")));
-
   }
 
   @Test
   void whenSerializingStatementResultThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var statementResult = StatementResult.builder()
-
-        .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
-
-        .more(URI.create("123"))
-
-        .build();
+    final var statementResult =
+        StatementResult.builder()
+            .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
+            .more(URI.create("123"))
+            .build();
 
     // When Serializing StatementResult
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(statementResult));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result, is(objectMapper.readTree(
-        "{\"statements\":[{\"id\":\"fd41c918-b88b-4b20-a0a5-a4c32391aaa0\"}],\"more\":\"123\"}")));
+    assertThat(
+        result,
+        is(
+            objectMapper.readTree(
+                "{\"statements\":[{\"id\":\"fd41c918-b88b-4b20-a0a5-a4c32391aaa0\"}],\"more\":\"123\"}")));
   }
 
   @Test
   void whenCallingToStringThenResultIsExpected() {
 
-    final var statementResult = StatementResult.builder()
-
-        .addStatement(s -> s
-
-            .id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0"))
-
-            .version("1.0.3"))
-
-        .more(URI.create("123"))
-
-        .build();
+    final var statementResult =
+        StatementResult.builder()
+            .addStatement(
+                s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")).version("1.0.3"))
+            .more(URI.create("123"))
+            .build();
 
     // When Calling To String
     final var result = statementResult.toString();
 
     // Then Result Is Expected
-    assertThat(result, is(
-        "StatementResult(statements=[Statement(id=fd41c918-b88b-4b20-a0a5-a4c32391aaa0, actor=null, verb=null, object=null, result=null, context=null, timestamp=null, stored=null, authority=null, version=1.0.3, attachments=null)], more=123)"));
-
+    assertThat(
+        result,
+        is(
+            "StatementResult(statements=[Statement(id=fd41c918-b88b-4b20-a0a5-a4c32391aaa0, actor=null, verb=null, object=null, result=null, context=null, timestamp=null, stored=null, authority=null, version=1.0.3, attachments=null)], more=123)"));
   }
-
 
   @Test
   void whenBuildingStatementResultWithTwoStatementsThenStatmentsIsArrayWithSizeTwo() {
 
     // When Building StatementResult With Two Statements
-    final var statementResult = StatementResult.builder()
-
-        .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
-
-        .addStatement(s -> s.id(UUID.fromString("0b05db78-5554-4cde-8673-56ca15580d1b")))
-
-        .more(URI.create("123"))
-
-        .build();
+    final var statementResult =
+        StatementResult.builder()
+            .addStatement(s -> s.id(UUID.fromString("fd41c918-b88b-4b20-a0a5-a4c32391aaa0")))
+            .addStatement(s -> s.id(UUID.fromString("0b05db78-5554-4cde-8673-56ca15580d1b")))
+            .more(URI.create("123"))
+            .build();
 
     // Then Statments Is Array With Size Two
     assertThat(statementResult.getStatements(), hasSize(2));
-
   }
 
   @Test
   void whenBuildingStatementResultWithEmptyMoreThenHasMoreIsFalse() {
 
     // When Building StatementResult With Empty More
-    final var statementResult = StatementResult.builder()
-
-        .more(URI.create(""))
-
-        .build();
+    final var statementResult = StatementResult.builder().more(URI.create("")).build();
 
     // Then HasMore Is False
     assertThat(statementResult.hasMore(), is(false));
-
   }
 
   @Test
   void whenBuildingStatementResultWithNullMoreThenHasMoreIsFalse() {
 
     // When Building StatementResult With Null More
-    final var statementResult = StatementResult.builder()
-
-        .more(null)
-
-        .build();
+    final var statementResult = StatementResult.builder().more(null).build();
 
     // Then HasMore Is False
     assertThat(statementResult.hasMore(), is(false));
-
   }
 
   @Test
   void whenBuildingStatementResultWithMoreThenHasMoreIsTrue() {
 
     // When Building StatementResult With More
-    final var statementResult = StatementResult.builder()
-
-        .more(URI.create("123"))
-
-        .build();
+    final var statementResult = StatementResult.builder().more(URI.create("123")).build();
 
     // Then HasMore Is True
     assertThat(statementResult.hasMore(), is(true));
-
   }
-
-
 }

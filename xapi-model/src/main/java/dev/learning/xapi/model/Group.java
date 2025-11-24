@@ -21,7 +21,6 @@ import lombok.experimental.SuperBuilder;
  * This class represents the xAPI Group object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#group">xAPI Group</a>
  */
 @Getter
@@ -33,28 +32,26 @@ public class Group extends Actor {
 
   private final String objectType = "Group"; // NOSONAR
 
-  /**
-   * The members of this Group.
-   */
+  /** The members of this Group. */
   @Valid
   @JsonFormat(without = {JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY})
   private final List<@ValidActor Agent> member;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Returns true if the group is anonymous.
-   */
+  /** Returns true if the group is anonymous. */
   @JsonIgnore
   public boolean isAnonymous() {
 
-    return account == null && mbox == null && mboxSha1sum == null && openid == null
-        && member != null && !member.isEmpty();
+    return account == null
+        && mbox == null
+        && mboxSha1sum == null
+        && openid == null
+        && member != null
+        && !member.isEmpty();
   }
 
-  /**
-   * Builder for Group.
-   */
+  /** Builder for Group. */
   public abstract static class Builder<C extends Group, B extends Builder<C, B>>
       extends Actor.Builder<C, B> {
 
@@ -64,9 +61,7 @@ public class Group extends Actor {
      * Consumer Builder for member.
      *
      * @param member The Consumer Builder for member.
-     *
      * @return This builder
-     *
      * @see Group#member
      */
     public Builder<C, B> addMember(Consumer<Agent.Builder<?, ?>> member) {
@@ -82,9 +77,7 @@ public class Group extends Actor {
      * Adds a member entry.
      *
      * @param agent The agent to add.
-     *
      * @return This builder
-     *
      * @see Group#member
      */
     public Builder<C, B> addMember(Agent agent) {
@@ -96,9 +89,6 @@ public class Group extends Actor {
       member.add(agent);
 
       return self();
-
     }
-
   }
-
 }

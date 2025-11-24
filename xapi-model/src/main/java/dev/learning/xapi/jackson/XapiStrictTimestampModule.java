@@ -24,6 +24,5 @@ public class XapiStrictTimestampModule extends SimpleModule {
     super("xApi Strict Timestamp Module");
 
     addDeserializer(Instant.class, new StrictTimestampDeserializer());
-
   }
 }

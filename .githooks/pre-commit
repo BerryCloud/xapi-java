@@ -1,0 +1,26 @@
+#!/bin/bash
+# Pre-commit hook for xapi-java
+# Automatically formats Java code using the Spotify fmt-maven-plugin before committing
+
+# Check if we're in the repository root
+if [ ! -f "mvnw" ]; then
+    echo "Error: mvnw not found. This hook must be run from the repository root."
+    exit 1
+fi
+
+echo "Running code formatter..."
+
+# Run the formatter
+./mvnw com.spotify.fmt:fmt-maven-plugin:format -q
+
+# Check if the formatter ran successfully
+if [ $? -ne 0 ]; then
+    echo "Error: Code formatting failed. Please fix the issues and try again."
+    exit 1
+fi
+
+# Add any files that were reformatted to the commit
+git add -u
+
+echo "Code formatting complete."
+exit 0

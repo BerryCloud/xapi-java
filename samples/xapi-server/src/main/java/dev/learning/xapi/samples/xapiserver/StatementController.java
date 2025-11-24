@@ -29,9 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Basic implementation of xAPI statements GET, PUT and POST resources.
  *
  * @see <a href=
- *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
- *      resources</a>
- *
+ *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
+ *     resources</a>
  * @author István Rátkai (Selindek)
  * @author Thomas Turrell-Croft
  */
@@ -58,16 +57,26 @@ public class StatementController {
    * Get a single Statement.
    *
    * @param statementId the id of the statement to get.
-   *
    * @return the ResponseEntity
-   *
    * @see <a href=
-   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
-   *      Statements</a>
+   *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+   *     Statements</a>
    */
-  @GetMapping(params = {"statementId", "!voidedStatementId", "!agent", "!verb", "!activity",
-      "!registration", "!related_activities", "!related_agents", "!since", "!until", "!limit",
-      "!ascending"})
+  @GetMapping(
+      params = {
+        "statementId",
+        "!voidedStatementId",
+        "!agent",
+        "!verb",
+        "!activity",
+        "!registration",
+        "!related_activities",
+        "!related_agents",
+        "!since",
+        "!until",
+        "!limit",
+        "!ascending"
+      })
   public ResponseEntity<Statement> getStatement(@RequestParam(required = true) UUID statementId) {
 
     log.debug("GET statement");
@@ -81,12 +90,10 @@ public class StatementController {
    * Get Statements.
    *
    * @param since the instant since when to get statements
-   *
    * @return the ResponseEntity
-   *
    * @see <a href=
-   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
-   *      Statements</a>
+   *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+   *     Statements</a>
    */
   @GetMapping(params = "since")
   public ResponseEntity<Void> getStatementsSince(@RequestParam Instant since) {
@@ -100,10 +107,9 @@ public class StatementController {
    * Get Statements.
    *
    * @return the ResponseEntity
-   *
    * @see <a href=
-   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
-   *      Statements</a>
+   *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
+   *     Statements</a>
    */
   @GetMapping(params = {"!statementId, !voidedStatementId", "!since"})
   public ResponseEntity<StatementResult> getStatements() {
@@ -113,22 +119,21 @@ public class StatementController {
     return ResponseEntity.ok(statementService.getStatements());
   }
 
-
   /**
    * Put Statement.
    *
    * @param statementId the statementId of the statement
    * @param statement The statement to process
-   *
    * @return the ResponseEntity
-   *
    * @see <a href=
-   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#211-put-statements">PUT
-   *      statements</a>
+   *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#211-put-statements">PUT
+   *     statements</a>
    */
-  @PutMapping(params = {"statementId"}, consumes = {"application/json"})
-  public ResponseEntity<Void> putStatement(@RequestParam(required = true) UUID statementId,
-      @Valid @RequestBody Statement statement) {
+  @PutMapping(
+      params = {"statementId"},
+      consumes = {"application/json"})
+  public ResponseEntity<Void> putStatement(
+      @RequestParam(required = true) UUID statementId, @Valid @RequestBody Statement statement) {
 
     log.debug("PUT statement");
 
@@ -141,12 +146,10 @@ public class StatementController {
    * Post Statements.
    *
    * @param statements The statements to process.
-   *
    * @return the ResponseEntity
-   *
    * @see <a href=
-   *      "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
-   *      statements</a>
+   *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#212-post-statements">POST
+   *     statements</a>
    */
   @PostMapping(consumes = {"application/json"})
   public ResponseEntity<Collection<UUID>> postStatements(
@@ -156,5 +159,4 @@ public class StatementController {
 
     return new ResponseEntity<>(statementService.processStatements(statements), HttpStatus.OK);
   }
-
 }

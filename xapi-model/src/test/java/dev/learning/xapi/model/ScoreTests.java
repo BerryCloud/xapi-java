@@ -35,7 +35,6 @@ class ScoreTests {
 
     // Then Result Is Instance Of Score
     assertThat(result, instanceOf(Score.class));
-
   }
 
   @Test
@@ -48,7 +47,6 @@ class ScoreTests {
 
     // Then Scaled Is Expected
     assertThat(result.getScaled(), is(1.0F));
-
   }
 
   @Test
@@ -61,7 +59,6 @@ class ScoreTests {
 
     // Then Raw Is Expected
     assertThat(result.getRaw(), is(1.0F));
-
   }
 
   @Test
@@ -74,7 +71,6 @@ class ScoreTests {
 
     // Then Min Is Expected
     assertThat(result.getMin(), is(0.0F));
-
   }
 
   @Test
@@ -87,31 +83,19 @@ class ScoreTests {
 
     // Then Max Is Expected
     assertThat(result.getMax(), is(5.0F));
-
   }
 
   @Test
   void whenSerializingScoreThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var score = Score.builder()
-
-        .max(5.0f)
-
-        .min(0.0f)
-
-        .raw(1.0f)
-
-        .scaled(1.0f)
-
-        .build();
+    final var score = Score.builder().max(5.0f).min(0.0f).raw(1.0f).scaled(1.0f).build();
 
     // When Serializing Score
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(score));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result,
-        is(objectMapper.readTree(ResourceUtils.getFile("classpath:score/score.json"))));
-
+    assertThat(
+        result, is(objectMapper.readTree(ResourceUtils.getFile("classpath:score/score.json"))));
   }
 
   @Test
@@ -125,7 +109,5 @@ class ScoreTests {
 
     // Then Result Is Expected
     assertThat(result, is("Score(scaled=1.0, raw=1.0, min=0.0, max=5.0)"));
-
   }
-
 }

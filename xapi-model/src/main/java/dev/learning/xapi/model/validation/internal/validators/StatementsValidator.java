@@ -20,9 +20,7 @@ import java.util.UUID;
  */
 public class StatementsValidator extends DisableableValidator<Statements, List<Statement>> {
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public boolean isValidIfEnabled(List<Statement> values, ConstraintValidatorContext context) {
 
@@ -37,6 +35,5 @@ public class StatementsValidator extends DisableableValidator<Statements, List<S
       }
     }
     return true;
-
   }
 }

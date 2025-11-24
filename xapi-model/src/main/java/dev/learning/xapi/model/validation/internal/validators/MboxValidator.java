@@ -14,16 +14,13 @@ import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
  *
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
- *
  * @see <a href="http://xmlns.com/foaf/0.1/#term_mbox">Mbox</a>
  */
 public class MboxValidator extends DisableableValidator<Mbox, String> {
 
   public static final String PREFIX = "mailto:";
 
-  /**
-   * Cached email validator instance to avoid repeated object creation.
-   */
+  /** Cached email validator instance to avoid repeated object creation. */
   private static final EmailValidator EMAIL_VALIDATOR = new EmailValidator();
 
   @Override
@@ -40,5 +37,4 @@ public class MboxValidator extends DisableableValidator<Mbox, String> {
     return value.startsWith(PREFIX)
         && EMAIL_VALIDATOR.isValid(value.substring(PREFIX.length()), context);
   }
-
 }

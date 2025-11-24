@@ -23,27 +23,26 @@ class GetMoreStatementsRequestTests {
   void whenBuildingGetMoreStatementsRequestWithUriParameterThenNoExceptionIsThrown() {
 
     // When Building GetMoreStatementsRequest With Uri Parameter
-    GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder()
-
-        .more(
-            URI.create("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1"));
+    GetMoreStatementsRequest.Builder builder =
+        GetMoreStatementsRequest.builder()
+            .more(
+                URI.create(
+                    "https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1"));
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
-
   }
 
   @Test
   void whenBuildingGetMoreStatementsRequestWithStringParameterThenNoExceptionIsThrown() {
 
     // When Building GetMoreStatementsRequest With String Parameter
-    GetMoreStatementsRequest.Builder builder = GetMoreStatementsRequest.builder()
-
-        .more("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1");
+    GetMoreStatementsRequest.Builder builder =
+        GetMoreStatementsRequest.builder()
+            .more("https://example.com/xapi/statements/869cc589-76fa-4283-8e96-eea86f9124e1");
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
-
   }
 
   @Test
@@ -54,8 +53,5 @@ class GetMoreStatementsRequestTests {
 
     // Then NullPointerException Is Thrown
     assertThrows(NullPointerException.class, builder::build);
-
   }
-
-
 }

@@ -22,12 +22,10 @@ import java.io.IOException;
  */
 public class NotNullDeserializationModifier extends BeanDeserializerModifier {
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
-  public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-      BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+  public JsonDeserializer<?> modifyDeserializer(
+      DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
 
     // Use standard deserializer on explicit Object class. it happens only in Extensions
     if (beanDesc.getBeanClass() == Object.class) {
@@ -46,43 +44,33 @@ public class NotNullDeserializationModifier extends BeanDeserializerModifier {
     private NotNullDeserializer(JsonDeserializer<T> defaultDeserializer, Class<?> vc) {
       super(vc);
       this.defaultDeserializer = defaultDeserializer;
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
       return defaultDeserializer.deserialize(p, ctxt);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
-      throw ctxt.instantiationException(defaultDeserializer.handledType(),
-          "null literal is not allowed");
+      throw ctxt.instantiationException(
+          defaultDeserializer.handledType(), "null literal is not allowed");
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public T getAbsentValue(DeserializationContext ctxt) throws JsonMappingException {
       return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
       if (defaultDeserializer instanceof final ResolvableDeserializer resolvableDeserializer) {
         resolvableDeserializer.resolve(ctxt);
       }
     }
-
   }
 }

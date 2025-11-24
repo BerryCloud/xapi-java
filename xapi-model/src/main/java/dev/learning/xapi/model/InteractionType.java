@@ -13,15 +13,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public enum InteractionType {
 
-  /**
-   * An interaction with two possible responses: true or false.
-   */
+  /** An interaction with two possible responses: true or false. */
   @JsonProperty("true-false")
   TRUE_FALSE,
 
-  /**
-   * An interaction with a number of possible choices from which the learner can select.
-   */
+  /** An interaction with a number of possible choices from which the learner can select. */
   @JsonProperty("fill-in")
   FILL_IN,
 
@@ -32,9 +28,7 @@ public enum InteractionType {
   @JsonProperty("long-fill-in")
   LONG_FILL_IN,
 
-  /**
-   * An interaction which asks the learner to select from a discrete set of choices on a scale.
-   */
+  /** An interaction which asks the learner to select from a discrete set of choices on a scale. */
   @JsonProperty("likert")
   LIKERT,
 
@@ -44,33 +38,23 @@ public enum InteractionType {
   @JsonProperty("matching")
   MATCHING,
 
-  /**
-   * An interaction that requires the learner to perform a task that requires multiple steps.
-   */
+  /** An interaction that requires the learner to perform a task that requires multiple steps. */
   @JsonProperty("performance")
   PERFORMANCE,
 
-  /**
-   * An interaction where the learner is asked to order items in a set.
-   */
+  /** An interaction where the learner is asked to order items in a set. */
   @JsonProperty("sequencing")
   SEQUENCING,
 
-  /**
-   * Any interaction which requires a numeric response from the learner.
-   */
+  /** Any interaction which requires a numeric response from the learner. */
   @JsonProperty("numeric")
   NUMERIC,
 
-  /**
-   * An interaction with a number of possible choices from which the learner can select.
-   */
+  /** An interaction with a number of possible choices from which the learner can select. */
   @JsonProperty("choice")
   CHOICE,
 
-  /**
-   * Another type of interaction that does not fit into those defined above.
-   */
+  /** Another type of interaction that does not fit into those defined above. */
   @JsonProperty("other")
   OTHER;
 

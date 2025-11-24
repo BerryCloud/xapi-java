@@ -19,36 +19,30 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "xapi.client")
 public class XapiClientProperties {
 
-  /**
-   * The base URL for the xAPI client requests.
-   */
+  /** The base URL for the xAPI client requests. */
   private URI baseUrl;
 
   /**
    * Username for basic authorization header.
-   * <p>
-   * Used only if {@link XapiClientProperties#password} is also set, AND
-   * {@link XapiClientProperties#authorization} is NOT set.
-   * </p>
+   *
+   * <p>Used only if {@link XapiClientProperties#password} is also set, AND {@link
+   * XapiClientProperties#authorization} is NOT set.
    */
   private String username;
 
   /**
    * Password for basic authorization header.
-   * <p>
-   * Used only if {@link XapiClientProperties#username} is also set, AND
-   * {@link XapiClientProperties#authorization} is NOT set.
-   * </p>
+   *
+   * <p>Used only if {@link XapiClientProperties#username} is also set, AND {@link
+   * XapiClientProperties#authorization} is NOT set.
    */
   private String password;
 
   /**
    * Authorization header.
-   * <p>
-   * This property has precedence over the {@link XapiClientProperties#username} and
-   * {@link XapiClientProperties#password} properties.
-   * </p>
+   *
+   * <p>This property has precedence over the {@link XapiClientProperties#username} and {@link
+   * XapiClientProperties#password} properties.
    */
   private String authorization;
-
 }

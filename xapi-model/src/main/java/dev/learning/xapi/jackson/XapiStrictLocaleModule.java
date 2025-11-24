@@ -26,6 +26,5 @@ public class XapiStrictLocaleModule extends SimpleModule {
 
     addDeserializer(Locale.class, new StrictLocaleDeserializer());
     addKeyDeserializer(Locale.class, new StrictLocaleKeyDeserializer());
-
   }
 }

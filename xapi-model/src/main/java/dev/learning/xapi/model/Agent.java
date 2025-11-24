@@ -16,7 +16,6 @@ import lombok.experimental.SuperBuilder;
  * This class represents the xAPI Agent object.
  *
  * @author Thomas Turrell-Croft
- *
  * @see <a href="https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#agent">xAPI Agent</a>
  */
 @Getter
@@ -31,9 +30,7 @@ public class Agent extends Actor {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /**
-   * Builder for Agent.
-   */
+  /** Builder for Agent. */
   public abstract static class Builder<C extends Agent, B extends Builder<C, B>>
       extends Actor.Builder<C, B> {
 
@@ -48,12 +45,8 @@ public class Agent extends Actor {
    */
   public enum AgentObjectType {
 
-    /**
-     * Agent object type.
-     */
+    /** Agent object type. */
     @JsonProperty("Agent")
     AGENT;
-
   }
-
 }

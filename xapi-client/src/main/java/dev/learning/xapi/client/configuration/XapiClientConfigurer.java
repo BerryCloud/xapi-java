@@ -11,13 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * Interface for {@link XapiClient} a configurer.
- * <p>
- * Custom configuration of the XapiClient can be done via a {@link WebClient.Builder} object.
- * </p>
+ *
+ * <p>Custom configuration of the XapiClient can be done via a {@link WebClient.Builder} object.
  *
  * @author István Rátkai (Selindek)
  */
 @Component
-public interface XapiClientConfigurer extends Consumer<WebClient.Builder> {
-
-}
+public interface XapiClientConfigurer extends Consumer<WebClient.Builder> {}

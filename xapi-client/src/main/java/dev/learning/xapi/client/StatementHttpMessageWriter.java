@@ -31,19 +31,16 @@ import reactor.core.publisher.Mono;
 
 /**
  * {@link HttpMessageWriter} for writing a {@link Statement} or list of Statements.
- * <p>
- * If any of the provided statements contains an {@link Attachment} with real data, then this writer
- * creates a multipart/mixed output otherwise it writes the data as application/json.
- * </p>
- * <p>
- * This message-writer accepts <strong>ALL</strong> objects, so all the default (and any other
+ *
+ * <p>If any of the provided statements contains an {@link Attachment} with real data, then this
+ * writer creates a multipart/mixed output otherwise it writes the data as application/json.
+ *
+ * <p>This message-writer accepts <strong>ALL</strong> objects, so all the default (and any other
  * custom) {@link HttpMessageWriter} must be passed to its constructor. If the object to be written
  * is not a {@link Statement} or List of Statements with real {@link Attachment}s, then this list of
  * writers will be used.
- * </p>
  *
  * @author István Rátkai (Selindek)
- *
  * @see AttachmentHttpMessageWriter
  */
 public class StatementHttpMessageWriter extends MultipartWriterSupport
@@ -55,8 +52,8 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
    * Constructor.
    *
    * @param list list of the original {@link HttpMessageWriter}s. This list is used if the object to
-   *        write is not a {@link Statement} or list of statements or there are no any
-   *        {@link Attachment}s with real data in the statements.
+   *     write is not a {@link Statement} or list of statements or there are no any {@link
+   *     Attachment}s with real data in the statements.
    */
   public StatementHttpMessageWriter(List<HttpMessageWriter<?>> list) {
 
@@ -66,45 +63,47 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     this.writers.add(new AttachmentHttpMessageWriter());
     // ... but otherwise use the default list of writers
     this.writers.addAll(list);
-
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public boolean canWrite(ResolvableType elementType, @Nullable MediaType mediaType) {
     return true;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   @SuppressWarnings("unchecked")
-  public Mono<Void> write(Publisher<? extends Object> inputStream, ResolvableType elementType,
-      @Nullable MediaType mediaType, ReactiveHttpOutputMessage outputMessage,
+  public Mono<Void> write(
+      Publisher<? extends Object> inputStream,
+      ResolvableType elementType,
+      @Nullable MediaType mediaType,
+      ReactiveHttpOutputMessage outputMessage,
       Map<String, Object> hints) {
 
-    return Mono.from(inputStream).flatMap(object -> {
-      final var list = getParts(object);
-      if (list.size() > 1) {
-        // Has attachments -> process as multipart
-        return writeMultipart(list, outputMessage, hints);
+    return Mono.from(inputStream)
+        .flatMap(
+            object -> {
+              final var list = getParts(object);
+              if (list.size() > 1) {
+                // Has attachments -> process as multipart
+                return writeMultipart(list, outputMessage, hints);
 
-      } else {
-        // No attachments -> pass the original object to the default list of writers
+              } else {
+                // No attachments -> pass the original object to the default list of writers
 
-        return ((HttpMessageWriter<Object>) writers.stream()
-            .filter(partWriter -> partWriter.canWrite(elementType, mediaType)).findFirst().get())
-                .write(inputStream, elementType, mediaType, outputMessage, hints);
-
-      }
-    });
+                return ((HttpMessageWriter<Object>)
+                        writers.stream()
+                            .filter(partWriter -> partWriter.canWrite(elementType, mediaType))
+                            .findFirst()
+                            .get())
+                    .write(inputStream, elementType, mediaType, outputMessage, hints);
+              }
+            });
   }
 
-  private Mono<Void> writeMultipart(List<Object> list, ReactiveHttpOutputMessage outputMessage,
-      Map<String, Object> hints) {
+  private Mono<Void> writeMultipart(
+      List<Object> list, ReactiveHttpOutputMessage outputMessage, Map<String, Object> hints) {
 
     final var boundary = generateMultipartBoundary();
 
@@ -113,17 +112,18 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var bufferFactory = outputMessage.bufferFactory();
 
-    final Flux<DataBuffer> body = Flux.fromIterable(list)
-        .concatMap(element -> encodePart(boundary, element, bufferFactory, hints))
-        .concatWith(generateLastLine(boundary, bufferFactory))
-        .doOnDiscard(DataBuffer.class, DataBufferUtils::release);
+    final Flux<DataBuffer> body =
+        Flux.fromIterable(list)
+            .concatMap(element -> encodePart(boundary, element, bufferFactory, hints))
+            .concatWith(generateLastLine(boundary, bufferFactory))
+            .doOnDiscard(DataBuffer.class, DataBufferUtils::release);
 
     return outputMessage.writeWith(body);
   }
 
   @SuppressWarnings("unchecked")
-  private <T> Flux<DataBuffer> encodePart(byte[] boundary, Object body, DataBufferFactory factory,
-      Map<String, Object> hints) {
+  private <T> Flux<DataBuffer> encodePart(
+      byte[] boundary, Object body, DataBufferFactory factory, Map<String, Object> hints) {
     final var message = new MultipartHttpOutputMessage(factory);
     final var headers = message.getHeaders();
 
@@ -131,8 +131,10 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var contentType = headers.getContentType();
 
-    final var writer = this.writers.stream()
-        .filter(partWriter -> partWriter.canWrite(resolvableType, contentType)).findFirst();
+    final var writer =
+        this.writers.stream()
+            .filter(partWriter -> partWriter.canWrite(resolvableType, contentType))
+            .findFirst();
 
     if (!writer.isPresent()) {
       return Flux.error(
@@ -144,16 +146,17 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     // The writer will call MultipartHttpOutputMessage#write which doesn't actually write
     // but only stores the body Flux and returns Mono.empty().
 
-    final var partContentReady = ((HttpMessageWriter<Object>) writer.get()).write(bodyPublisher,
-        resolvableType, contentType, message, hints);
+    final var partContentReady =
+        ((HttpMessageWriter<Object>) writer.get())
+            .write(bodyPublisher, resolvableType, contentType, message, hints);
 
     // After partContentReady, we can access the part content from MultipartHttpOutputMessage
     // and use it for writing to the actual request body
 
     final Flux<DataBuffer> partContent = partContentReady.thenMany(Flux.defer(message::getBody));
 
-    return Flux.concat(generateBoundaryLine(boundary, factory), partContent,
-        generateNewLine(factory));
+    return Flux.concat(
+        generateBoundaryLine(boundary, factory), partContent, generateNewLine(factory));
   }
 
   @SuppressWarnings("unchecked")
@@ -164,7 +167,8 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     Stream<Attachment> attachments;
     if (object instanceof final Statement statement) {
       attachments = getRealAttachments(statement);
-    } else if (object instanceof final List<?> statements && !statements.isEmpty()
+    } else if (object instanceof final List<?> statements
+        && !statements.isEmpty()
         && statements.get(0) instanceof Statement) {
       attachments = ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
     } else {
@@ -183,7 +187,6 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
    * Gets {@link Attachment}s of a {@link Statement} which has data property as a {@link Stream}.
    *
    * @param statement a {@link Statement} object
-   *
    * @return {@link Attachment} of a {@link Statement} which has data property as a {@link Stream}.
    */
   private Stream<Attachment> getRealAttachments(Statement statement) {
@@ -217,8 +220,7 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     private final AtomicBoolean committed = new AtomicBoolean();
 
-    @Nullable
-    private Flux<DataBuffer> body;
+    @Nullable private Flux<DataBuffer> body;
 
     public MultipartHttpOutputMessage(DataBufferFactory bufferFactory) {
       this.bufferFactory = bufferFactory;
@@ -261,7 +263,8 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     }
 
     public Flux<DataBuffer> getBody() {
-      return this.body != null ? this.body
+      return this.body != null
+          ? this.body
           : Flux.error(new IllegalStateException("Body has not been written yet"));
     }
 
@@ -270,5 +273,4 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
       return Mono.error(new UnsupportedOperationException());
     }
   }
-
 }

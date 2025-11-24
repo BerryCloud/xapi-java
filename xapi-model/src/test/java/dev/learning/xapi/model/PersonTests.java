@@ -37,7 +37,6 @@ class PersonTests {
 
     // Then Result Is Instance Of Person
     assertThat(result, instanceOf(Person.class));
-
   }
 
   @Test
@@ -50,7 +49,6 @@ class PersonTests {
 
     // Then Name Is Expected
     assertThat(result.getName(), is(Collections.singletonList("Normal Person")));
-
   }
 
   @Test
@@ -63,7 +61,6 @@ class PersonTests {
 
     // Then Mbox Is Expected
     assertThat(result.getMbox(), is(Collections.singletonList("normal.person@normal.mail")));
-
   }
 
   @Test
@@ -76,7 +73,6 @@ class PersonTests {
 
     // Then ShaSum Is Expected
     assertThat(result.getMboxSha1sum(), is(Collections.singletonList("123")));
-
   }
 
   @Test
@@ -88,9 +84,8 @@ class PersonTests {
     final var result = objectMapper.readValue(file, Person.class);
 
     // Then Openid Is Expected
-    assertThat(result.getOpenid(),
-        is(Collections.singletonList(URI.create("https://example.com"))));
-
+    assertThat(
+        result.getOpenid(), is(Collections.singletonList(URI.create("https://example.com"))));
   }
 
   @Test
@@ -103,35 +98,27 @@ class PersonTests {
 
     // Then Account Is Instance Of Account
     assertThat(result.getAccount().get(0), instanceOf(Account.class));
-
   }
 
   @Test
   void whenSerializingPersonThenResultIsEqualToExpectedJson() throws IOException {
 
-    final var person = Person.builder()
-
-        .name(Collections.singletonList("Normal Person"))
-
-        .mbox(Collections.singletonList("normal.person@normal.mail"))
-
-        .mboxSha1sum(Collections.singletonList("123"))
-
-        .openid(Collections.singletonList(URI.create("https://example.com")))
-
-        .addAccount(a -> a.name("example1").homePage(URI.create("https://example.com")))
-
-        .addAccount(a -> a.name("example2").homePage(URI.create("https://example.com")))
-
-        .build();
+    final var person =
+        Person.builder()
+            .name(Collections.singletonList("Normal Person"))
+            .mbox(Collections.singletonList("normal.person@normal.mail"))
+            .mboxSha1sum(Collections.singletonList("123"))
+            .openid(Collections.singletonList(URI.create("https://example.com")))
+            .addAccount(a -> a.name("example1").homePage(URI.create("https://example.com")))
+            .addAccount(a -> a.name("example2").homePage(URI.create("https://example.com")))
+            .build();
 
     // When Serializing Person
     final var result = objectMapper.readTree(objectMapper.writeValueAsString(person));
 
     // Then Result Is Equal To Expected Json
-    assertThat(result,
-        is(objectMapper.readTree(ResourceUtils.getFile("classpath:person/person.json"))));
-
+    assertThat(
+        result, is(objectMapper.readTree(ResourceUtils.getFile("classpath:person/person.json"))));
   }
 
   @Test
@@ -144,9 +131,9 @@ class PersonTests {
     final var result = person.toString();
 
     // Then Result Is Expected
-    assertThat(result, is(
-        "Person(objectType=Person, name=[Normal Person], mbox=[normal.person@normal.mail], mboxSha1sum=[123], openid=[https://example.com], account=[Account(homePage=https://example.com, name=example1), Account(homePage=https://example.com, name=example2)])"));
-
+    assertThat(
+        result,
+        is(
+            "Person(objectType=Person, name=[Normal Person], mbox=[normal.person@normal.mail], mboxSha1sum=[123], openid=[https://example.com], account=[Account(homePage=https://example.com, name=example1), Account(homePage=https://example.com, name=example2)])"));
   }
-
 }

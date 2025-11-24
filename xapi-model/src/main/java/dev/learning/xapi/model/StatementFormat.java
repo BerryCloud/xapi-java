@@ -10,7 +10,6 @@ package dev.learning.xapi.model;
  * @author Thomas Turrell-Croft
  */
 public enum StatementFormat {
-
   IDS("ids"),
 
   EXACT("exact"),
