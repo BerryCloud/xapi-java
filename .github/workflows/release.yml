@@ -2,13 +2,16 @@ name: Automated Release
 
 on:
   release:
-    types: [created] # Runs when a non-draft release is created in the UI
+    types: [created]  # Only fire when a release is created
 
 permissions:
-  contents: write  # Required to push commits and update tags
+  contents: write  # Required to push commits, update tags and edit releases
 
 jobs:
   release:
+    # Only run for draft releases; ignore non-draft created events
+    if: ${{ github.event.release.draft == true }}
+
     runs-on: ubuntu-latest
 
     steps:
@@ -148,21 +151,47 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
-      - name: Push changes to originating branch and tag
+      - name: Push changes to originating branch and tag (with merge fallback)
         run: |
           TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
 
           echo "Pushing changes to branch: $TARGET_BRANCH"
 
-          if ! git push --force-with-lease origin "HEAD:${TARGET_BRANCH}"; then
-            echo "::error::Failed to push release commits to ${TARGET_BRANCH} due to branch divergence."
-            echo "The remote branch may have new commits. Please resolve the conflict manually:"
-            echo "  1. Fetch the latest changes: git fetch origin"
-            echo "  2. Rebase or merge as needed, then push again with --force-with-lease."
-            exit 1
+          # First, try a normal fast-forward push
+          if git push origin "HEAD:${TARGET_BRANCH}"; then
+            echo "Fast-forward push to ${TARGET_BRANCH} succeeded."
+          else
+            echo "::warning::Fast-forward push to ${TARGET_BRANCH} failed. Trying merge fallback."
+
+            # Fetch latest state of the branch
+            git fetch origin "${TARGET_BRANCH}"
+
+            # Merge origin/TARGET_BRANCH into our release HEAD.
+            # If this conflicts, we bail out rather than trying to auto-resolve.
+            if ! git merge --no-edit "origin/${TARGET_BRANCH}"; then
+              echo "::error::Automatic merge with origin/${TARGET_BRANCH} failed due to conflicts."
+              echo "Please resolve manually by checking out the release branch locally and merging origin/${TARGET_BRANCH}."
+              exit 1
+            fi
+
+            # Now push the merge commit
+            if git push origin "HEAD:${TARGET_BRANCH}"; then
+              echo "Pushed merge commit to ${TARGET_BRANCH}."
+            else
+              echo "::error::Failed to push merge commit to ${TARGET_BRANCH}."
+              exit 1
+            fi
           fi
 
           echo "Pushing tag $TAG_NAME"
           git push origin "$TAG_NAME"
           echo "Pushed release commits and tag to $TARGET_BRANCH"
+
+      - name: Publish GitHub release
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          echo "Publishing draft release for $TAG_NAME"
+          gh release edit "$TAG_NAME" --draft=false
