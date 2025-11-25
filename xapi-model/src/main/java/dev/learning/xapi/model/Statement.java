@@ -131,7 +131,7 @@ public class Statement implements CoreStatement {
                     .length(token.length())
                     .contentType("application/octet-stream"));
 
-      } catch (final UnknownClassException e) {
+      } catch (final UnknownClassException | ExceptionInInitializerError e) {
         throw new IllegalStateException(
             """
 
