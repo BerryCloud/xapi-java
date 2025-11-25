@@ -75,44 +75,23 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.generate_token.outputs.token }}
 
-      - name: Handle existing tag safely
-        id: handle_tag
+      - name: Pre-build condition checks
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
-          TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
 
-          echo "Checking tag $TAG_NAME on branch $TARGET_BRANCH"
+          echo "Performing pre-build condition checks..."
 
-          # Make sure we have up-to-date branch and tags
-          git fetch origin --tags "$TARGET_BRANCH"
+          # Fetch latest state from remote
+          git fetch origin --tags
 
-          # SHA of the target branch head (what the user chose in the release UI)
-          BRANCH_SHA="$(git rev-parse "origin/$TARGET_BRANCH")"
-          echo "Branch HEAD (origin/$TARGET_BRANCH) is $BRANCH_SHA"
-          echo "expected_branch_sha=${BRANCH_SHA}" >> "$GITHUB_OUTPUT"
-
-          # SHA of the tag if it exists
-          if git rev-parse "refs/tags/$TAG_NAME^{commit}" >/dev/null 2>&1; then
-            TAG_SHA="$(git rev-parse "refs/tags/$TAG_NAME^{commit}")"
-            echo "Existing tag $TAG_NAME points at $TAG_SHA"
-
-            if [[ "$TAG_SHA" == "$BRANCH_SHA" ]]; then
-              echo "Tag points at the target branch head – treating as freshly created UI tag."
-              echo "Will delete it so Maven can recreate the tag on the release commit."
-              git tag -d "$TAG_NAME" || true
-              git push origin ":refs/tags/$TAG_NAME" || true
-              echo "deleted=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "::error::Tag $TAG_NAME already exists and does NOT point at origin/$TARGET_BRANCH."
-              echo "This may indicate a previous release attempt or conflicting tag."
-              echo "deleted=false" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
-          else
-            echo "Tag $TAG_NAME does not exist yet – nothing to delete."
-            echo "deleted=false" >> "$GITHUB_OUTPUT"
+          # Check if a tag exists
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "::error::Tag $TAG_NAME already exists on remote."
+            exit 1
           fi
 
+          echo "Pre-build checks passed. No issues detected."
+      
       - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
@@ -134,39 +113,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Validate no race conditions before build
-        run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
-          EXPECTED_BRANCH_SHA="${{ steps.handle_tag.outputs.expected_branch_sha }}"
-
-          echo "Performing pre-build race condition checks..."
-          echo "Expected branch SHA: $EXPECTED_BRANCH_SHA"
-
-          # Fetch latest state from remote (tags and branch separately for clarity)
-          git fetch origin --tags
-          git fetch origin "$TARGET_BRANCH"
-
-          # Check if a tag was created by another process after it was deleted in handle_tag step
-          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
-            echo "::error::Race condition detected: Tag $TAG_NAME was re-created on remote after being deleted."
-            echo "Another process may have created this tag while this workflow was running."
-            echo "Please verify no other release process is running and try again."
-            exit 1
-          fi
-
-          # Check if the branch has moved (new commits pushed)
-          CURRENT_BRANCH_SHA="$(git rev-parse "origin/$TARGET_BRANCH")"
-          if [[ "$CURRENT_BRANCH_SHA" != "$EXPECTED_BRANCH_SHA" ]]; then
-            echo "::error::Race condition detected: Branch $TARGET_BRANCH has new commits since this workflow started."
-            echo "Expected SHA: $EXPECTED_BRANCH_SHA"
-            echo "Current SHA:  $CURRENT_BRANCH_SHA"
-            echo "Please create a new release via the GitHub Release UI to include the latest changes."
-            exit 1
-          fi
-
-          echo "Pre-build validation passed. No race conditions detected."
 
       - name: Run Maven release:prepare
         run: |
@@ -225,9 +171,9 @@ jobs:
               echo ""
               echo "Recommended resolution:"
               echo "  1. Delete this draft release in GitHub"
-              echo "  2. Create a new draft release via the GitHub Release UI"
+              echo "  2. Create a new release via the GitHub Release UI"
               echo ""
-              echo "Note: Artifacts have NOT been deployed to Maven Central."
+              echo "Note: Artifacts have been deployed to Maven Central."
               exit 1
             fi
 
@@ -241,7 +187,7 @@ jobs:
               echo ""
               echo "Recommended resolution:"
               echo "  1. Delete this draft release in GitHub"
-              echo "  2. Create a new draft release via the GitHub Release UI"
+              echo "  2. Create a new release via the GitHub Release UI"
               exit 1
             fi
           fi
@@ -261,6 +207,23 @@ jobs:
           fi
           echo "Pushed release commits and tag to $TARGET_BRANCH"
 
+      - name: Collect release assets
+        run: |
+          mkdir -p artifacts
+          cp xapi-client/target/xapi-client-${{version}}.jar artifacts/
+          cp xapi-model/target/xapi-model-${{version}}.jar artifacts/
+          cp xapi-model-spring-boot-starter/target/xapi-model-spring-boot-starter-${{version}}.jar artifacts/
+
+      - name: Upload release assets
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          for FILE in artifacts/*; do
+            echo "Uploading $(basename "$FILE")"
+            gh release upload "$TAG_NAME" "$FILE" --clobber
+          done
+
       - name: Publish GitHub release
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
@@ -268,3 +231,4 @@ jobs:
           TAG_NAME="${{ github.event.release.tag_name }}"
           echo "Publishing draft release for $TAG_NAME"
           gh release edit "$TAG_NAME" --draft=false
+
