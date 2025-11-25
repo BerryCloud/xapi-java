@@ -7,30 +7,15 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.validation.constraints.ValidDuration;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.util.regex.Pattern;
 
 /**
  * Validates ISO 8601:2004 duration format strings.
  *
- * <p>This validator uses a programmatic approach to avoid complex regex patterns that could be
- * flagged as code smells. The validation is broken down into logical parts:
- *
- * <ul>
- *   <li>Week format: P[n]W (e.g., P1W, P52W)
- *   <li>Date/time format: P[n]Y[n]M[n]DT[n]H[n]M[n]S or P[n]Y[n]M[n]D
- * </ul>
- *
- * <p>Uses possessive quantifiers (++) to prevent ReDoS attacks.
+ * <p>Supports formats: P[n]W, P[n]Y[n]M[n]DT[n]H[n]M[n]S and variations.
  *
  * @author Berry Cloud
  */
 public class DurationValidator implements ConstraintValidator<ValidDuration, String> {
-
-  // Simple patterns using possessive quantifiers to prevent ReDoS
-  private static final Pattern WEEK_PATTERN =
-      Pattern.compile("^P\\d++W$", Pattern.CASE_INSENSITIVE);
-  private static final Pattern DIGITS_PATTERN = Pattern.compile("^\\d++$");
-  private static final Pattern DECIMAL_PATTERN = Pattern.compile("^\\d++\\.\\d++$");
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
@@ -38,177 +23,89 @@ public class DurationValidator implements ConstraintValidator<ValidDuration, Str
       return true;
     }
 
-    // Check for week format first (P[n]W)
-    if (WEEK_PATTERN.matcher(value).matches()) {
-      return true;
-    }
+    String upper = value.toUpperCase();
 
     // Must start with P
-    if (!value.toUpperCase().startsWith("P")) {
+    if (!upper.startsWith("P") || upper.length() < 2) {
       return false;
     }
 
-    // Remove P prefix for processing
-    String remaining = value.substring(1);
+    String rest = upper.substring(1);
 
-    // Empty after P is invalid
-    if (remaining.isEmpty()) {
-      return false;
+    // Week format: P[n]W
+    if (rest.endsWith("W") && rest.length() > 1) {
+      return isDigits(rest.substring(0, rest.length() - 1));
     }
 
-    // Check if there's a time component (T separator)
-    int timeIndex = remaining.toUpperCase().indexOf('T');
-
-    String datePart;
-    String timePart;
-
-    if (timeIndex >= 0) {
-      datePart = remaining.substring(0, timeIndex);
-      timePart = remaining.substring(timeIndex + 1);
-
-      // T must be followed by time components
-      if (timePart.isEmpty()) {
-        return false;
-      }
-    } else {
-      datePart = remaining;
-      timePart = null;
-    }
-
-    // Validate date part (Y, M, D components)
-    if (!datePart.isEmpty() && !isValidDatePart(datePart.toUpperCase())) {
-      return false;
-    }
-
-    // Validate time part (H, M, S components)
-    if (timePart != null && !isValidTimePart(timePart.toUpperCase())) {
-      return false;
-    }
+    // Split by T to get date and time parts
+    int tpos = rest.indexOf('T');
+    String datePart = tpos >= 0 ? rest.substring(0, tpos) : rest;
+    String timePart = tpos >= 0 ? rest.substring(tpos + 1) : "";
 
     // Must have at least one component
-    return !datePart.isEmpty() || timePart != null;
-  }
-
-  /**
-   * Validates the date part of the duration (Y, M, D components).
-   *
-   * <p>Components must appear in order: Years, Months, Days.
-   */
-  private boolean isValidDatePart(String datePart) {
-    if (datePart.isEmpty()) {
-      return true;
-    }
-
-    int pos = 0;
-
-    // Check for Years
-    int yearIndex = datePart.indexOf('Y');
-    if (yearIndex >= 0) {
-      if (yearIndex == 0) {
-        return false; // No digits before Y
-      }
-      String digits = datePart.substring(pos, yearIndex);
-      if (!isValidDigits(digits)) {
-        return false;
-      }
-      pos = yearIndex + 1;
-    }
-
-    // Check for Months
-    int monthIndex = datePart.indexOf('M', pos);
-    if (monthIndex >= 0) {
-      if (monthIndex == pos) {
-        return false; // No digits before M
-      }
-      String digits = datePart.substring(pos, monthIndex);
-      if (!isValidDigits(digits)) {
-        return false;
-      }
-      pos = monthIndex + 1;
-    }
-
-    // Check for Days
-    int dayIndex = datePart.indexOf('D', pos);
-    if (dayIndex >= 0) {
-      if (dayIndex == pos) {
-        return false; // No digits before D
-      }
-      String digits = datePart.substring(pos, dayIndex);
-      if (!isValidDigits(digits)) {
-        return false;
-      }
-      pos = dayIndex + 1;
-    }
-
-    // Nothing should remain after processing
-    return pos == datePart.length();
-  }
-
-  /**
-   * Validates the time part of the duration (H, M, S components).
-   *
-   * <p>Components must appear in order: Hours, Minutes, Seconds. Only seconds can have decimals.
-   */
-  private boolean isValidTimePart(String timePart) {
-    if (timePart.isEmpty()) {
-      return false; // T must be followed by components
-    }
-
-    int pos = 0;
-
-    // Check for Hours
-    int hourIndex = timePart.indexOf('H');
-    if (hourIndex >= 0) {
-      if (hourIndex == 0) {
-        return false; // No digits before H
-      }
-      String digits = timePart.substring(pos, hourIndex);
-      if (!isValidDigits(digits)) {
-        return false;
-      }
-      pos = hourIndex + 1;
-    }
-
-    // Check for Minutes
-    int minuteIndex = timePart.indexOf('M', pos);
-    if (minuteIndex >= 0) {
-      if (minuteIndex == pos) {
-        return false; // No digits before M
-      }
-      String digits = timePart.substring(pos, minuteIndex);
-      if (!isValidDigits(digits)) {
-        return false;
-      }
-      pos = minuteIndex + 1;
-    }
-
-    // Check for Seconds (can be decimal)
-    int secondIndex = timePart.indexOf('S', pos);
-    if (secondIndex >= 0) {
-      if (secondIndex == pos) {
-        return false; // No digits before S
-      }
-      String digits = timePart.substring(pos, secondIndex);
-      if (!isValidDigitsOrDecimal(digits)) {
-        return false;
-      }
-      pos = secondIndex + 1;
-    }
-
-    // Nothing should remain after processing and at least one component must be present
-    return pos == timePart.length() && timePart.length() > 0;
-  }
-
-  /** Checks if the string contains only digits. */
-  private boolean isValidDigits(String value) {
-    return !value.isEmpty() && DIGITS_PATTERN.matcher(value).matches();
-  }
-
-  /** Checks if the string contains digits or a decimal number. */
-  private boolean isValidDigitsOrDecimal(String value) {
-    if (value.isEmpty()) {
+    if (datePart.isEmpty() && timePart.isEmpty()) {
       return false;
     }
-    return DIGITS_PATTERN.matcher(value).matches() || DECIMAL_PATTERN.matcher(value).matches();
+
+    // Validate date part (Y, M, D in order)
+    if (!datePart.isEmpty() && !isValidPart(datePart, "YMD", false)) {
+      return false;
+    }
+
+    // Validate time part (H, M, S in order, S can be decimal)
+    if (!timePart.isEmpty() && !isValidPart(timePart, "HMS", true)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private boolean isValidPart(String part, String designators, boolean allowDecimalLast) {
+    int pos = 0;
+    boolean found = false;
+
+    for (int i = 0; i < designators.length(); i++) {
+      char designator = designators.charAt(i);
+      int idx = part.indexOf(designator, pos);
+      if (idx > pos) {
+        String digits = part.substring(pos, idx);
+        boolean isLast = i == designators.length() - 1;
+        if (!(isLast && allowDecimalLast ? isDigitsOrDecimal(digits) : isDigits(digits))) {
+          return false;
+        }
+        pos = idx + 1;
+        found = true;
+      } else if (idx == pos) {
+        return false; // Designator without preceding digits
+      }
+    }
+
+    return found && pos == part.length();
+  }
+
+  private boolean isDigits(String s) {
+    if (s.isEmpty()) {
+      return false;
+    }
+    for (int i = 0; i < s.length(); i++) {
+      if (!Character.isDigit(s.charAt(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isDigitsOrDecimal(String s) {
+    if (s.isEmpty()) {
+      return false;
+    }
+    int dotPos = s.indexOf('.');
+    if (dotPos < 0) {
+      return isDigits(s);
+    }
+    return dotPos > 0
+        && dotPos < s.length() - 1
+        && isDigits(s.substring(0, dotPos))
+        && isDigits(s.substring(dotPos + 1));
   }
 }
