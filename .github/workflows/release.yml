@@ -1,20 +1,8 @@
-# This workflow automates the release process when a release is created on GitHub
-# It uses Maven release plugin to manage versions and deploys to Maven Central
-#
-# Usage:
-# 1. Create a new release in GitHub UI with tag format: vX.Y.Z (e.g., v1.2.0)
-#    - Select the target branch (typically main)
-# 2. This workflow will automatically:
-#    - Use Maven release:prepare to update versions and create release commits
-#    - Use Maven release:perform to build and deploy artifacts to Maven Central
-#    - Move the tag to point to the actual release commit
-#    - Push commits back to the originating branch
-
 name: Automated Release
 
 on:
   release:
-    types: [created]  # Trigger when release is created
+    types: [created] # Runs when a non-draft release is created in the UI
 
 permissions:
   contents: write  # Required to push commits and update tags
@@ -22,63 +10,91 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Validate release tag format
         id: validate_tag
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
           echo "Release tag: $TAG_NAME"
-          
+
           # Validate tag format (should be vX.Y.Z)
           if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "::error::Invalid tag format. Expected format: vX.Y.Z (e.g., v1.2.0)"
             exit 1
           fi
-          
+
           # Remove 'v' prefix to get the version number
           VERSION="${TAG_NAME#v}"
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "Extracted version: $VERSION"
-      
+
       - name: Determine target branch
         id: target_branch
         run: |
           # Use target_commitish to determine the originating branch
           TARGET="${{ github.event.release.target_commitish }}"
-          
+
           # If target_commitish is empty or a SHA, default to main
           if [[ -z "$TARGET" ]] || [[ "$TARGET" =~ ^[0-9a-f]{40}$ ]]; then
             TARGET="main"
           fi
-          
-          echo "target_branch=${TARGET}" >> $GITHUB_OUTPUT
+
+          echo "target_branch=${TARGET}" >> "$GITHUB_OUTPUT"
           echo "Target branch: $TARGET"
-      
+
       - name: Generate GitHub App Token
         id: generate_token
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      
+
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
           token: ${{ steps.generate_token.outputs.token }}
-      
-      - name: Delete user-created tag
+
+      - name: Handle existing tag safely
+        id: handle_tag
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
-          
-          # Delete the tag created by the user (will be recreated by release:prepare)
-          git tag -d "$TAG_NAME" || true
-          git push origin ":refs/tags/$TAG_NAME" || true
-          
-          echo "Deleted user-created tag $TAG_NAME"
-      
+          TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
+
+          echo "Checking tag $TAG_NAME on branch $TARGET_BRANCH"
+
+          # Make sure we have up-to-date branch and tags
+          git fetch origin --tags "$TARGET_BRANCH"
+
+          # SHA of the target branch head (what the user chose in the release UI)
+          BRANCH_SHA="$(git rev-parse "origin/$TARGET_BRANCH")"
+          echo "Branch HEAD (origin/$TARGET_BRANCH) is $BRANCH_SHA"
+
+          # SHA of the tag if it exists
+          if git rev-parse "refs/tags/$TAG_NAME^{commit}" >/dev/null 2>&1; then
+            TAG_SHA="$(git rev-parse "refs/tags/$TAG_NAME^{commit}")"
+            echo "Existing tag $TAG_NAME points at $TAG_SHA"
+
+            if [[ "$TAG_SHA" == "$BRANCH_SHA" ]]; then
+              echo "Tag points at the target branch head – treating as freshly created UI tag."
+              echo "Will delete it so Maven can recreate the tag on the release commit."
+              git tag -d "$TAG_NAME" || true
+              git push origin ":refs/tags/$TAG_NAME" || true
+              echo "deleted=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "::warning::Tag $TAG_NAME already exists and does NOT point at origin/$TARGET_BRANCH."
+              echo "Assuming this release has already been processed. Exiting without changes."
+              echo "deleted=false" >> "$GITHUB_OUTPUT"
+              # Exit the whole job successfully but skip further steps
+              exit 0
+            fi
+          else
+            echo "Tag $TAG_NAME does not exist yet – nothing to delete."
+            echo "deleted=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
@@ -95,24 +111,20 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      
+
       - name: Run Maven release:prepare
         run: |
           VERSION="${{ steps.validate_tag.outputs.version }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
-          
+
           echo "Preparing release version: $VERSION"
           echo "Tag name: $TAG_NAME"
-          
-          # Run release:prepare with explicit release version
-          # Maven will automatically calculate the next development version
-          # Only prepare production modules, exclude all sample modules
-          # Pass -pl/-am to forked Maven invocations via -Darguments
+
           ./mvnw -B release:prepare \
             -DreleaseVersion="${VERSION}" \
             -Dtag="${TAG_NAME}" \
@@ -122,14 +134,11 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      
+
       - name: Run Maven release:perform
         run: |
           echo "Performing release and deploying to Maven Central"
-          
-          # Run release:perform to build and deploy
-          # Only release production modules, exclude all sample modules
-          # Pass -pl/-am to forked Maven invocations via -Darguments
+
           ./mvnw -B release:perform \
             -DlocalCheckout=true \
             -DeployAtEnd=true \
@@ -138,15 +147,14 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      
-      - name: Push changes to originating branch
+
+      - name: Push changes to originating branch and tag
         run: |
           TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
-          
+
           echo "Pushing changes to branch: $TARGET_BRANCH"
-          
-          # Push the commits created by release:prepare
+
           if ! git push --force-with-lease origin "HEAD:${TARGET_BRANCH}"; then
             echo "::error::Failed to push release commits to ${TARGET_BRANCH} due to branch divergence."
             echo "The remote branch may have new commits. Please resolve the conflict manually:"
@@ -154,8 +162,7 @@ jobs:
             echo "  2. Rebase or merge as needed, then push again with --force-with-lease."
             exit 1
           fi
-          
-          # Push the tag created by release:prepare
+
+          echo "Pushing tag $TAG_NAME"
           git push origin "$TAG_NAME"
-          
           echo "Pushed release commits and tag to $TARGET_BRANCH"
