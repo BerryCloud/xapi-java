@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.VaildScore;
+import dev.learning.xapi.model.validation.constraints.ValidDuration;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
@@ -41,14 +41,7 @@ public class Result {
   private String response;
 
   /** Period of time over which the Statement occurred. */
-  // Java Duration does not store ISO 8601:2004 durations.
-  @Pattern(
-      regexp =
-          "^(P\\d+W)?$|^P(?!$)(\\d+Y)?(\\d+M)?" // NOSONAR
-              + "(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d*\\.?\\d+S)?)?$", // NOSONAR
-      flags = Pattern.Flag.CASE_INSENSITIVE,
-      message = "Must be a valid ISO 8601:2004 duration format.")
-  private String duration;
+  @ValidDuration private String duration;
 
   private LinkedHashMap<@HasScheme URI, Object> extensions;
 
