@@ -89,6 +89,7 @@ jobs:
           # SHA of the target branch head (what the user chose in the release UI)
           BRANCH_SHA="$(git rev-parse "origin/$TARGET_BRANCH")"
           echo "Branch HEAD (origin/$TARGET_BRANCH) is $BRANCH_SHA"
+          echo "expected_branch_sha=${BRANCH_SHA}" >> "$GITHUB_OUTPUT"
 
           # SHA of the tag if it exists
           if git rev-parse "refs/tags/$TAG_NAME^{commit}" >/dev/null 2>&1; then
@@ -133,6 +134,39 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Validate no race conditions before build
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
+          EXPECTED_BRANCH_SHA="${{ steps.handle_tag.outputs.expected_branch_sha }}"
+
+          echo "Performing pre-build race condition checks..."
+          echo "Expected branch SHA: $EXPECTED_BRANCH_SHA"
+
+          # Fetch latest state from remote (tags and branch separately for clarity)
+          git fetch origin --tags
+          git fetch origin "$TARGET_BRANCH"
+
+          # Check if a tag was created by another process after it was deleted in handle_tag step
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "::error::Race condition detected: Tag $TAG_NAME was re-created on remote after being deleted."
+            echo "Another process may have created this tag while this workflow was running."
+            echo "Please verify no other release process is running and try again."
+            exit 1
+          fi
+
+          # Check if the branch has moved (new commits pushed)
+          CURRENT_BRANCH_SHA="$(git rev-parse "origin/$TARGET_BRANCH")"
+          if [[ "$CURRENT_BRANCH_SHA" != "$EXPECTED_BRANCH_SHA" ]]; then
+            echo "::error::Race condition detected: Branch $TARGET_BRANCH has new commits since this workflow started."
+            echo "Expected SHA: $EXPECTED_BRANCH_SHA"
+            echo "Current SHA:  $CURRENT_BRANCH_SHA"
+            echo "Please create a new release via the GitHub Release UI to include the latest changes."
+            exit 1
+          fi
+
+          echo "Pre-build validation passed. No race conditions detected."
 
       - name: Run Maven release:prepare
         run: |
@@ -184,8 +218,16 @@ jobs:
             # Merge origin/TARGET_BRANCH into our release HEAD.
             # If this conflicts, we bail out rather than trying to auto-resolve.
             if ! git merge --no-edit "origin/${TARGET_BRANCH}"; then
-              echo "::error::Automatic merge with origin/${TARGET_BRANCH} failed due to conflicts."
-              echo "Please resolve manually by checking out the release branch locally and merging origin/${TARGET_BRANCH}."
+              echo "::error::Merge conflict detected - likely due to a race condition."
+              echo ""
+              echo "This typically happens when changes to POM files were merged to ${TARGET_BRANCH}"
+              echo "while this release workflow was running."
+              echo ""
+              echo "Recommended resolution:"
+              echo "  1. Delete this draft release in GitHub"
+              echo "  2. Create a new draft release via the GitHub Release UI"
+              echo ""
+              echo "Note: Artifacts have NOT been deployed to Maven Central."
               exit 1
             fi
 
@@ -193,13 +235,30 @@ jobs:
             if git push origin "HEAD:${TARGET_BRANCH}"; then
               echo "Pushed merge commit to ${TARGET_BRANCH}."
             else
-              echo "::error::Failed to push merge commit to ${TARGET_BRANCH}."
+              echo "::error::Failed to push merge commit to ${TARGET_BRANCH} after merge."
+              echo ""
+              echo "This may be due to branch protection rules or another race condition."
+              echo ""
+              echo "Recommended resolution:"
+              echo "  1. Delete this draft release in GitHub"
+              echo "  2. Create a new draft release via the GitHub Release UI"
               exit 1
             fi
           fi
 
           echo "Pushing tag $TAG_NAME"
-          git push origin "$TAG_NAME"
+          if ! git push origin "$TAG_NAME"; then
+            echo "::error::Failed to push tag $TAG_NAME."
+            echo ""
+            echo "This may be due to a race condition where someone created a tag with"
+            echo "the same name while this workflow was running."
+            echo ""
+            echo "Recommended resolution:"
+            echo "  1. Check if the tag $TAG_NAME already exists on the remote"
+            echo "  2. If the tag exists but points to wrong commit, delete it"
+            echo "  3. Create a new draft release via the GitHub Release UI"
+            exit 1
+          fi
           echo "Pushed release commits and tag to $TARGET_BRANCH"
 
       - name: Publish GitHub release
