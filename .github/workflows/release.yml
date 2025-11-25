@@ -144,13 +144,15 @@ jobs:
           echo "Performing pre-build race condition checks..."
           echo "Expected branch SHA: $EXPECTED_BRANCH_SHA"
 
-          # Fetch latest state from remote
-          git fetch origin --tags "$TARGET_BRANCH"
+          # Fetch latest state from remote (tags and branch separately for clarity)
+          git fetch origin --tags
+          git fetch origin "$TARGET_BRANCH"
 
-          # Check if the tag was created by someone else while we were setting up
-          if git rev-parse "refs/tags/$TAG_NAME^{commit}" >/dev/null 2>&1; then
-            echo "::error::Race condition detected: Tag $TAG_NAME was created by another process while this workflow was running."
-            echo "Please delete the conflicting tag and create a new release via the GitHub Release UI."
+          # Check if a tag was created by another process after it was deleted in handle_tag step
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "::error::Race condition detected: Tag $TAG_NAME was re-created on remote after being deleted."
+            echo "Another process may have created this tag while this workflow was running."
+            echo "Please verify no other release process is running and try again."
             exit 1
           fi
 
@@ -222,10 +224,10 @@ jobs:
               echo "while this release workflow was running."
               echo ""
               echo "Recommended resolution:"
-              echo "  1. Delete the draft release in GitHub"
-              echo "  2. Create a new release via the GitHub Release UI"
+              echo "  1. Delete this draft release in GitHub"
+              echo "  2. Create a new draft release via the GitHub Release UI"
               echo ""
-              echo "The artifacts have NOT been deployed to Maven Central."
+              echo "Note: Artifacts have NOT been deployed to Maven Central."
               exit 1
             fi
 
@@ -238,8 +240,8 @@ jobs:
               echo "This may be due to branch protection rules or another race condition."
               echo ""
               echo "Recommended resolution:"
-              echo "  1. Delete the draft release in GitHub"
-              echo "  2. Create a new release via the GitHub Release UI"
+              echo "  1. Delete this draft release in GitHub"
+              echo "  2. Create a new draft release via the GitHub Release UI"
               exit 1
             fi
           fi
@@ -254,7 +256,7 @@ jobs:
             echo "Recommended resolution:"
             echo "  1. Check if the tag $TAG_NAME already exists on the remote"
             echo "  2. If the tag exists but points to wrong commit, delete it"
-            echo "  3. Create a new release via the GitHub Release UI"
+            echo "  3. Create a new draft release via the GitHub Release UI"
             exit 1
           fi
           echo "Pushed release commits and tag to $TARGET_BRANCH"
