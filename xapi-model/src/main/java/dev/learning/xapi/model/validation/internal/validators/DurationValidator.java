@@ -32,44 +32,40 @@ public class DurationValidator implements ConstraintValidator<ValidDuration, Str
       return true;
     }
 
-    // Must start with P and have at least one component
     if (!value.toUpperCase().startsWith("P") || value.length() < 2) {
       return false;
     }
 
     String rest = value.substring(1);
 
-    // Week format: P[n]W
     if (WEEK.matcher(rest).matches()) {
       return true;
     }
 
-    // Split by T to get date and time parts
     int tpos = rest.toUpperCase().indexOf('T');
     String datePart = tpos >= 0 ? rest.substring(0, tpos) : rest;
     String timePart = tpos >= 0 ? rest.substring(tpos + 1) : "";
 
-    // Must have at least one component
     if (datePart.isEmpty() && timePart.isEmpty()) {
       return false;
     }
 
-    // Validate date part - must match pattern and have at least one component
-    if (!datePart.isEmpty()) {
-      Matcher m = DATE.matcher(datePart);
-      if (!m.matches() || (m.group(1) == null && m.group(2) == null && m.group(3) == null)) {
-        return false;
-      }
-    }
+    return isValidDatePart(datePart) && isValidTimePart(timePart);
+  }
 
-    // Validate time part - must match pattern and have at least one component
-    if (!timePart.isEmpty()) {
-      Matcher m = TIME.matcher(timePart);
-      if (!m.matches() || (m.group(1) == null && m.group(2) == null && m.group(3) == null)) {
-        return false;
-      }
+  private boolean isValidDatePart(String datePart) {
+    if (datePart.isEmpty()) {
+      return true;
     }
+    Matcher m = DATE.matcher(datePart);
+    return m.matches() && (m.group(1) != null || m.group(2) != null || m.group(3) != null);
+  }
 
-    return true;
+  private boolean isValidTimePart(String timePart) {
+    if (timePart.isEmpty()) {
+      return true;
+    }
+    Matcher m = TIME.matcher(timePart);
+    return m.matches() && (m.group(1) != null || m.group(2) != null || m.group(3) != null);
   }
 }
