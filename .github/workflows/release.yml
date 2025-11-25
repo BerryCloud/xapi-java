@@ -102,11 +102,10 @@ jobs:
               git push origin ":refs/tags/$TAG_NAME" || true
               echo "deleted=true" >> "$GITHUB_OUTPUT"
             else
-              echo "::warning::Tag $TAG_NAME already exists and does NOT point at origin/$TARGET_BRANCH."
-              echo "Assuming this release has already been processed. Exiting without changes."
+              echo "::error::Tag $TAG_NAME already exists and does NOT point at origin/$TARGET_BRANCH."
+              echo "This may indicate a previous release attempt or conflicting tag."
               echo "deleted=false" >> "$GITHUB_OUTPUT"
-              # Exit the whole job successfully but skip further steps
-              exit 0
+              exit 1
             fi
           else
             echo "Tag $TAG_NAME does not exist yet – nothing to delete."
