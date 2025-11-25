@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @WebMvcTest(
     value = {StatementController.class},
-    properties = "spring.jackson.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
+    properties = "spring.jackson2.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
 class StatementControllerTest {
 
   @Autowired private MockMvc mvc;

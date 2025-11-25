@@ -24,13 +24,18 @@
     </dependency>
     <dependency>
       <groupId>io.hypersistence</groupId>
-      <artifactId>hypersistence-utils-hibernate-60</artifactId>
-      <version>3.8.3</version>
+      <artifactId>hypersistence-utils-hibernate-70</artifactId>
+      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-webmvc-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
