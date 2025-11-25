@@ -7,6 +7,8 @@ package dev.learning.xapi.model.validation.internal.validators;
 import dev.learning.xapi.model.validation.constraints.ValidDuration;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Validates ISO 8601:2004 duration format strings.
@@ -17,28 +19,33 @@ import jakarta.validation.ConstraintValidatorContext;
  */
 public class DurationValidator implements ConstraintValidator<ValidDuration, String> {
 
+  // Simple patterns - each validates a single component type
+  private static final Pattern WEEK = Pattern.compile("^\\d+W$", Pattern.CASE_INSENSITIVE);
+  private static final Pattern DATE =
+      Pattern.compile("^(\\d+Y)?(\\d+M)?(\\d+D)?$", Pattern.CASE_INSENSITIVE);
+  private static final Pattern TIME =
+      Pattern.compile("^(\\d+H)?(\\d+M)?((\\d+\\.\\d+|\\d+)S)?$", Pattern.CASE_INSENSITIVE);
+
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
     }
 
-    String upper = value.toUpperCase();
-
-    // Must start with P
-    if (!upper.startsWith("P") || upper.length() < 2) {
+    // Must start with P and have at least one component
+    if (!value.toUpperCase().startsWith("P") || value.length() < 2) {
       return false;
     }
 
-    String rest = upper.substring(1);
+    String rest = value.substring(1);
 
     // Week format: P[n]W
-    if (rest.endsWith("W") && rest.length() > 1) {
-      return isDigits(rest.substring(0, rest.length() - 1));
+    if (WEEK.matcher(rest).matches()) {
+      return true;
     }
 
     // Split by T to get date and time parts
-    int tpos = rest.indexOf('T');
+    int tpos = rest.toUpperCase().indexOf('T');
     String datePart = tpos >= 0 ? rest.substring(0, tpos) : rest;
     String timePart = tpos >= 0 ? rest.substring(tpos + 1) : "";
 
@@ -47,65 +54,22 @@ public class DurationValidator implements ConstraintValidator<ValidDuration, Str
       return false;
     }
 
-    // Validate date part (Y, M, D in order)
-    if (!datePart.isEmpty() && !isValidPart(datePart, "YMD", false)) {
-      return false;
-    }
-
-    // Validate time part (H, M, S in order, S can be decimal)
-    if (!timePart.isEmpty() && !isValidPart(timePart, "HMS", true)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  private boolean isValidPart(String part, String designators, boolean allowDecimalLast) {
-    int pos = 0;
-    boolean found = false;
-
-    for (int i = 0; i < designators.length(); i++) {
-      char designator = designators.charAt(i);
-      int idx = part.indexOf(designator, pos);
-      if (idx > pos) {
-        String digits = part.substring(pos, idx);
-        boolean isLast = i == designators.length() - 1;
-        if (!(isLast && allowDecimalLast ? isDigitsOrDecimal(digits) : isDigits(digits))) {
-          return false;
-        }
-        pos = idx + 1;
-        found = true;
-      } else if (idx == pos) {
-        return false; // Designator without preceding digits
-      }
-    }
-
-    return found && pos == part.length();
-  }
-
-  private boolean isDigits(String s) {
-    if (s.isEmpty()) {
-      return false;
-    }
-    for (int i = 0; i < s.length(); i++) {
-      if (!Character.isDigit(s.charAt(i))) {
+    // Validate date part - must match pattern and have at least one component
+    if (!datePart.isEmpty()) {
+      Matcher m = DATE.matcher(datePart);
+      if (!m.matches() || (m.group(1) == null && m.group(2) == null && m.group(3) == null)) {
         return false;
       }
     }
-    return true;
-  }
 
-  private boolean isDigitsOrDecimal(String s) {
-    if (s.isEmpty()) {
-      return false;
+    // Validate time part - must match pattern and have at least one component
+    if (!timePart.isEmpty()) {
+      Matcher m = TIME.matcher(timePart);
+      if (!m.matches() || (m.group(1) == null && m.group(2) == null && m.group(3) == null)) {
+        return false;
+      }
     }
-    int dotPos = s.indexOf('.');
-    if (dotPos < 0) {
-      return isDigits(s);
-    }
-    return dotPos > 0
-        && dotPos < s.length() - 1
-        && isDigits(s.substring(0, dotPos))
-        && isDigits(s.substring(dotPos + 1));
+
+    return true;
   }
 }
