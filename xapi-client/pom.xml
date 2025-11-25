@@ -16,6 +16,18 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
+      <exclusions>
+        <!-- jjwt does not currently support Jackson 3. This exclusion should be
+          removed once jjwt adds Jackson 3 support. -->
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-jackson</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jackson2</artifactId>
     </dependency>
     <dependency>
       <groupId>dev.learning.xapi</groupId>
