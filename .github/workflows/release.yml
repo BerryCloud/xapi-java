@@ -196,7 +196,7 @@ jobs:
           if ! git push origin "$TAG_NAME"; then
             echo "::error::Failed to push tag $TAG_NAME."
             echo ""
-            echo "This may be due to a race condition where someone created a tag with"
+            echo "This may be due to concurrent tag creation (tag collision), where someone created a tag with"
             echo "the same name while this workflow was running."
             echo ""
             echo "Recommended resolution:"
