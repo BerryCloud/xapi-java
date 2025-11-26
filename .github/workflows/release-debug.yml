@@ -1,31 +1,14 @@
-# This workflow automates the release process when a draft release is created 
-# on GitHub. It uses Maven release plugin to manage versions and deploys to 
-# Maven Central
-#
-# Usage:
-# 1. Create a new draft release in GitHub UI with tag format: vX.Y.Z 
-# (e.g., v1.2.0)
-#    - Select the target branch (typically main)
-# 2. This workflow will automatically:
-#    - Use Maven release:prepare to update versions and create release commit
-#    - Use Maven release:perform to build and deploy artifacts to Maven Central
-#    - Create the tag to point to release commit
-#    - Push commits back to the originating branch
-#    - Publish the GitHub release (mark draft as non-draft)
 name: Automated Release Debug
 
 on:
   release:
-    types: [created] # Only fire when a release is created
+    types: [created]
 
 permissions:
   contents: write # Required to push commits, update tags and edit releases
 
 jobs:
   release:
-    # Only run for draft releases; ignore non-draft created events
-    if: github.event.release.draft
-
     runs-on: ubuntu-latest
 
     steps:
