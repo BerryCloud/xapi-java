@@ -209,10 +209,21 @@ jobs:
 
       - name: Collect release assets
         run: |
+          set -e
+          VERSION="${{ steps.validate_tag.outputs.version }}"
           mkdir -p artifacts
-          cp xapi-client/target/xapi-client-${{version}}.jar artifacts/
-          cp xapi-model/target/xapi-model-${{version}}.jar artifacts/
-          cp xapi-model-spring-boot-starter/target/xapi-model-spring-boot-starter-${{version}}.jar artifacts/
+          # Define artifact paths
+          CLIENT_JAR="target/checkout/xapi-client/target/xapi-client-${VERSION}.jar"
+          MODEL_JAR="target/checkout/xapi-model/target/xapi-model-${VERSION}.jar"
+          STARTER_JAR="target/checkout/xapi-model-spring-boot-starter/target/xapi-model-spring-boot-starter-${VERSION}.jar"
+          # Check existence and copy
+          for JAR in "$CLIENT_JAR" "$MODEL_JAR" "$STARTER_JAR"; do
+            if [ ! -f "$JAR" ]; then
+              echo "::error::Artifact not found: $JAR"
+              exit 1
+            fi
+            cp "$JAR" artifacts/
+          done
 
       - name: Upload release assets
         env:
