@@ -67,12 +67,14 @@ jobs:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
+      # Checkout using the default GITHUB_TOKEN (Actions ephemeral token) rather
+      # than the generated app token. Pushes made with GITHUB_TOKEN do not
+      # trigger other workflows, preventing infinite workflow loops.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
-          token: ${{ steps.generate_token.outputs.token }}
 
       - name: Pre-build condition checks
         run: |
@@ -144,10 +146,19 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
+      # Push using GITHUB_TOKEN (Actions ephemeral token) to avoid triggering
+      # other workflows. Operations performed with GITHUB_TOKEN do not create
+      # new workflow runs, preventing infinite workflow loops.
       - name: Push changes to originating branch and tag (with merge fallback)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
+
+          # Set remote URL with GITHUB_TOKEN to ensure push authenticates with
+          # Actions token even if checkout configured the remote differently
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
 
           echo "Pushing changes to branch: $TARGET_BRANCH"
 
@@ -224,6 +235,9 @@ jobs:
             cp "$JAR" artifacts/
           done
 
+      # Upload and publish steps use the generated GitHub App token because
+      # these operations require broader permissions for editing releases and
+      # uploading assets via the gh CLI.
       - name: Upload release assets
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
