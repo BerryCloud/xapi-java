@@ -1,83 +1,96 @@
-# This workflow automates the release process when a release is created on GitHub
-# It uses Maven release plugin to manage versions and deploys to Maven Central
+# This workflow automates the release process when a draft release is created 
+# on GitHub. It uses Maven release plugin to manage versions and deploys to 
+# Maven Central
 #
 # Usage:
-# 1. Create a new release in GitHub UI with tag format: vX.Y.Z (e.g., v1.2.0)
+# 1. Create a new draft release in GitHub UI with tag format: vX.Y.Z 
+# (e.g., v1.2.0)
 #    - Select the target branch (typically main)
 # 2. This workflow will automatically:
-#    - Use Maven release:prepare to update versions and create release commits
+#    - Use Maven release:prepare to update versions and create release commit
 #    - Use Maven release:perform to build and deploy artifacts to Maven Central
-#    - Move the tag to point to the actual release commit
+#    - Create the tag to point to release commit
 #    - Push commits back to the originating branch
+#    - Publish the GitHub release (mark draft as non-draft)
 
 name: Automated Release
 
 on:
   release:
-    types: [created]  # Trigger when release is created
+    types: [created] # Only fire when a release is created
 
 permissions:
-  contents: write  # Required to push commits and update tags
+  contents: write # Required to push commits, update tags and edit releases
 
 jobs:
   release:
+    # Only run for draft releases; ignore non-draft created events
+    if: github.event.release.draft
+
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Validate release tag format
         id: validate_tag
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
           echo "Release tag: $TAG_NAME"
-          
+
           # Validate tag format (should be vX.Y.Z)
           if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "::error::Invalid tag format. Expected format: vX.Y.Z (e.g., v1.2.0)"
             exit 1
           fi
-          
+
           # Remove 'v' prefix to get the version number
           VERSION="${TAG_NAME#v}"
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "Extracted version: $VERSION"
-      
+
       - name: Determine target branch
         id: target_branch
         run: |
           # Use target_commitish to determine the originating branch
           TARGET="${{ github.event.release.target_commitish }}"
-          
+
           # If target_commitish is empty or a SHA, default to main
           if [[ -z "$TARGET" ]] || [[ "$TARGET" =~ ^[0-9a-f]{40}$ ]]; then
             TARGET="main"
           fi
-          
-          echo "target_branch=${TARGET}" >> $GITHUB_OUTPUT
+
+          echo "target_branch=${TARGET}" >> "$GITHUB_OUTPUT"
           echo "Target branch: $TARGET"
-      
+
       - name: Generate GitHub App Token
         id: generate_token
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      
+
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
           token: ${{ steps.generate_token.outputs.token }}
-      
-      - name: Delete user-created tag
+
+      - name: Pre-build condition checks
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
-          
-          # Delete the tag created by the user (will be recreated by release:prepare)
-          git tag -d "$TAG_NAME" || true
-          git push origin ":refs/tags/$TAG_NAME" || true
-          
-          echo "Deleted user-created tag $TAG_NAME"
+
+          echo "Performing pre-build condition checks..."
+
+          # Fetch latest state from remote
+          git fetch origin --tags
+
+          # Check if a tag exists
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "::error::Tag $TAG_NAME already exists on remote."
+            exit 1
+          fi
+
+          echo "Pre-build checks passed. No issues detected."
       
       - name: Set up JDK 25
         uses: actions/setup-java@v5
@@ -95,24 +108,20 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      
+
       - name: Run Maven release:prepare
         run: |
           VERSION="${{ steps.validate_tag.outputs.version }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
-          
+
           echo "Preparing release version: $VERSION"
           echo "Tag name: $TAG_NAME"
-          
-          # Run release:prepare with explicit release version
-          # Maven will automatically calculate the next development version
-          # Only prepare production modules, exclude all sample modules
-          # Pass -pl/-am to forked Maven invocations via -Darguments
+
           ./mvnw -B release:prepare \
             -DreleaseVersion="${VERSION}" \
             -Dtag="${TAG_NAME}" \
@@ -122,40 +131,115 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      
+
       - name: Run Maven release:perform
         run: |
           echo "Performing release and deploying to Maven Central"
-          
-          # Run release:perform to build and deploy
-          # Only release production modules, exclude all sample modules
-          # Pass -pl/-am to forked Maven invocations via -Darguments
+
           ./mvnw -B release:perform \
             -DlocalCheckout=true \
-            -DeployAtEnd=true \
+            -DdeployAtEnd=true \
             -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      
-      - name: Push changes to originating branch
+
+      - name: Push changes to originating branch and tag (with merge fallback)
         run: |
           TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
-          
+
           echo "Pushing changes to branch: $TARGET_BRANCH"
-          
-          # Push the commits created by release:prepare
-          if ! git push --force-with-lease origin "HEAD:${TARGET_BRANCH}"; then
-            echo "::error::Failed to push release commits to ${TARGET_BRANCH} due to branch divergence."
-            echo "The remote branch may have new commits. Please resolve the conflict manually:"
-            echo "  1. Fetch the latest changes: git fetch origin"
-            echo "  2. Rebase or merge as needed, then push again with --force-with-lease."
+
+          # First, try a normal fast-forward push
+          if git push origin "HEAD:${TARGET_BRANCH}"; then
+            echo "Fast-forward push to ${TARGET_BRANCH} succeeded."
+          else
+            echo "::warning::Fast-forward push to ${TARGET_BRANCH} failed. Trying merge fallback."
+
+            # Fetch latest state of the branch
+            git fetch origin "${TARGET_BRANCH}"
+
+            # Merge origin/TARGET_BRANCH into our release HEAD.
+            # If this conflicts, we bail out rather than trying to auto-resolve.
+            if ! git merge --no-edit "origin/${TARGET_BRANCH}"; then
+              echo "::error::Merge conflict detected - likely due to a race condition."
+              echo ""
+              echo "This typically happens when changes to POM files were merged to ${TARGET_BRANCH}"
+              echo "while this release workflow was running."
+              echo ""
+              echo "Recommended resolution:"
+              echo "  1. Delete this draft release in GitHub"
+              echo "  2. Create a new release via the GitHub Release UI"
+              echo ""
+              echo "Note: Artifacts have been deployed to Maven Central."
+              exit 1
+            fi
+
+            # Now push the merge commit
+            if git push origin "HEAD:${TARGET_BRANCH}"; then
+              echo "Pushed merge commit to ${TARGET_BRANCH}."
+            else
+              echo "::error::Failed to push merge commit to ${TARGET_BRANCH} after merge."
+              echo ""
+              echo "This may be due to branch protection rules or another race condition."
+              echo ""
+              echo "Recommended resolution:"
+              echo "  1. Delete this draft release in GitHub"
+              echo "  2. Create a new release via the GitHub Release UI"
+              exit 1
+            fi
+          fi
+
+          echo "Pushing tag $TAG_NAME"
+          if ! git push origin "$TAG_NAME"; then
+            echo "::error::Failed to push tag $TAG_NAME."
+            echo ""
+            echo "This may be due to concurrent tag creation (tag collision), where someone created a tag with"
+            echo "the same name while this workflow was running."
+            echo ""
+            echo "Recommended resolution:"
+            echo "  1. Check if the tag $TAG_NAME already exists on the remote"
+            echo "  2. If the tag exists but points to wrong commit, delete it"
+            echo "  3. Create a new draft release via the GitHub Release UI"
             exit 1
           fi
-          
-          # Push the tag created by release:prepare
-          git push origin "$TAG_NAME"
-          
           echo "Pushed release commits and tag to $TARGET_BRANCH"
+
+      - name: Collect release assets
+        run: |
+          set -e
+          VERSION="${{ steps.validate_tag.outputs.version }}"
+          mkdir -p artifacts
+          # Define artifact paths
+          CLIENT_JAR="xapi-client/target/xapi-client-${VERSION}.jar"
+          MODEL_JAR="xapi-model/target/xapi-model-${VERSION}.jar"
+          STARTER_JAR="xapi-model-spring-boot-starter/target/xapi-model-spring-boot-starter-${VERSION}.jar"
+          # Check existence and copy
+          for JAR in "$CLIENT_JAR" "$MODEL_JAR" "$STARTER_JAR"; do
+            if [ ! -f "$JAR" ]; then
+              echo "::error::Artifact not found: $JAR"
+              exit 1
+            fi
+            cp "$JAR" artifacts/
+          done
+
+      - name: Upload release assets
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          for FILE in artifacts/*; do
+            echo "Uploading $(basename "$FILE")"
+            gh release upload "$TAG_NAME" "$FILE" --clobber
+          done
+
+      - name: Publish GitHub release
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          echo "Publishing draft release for $TAG_NAME"
+          gh release edit "$TAG_NAME" --draft=false
+
