@@ -12,7 +12,6 @@
 #    - Create the tag to point to release commit
 #    - Push commits back to the originating branch
 #    - Publish the GitHub release (mark draft as non-draft)
-
 name: Automated Release
 
 on:
