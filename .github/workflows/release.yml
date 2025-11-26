@@ -68,7 +68,7 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.target_branch.outputs.target_branch }}
           fetch-depth: 0
@@ -226,7 +226,7 @@ jobs:
 
       - name: Upload release assets
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
           for FILE in artifacts/*; do
@@ -236,7 +236,7 @@ jobs:
 
       - name: Publish GitHub release
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
           echo "Publishing draft release for $TAG_NAME"
