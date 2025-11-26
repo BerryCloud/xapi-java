@@ -138,7 +138,7 @@ jobs:
 
           ./mvnw -B release:perform \
             -DlocalCheckout=true \
-            -DeployAtEnd=true \
+            -DdeployAtEnd=true \
             -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -213,9 +213,9 @@ jobs:
           VERSION="${{ steps.validate_tag.outputs.version }}"
           mkdir -p artifacts
           # Define artifact paths
-          CLIENT_JAR="target/checkout/xapi-client/target/xapi-client-${VERSION}.jar"
-          MODEL_JAR="target/checkout/xapi-model/target/xapi-model-${VERSION}.jar"
-          STARTER_JAR="target/checkout/xapi-model-spring-boot-starter/target/xapi-model-spring-boot-starter-${VERSION}.jar"
+          CLIENT_JAR="xapi-client/target/xapi-client-${VERSION}.jar"
+          MODEL_JAR="xapi-model/target/xapi-model-${VERSION}.jar"
+          STARTER_JAR="xapi-model-spring-boot-starter/target/xapi-model-spring-boot-starter-${VERSION}.jar"
           # Check existence and copy
           for JAR in "$CLIENT_JAR" "$MODEL_JAR" "$STARTER_JAR"; do
             if [ ! -f "$JAR" ]; then
