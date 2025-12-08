@@ -79,7 +79,7 @@ jobs:
 
           # Ensure the draft has a tag name we can use downstream
           if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "null" ]; then
-            echo "ERROR: Draft release '$NAME' has no tag name set."
+            echo "::error::Draft release '$NAME' has no tag name set."
             echo "Please set a tag name on the draft release and rerun this workflow."
             exit 1
           fi
