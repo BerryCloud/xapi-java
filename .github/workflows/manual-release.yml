@@ -218,7 +218,7 @@ jobs:
             # Find and upload jar files from target directories
             # Exclude SNAPSHOT jars, only include release artifacts
             for module in xapi-client xapi-model xapi-model-spring-boot-starter; do
-            echo "Processing module: $module"
+                echo "Processing module: $module"
             
                 # Upload all jar files (main, sources, javadoc, etc.)
                 for jar in "$module/target"/*.jar; do
