@@ -47,7 +47,7 @@ jobs:
             > /tmp/releases_list.json 2>/dev/null; then
             :
           else
-            echo "ERROR: Failed to list releases for $REPO_FULL_NAME."
+            echo "::error::Failed to list releases for $REPO_FULL_NAME."
             exit 1
           fi
 
