@@ -2,7 +2,7 @@
 
 ## Summary of Changes
 
-This project has migrated from an **automated release workflow** to a **manual release workflow** for better control and predictability.
+This project has migrated from an **automated release workflow** to a **manual draft release workflow** for better control and predictability.
 
 ## What Changed
 
@@ -11,46 +11,48 @@ This project has migrated from an **automated release workflow** to a **manual r
 - **Process**: Release was created in GitHub UI → workflow ran automatically
 - **Control**: Limited control over when releases happened
 
-### After (Manual Release)
-- **Trigger**: Workflow must be manually triggered via GitHub Actions UI
-- **Process**: Trigger workflow → enter version → workflow runs
-- **Control**: Full control over release timing and options
+### After (Manual Draft Release)
+- **Trigger**: Create draft release first, then manually trigger workflow via GitHub Actions UI
+- **Process**: Create draft release → trigger workflow → enter draft title → workflow runs
+- **Control**: Full control over release timing, review draft before publishing
 
 ## Migration Benefits
 
 1. **Explicit Control**: Releases only happen when you explicitly trigger them
 2. **No Surprises**: No accidental releases from automation
-3. **Testing Options**: Dry-run capability to test releases without deployment
-4. **Flexible**: Can skip GitHub Release creation or Maven Central deployment independently
-5. **Review Process**: Better integration with code review and approval processes
+3. **Draft Review**: Create and review draft releases before deployment
+4. **Release Notes**: Prepare comprehensive release notes in advance
+5. **Artifact Attachment**: JAR files automatically uploaded to GitHub Release
+6. **Review Process**: Better integration with code review and approval processes
 
 ## How to Use the New Workflow
 
 See [RELEASING.md](../RELEASING.md) for complete instructions.
 
 **Quick Start:**
-1. Go to [Actions tab](https://github.com/BerryCloud/xapi-java/actions)
-2. Select "Manual Release" workflow
-3. Click "Run workflow"
-4. Enter version (e.g., `1.2.0` - no `v` prefix)
-5. Click "Run workflow" button
+1. Go to [Releases page](https://github.com/BerryCloud/xapi-java/releases)
+2. Click "Draft a new release"
+3. Fill in tag (e.g., `v1.2.0`), title (same as tag), and release notes
+4. Click "Save draft"
+5. Go to [Actions tab](https://github.com/BerryCloud/xapi-java/actions)
+6. Select "Manual Draft Release" workflow
+7. Click "Run workflow"
+8. Enter draft release title (e.g., `v1.2.0`)
+9. Click "Run workflow" button
 
-## Workflow Options
+## Workflow Input
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| **Release version** | Version number (X.Y.Z format, no 'v') | Required |
-| **Skip Maven Central** | Skip deployment (dry-run) | false |
-| **Create GitHub Release** | Create release after deployment | true |
+| Option | Description | Format |
+|--------|-------------|--------|
+| **Draft release title** | Title of the draft release to process | vX.Y.Z (e.g., v1.2.0) - MUST include 'v' prefix |
 
 ## Old Workflow
 
 The old automated workflow (`release.yml`) has been:
-- Renamed to `release-automated-deprecated.yml`
-- Trigger disabled to prevent automatic execution
-- Kept for reference only
+- Completely removed from the repository
+- Replaced with `manual-release.yml` (Manual Draft Release workflow)
 
-**Do not use the old workflow.** It will not run automatically anymore.
+**The automated release workflow is no longer available.** All releases must now use the manual draft release process.
 
 ## Questions?
 

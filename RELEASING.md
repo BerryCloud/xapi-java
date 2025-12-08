@@ -1,64 +1,79 @@
 # Release Process
 
-This document describes the manual release process for xAPI Java.
+This document describes the manual draft release process for xAPI Java.
 
 ## Overview
 
-The release process is **manually controlled** via GitHub Actions workflow dispatch. Releases are initiated on-demand with explicit version control:
-1. Go to Actions tab in GitHub
-2. Select "Manual Release" workflow
-3. Click "Run workflow"
-4. Enter the release version
-5. Wait for workflow to complete ✅
+The release process is **manually controlled** via draft releases and GitHub Actions workflow dispatch. Releases are initiated on-demand with explicit version control:
+1. Create a draft release in GitHub UI with a semver tag
+2. Go to Actions tab and trigger the "Manual Draft Release" workflow
+3. Enter the draft release title
+4. Wait for workflow to complete ✅
 
 All version management, building, testing, and deployment happens in a controlled, manual process.
 
-## Manual Release Process
+## Manual Draft Release Process
 
+### Step 1: Create a Draft Release
 
+1. Navigate to the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
+2. Click **"Draft a new release"**
+3. Fill in the release details:
+   - **Tag**: Enter a semver tag in format `vX.Y.Z` (e.g., `v1.2.0`)
+     - **Important**: Tag MUST include the `v` prefix followed by semantic version numbers
+     - Example: `v1.1.20`, `v2.0.0`, `v1.2.3`
+   - **Release title**: Use the same tag name (e.g., `v1.2.0`)
+   - **Target**: Select the branch to release from (typically `main`)
+   - **Description**: Add release notes describing the changes
+4. Click **"Save draft"** - do NOT publish yet
 
-### Step 1: Trigger the Manual Release Workflow
+### Step 2: Trigger the Manual Draft Release Workflow
 
 1. Navigate to the [Actions tab](https://github.com/BerryCloud/xapi-java/actions)
-2. Click on **"Manual Release"** workflow in the left sidebar
+2. Click on **"Manual Draft Release"** workflow in the left sidebar
 3. Click the **"Run workflow"** button (top right)
-4. Fill in the workflow inputs:
-   - **Branch**: Select the branch to release from (typically `main`)
-   - **Release version**: Enter the version number in format `X.Y.Z` (e.g., `1.2.0`)
-     - **Important**: Do NOT include the `v` prefix - just the version numbers
-     - Example: `1.1.16`, `2.0.0`, `1.2.3`
-   - **Skip Maven Central**: Leave unchecked (or check for dry-run testing)
-   - **Create GitHub Release**: Leave checked to automatically create a GitHub Release
+4. Fill in the workflow input:
+   - **Draft release title**: Enter the exact title of your draft release (e.g., `v1.2.0`)
+     - Must match the title from Step 1 exactly
+     - Format: `vX.Y.Z` with the `v` prefix
 5. Click **"Run workflow"** to start the release process
 
-### Step 2: Workflow Execution
+### Step 3: Workflow Execution
 
-Once you trigger the workflow, the "Manual Release" workflow will:
+Once you trigger the workflow, the "Manual Draft Release" workflow will:
 
-1. ✅ Validate the version format (must be `X.Y.Z`)
-2. ✅ Check that the tag doesn't already exist
-3. ✅ **Run Maven release:prepare** to:
+1. ✅ Validate the draft release title format (must be `vX.Y.Z`)
+2. ✅ Find and validate the draft release in GitHub
+3. ✅ Extract version information from the draft release
+4. ✅ **Run Maven release:prepare** to:
    - Update all `pom.xml` files to the release version (e.g., 1.2.0)
    - Commit the version change
    - Create the release tag (e.g., v1.2.0) pointing to the release commit
    - Update `pom.xml` files to the next SNAPSHOT version (e.g., 1.2.1-SNAPSHOT)
    - Commit the next development iteration
-4. ✅ **Run Maven release:perform** to:
+5. ✅ **Run Maven release:perform** to:
    - Check out the release tag
    - Build and test the release version
    - Deploy artifacts to Maven Central with GPG signatures
-5. ✅ Push commits and tag back to the selected branch
-6. ✅ Create a GitHub Release (if enabled)
+6. ✅ Push commits and tag back to the target branch
+7. ✅ Upload release artifacts (JAR files) to the draft release
+8. ✅ Publish the GitHub Release (remove draft status)
 
 **Workflow Diagram:**
 ```
-User Action: Trigger "Manual Release" workflow
-             - Branch: main
-             - Version: 1.2.0
+User Action: Create draft release in GitHub UI
+             - Title: v1.2.0
+             - Tag: v1.2.0
+             - Target: main
     ↓
-Workflow: Validates version format (1.2.0)
+User Action: Trigger "Manual Draft Release" workflow
+             - Draft release title: v1.2.0
     ↓
-Workflow: Checks tag v1.2.0 doesn't exist
+Workflow: Validates title format (v1.2.0)
+    ↓
+Workflow: Finds draft release with title "v1.2.0"
+    ↓
+Workflow: Extracts version (1.2.0) and target branch (main)
     ↓
 Workflow: Runs release:prepare on main branch
     ↓
@@ -76,35 +91,40 @@ Workflow: Pushes commits A & B to main
     ↓
 Workflow: Pushes tag v1.2.0 → commit A
     ↓
-Workflow: Creates GitHub Release for v1.2.0
+Workflow: Uploads JAR artifacts to draft release
+    ↓
+Workflow: Publishes the GitHub Release
     ↓
 Result:
   - Tag v1.2.0 → commit A (release version: 1.2.0)
   - Main branch → commit B (next SNAPSHOT: 1.2.1-SNAPSHOT)
   - Artifacts deployed to Maven Central
-  - GitHub Release created
+  - GitHub Release published with JAR files
 ```
 
-### Step 3: Verify Release
+### Step 4: Verify Release
 
 1. Check the [Actions tab](https://github.com/BerryCloud/xapi-java/actions) to ensure the workflow completed successfully
-   - The workflow will show a summary of the release including version, tag, and deployment status
+   - The workflow will show a summary of the release including version, tag, and status
 2. Verify the target branch (e.g., `main`) has two new commits:
    - Release commit: `[maven-release-plugin] prepare release vX.Y.Z`
    - Development commit: `[maven-release-plugin] prepare for next development iteration`
-3. Verify the GitHub Release was created at the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
+3. Verify the GitHub Release was published at the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
+   - The release should no longer be in draft state
+   - JAR artifacts should be attached to the release
 4. Verify artifacts are available on [Maven Central](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model)
    - Note: It may take up to 2 hours for artifacts to sync to Maven Central
 
-## Manual Release Benefits
+## Manual Draft Release Benefits
 
-The manual release approach provides several advantages:
+The manual draft release approach provides several advantages:
 
 - **Full Control**: Releases happen only when explicitly triggered, not automatically
 - **Predictability**: No unexpected releases due to automation triggers
-- **Testing**: Ability to run dry-run releases (skip Maven Central deployment) for testing
-- **Flexibility**: Choose when to create GitHub Releases independently
-- **Review**: Coordinate releases with code reviews and team schedules
+- **Review First**: Create and review draft releases before triggering deployment
+- **Release Notes**: Prepare release notes in advance as part of the draft
+- **Artifact Attachment**: Release artifacts (JARs) are automatically uploaded to the GitHub Release
+- **Coordination**: Coordinate releases with code reviews and team schedules
 
 ## Release Branch Strategy
 
@@ -120,35 +140,30 @@ The manual release approach provides several advantages:
 
 ## Advanced Options
 
-### Dry-Run Release (Testing)
+### Editing Draft Releases
 
-You can test the release process without deploying to Maven Central:
+You can edit a draft release before triggering the workflow:
 
-1. Trigger the "Manual Release" workflow as described above
-2. Check the **"Skip Maven Central"** option
-3. The workflow will:
-   - Run all version updates and create commits/tags
-   - Skip the actual deployment to Maven Central
-   - Allow you to verify the release process works correctly
+1. Navigate to the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
+2. Find your draft release
+3. Click **"Edit"**
+4. Update release notes, title, or target branch as needed
+5. Click **"Save draft"**
+6. Then trigger the workflow with the updated title
 
-This is useful for:
-- Testing the release workflow
-- Verifying version numbering
-- Ensuring all commits and tags are created correctly
+### Release Notes
 
-### Release Without GitHub Release
+The workflow preserves the release notes you write in the draft release:
 
-If you want to deploy to Maven Central but create the GitHub Release manually later:
-
-1. Trigger the "Manual Release" workflow
-2. Uncheck the **"Create GitHub Release"** option
-3. After verifying the Maven Central deployment, manually create a GitHub Release
+1. When creating the draft release, write detailed release notes
+2. The workflow will keep these notes when publishing the release
+3. After publication, the release will show your notes plus attached JAR artifacts
 
 ## Troubleshooting
 
 ### Release Workflow Failed
 
-If the manual release workflow fails:
+If the manual draft release workflow fails:
 
 1. **Check the workflow logs** in the [Actions tab](https://github.com/BerryCloud/xapi-java/actions)
 2. **Identify the failed step** and review the error message
@@ -156,17 +171,20 @@ If the manual release workflow fails:
 
    | Issue | Solution |
    |-------|----------|
-   | Invalid version format | Use format `X.Y.Z` (e.g., `1.2.0`) - do NOT include `v` prefix |
-   | Tag already exists | The version has already been released. Use a different version number |
+   | Invalid title format | Use format `vX.Y.Z` (e.g., `v1.2.0`) - MUST include `v` prefix |
+   | Draft release not found | Ensure you created a draft release with the exact title you entered |
+   | Release is not a draft | The release must be in draft state - edit it and set to draft |
+   | No tag name set | Ensure the draft release has a tag name configured |
    | Missing secrets | Ensure GPG keys and Maven credentials are configured in repository secrets |
    | Build failures | Fix build issues on target branch first, then retry release |
    | Test failures | Fix failing tests on target branch first, then retry release |
    | Branch divergence | Someone pushed to the branch during release. Check the error and retry |
 
 4. **After fixing issues:**
-   - **If commits were NOT pushed**: Simply re-run the workflow with the same version
+   - **If commits were NOT pushed**: Simply re-run the workflow with the same title
    - **If commits were pushed**: 
      - Delete the tag in GitHub UI (if it was created)
+     - Delete the published release (if it was published)
      - Reset your target branch if needed:
        ```bash
        # If release:prepare pushed commits before failure
@@ -175,6 +193,7 @@ If the manual release workflow fails:
        git reset --hard origin/main~2  # Remove the 2 release commits
        git push -f origin main
        ```
+     - Create a new draft release
      - Re-run the workflow
 
 ### Workflow Stuck or Taking Too Long
