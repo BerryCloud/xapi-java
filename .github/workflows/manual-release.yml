@@ -189,18 +189,36 @@ jobs:
         run: |
           TAG_NAME="${{ steps.validate_version.outputs.tag_name }}"
           VERSION="${{ steps.validate_version.outputs.version }}"
+          SKIP_MAVEN="${{ github.event.inputs.skip_maven_central }}"
           
-          # Create release notes
-          cat > /tmp/release-notes.md << 'EOF'
-          ## Release ${{ steps.validate_version.outputs.version }}
+          # Create release notes with conditional Maven Central section
+          cat > /tmp/release-notes.md << EOF
+          ## Release ${VERSION}
           
           This release was created via the manual release workflow.
+          EOF
+          
+          # Add Maven Central section only if deployment was not skipped
+          if [ "$SKIP_MAVEN" != "true" ]; then
+            cat >> /tmp/release-notes.md << EOF
           
           ### Maven Central
           Artifacts are available on Maven Central:
-          - [xapi-model](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model/${{ steps.validate_version.outputs.version }})
-          - [xapi-client](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-client/${{ steps.validate_version.outputs.version }})
-          - [xapi-model-spring-boot-starter](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model-spring-boot-starter/${{ steps.validate_version.outputs.version }})
+          - [xapi-model](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model/${VERSION})
+          - [xapi-client](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-client/${VERSION})
+          - [xapi-model-spring-boot-starter](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model-spring-boot-starter/${VERSION})
+          
+          Note: It may take up to 2 hours for artifacts to sync to Maven Central.
+          EOF
+          else
+            cat >> /tmp/release-notes.md << EOF
+          
+          ### Note
+          This is a dry-run release. Artifacts were NOT deployed to Maven Central.
+          EOF
+          fi
+          
+          cat >> /tmp/release-notes.md << EOF
           
           ### Changes
           See commit history for details.
