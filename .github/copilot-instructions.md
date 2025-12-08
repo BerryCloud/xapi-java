@@ -11,9 +11,9 @@ xAPI Java is a library that helps you create applications that send or receive x
 
 ## Technology Stack
 
-- **Language**: Java 25 or newer (required)
+- **Language**: Java 21 or newer (required)
 - **Build Tool**: Maven (using Maven Wrapper `./mvnw`)
-- **Framework**: Spring Boot 3.5.7, Spring WebClient (reactive)
+- **Framework**: Spring Boot 4.0.0, Spring WebClient (reactive)
 - **Code Style**: Google Java Style Guide enforced via CheckStyle
 - **Testing**: JUnit 5 (Jupiter), Hamcrest matchers
 - **Code Generation**: Lombok (with specific configurations)
