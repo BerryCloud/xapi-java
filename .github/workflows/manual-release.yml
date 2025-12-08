@@ -227,8 +227,8 @@ jobs:
                     
                     # Skip SNAPSHOT jars
                     if [[ "$jar" == *-SNAPSHOT.jar ]]; then
-                    echo "Skipping SNAPSHOT jar: $jar"
-                    continue
+                        echo "Skipping SNAPSHOT jar: $jar"
+                        continue
                     fi
                     
                     echo "Uploading: $jar"
