@@ -72,7 +72,7 @@ jobs:
 
           # Ensure the release is a draft
           if [ "$DRAFT" != "true" ]; then
-            echo "ERROR: Release '$NAME' exists but is not a draft (draft=$DRAFT)."
+            echo "::error::Release '$NAME' exists but is not a draft (draft=$DRAFT)."
             echo "Please set the release to draft and rerun this workflow."
             exit 1
           fi
