@@ -181,7 +181,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       
-      - name: Push changes to originating branch
+      - name: Push changes to target branch
         run: |
           TARGET_BRANCH="${{ steps.release.outputs.target_commitish }}"
           TAG_NAME="${{ steps.release.outputs.tag_name }}"
