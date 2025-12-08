@@ -252,7 +252,6 @@ jobs:
           echo "Updating draft release to point to tag $TAG..."
           
           # Update the release to point to the new tag
-          # The release remains in draft state for manual review before publishing
           gh release edit "$TAG" --repo "$REPO_FULL_NAME" --tag "$TAG" --draft
 
           echo "Draft release updated successfully!"
