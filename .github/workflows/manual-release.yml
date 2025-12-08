@@ -26,6 +26,18 @@ jobs:
           TITLE_INPUT="${{ inputs.title }}"
 
           echo "Resolving draft release by title in $REPO_FULL_NAME..."
+          
+          # Validate title format (should be vX.Y.Z where X.Y.Z is a semver version)
+          if [[ ! "$TITLE_INPUT" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid title format. Expected format: vX.Y.Z (e.g., v1.2.3)"
+            echo "Title must be a semver version number prepended with 'v'."
+            exit 1
+          fi
+          
+          echo "Title format validated: $TITLE_INPUT"
+
+          # Get the version number without the 'v' prefix
+          VERSION="${TITLE_INPUT:1}"
 
           # Find an existing draft release by exact title match
           if gh api \
@@ -87,8 +99,9 @@ jobs:
           echo "target_commitish=$TARGET_COMMITISH" >> "$GITHUB_OUTPUT"
           echo "body=$BODY" >> "$GITHUB_OUTPUT"
           echo "draft=$DRAFT" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-          echo "Resolved: tag=$TAG_NAME, name=$NAME, target_commitish=$TARGET_COMMITISH, draft=$DRAFT"
+          echo "Resolved: tag=$TAG_NAME, name=$NAME, target_commitish=$TARGET_COMMITISH, draft=$DRAFT version=$VERSION"
 
       - name: Manual dispatch triggered
         run: |
@@ -132,12 +145,12 @@ jobs:
 
       - name: Run Maven release:prepare
         run: |
-          VERSION="${{ steps.validate_tag.outputs.version }}"
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          
+          VERSION="${{ steps.release.outputs.version }}"
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+
           echo "Preparing release version: $VERSION"
           echo "Tag name: $TAG_NAME"
-          
+
           # Run release:prepare with explicit release version
           # Maven will automatically calculate the next development version
           # Only prepare production modules, exclude all sample modules
@@ -170,8 +183,8 @@ jobs:
       
       - name: Push changes to originating branch
         run: |
-          TARGET_BRANCH="${{ steps.target_branch.outputs.target_branch }}"
-          TAG_NAME="${{ github.event.release.tag_name }}"
+          TARGET_BRANCH="${{ steps.release.outputs.target_commitish }}"
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
           
           echo "Pushing changes to branch: $TARGET_BRANCH"
           
@@ -188,56 +201,8 @@ jobs:
           git push origin "$TAG_NAME"
           
           echo "Pushed release commits and tag to $TARGET_BRANCH"
-        # This step updates the changelog and commits changes.
-        # In a Maven environment, you might run `mvn release:prepare` here.
-        # In an npm environment, you might run `npm version` or use semantic-release.
-        # For other build systems, integrate their release tooling at this stage.
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          set -euo pipefail  # Exit on error, undefined vars, and pipeline failures
-
-          REPO_FULL_NAME="${{ github.repository }}"
-          TAG="${{ steps.release.outputs.tag_name }}"
-          RELEASE_NAME="${{ steps.release.outputs.name }}"
-          BODY_TEXT_RAW="${{ steps.release.outputs.body }}"
-
-          echo "Repository: $REPO_FULL_NAME"
-          echo "Tag: $TAG"
-          echo "Release name: $RELEASE_NAME"
-
-          # Ensure git safe directory & committer identity (github-actions[bot])
-          git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Ensure CHANGELOG.md exists
-          if [ ! -f CHANGELOG.md ]; then
-            echo "CHANGELOG.md not found — creating with heading"
-            printf "%s\n\n" "# Changelog" > CHANGELOG.md
-            git add CHANGELOG.md
-            git commit -m "chore(changelog): add CHANGELOG.md"
-          fi
-
-          # Build changelog entry. Use the raw body but ensure it's not 'null'
-          if [ "$BODY_TEXT_RAW" = "null" ] || [ -z "$BODY_TEXT_RAW" ]; then
-            BODY_TEXT="No release notes provided."
-          else
-            BODY_TEXT="$BODY_TEXT_RAW"
-          fi
-
-          ENTRY_TMP="$(mktemp)"
-          printf "## %s - %s - %s\n\n%s\n\n" "$TAG" "$RELEASE_NAME" "$BODY_TEXT" > "$ENTRY_TMP"
-          # Prepend: write entry then existing file
-          cat CHANGELOG.md >> "$ENTRY_TMP"
-          mv "$ENTRY_TMP" CHANGELOG.md
-
-          git add CHANGELOG.md
-          # Always commit; this workflow prepends a new entry for each draft release
-          git commit -m "chore(release): add changelog entry for $TAG"
-
-          echo "Pushing commit..."
-          git push origin HEAD
 
       - name: Upload artifacts to draft release
         env:
@@ -293,3 +258,30 @@ jobs:
           echo "Draft release updated successfully!"
           echo "Review the release and publish when ready at:"
           echo "https://github.com/$REPO_FULL_NAME/releases/tag/$TAG"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          REPO_FULL_NAME="${{ github.repository }}"
+          TAG="${{ steps.release.outputs.tag_name }}"
+          VERSION="${{ steps.release.outputs.version }}"
+
+          echo "Publishing GitHub release for $TAG..."
+          
+          # Publish the release (remove draft status)
+          gh release edit "$TAG" --repo "$REPO_FULL_NAME" --draft=false
+          
+          echo "✅ Release $VERSION published successfully!"
+          echo "View at: https://github.com/$REPO_FULL_NAME/releases/tag/$TAG"
+
+      - name: Workflow Summary
+        if: always()
+        run: |
+          echo "## Draft Release Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ steps.release.outputs.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ steps.release.outputs.target_commitish }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
