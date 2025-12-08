@@ -240,7 +240,7 @@ jobs:
 
             echo "All artifacts uploaded successfully!"
 
-      - name: Update draft release to point to new tag
+      - name: Associate draft release with created tag
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
