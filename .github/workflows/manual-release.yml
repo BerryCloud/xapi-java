@@ -1,0 +1,225 @@
+# Manual Release Workflow
+#
+# This workflow enables manual releases with explicit version control.
+# It must be manually triggered via the GitHub Actions UI.
+#
+# Usage:
+# 1. Go to Actions > Manual Release > Run workflow
+# 2. Select the target branch (typically main)
+# 3. Enter the release version (e.g., 1.2.0) - do NOT include 'v' prefix
+# 4. Click "Run workflow"
+# 5. The workflow will:
+#    - Validate the version format
+#    - Run Maven release:prepare to update versions and create commits
+#    - Run Maven release:perform to build and deploy to Maven Central
+#    - Create a GitHub Release with the specified version
+#    - Push all commits and tags back to the target branch
+
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.2.0) - do NOT include v prefix'
+        required: true
+        type: string
+      skip_maven_central:
+        description: 'Skip deployment to Maven Central (for testing)'
+        required: false
+        type: boolean
+        default: false
+      create_github_release:
+        description: 'Create GitHub Release after successful deployment'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write  # Required to push commits, tags, and create releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Validate version format
+        id: validate_version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          echo "Release version: $VERSION"
+          
+          # Validate version format (should be X.Y.Z)
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format. Expected format: X.Y.Z (e.g., 1.2.0)"
+            echo "Do NOT include 'v' prefix. Just the version numbers."
+            exit 1
+          fi
+          
+          # Create tag name with 'v' prefix
+          TAG_NAME="v${VERSION}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Tag name: $TAG_NAME"
+      
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+      
+      - name: Check if tag already exists
+        run: |
+          TAG_NAME="${{ steps.validate_version.outputs.tag_name }}"
+          
+          # Check if tag exists locally or remotely
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG_NAME already exists locally"
+            exit 1
+          fi
+          
+          if git ls-remote --tags origin "$TAG_NAME" | grep -q "$TAG_NAME"; then
+            echo "::error::Tag $TAG_NAME already exists on remote"
+            exit 1
+          fi
+          
+          echo "Tag $TAG_NAME does not exist. Proceeding with release."
+      
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: "temurin"
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            xapi-model/pom.xml
+            xapi-client/pom.xml
+            xapi-model-spring-boot-starter/pom.xml
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      
+      - name: Run Maven release:prepare
+        run: |
+          VERSION="${{ steps.validate_version.outputs.version }}"
+          TAG_NAME="${{ steps.validate_version.outputs.tag_name }}"
+          
+          echo "Preparing release version: $VERSION"
+          echo "Tag name: $TAG_NAME"
+          
+          # Run release:prepare with explicit release version
+          # Maven will automatically calculate the next development version
+          # Only prepare production modules, exclude all sample modules
+          # Pass -pl/-am to forked Maven invocations via -Darguments
+          ./mvnw -B release:prepare \
+            -DreleaseVersion="${VERSION}" \
+            -Dtag="${TAG_NAME}" \
+            -DpushChanges=false \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      
+      - name: Run Maven release:perform
+        if: ${{ !github.event.inputs.skip_maven_central }}
+        run: |
+          echo "Performing release and deploying to Maven Central"
+          
+          # Run release:perform to build and deploy
+          # Only release production modules, exclude all sample modules
+          # Pass -pl/-am to forked Maven invocations via -Darguments
+          ./mvnw -B release:perform \
+            -DlocalCheckout=true \
+            -DeployAtEnd=true \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      
+      - name: Skip Maven Central deployment (dry run)
+        if: ${{ github.event.inputs.skip_maven_central }}
+        run: |
+          echo "::warning::Skipping Maven Central deployment as requested"
+          echo "This is a dry run. Artifacts will NOT be published to Maven Central."
+          echo "Release commits and tag will still be created and pushed."
+      
+      - name: Push changes to branch
+        run: |
+          TARGET_BRANCH="${{ github.ref_name }}"
+          TAG_NAME="${{ steps.validate_version.outputs.tag_name }}"
+          
+          echo "Pushing changes to branch: $TARGET_BRANCH"
+          
+          # Push the commits created by release:prepare
+          if ! git push --force-with-lease origin "HEAD:${TARGET_BRANCH}"; then
+            echo "::error::Failed to push release commits to ${TARGET_BRANCH} due to branch divergence."
+            echo "The remote branch may have new commits. Please resolve the conflict manually:"
+            echo "  1. Fetch the latest changes: git fetch origin"
+            echo "  2. Rebase or merge as needed, then re-run this workflow."
+            exit 1
+          fi
+          
+          # Push the tag created by release:prepare
+          git push origin "$TAG_NAME"
+          
+          echo "Pushed release commits and tag to $TARGET_BRANCH"
+      
+      - name: Create GitHub Release
+        if: ${{ github.event.inputs.create_github_release }}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        with:
+          tag_name: ${{ steps.validate_version.outputs.tag_name }}
+          release_name: Release ${{ steps.validate_version.outputs.version }}
+          body: |
+            ## Release ${{ steps.validate_version.outputs.version }}
+            
+            This release was created via the manual release workflow.
+            
+            ### Maven Central
+            Artifacts are available on Maven Central:
+            - [xapi-model](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model/${{ steps.validate_version.outputs.version }})
+            - [xapi-client](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-client/${{ steps.validate_version.outputs.version }})
+            - [xapi-model-spring-boot-starter](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model-spring-boot-starter/${{ steps.validate_version.outputs.version }})
+            
+            ### Changes
+            See commit history for details.
+          draft: false
+          prerelease: false
+      
+      - name: Release Summary
+        if: always()
+        run: |
+          echo "## Release Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.validate_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ steps.validate_version.outputs.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Maven Central:** ${{ github.event.inputs.skip_maven_central && 'Skipped (dry run)' || 'Deployed' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**GitHub Release:** ${{ github.event.inputs.create_github_release && 'Created' || 'Skipped' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Release completed successfully!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Release failed. Check the logs for details." >> $GITHUB_STEP_SUMMARY
+          fi

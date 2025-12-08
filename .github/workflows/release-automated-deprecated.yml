@@ -1,20 +1,19 @@
-# This workflow automates the release process when a release is created on GitHub
-# It uses Maven release plugin to manage versions and deploys to Maven Central
+# DEPRECATED: This workflow has been replaced by manual-release.yml
 #
-# Usage:
-# 1. Create a new release in GitHub UI with tag format: vX.Y.Z (e.g., v1.2.0)
-#    - Select the target branch (typically main)
-# 2. This workflow will automatically:
-#    - Use Maven release:prepare to update versions and create release commits
-#    - Use Maven release:perform to build and deploy artifacts to Maven Central
-#    - Move the tag to point to the actual release commit
-#    - Push commits back to the originating branch
+# This workflow previously automated the release process when a release was created on GitHub.
+# It has been deprecated in favor of a manual workflow dispatch approach for better control.
+#
+# DO NOT USE THIS WORKFLOW - Use the "Manual Release" workflow instead.
+# See RELEASING.md for updated release instructions.
+#
+# This file is kept for reference but the trigger has been disabled.
 
-name: Automated Release
+name: Automated Release (DEPRECATED)
 
-on:
-  release:
-    types: [created]  # Trigger when release is created
+# Trigger disabled - workflow will not run automatically
+# on:
+#   release:
+#     types: [created]
 
 permissions:
   contents: write  # Required to push commits and update tags
