@@ -255,7 +255,6 @@ jobs:
           gh release edit "$TAG" --repo "$REPO_FULL_NAME" --tag "$TAG" --draft
 
           echo "Draft release updated successfully!"
-          echo "Review the release and publish when ready at:"
           echo "https://github.com/$REPO_FULL_NAME/releases/tag/$TAG"
 
       - name: Publish GitHub release
