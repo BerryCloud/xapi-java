@@ -184,27 +184,33 @@ jobs:
       
       - name: Create GitHub Release
         if: ${{ github.event.inputs.create_github_release }}
-        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-        with:
-          tag_name: ${{ steps.validate_version.outputs.tag_name }}
-          release_name: Release ${{ steps.validate_version.outputs.version }}
-          body: |
-            ## Release ${{ steps.validate_version.outputs.version }}
-            
-            This release was created via the manual release workflow.
-            
-            ### Maven Central
-            Artifacts are available on Maven Central:
-            - [xapi-model](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model/${{ steps.validate_version.outputs.version }})
-            - [xapi-client](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-client/${{ steps.validate_version.outputs.version }})
-            - [xapi-model-spring-boot-starter](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model-spring-boot-starter/${{ steps.validate_version.outputs.version }})
-            
-            ### Changes
-            See commit history for details.
-          draft: false
-          prerelease: false
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          TAG_NAME="${{ steps.validate_version.outputs.tag_name }}"
+          VERSION="${{ steps.validate_version.outputs.version }}"
+          
+          # Create release notes
+          cat > /tmp/release-notes.md << 'EOF'
+          ## Release ${{ steps.validate_version.outputs.version }}
+          
+          This release was created via the manual release workflow.
+          
+          ### Maven Central
+          Artifacts are available on Maven Central:
+          - [xapi-model](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model/${{ steps.validate_version.outputs.version }})
+          - [xapi-client](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-client/${{ steps.validate_version.outputs.version }})
+          - [xapi-model-spring-boot-starter](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model-spring-boot-starter/${{ steps.validate_version.outputs.version }})
+          
+          ### Changes
+          See commit history for details.
+          EOF
+          
+          # Create the release
+          gh release create "$TAG_NAME" \
+            --title "Release ${VERSION}" \
+            --notes-file /tmp/release-notes.md \
+            --repo ${{ github.repository }}
       
       - name: Release Summary
         if: always()
