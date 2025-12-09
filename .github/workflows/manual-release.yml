@@ -127,15 +127,15 @@ jobs:
           
           echo "Checking if tag $TAG_NAME already exists..."
           
-          # Check if tag exists locally
-          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+          # Check if tag exists locally (use show-ref to check specifically for tags)
+          if git show-ref --tags "$TAG_NAME" >/dev/null 2>&1; then
             echo "::error::Tag $TAG_NAME already exists in the repository."
             echo "Please use a different version number or delete the existing tag first."
             exit 1
           fi
           
-          # Check if tag exists on remote (use exact matching to avoid false positives)
-          if git ls-remote --tags origin "$TAG_NAME" | grep -q "refs/tags/$TAG_NAME$"; then
+          # Check if tag exists on remote (use grep -F for literal string matching)
+          if git ls-remote --tags origin "$TAG_NAME" | grep -qF "refs/tags/$TAG_NAME"; then
             echo "::error::Tag $TAG_NAME already exists on remote."
             echo "Please use a different version number or delete the existing tag first."
             exit 1
