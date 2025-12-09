@@ -134,8 +134,8 @@ jobs:
             exit 1
           fi
           
-          # Check if tag exists on remote
-          if git ls-remote --tags origin "$TAG_NAME" | grep -q "$TAG_NAME"; then
+          # Check if tag exists on remote (use exact matching to avoid false positives)
+          if git ls-remote --tags origin "$TAG_NAME" | grep -q "refs/tags/$TAG_NAME$"; then
             echo "::error::Tag $TAG_NAME already exists on remote."
             echo "Please use a different version number or delete the existing tag first."
             exit 1
