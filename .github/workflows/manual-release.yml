@@ -121,6 +121,28 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
+      - name: Verify tag does not already exist
+        run: |
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+          
+          echo "Checking if tag $TAG_NAME already exists..."
+          
+          # Check if tag exists locally
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG_NAME already exists in the repository."
+            echo "Please use a different version number or delete the existing tag first."
+            exit 1
+          fi
+          
+          # Check if tag exists on remote
+          if git ls-remote --tags origin "$TAG_NAME" | grep -q "$TAG_NAME"; then
+            echo "::error::Tag $TAG_NAME already exists on remote."
+            echo "Please use a different version number or delete the existing tag first."
+            exit 1
+          fi
+          
+          echo "Tag $TAG_NAME does not exist. Proceeding with release."
+
       - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
