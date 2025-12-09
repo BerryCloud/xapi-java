@@ -24,8 +24,8 @@
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.13.0</jjwt.version>
     <okhttp.version>5.3.2</okhttp.version>
-    <!-- Default argLine for surefire/failsafe - JaCoCo will prepend to this -->
-    <argLine>-XX:+EnableDynamicAgentLoading --enable-native-access=ALL-UNNAMED --add-opens java.base/sun.misc=ALL-UNNAMED</argLine>
+    <!-- Enable dynamic agent loading for Mockito/Byte Buddy as recommended by Mockito docs -->
+    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
   </properties>
   <organization>
     <name>Berry Cloud Ltd</name>
