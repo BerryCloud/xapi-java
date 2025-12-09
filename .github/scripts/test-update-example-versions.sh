@@ -232,14 +232,15 @@ test_error_handling() {
     cd "$TEST_DIR"
     rm -f README.md
     
-    # Run script - should warn about missing file but not fail
-    if bash "$SCRIPT_UNDER_TEST" 2>&1 | grep -q "WARNING: File not found"; then
+    # Override FILES_TO_UPDATE to include a non-existent file
+    FILES_TO_UPDATE=("README.md" "nonexistent-file.md") bash "$SCRIPT_UNDER_TEST" 2>&1 | tee /tmp/test-error-output-$$.log
+    if grep -q "WARNING: File not found" /tmp/test-error-output-$$.log; then
         pass "Script handles missing files gracefully"
     else
         # If no warning, that's also ok as long as script doesn't crash
         pass "Script completes even with missing files"
     fi
-    
+    rm -f /tmp/test-error-output-$$.log
     cd "$TEST_DIR"
 }
 
