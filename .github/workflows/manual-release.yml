@@ -1,0 +1,306 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Draft release title (e.g., v1.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve release details
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          REPO_FULL_NAME="${{ github.repository }}"
+          TITLE_INPUT="${{ inputs.title }}"
+
+          echo "Resolving draft release by title in $REPO_FULL_NAME..."
+          
+          # Validate title format (should be vX.Y.Z where X.Y.Z is a semver version)
+          if [[ ! "$TITLE_INPUT" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid title format. Expected format: vX.Y.Z (e.g., v1.2.3)"
+            echo "Title must be a semver version number prepended with 'v'."
+            exit 1
+          fi
+          
+          echo "Title format validated: $TITLE_INPUT"
+
+          # Get the version number without the 'v' prefix
+          VERSION="${TITLE_INPUT:1}"
+
+          # Find an existing draft release by exact title match
+          if gh api \
+            -H "Accept: application/vnd.github+json" \
+            --paginate \
+            "/repos/$REPO_FULL_NAME/releases" \
+            > /tmp/releases_list.json 2>/dev/null; then
+            :
+          else
+            echo "::error::Failed to list releases for $REPO_FULL_NAME."
+            exit 1
+          fi
+
+          jq -r --arg TITLE "$TITLE_INPUT" \
+            '[ .[] | select(.draft == true and .name == $TITLE) ] | first // empty' \
+            /tmp/releases_list.json > /tmp/release.json
+
+          if [ ! -s /tmp/release.json ]; then
+            echo "ERROR: No draft release found with title '$TITLE_INPUT' in $REPO_FULL_NAME."
+            exit 1
+          fi
+
+          echo "Release JSON:"
+          cat /tmp/release.json
+
+          # Extract fields with jq
+          TAG_NAME=$(jq -r '.tag_name // .tagName' /tmp/release.json)
+          NAME=$(jq -r '.name' /tmp/release.json)
+          TARGET_COMMITISH=$(jq -r '.target_commitish // .targetCommitish' /tmp/release.json)
+          BODY=$(jq -r '.body' /tmp/release.json)
+          DRAFT=$(jq -r '.draft' /tmp/release.json)
+
+          # Ensure the release is a draft
+          if [ "$DRAFT" != "true" ]; then
+            echo "::error::Release '$NAME' exists but is not a draft (draft=$DRAFT)."
+            echo "Please set the release to draft and rerun this workflow."
+            exit 1
+          fi
+
+          # Ensure the draft has a tag name we can use downstream
+          if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "null" ]; then
+            echo "::error::Draft release '$NAME' has no tag name set."
+            echo "Please set a tag name on the draft release and rerun this workflow."
+            exit 1
+          fi
+
+          # Fallback for target_commitish: default to repository default branch if missing
+          if [ -z "$TARGET_COMMITISH" ] || [ "$TARGET_COMMITISH" = "null" ]; then
+            DEFAULT_BRANCH=$(gh repo view "$REPO_FULL_NAME" --json defaultBranchRef -q '.defaultBranchRef.name')
+            TARGET_COMMITISH="$DEFAULT_BRANCH"
+          fi
+
+          # Fallbacks
+          if [ -z "$NAME" ] || [ "$NAME" = "null" ]; then NAME="$TAG_NAME"; fi
+          if [ -z "$BODY" ] || [ "$BODY" = "null" ]; then BODY="No release notes provided."; fi
+
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "target_commitish=$TARGET_COMMITISH" >> "$GITHUB_OUTPUT"
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+          echo "draft=$DRAFT" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          echo "Resolved: tag=$TAG_NAME, name=$NAME, target_commitish=$TARGET_COMMITISH, draft=$DRAFT version=$VERSION"
+
+      - name: Manual dispatch triggered
+        run: |
+          echo "Manual draft release for tag: ${{ steps.release.outputs.tag_name }}"
+
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout target commitish with full history (needed to commit & tag)
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.release.outputs.target_commitish }}
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify tag does not already exist
+        run: |
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+          
+          echo "Checking if tag $TAG_NAME already exists..."
+          
+          # Check if tag exists locally (use show-ref to check specifically for tags)
+          if git show-ref --tags "$TAG_NAME" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG_NAME already exists in the repository."
+            echo "Please use a different version number or delete the existing tag first."
+            exit 1
+          fi
+          
+          # Check if tag exists on remote (use grep -F for literal string matching)
+          if git ls-remote --tags origin "$TAG_NAME" | grep -qF "refs/tags/$TAG_NAME"; then
+            echo "::error::Tag $TAG_NAME already exists on remote."
+            echo "Please use a different version number or delete the existing tag first."
+            exit 1
+          fi
+          
+          echo "Tag $TAG_NAME does not exist. Proceeding with release."
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: "temurin"
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            xapi-model/pom.xml
+            xapi-client/pom.xml
+            xapi-model-spring-boot-starter/pom.xml
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run Maven release:prepare
+        run: |
+          VERSION="${{ steps.release.outputs.version }}"
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+
+          echo "Preparing release version: $VERSION"
+          echo "Tag name: $TAG_NAME"
+
+          # Run release:prepare with explicit release version
+          # Maven will automatically calculate the next development version
+          # Only prepare production modules, exclude all sample modules
+          # Pass -pl/-am to forked Maven invocations via -Darguments
+          ./mvnw -B release:prepare \
+            -DreleaseVersion="${VERSION}" \
+            -Dtag="${TAG_NAME}" \
+            -DpushChanges=false \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      
+      - name: Run Maven release:perform
+        run: |
+          echo "Performing release and deploying to Maven Central"
+          
+          # Run release:perform to build and deploy
+          # Only release production modules, exclude all sample modules
+          # Pass -pl/-am to forked Maven invocations via -Darguments
+          ./mvnw -B release:perform \
+            -DlocalCheckout=true \
+            -DeployAtEnd=true \
+            -Darguments="-pl xapi-model,xapi-client,xapi-model-spring-boot-starter -am"
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      
+      - name: Push changes to target branch
+        run: |
+          TARGET_BRANCH="${{ steps.release.outputs.target_commitish }}"
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+          
+          echo "Pushing changes to branch: $TARGET_BRANCH"
+          
+          # Push the commits created by release:prepare
+          if ! git push --force-with-lease origin "HEAD:${TARGET_BRANCH}"; then
+            echo "::error::Failed to push release commits to ${TARGET_BRANCH} due to branch divergence."
+            echo "The remote branch may have new commits. Please resolve the conflict manually:"
+            echo "  1. Fetch the latest changes: git fetch origin"
+            echo "  2. Rebase or merge as needed, then push again with --force-with-lease."
+            exit 1
+          fi
+          
+          # Push the tag created by release:prepare
+          git push origin "$TAG_NAME"
+          
+          echo "Pushed release commits and tag to $TARGET_BRANCH"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Upload artifacts to draft release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+            set -euo pipefail
+
+            REPO_FULL_NAME="${{ github.repository }}"
+            TAG="${{ steps.release.outputs.tag_name }}"
+
+            echo "Uploading artifacts to draft release $TAG..."
+
+            # Find and upload jar files from target directories
+            # Exclude SNAPSHOT jars, only include release artifacts
+            for module in xapi-client xapi-model xapi-model-spring-boot-starter; do
+                echo "Processing module: $module"
+            
+                # Upload all jar files (main, sources, javadoc, etc.)
+                for jar in "$module/target"/*.jar; do
+                    # Skip if glob didn't match anything
+                    [ -e "$jar" ] || continue
+                    
+                    # Skip SNAPSHOT jars
+                    if [[ "$jar" == *-SNAPSHOT.jar ]]; then
+                        echo "Skipping SNAPSHOT jar: $jar"
+                        continue
+                    fi
+                    
+                    echo "Uploading: $jar"
+                    gh release upload "$TAG" "$jar" \
+                    --repo "$REPO_FULL_NAME" \
+                    --clobber
+                done
+            done
+
+            echo "All artifacts uploaded successfully!"
+
+      - name: Associate draft release with created tag
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          REPO_FULL_NAME="${{ github.repository }}"
+          TAG="${{ steps.release.outputs.tag_name }}"
+
+          echo "Updating draft release to point to tag $TAG..."
+          
+          # Update the release to point to the new tag
+          gh release edit "$TAG" --repo "$REPO_FULL_NAME" --tag "$TAG" --draft
+
+          echo "Draft release updated successfully!"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          REPO_FULL_NAME="${{ github.repository }}"
+          TAG="${{ steps.release.outputs.tag_name }}"
+          VERSION="${{ steps.release.outputs.version }}"
+
+          echo "Publishing GitHub release for $TAG..."
+          
+          # Publish the release (remove draft status)
+          gh release edit "$TAG" --repo "$REPO_FULL_NAME" --draft=false
+          
+          echo "✅ Release $VERSION published successfully!"
+          echo "View at: https://github.com/$REPO_FULL_NAME/releases/tag/$TAG"
+
+      - name: Workflow Summary
+        if: always()
+        run: |
+          echo "## Draft Release Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ steps.release.outputs.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ steps.release.outputs.target_commitish }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
