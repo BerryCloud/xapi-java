@@ -158,17 +158,26 @@ test_full_script_execution() {
     TESTS_RUN=$((TESTS_RUN + 1))
     info "Test 3: Full script execution"
     
-    # Run the script - it will operate on the actual repo, not test env
-    # So we just verify it doesn't crash
-    if bash "$SCRIPT_UNDER_TEST" > /tmp/test-output-$$.log 2>&1; then
-        pass "Script executed without errors"
+    # Create a modified version of the script that operates in TEST_DIR
+    local test_script="/tmp/test-script-$$.sh"
+    sed "s|REPO_ROOT=.*|REPO_ROOT=\"$TEST_DIR\"|" "$SCRIPT_UNDER_TEST" > "$test_script"
+    chmod +x "$test_script"
+    
+    # Run the modified script in the test environment
+    cd "$TEST_DIR"
+    if bash "$test_script" > /tmp/test-output-$$.log 2>&1; then
+        # Verify it updated the test README
+        if grep -q '<version>1.2.3</version>' README.md; then
+            pass "Script executed and updated versions correctly"
+        else
+            fail "Script execution" "versions updated to 1.2.3" "versions not updated"
+            cat /tmp/test-output-$$.log
+        fi
     else
         fail "Script execution" "exit code 0" "exit code $?"
         cat /tmp/test-output-$$.log
-        rm -f /tmp/test-output-$$.log
-        return
     fi
-    rm -f /tmp/test-output-$$.log
+    rm -f /tmp/test-output-$$.log "$test_script"
 }
 
 # Test 4: Version pattern matching
@@ -227,20 +236,24 @@ test_error_handling() {
     TESTS_RUN=$((TESTS_RUN + 1))
     info "Test 6: Script handles errors gracefully"
     
-    # The script always returns to REPO_ROOT, so we test that it handles
-    # missing files in the FILES_TO_UPDATE array gracefully
+    # Test that script handles missing files gracefully
     cd "$TEST_DIR"
     rm -f README.md
     
-    # Override FILES_TO_UPDATE to include a non-existent file
-    FILES_TO_UPDATE=("README.md" "nonexistent-file.md") bash "$SCRIPT_UNDER_TEST" 2>&1 | tee /tmp/test-error-output-$$.log
+    # Create a modified version of the script that operates in TEST_DIR
+    local test_script="/tmp/test-script-error-$$.sh"
+    sed "s|REPO_ROOT=.*|REPO_ROOT=\"$TEST_DIR\"|" "$SCRIPT_UNDER_TEST" > "$test_script"
+    chmod +x "$test_script"
+    
+    # Run with missing README.md file
+    bash "$test_script" 2>&1 | tee /tmp/test-error-output-$$.log
     if grep -q "WARNING: File not found" /tmp/test-error-output-$$.log; then
         pass "Script handles missing files gracefully"
     else
         # If no warning, that's also ok as long as script doesn't crash
         pass "Script completes even with missing files"
     fi
-    rm -f /tmp/test-error-output-$$.log
+    rm -f /tmp/test-error-output-$$.log "$test_script"
     cd "$TEST_DIR"
 }
 
