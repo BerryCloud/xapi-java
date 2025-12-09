@@ -20,8 +20,9 @@ get_version_from_pom() {
     if command -v xmllint &> /dev/null; then
         xmllint --xpath '//*[local-name()="project"]/*[local-name()="version"]/text()' "$pom_file" 2>/dev/null | head -1
     else
-        # Fallback to grep/sed approach
-        grep -m 1 "^  <version>" "$pom_file" | sed 's/.*<version>\(.*\)<\/version>.*/\1/'
+        # Fallback to grep/sed approach - skip parent block, get project version
+        # First skip everything in the parent block, then get the first version tag
+        awk '/<parent>/,/<\/parent>/ {next} /<version>/ {print; exit}' "$pom_file" | sed 's/.*<version>\(.*\)<\/version>.*/\1/'
     fi
 }
 
@@ -64,12 +65,12 @@ main() {
         cp "$file" "$file.bak"
         
         # Replace version numbers in Maven dependency examples
-        # Pattern: <version>X.Y.Z</version> where X.Y.Z is a version number
+        # Pattern: <version>X.Y.Z</version> where X.Y.Z is a version number (or more components)
         # Only replace in dependency blocks (between <dependency> and </dependency>)
-        sed -i.tmp '/<dependency>/,/<\/dependency>/ s/<version>[0-9]\+\.[0-9]\+\.[0-9]\+<\/version>/<version>'"$RELEASE_VERSION"'<\/version>/g' "$file"
-        
-        # Clean up temporary file
-        rm -f "$file.tmp"
+        # Use a more flexible pattern to match versions with multiple components
+        # Use cross-platform sed syntax with explicit temp file
+        sed '/<dependency>/,/<\/dependency>/ s|<version>[^<]*</version>|<version>'"$RELEASE_VERSION"'</version>|g' "$file" > "$file.tmp"
+        mv "$file.tmp" "$file"
         
         # Check if file was modified
         if ! diff -q "$file" "$file.bak" > /dev/null 2>&1; then
