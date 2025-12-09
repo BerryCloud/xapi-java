@@ -198,8 +198,8 @@ jobs:
             echo "Documentation examples updated with release version"
             
             # Amend the release commit created by release:prepare to include doc updates
-            # Add all modified files that the script may have updated
-            git add -u
+            # Only add README.md since that's what the script updates
+            git add README.md
             git commit --amend --no-edit
             
             # Update the tag to point to the amended commit

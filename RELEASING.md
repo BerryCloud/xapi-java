@@ -118,7 +118,7 @@ Result:
 1. Check the [Actions tab](https://github.com/BerryCloud/xapi-java/actions) to ensure the workflow completed successfully
    - The workflow will show a summary of the release including version, tag, and status
 2. Verify the target branch (e.g., `main`) has two new commits:
-   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z` (includes documentation updates)
+   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z` (amended to include documentation updates)
    - Development commit: `[maven-release-plugin] prepare for next development iteration`
 3. Verify the GitHub Release was published at the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
    - The release should no longer be in draft state
