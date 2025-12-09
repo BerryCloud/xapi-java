@@ -184,6 +184,30 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       
+      - name: Update example version numbers in documentation
+        run: |
+          echo "Updating example version numbers in documentation..."
+          
+          VERSION="${{ steps.release.outputs.version }}"
+          
+          # Run the script with the explicit release version
+          # Pass version directly to avoid reading from pom.xml which now has SNAPSHOT
+          bash .github/scripts/update-example-versions.sh "$VERSION"
+          
+          # Check if there are any changes
+          if git diff --quiet; then
+            echo "No version updates needed"
+          else
+            echo "Documentation examples updated with release version $VERSION"
+            
+            # Create a third commit for documentation updates
+            # This is safer than amending either of the release:prepare commits
+            git add README.md
+            git commit -m "[release] Update documentation examples to version $VERSION"
+            
+            echo "✅ Documentation updated in separate commit"
+          fi
+      
       - name: Run Maven release:perform
         run: |
           echo "Performing release and deploying to Maven Central"
