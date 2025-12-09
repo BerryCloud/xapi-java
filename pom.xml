@@ -24,6 +24,8 @@
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.13.0</jjwt.version>
     <okhttp.version>5.3.2</okhttp.version>
+    <!-- Default empty argLine property - required for @{argLine} late replacement -->
+    <argLine></argLine>
   </properties>
   <organization>
     <name>Berry Cloud Ltd</name>
@@ -103,7 +105,17 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <argLine>@{argLine} -XX:+EnableDynamicAgentLoading</argLine>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
+          <configuration>
+            <argLine>@{argLine} -XX:+EnableDynamicAgentLoading</argLine>
+          </configuration>
           <executions>
             <execution>
               <goals>
