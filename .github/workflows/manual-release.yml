@@ -184,6 +184,30 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       
+      - name: Update example version numbers in documentation
+        run: |
+          echo "Updating example version numbers in documentation..."
+          
+          # Run the script to update version numbers in README.md and other docs
+          bash .github/scripts/update-example-versions.sh
+          
+          # Check if there are any changes
+          if git diff --quiet; then
+            echo "No version updates needed"
+          else
+            echo "Documentation examples updated with release version"
+            
+            # Amend the release commit created by release:prepare to include doc updates
+            git add README.md
+            git commit --amend --no-edit
+            
+            # Update the tag to point to the amended commit
+            TAG_NAME="${{ steps.release.outputs.tag_name }}"
+            git tag -f "$TAG_NAME"
+            
+            echo "✅ Release commit amended with documentation updates"
+          fi
+      
       - name: Run Maven release:perform
         run: |
           echo "Performing release and deploying to Maven Central"
