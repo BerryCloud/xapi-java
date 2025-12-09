@@ -24,89 +24,73 @@ import org.junit.jupiter.api.Test;
  */
 class LombokProcessingTests {
 
-  /**
-   * Test class using Lombok @Getter and @Setter annotations. This simulates the Subscription class
-   * mentioned in the issue.
-   */
+  /** Test class using Lombok @Getter and @Setter annotations. */
   @Getter
   @Setter
-  static class TestSubscription {
-    private String id;
-    private String topic;
+  static class Person {
+    private String name;
+    private int age;
     private boolean active;
   }
 
-  /**
-   * Test class using Lombok @Builder annotation. This simulates the SubscriptionProperties class
-   * mentioned in the issue.
-   */
+  /** Test class using Lombok @Builder annotation. */
   @Builder
   @Getter
-  static class TestSubscriptionProperties {
-    private String endpoint;
-    private int maxRetries;
-    private long timeout;
+  static class Cat {
+    private String name;
+    private String breed;
+    private int age;
   }
 
   /** Test class using Lombok @Value annotation for immutability. */
   @Value
   @Builder
-  static class TestImmutableSubscription {
-    String id;
-    String topic;
-    boolean active;
+  static class Dog {
+    String name;
+    String breed;
+    int weight;
   }
 
   @Test
   @DisplayName("When Using Getter And Setter Then Lombok Processing Works")
   void testGetterSetterProcessing() {
     // Given
-    TestSubscription subscription = new TestSubscription();
+    Person person = new Person();
 
     // When
-    subscription.setId("sub-123");
-    subscription.setTopic("xapi-events");
-    subscription.setActive(true);
+    person.setName("John Doe");
+    person.setAge(30);
+    person.setActive(true);
 
     // Then
-    assertThat(subscription.getId(), is("sub-123"));
-    assertThat(subscription.getTopic(), is("xapi-events"));
-    assertThat(subscription.isActive(), is(true));
+    assertThat(person.getName(), is("John Doe"));
+    assertThat(person.getAge(), is(30));
+    assertThat(person.isActive(), is(true));
   }
 
   @Test
   @DisplayName("When Using Builder Then Lombok Processing Works")
   void testBuilderProcessing() {
     // When
-    TestSubscriptionProperties properties =
-        TestSubscriptionProperties.builder()
-            .endpoint("https://example.com/webhook")
-            .maxRetries(3)
-            .timeout(5000L)
-            .build();
+    Cat cat = Cat.builder().name("Whiskers").breed("Siamese").age(3).build();
 
     // Then
-    assertThat(properties, is(notNullValue()));
-    assertThat(properties.getEndpoint(), is("https://example.com/webhook"));
-    assertThat(properties.getMaxRetries(), is(3));
-    assertThat(properties.getTimeout(), is(5000L));
+    assertThat(cat, is(notNullValue()));
+    assertThat(cat.getName(), is("Whiskers"));
+    assertThat(cat.getBreed(), is("Siamese"));
+    assertThat(cat.getAge(), is(3));
   }
 
   @Test
   @DisplayName("When Using Value Then Lombok Processing Works")
   void testValueProcessing() {
     // When
-    TestImmutableSubscription subscription =
-        TestImmutableSubscription.builder()
-            .id("sub-456")
-            .topic("xapi-statements")
-            .active(false)
-            .build();
+    Dog dog = Dog.builder().name("Buddy").breed("Golden Retriever").weight(65).build();
 
     // Then
-    assertThat(subscription, is(notNullValue()));
-    assertThat(subscription.getId(), is("sub-456"));
-    assertThat(subscription.getTopic(), is("xapi-statements"));
-    assertThat(subscription.isActive(), is(false));
+    assertThat(dog, is(notNullValue()));
+    assertThat(dog.getName(), is("Buddy"));
+    assertThat(dog.getBreed(), is("Golden Retriever"));
+    assertThat(dog.getWeight(), is(65));
   }
 }
