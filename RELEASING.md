@@ -166,8 +166,8 @@ The automation updates version numbers in:
 1. After Maven release:prepare completes, a script (`.github/scripts/update-example-versions.sh`) runs automatically
 2. The script extracts the release version from the root `pom.xml`
 3. It updates all `<version>X.Y.Z</version>` tags within dependency blocks in README.md
-4. The changes are added to the release commit (amending the commit created by release:prepare)
-5. The release tag is updated to point to the amended commit
+4. The changes are committed as a separate third commit after the release commit (not amending the release commit)
+5. The release tag continues to point to the original release commit (not the documentation update commit)
 
 ### Benefits
 
