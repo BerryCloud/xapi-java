@@ -68,6 +68,10 @@ jobs:
           NAME=$(jq -r '.name' /tmp/release.json)
           TARGET_COMMITISH=$(jq -r '.target_commitish // .targetCommitish' /tmp/release.json)
           BODY=$(jq -r '.body' /tmp/release.json)
+          
+          # Sanitize carriage returns from the body to prevent file command parsing errors
+          # GitHub Actions file command parser fails on CR characters and multiline content with markdown lists
+          BODY="${BODY//$'\r'/}"
           DRAFT=$(jq -r '.draft' /tmp/release.json)
 
           # Ensure the release is a draft
@@ -97,7 +101,11 @@ jobs:
           echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
           echo "target_commitish=$TARGET_COMMITISH" >> "$GITHUB_OUTPUT"
-          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+          
+          # Write multiline release body using heredoc format to safely handle newlines and special characters
+          # This prevents "Unable to process file command 'output' successfully" errors
+          printf "body<<'EOF'\n%s\nEOF\n" "$BODY" >> "$GITHUB_OUTPUT"
+          
           echo "draft=$DRAFT" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
