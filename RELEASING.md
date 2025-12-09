@@ -51,13 +51,18 @@ Once you trigger the workflow, the "Manual Draft Release" workflow will:
    - Create the release tag (e.g., v1.2.0) pointing to the release commit
    - Update `pom.xml` files to the next SNAPSHOT version (e.g., 1.2.1-SNAPSHOT)
    - Commit the next development iteration
-5. ✅ **Run Maven release:perform** to:
+5. ✅ **Update example version numbers in documentation**:
+   - Automatically update version numbers in README.md dependency examples
+   - Amend the release commit to include documentation updates
+   - Update the tag to point to the amended commit
+   - Ensures documentation examples always match the release version
+6. ✅ **Run Maven release:perform** to:
    - Check out the release tag
    - Build and test the release version
    - Deploy artifacts to Maven Central with GPG signatures
-6. ✅ Push commits and tag back to the target branch
-7. ✅ Upload release artifacts (JAR files) to the draft release
-8. ✅ Publish the GitHub Release (remove draft status)
+7. ✅ Push commits and tag back to the target branch
+8. ✅ Upload release artifacts (JAR files) to the draft release
+9. ✅ Publish the GitHub Release (remove draft status)
 
 **Workflow Diagram:**
 ```
@@ -80,6 +85,12 @@ Workflow: Runs release:prepare on main branch
   - Commit A: pom.xml → 1.2.0 (release version)
   - Creates tag v1.2.0 → commit A
   - Commit B: pom.xml → 1.2.1-SNAPSHOT (next dev version)
+    ↓
+Workflow: Updates example versions in documentation
+    ↓
+  - Updates README.md with version 1.2.0
+  - Amends Commit A to include documentation updates
+  - Updates tag v1.2.0 → amended Commit A
     ↓
 Workflow: Runs release:perform
     ↓
@@ -107,12 +118,15 @@ Result:
 1. Check the [Actions tab](https://github.com/BerryCloud/xapi-java/actions) to ensure the workflow completed successfully
    - The workflow will show a summary of the release including version, tag, and status
 2. Verify the target branch (e.g., `main`) has two new commits:
-   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z`
+   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z` (includes documentation updates)
    - Development commit: `[maven-release-plugin] prepare for next development iteration`
 3. Verify the GitHub Release was published at the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
    - The release should no longer be in draft state
    - JAR artifacts should be attached to the release
-4. Verify artifacts are available on [Maven Central](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model)
+4. Verify documentation examples were updated:
+   - Check that README.md contains the correct version in dependency examples
+   - The version should match the release version (e.g., 1.2.0)
+5. Verify artifacts are available on [Maven Central](https://central.sonatype.com/artifact/dev.learning.xapi/xapi-model)
    - Note: It may take up to 2 hours for artifacts to sync to Maven Central
 
 ## Manual Draft Release Benefits
@@ -125,6 +139,7 @@ The manual draft release approach provides several advantages:
 - **Release Notes**: Prepare release notes in advance as part of the draft
 - **Artifact Attachment**: Release artifacts (JARs) are automatically uploaded to the GitHub Release
 - **Coordination**: Coordinate releases with code reviews and team schedules
+- **Automated Documentation**: Version numbers in documentation examples are automatically updated to match the release version
 
 ## Release Branch Strategy
 
@@ -137,6 +152,40 @@ The manual draft release approach provides several advantages:
   - Points to the release version commit (first commit)
   - Used for reproducible builds and deployments
 - **No separate release branches**: The release workflow pushes directly to the selected branch
+
+## Automated Documentation Version Updates
+
+The release workflow automatically updates version numbers in documentation examples to match the release version. This ensures users always see correct, up-to-date version numbers when copying examples from the documentation.
+
+### What Gets Updated
+
+The automation updates version numbers in:
+- **README.md**: All Maven dependency examples for xapi-client, xapi-model, and xapi-model-spring-boot-starter
+
+### How It Works
+
+1. After Maven release:prepare completes, a script (`.github/scripts/update-example-versions.sh`) runs automatically
+2. The script extracts the release version from the root `pom.xml`
+3. It updates all `<version>X.Y.Z</version>` tags within dependency blocks in README.md
+4. The changes are added to the release commit (amending the commit created by release:prepare)
+5. The release tag is updated to point to the amended commit
+
+### Benefits
+
+- **No manual updates needed**: Version numbers are updated automatically during release
+- **Always accurate**: Documentation examples always reference the current release version
+- **Transparent**: Changes appear in the release commit and are visible in pull requests
+- **Single source of truth**: Uses Maven's version from pom.xml as the authoritative source
+
+### Maintenance
+
+The script uses simple pattern matching to find and replace version numbers. If new files need to be updated:
+
+1. Edit `.github/scripts/update-example-versions.sh`
+2. Add the file path to the `FILES_TO_UPDATE` array
+3. Commit the change
+
+The script will automatically update all listed files in future releases.
 
 ## Advanced Options
 
