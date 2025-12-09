@@ -53,8 +53,7 @@ Once you trigger the workflow, the "Manual Draft Release" workflow will:
    - Commit the next development iteration
 5. ✅ **Update example version numbers in documentation**:
    - Automatically update version numbers in README.md dependency examples
-   - Amend the release commit to include documentation updates
-   - Update the tag to point to the amended commit
+   - Create a third commit with the documentation updates
    - Ensures documentation examples always match the release version
 6. ✅ **Run Maven release:perform** to:
    - Check out the release tag
@@ -89,8 +88,7 @@ Workflow: Runs release:prepare on main branch
 Workflow: Updates example versions in documentation
     ↓
   - Updates README.md with version 1.2.0
-  - Amends Commit A to include documentation updates
-  - Updates tag v1.2.0 → amended Commit A
+  - Commit C: Documentation updates
     ↓
 Workflow: Runs release:perform
     ↓
@@ -98,7 +96,7 @@ Workflow: Runs release:perform
   - Builds and tests
   - Deploys to Maven Central
     ↓
-Workflow: Pushes commits A & B to main
+Workflow: Pushes commits A, B & C to main
     ↓
 Workflow: Pushes tag v1.2.0 → commit A
     ↓
@@ -108,7 +106,7 @@ Workflow: Publishes the GitHub Release
     ↓
 Result:
   - Tag v1.2.0 → commit A (release version: 1.2.0)
-  - Main branch → commit B (next SNAPSHOT: 1.2.1-SNAPSHOT)
+  - Main branch → commit C (next SNAPSHOT: 1.2.1-SNAPSHOT, with updated docs)
   - Artifacts deployed to Maven Central
   - GitHub Release published with JAR files
 ```
@@ -117,9 +115,10 @@ Result:
 
 1. Check the [Actions tab](https://github.com/BerryCloud/xapi-java/actions) to ensure the workflow completed successfully
    - The workflow will show a summary of the release including version, tag, and status
-2. Verify the target branch (e.g., `main`) has two new commits:
-   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z` (amended to include documentation updates)
+2. Verify the target branch (e.g., `main`) has three new commits:
+   - Release commit: `[maven-release-plugin] prepare release vX.Y.Z`
    - Development commit: `[maven-release-plugin] prepare for next development iteration`
+   - Documentation commit: `[release] Update documentation examples to version X.Y.Z`
 3. Verify the GitHub Release was published at the [Releases page](https://github.com/BerryCloud/xapi-java/releases)
    - The release should no longer be in draft state
    - JAR artifacts should be attached to the release

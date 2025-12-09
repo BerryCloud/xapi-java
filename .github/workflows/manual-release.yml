@@ -188,25 +188,24 @@ jobs:
         run: |
           echo "Updating example version numbers in documentation..."
           
-          # Run the script to update version numbers in README.md and other docs
-          bash .github/scripts/update-example-versions.sh
+          VERSION="${{ steps.release.outputs.version }}"
+          
+          # Run the script with the explicit release version
+          # Pass version directly to avoid reading from pom.xml which now has SNAPSHOT
+          bash .github/scripts/update-example-versions.sh "$VERSION"
           
           # Check if there are any changes
           if git diff --quiet; then
             echo "No version updates needed"
           else
-            echo "Documentation examples updated with release version"
+            echo "Documentation examples updated with release version $VERSION"
             
-            # Amend the release commit created by release:prepare to include doc updates
-            # Only add README.md since that's what the script updates
+            # Create a third commit for documentation updates
+            # This is safer than amending either of the release:prepare commits
             git add README.md
-            git commit --amend --no-edit
+            git commit -m "[release] Update documentation examples to version $VERSION"
             
-            # Update the tag to point to the amended commit
-            TAG_NAME="${{ steps.release.outputs.tag_name }}"
-            git tag -f "$TAG_NAME"
-            
-            echo "✅ Release commit amended with documentation updates"
+            echo "✅ Documentation updated in separate commit"
           fi
       
       - name: Run Maven release:perform

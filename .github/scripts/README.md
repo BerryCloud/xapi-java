@@ -10,13 +10,16 @@ Updates version numbers in documentation examples during the release process.
 
 **Usage**:
 ```bash
-# Automatically called by .github/workflows/manual-release.yml
+# With explicit version (recommended during release)
+bash .github/scripts/update-example-versions.sh "1.2.0"
+
+# Without version argument (extracts from pom.xml)
 bash .github/scripts/update-example-versions.sh
 ```
 
 **What it does**:
-1. Extracts the current version from the root `pom.xml` (skipping parent version)
-2. Strips `-SNAPSHOT` suffix to get the release version
+1. Accepts an optional version argument (recommended to avoid confusion after release:prepare)
+2. If no argument, extracts the current version from the root `pom.xml` (skipping parent version) and strips `-SNAPSHOT` suffix
 3. Updates all `<version>` tags within `<dependency>` blocks in README.md
 4. Reports changes made via git diff
 

@@ -32,18 +32,26 @@ main() {
     
     echo "Updating example version numbers in documentation..."
     
-    # Get the current version from the root pom.xml
-    CURRENT_VERSION=$(get_version_from_pom "pom.xml")
-    
-    if [ -z "$CURRENT_VERSION" ]; then
-        echo "ERROR: Could not extract version from pom.xml"
-        exit 1
+    # Check if version was passed as argument
+    if [ $# -gt 0 ] && [ -n "$1" ]; then
+        # Use version from command line argument
+        RELEASE_VERSION="$1"
+        echo "Using version from argument: $RELEASE_VERSION"
+    else
+        # Get the current version from the root pom.xml
+        CURRENT_VERSION=$(get_version_from_pom "pom.xml")
+        
+        if [ -z "$CURRENT_VERSION" ]; then
+            echo "ERROR: Could not extract version from pom.xml"
+            exit 1
+        fi
+        
+        echo "Current version from pom.xml: $CURRENT_VERSION"
+        
+        # Strip -SNAPSHOT suffix if present (we want the release version)
+        RELEASE_VERSION="${CURRENT_VERSION%-SNAPSHOT}"
+        echo "Release version: $RELEASE_VERSION"
     fi
-    
-    echo "Current version: $CURRENT_VERSION"
-    
-    # Strip -SNAPSHOT suffix if present (we want the release version)
-    RELEASE_VERSION="${CURRENT_VERSION%-SNAPSHOT}"
     
     echo "Updating documentation to use version: $RELEASE_VERSION"
     

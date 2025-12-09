@@ -153,10 +153,29 @@ test_snapshot_stripping() {
     fi
 }
 
-# Test 3: Full script execution in test environment
+# Test 3: Script accepts version argument
+test_version_argument() {
+    TESTS_RUN=$((TESTS_RUN + 1))
+    info "Test 3: Script accepts version argument"
+    
+    # Change to test directory to ensure we're not in repo root
+    cd "$TEST_DIR"
+    
+    # Run script with explicit version argument
+    local output=$(bash "$SCRIPT_UNDER_TEST" "9.9.9" 2>&1)
+    
+    if echo "$output" | grep -q "Using version from argument: 9.9.9"; then
+        pass "Script accepts and uses version argument"
+    else
+        fail "Version argument handling" "script should accept version argument" "script did not recognize argument"
+        echo "  Output was: $output" | head -5
+    fi
+}
+
+# Test 4: Full script execution in test environment
 test_full_script_execution() {
     TESTS_RUN=$((TESTS_RUN + 1))
-    info "Test 3: Full script execution"
+    info "Test 4: Full script execution"
     
     # Create a modified version of the script that operates in TEST_DIR
     local test_script="/tmp/test-script-$$.sh"
@@ -180,10 +199,10 @@ test_full_script_execution() {
     rm -f /tmp/test-output-$$.log "$test_script"
 }
 
-# Test 4: Version pattern matching
+# Test 5: Version pattern matching
 test_version_pattern_matching() {
     TESTS_RUN=$((TESTS_RUN + 1))
-    info "Test 4: Version pattern matching"
+    info "Test 5: Version pattern matching"
     
     # Test the sed pattern used in the script on a sample
     local sample='<dependency><version>1.0.0</version></dependency>'
@@ -197,10 +216,10 @@ test_version_pattern_matching() {
     fi
 }
 
-# Test 5: Selective replacement (only in dependency blocks)
+# Test 6: Selective replacement (only in dependency blocks)
 test_selective_replacement() {
     TESTS_RUN=$((TESTS_RUN + 1))
-    info "Test 5: Selective replacement"
+    info "Test 6: Selective replacement"
     
     # Create a test file
     cat > /tmp/test-selective-$$.md << 'EOF'
@@ -231,10 +250,10 @@ EOF
     fi
 }
 
-# Test 6: Script handles errors gracefully
+# Test 7: Script handles errors gracefully
 test_error_handling() {
     TESTS_RUN=$((TESTS_RUN + 1))
-    info "Test 6: Script handles errors gracefully"
+    info "Test 7: Script handles errors gracefully"
     
     # Test that script handles missing files gracefully
     cd "$TEST_DIR"
@@ -271,6 +290,7 @@ main() {
     # Run tests
     test_version_extraction
     test_snapshot_stripping
+    test_version_argument
     test_full_script_execution
     test_version_pattern_matching
     test_selective_replacement
