@@ -67,7 +67,6 @@ jobs:
           TAG_NAME=$(jq -r '.tag_name // .tagName' /tmp/release.json)
           NAME=$(jq -r '.name' /tmp/release.json)
           TARGET_COMMITISH=$(jq -r '.target_commitish // .targetCommitish' /tmp/release.json)
-          BODY=$(jq -r '.body' /tmp/release.json)
           DRAFT=$(jq -r '.draft' /tmp/release.json)
 
           # Ensure the release is a draft
@@ -92,12 +91,10 @@ jobs:
 
           # Fallbacks
           if [ -z "$NAME" ] || [ "$NAME" = "null" ]; then NAME="$TAG_NAME"; fi
-          if [ -z "$BODY" ] || [ "$BODY" = "null" ]; then BODY="No release notes provided."; fi
 
           echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
           echo "target_commitish=$TARGET_COMMITISH" >> "$GITHUB_OUTPUT"
-          echo "body=$BODY" >> "$GITHUB_OUTPUT"
           echo "draft=$DRAFT" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
