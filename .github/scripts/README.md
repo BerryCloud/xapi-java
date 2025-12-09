@@ -36,10 +36,11 @@ bash .github/scripts/test-update-example-versions.sh
 **Tests included**:
 1. Version extraction from pom.xml
 2. SNAPSHOT suffix stripping
-3. Full script execution
-4. Version pattern matching (sed patterns)
-5. Selective replacement (only updates dependency blocks)
-6. Error handling (missing files)
+3. Script accepts version argument
+4. Full script execution
+5. Version pattern matching (sed patterns)
+6. Selective replacement (only updates dependency blocks)
+7. Error handling (missing files)
 
 **Exit codes**:
 - `0`: All tests passed
