@@ -10,6 +10,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 /**
@@ -18,6 +21,9 @@ import org.hibernate.annotations.Type;
  * @author Thomas Turrell-Croft
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StatementEntity {
 
   @Id private UUID id;
@@ -25,55 +31,4 @@ public class StatementEntity {
   @Type(JsonType.class)
   @Column(columnDefinition = "BLOB")
   private JsonNode statement;
-
-  /** StatementEntity Constructor. */
-  public StatementEntity() {}
-
-  /**
-   * StatementEntity Constructor.
-   *
-   * @param id the statement id
-   * @param statement the statement as JSON
-   */
-  public StatementEntity(UUID id, JsonNode statement) {
-
-    this.id = id;
-    this.statement = statement;
-  }
-
-  /**
-   * Gets the id.
-   *
-   * @return the id
-   */
-  public UUID getId() {
-    return id;
-  }
-
-  /**
-   * Sets the id.
-   *
-   * @param id the id to set
-   */
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  /**
-   * Gets the statement.
-   *
-   * @return the statement
-   */
-  public JsonNode getStatement() {
-    return statement;
-  }
-
-  /**
-   * Sets the statement.
-   *
-   * @param statement the statement to set
-   */
-  public void setStatement(JsonNode statement) {
-    this.statement = statement;
-  }
 }
