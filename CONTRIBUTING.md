@@ -32,9 +32,9 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participatin
 
 ### Prerequisites
 
-xAPI Java requires **Java 25 or newer**.
+xAPI Java requires **Java 17 or newer**.
 
-#### Installing Java 25
+#### Installing Java 17
 
 We recommend using [SDKMAN!](https://sdkman.io/) to install and manage Java versions:
 
@@ -42,14 +42,14 @@ We recommend using [SDKMAN!](https://sdkman.io/) to install and manage Java vers
 # Install SDKMAN (if not already installed)
 curl -s "https://get.sdkman.io" | bash
 
-# Install Java 25 (Temurin distribution recommended)
-sdk install java 25.0.1-tem
+# Install Java 17 (Temurin distribution recommended)
+sdk install java 17.0.13-tem
 
 # Verify installation
 java -version
 ```
 
-**Note**: The exact identifier (e.g., `25.0.1-tem`) may vary by platform and availability. Run `sdk list java` to see available Java 25 versions for your system and choose the appropriate one for your platform.
+**Note**: The exact identifier (e.g., `17.0.13-tem`) may vary by platform and availability. Run `sdk list java` to see available Java 17 versions for your system and choose the appropriate one for your platform.
 
 ### Setting Up Your Development Environment
 
