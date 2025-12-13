@@ -15,7 +15,7 @@
   <description>learning.dev xAPI Build</description>
   <url>https://github.com/BerryCloud/xapi-java</url>
   <properties>
-    <java.version>25</java.version>
+    <java.version>17</java.version>
     <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>

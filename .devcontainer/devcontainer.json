@@ -1,6 +1,6 @@
 {
   "name": "xAPI Java Development",
-  "image": "mcr.microsoft.com/devcontainers/java:25",
+  "image": "mcr.microsoft.com/devcontainers/java:17",
 
   "features": {
      "ghcr.io/devcontainers/features/java:1": {
@@ -15,7 +15,7 @@
         "java.jdt.ls.java.home": "/usr/lib/jvm/msopenjdk-current",
         "java.configuration.runtimes": [
           {
-            "name": "JavaSE-25",
+            "name": "JavaSE-17",
             "path": "/usr/lib/jvm/msopenjdk-current"
           }
         ]

@@ -164,14 +164,17 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
 
     final var list = new ArrayList<>();
 
-    final Stream<Attachment> attachments =
-        switch (object) {
-          case Statement statement -> getRealAttachments(statement);
-          case List<?> statements
-              when !statements.isEmpty() && statements.get(0) instanceof Statement ->
-              ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
-          default -> null;
-        };
+    final Stream<Attachment> attachments;
+
+    if (object instanceof Statement statement) {
+      attachments = getRealAttachments(statement);
+    } else if (object instanceof List<?> statements
+        && !statements.isEmpty()
+        && statements.get(0) instanceof Statement) {
+      attachments = ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
+    } else {
+      attachments = null;
+    }
 
     if (attachments == null) {
       // The object is not a statement or list of statements
