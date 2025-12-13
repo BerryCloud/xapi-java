@@ -165,11 +165,12 @@ public class StatementHttpMessageWriter extends MultipartWriterSupport
     final var list = new ArrayList<>();
 
     final Stream<Attachment> attachments;
-    
+
     if (object instanceof Statement statement) {
       attachments = getRealAttachments(statement);
     } else if (object instanceof List<?> statements
-        && !statements.isEmpty() && statements.get(0) instanceof Statement) {
+        && !statements.isEmpty()
+        && statements.get(0) instanceof Statement) {
       attachments = ((List<Statement>) statements).stream().flatMap(this::getRealAttachments);
     } else {
       attachments = null;
