@@ -8,7 +8,14 @@ Both the xAPI Client and xAPI Model use a [fluent interface](https://en.wikipedi
 
 ## Requirements
 
-xAPI Java requires **Java 17 or newer**. See [CONTRIBUTING.md](CONTRIBUTING.md#prerequisites) for detailed installation instructions.
+xAPI Java requires **Java 25 or newer**. See [CONTRIBUTING.md](CONTRIBUTING.md#prerequisites) for detailed installation instructions.
+
+### Version Compatibility
+
+- **Version 2.x** - Requires Java 25 or newer
+- **Version 1.x** - Requires Java 17 or newer
+
+If you need to use Java 17, please use version 1.x of xAPI Java.
 
 ## xAPI Java Client
 

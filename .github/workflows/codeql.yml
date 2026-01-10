@@ -57,7 +57,7 @@ jobs:
     - uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '25'
 
     # Initializes the CodeQL tools for scanning.
     # Uses custom configuration file to exclude test directories from analysis.
