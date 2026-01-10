@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.time.Instant;
 
 /**
- * xAPI JSON module for registering custom deserializer {@link Instant} objects.
+ * Provides xAPI JSON module for registering custom deserializer {@link Instant} objects.
  *
  * @author István Rátkai (Selindek)
  */
