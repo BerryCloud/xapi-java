@@ -16,7 +16,7 @@ import dev.learning.xapi.model.SubStatement;
 import dev.learning.xapi.model.SubStatementObject;
 
 /**
- * xAPI JSON module for enabling strict ObjectTypeResolver.
+ * Provides xAPI JSON module for enabling strict ObjectTypeResolver.
  *
  * @author István Rátkai (Selindek)
  */
