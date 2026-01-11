@@ -140,10 +140,10 @@ jobs:
           
           echo "Tag $TAG_NAME does not exist. Proceeding with release."
 
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          java-version: "17"
+          java-version: "25"
           distribution: "temurin"
           cache: maven
           cache-dependency-path: |
