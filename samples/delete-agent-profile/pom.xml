@@ -4,7 +4,7 @@
   <parent>
     <groupId>dev.learning.xapi.samples</groupId>
     <artifactId>xapi-samples-build</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
   </parent>
   <artifactId>delete-agent-profile</artifactId>
   <name>Delete xAPI Agent Profile Sample</name>
