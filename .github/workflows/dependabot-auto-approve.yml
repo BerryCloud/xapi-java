@@ -1,6 +1,8 @@
 name: Dependabot Auto-Approve
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, reopened]
 
 permissions:
   pull-requests: write
