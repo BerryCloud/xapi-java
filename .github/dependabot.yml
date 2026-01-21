@@ -11,7 +11,49 @@ updates:
       interval: "weekly"
     reviewers:
       - "berrycloud/reviewers"
+    groups:
+      auto-merge-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "com.h2database:h2"
+          - "com.jayway.jsonpath:json-path-assert"
+          - "com.puppycrawl.tools:checkstyle"
+          - "com.squareup.okhttp3:mockwebserver"
+          - "com.squareup.okhttp3:okhttp"
+          - "com.squareup.okhttp3:okhttp-bom"
+          - "io.hypersistence:hypersistence-utils-hibernate-70"
+          - "io.jsonwebtoken:jjwt-api"
+          - "io.jsonwebtoken:jjwt-impl"
+          - "io.jsonwebtoken:jjwt-jackson"
+          - "io.netty:netty-resolver-dns-native-macos"
+          - "jakarta.validation:jakarta.validation-api"
+          - "org.hibernate.validator:hibernate-validator"
+          - "org.projectlombok:lombok"
+          - "org.springframework.boot:spring-boot-autoconfigure"
+          - "org.springframework.boot:spring-boot-devtools"
+          - "org.springframework.boot:spring-boot-jackson2"
+          - "org.springframework.boot:spring-boot-starter-data-jpa"
+          - "org.springframework.boot:spring-boot-starter-test"
+          - "org.springframework.boot:spring-boot-starter-validation"
+          - "org.springframework.boot:spring-boot-starter-web"
+          - "org.springframework.boot:spring-boot-starter-webflux"
+          - "org.springframework.boot:spring-boot-webmvc-test"
+          - "org.springframework.integration:spring-integration-test"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      auto-merge-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "actions/checkout"
+          - "actions/create-github-app-token"
+          - "actions/setup-java"
+          - "actions/stale"
+          - "advanced-security/maven-dependency-submission-action"
+          - "github/codeql-action"
