@@ -56,4 +56,5 @@ updates:
           - "actions/setup-java"
           - "actions/stale"
           - "advanced-security/maven-dependency-submission-action"
+          - "dependabot/fetch-metadata"
           - "github/codeql-action"
