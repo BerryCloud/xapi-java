@@ -12,47 +12,16 @@ updates:
     reviewers:
       - "berrycloud/reviewers"
     groups:
-      auto-merge-minor-and-patch:
-        update-types:
-          - "minor"
-          - "patch"
+      spring-boot-dependencies:
         patterns:
-          - "com.h2database:h2"
-          - "com.jayway.jsonpath:json-path-assert"
-          - "com.puppycrawl.tools:checkstyle"
-          - "com.squareup.okhttp3:mockwebserver"
-          - "com.squareup.okhttp3:okhttp"
-          - "com.squareup.okhttp3:okhttp-bom"
-          - "io.hypersistence:hypersistence-utils-hibernate-70"
-          - "io.jsonwebtoken:jjwt-api"
-          - "io.jsonwebtoken:jjwt-impl"
-          - "io.jsonwebtoken:jjwt-jackson"
-          - "io.netty:netty-resolver-dns-native-macos"
-          - "jakarta.validation:jakarta.validation-api"
-          - "org.apache.maven.plugins:maven-checkstyle-plugin"
-          - "org.apache.maven.plugins:maven-compiler-plugin"
-          - "org.apache.maven.plugins:maven-failsafe-plugin"
-          - "org.apache.maven.plugins:maven-gpg-plugin"
-          - "org.apache.maven.plugins:maven-javadoc-plugin"
-          - "org.apache.maven.plugins:maven-release-plugin"
-          - "org.apache.maven.plugins:maven-source-plugin"
-          - "org.apache.maven.plugins:maven-surefire-plugin"
-          - "org.eclipse.m2e:lifecycle-mapping"
-          - "org.hibernate.validator:hibernate-validator"
-          - "org.jacoco:jacoco-maven-plugin"
-          - "org.projectlombok:lombok"
-          - "org.sonatype.central:central-publishing-maven-plugin"
-          - "org.springframework.boot:spring-boot-autoconfigure"
-          - "org.springframework.boot:spring-boot-devtools"
-          - "org.springframework.boot:spring-boot-jackson2"
-          - "org.springframework.boot:spring-boot-starter-data-jpa"
-          - "org.springframework.boot:spring-boot-starter-parent"
-          - "org.springframework.boot:spring-boot-starter-test"
-          - "org.springframework.boot:spring-boot-starter-validation"
-          - "org.springframework.boot:spring-boot-starter-web"
-          - "org.springframework.boot:spring-boot-starter-webflux"
-          - "org.springframework.boot:spring-boot-webmvc-test"
-          - "org.springframework.integration:spring-integration-test"
+          - "org.springframework.boot:*"
+          - "org.springframework.integration:*"
+      squareup-dependencies:
+        patterns:
+          - "com.squareup.*:*"
+      jsonwebtoken-dependencies:
+        patterns:
+          - "io.jsonwebtoken:*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
