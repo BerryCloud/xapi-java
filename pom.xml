@@ -24,6 +24,7 @@
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.13.0</jjwt.version>
     <okhttp.version>5.3.2</okhttp.version>
+    <assertj.version>3.27.7</assertj.version>
     <!-- Default empty argLine property - required for @{argLine} late replacement -->
     <argLine />
   </properties>
@@ -322,7 +323,12 @@
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-jackson</artifactId>
         <version>${jjwt.version}</version>
-      </dependency>      
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <distributionManagement>
