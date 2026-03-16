@@ -104,7 +104,7 @@ jobs:
         run: |
           echo "Manual draft release for tag: ${{ steps.release.outputs.tag_name }}"
 
-      - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2
+      - uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v2
         id: app-token
         with:
           app-id: ${{ secrets.APP_ID }}
