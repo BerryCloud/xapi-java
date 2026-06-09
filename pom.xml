@@ -23,7 +23,7 @@
     <checkstyle.version>13.5.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.13.0</jjwt.version>
-    <okhttp.version>5.3.2</okhttp.version>
+    <okhttp.version>5.4.0</okhttp.version>
     <assertj.version>3.27.7</assertj.version>
     <!-- Default empty argLine property - required for @{argLine} late replacement -->
     <argLine />
