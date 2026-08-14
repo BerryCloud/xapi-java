@@ -75,7 +75,7 @@ jobs:
 
 
     - name: Build
-      run: ./mvnw clean verify -DskipTests
+      run: ./mvnw -B clean verify -DskipTests
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
