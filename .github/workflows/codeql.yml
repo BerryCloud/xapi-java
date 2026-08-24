@@ -62,7 +62,7 @@ jobs:
     # Initializes the CodeQL tools for scanning.
     # Uses custom configuration file to exclude test directories from analysis.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+      uses: github/codeql-action/init@db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28 # v4
       with:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql-config.yml
