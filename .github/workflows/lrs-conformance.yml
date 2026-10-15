@@ -72,7 +72,7 @@ jobs:
       - name: Build example LRS and its dependencies
         run: |
           ./mvnw -B -pl samples/xapi-server -am install -DskipTests
-          ./mvnw -B -pl samples/xapi-server spring-boot:repackage
+          ./mvnw -B -pl samples/xapi-server package spring-boot:repackage -DskipTests
       - name: Run conformance suite and publish counts
         shell: bash
         run: |
