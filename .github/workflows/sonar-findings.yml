@@ -1,0 +1,31 @@
+name: Export Sonar findings
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - .github/workflows/sonar-findings.yml
+      - .github/scripts/export-sonar-findings.py
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+      - name: Export unresolved issues and security hotspots
+        run: python3 .github/scripts/export-sonar-findings.py
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Upload findings and rule descriptions
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sonar-findings
+          path: sonar-findings.json
+          if-no-files-found: error
+          retention-days: 7
