@@ -38,7 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
-@Import(StatementConsistency.class)
+@Import({StatementConsistency.class, WebMvcConfiguration.class})
 @WebMvcTest(
     value = {StatementController.class},
     properties = "spring.jackson.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
