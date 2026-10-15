@@ -38,8 +38,8 @@ public class StatementService {
    * StatementService Constructor.
    *
    * @param repository the statement repository
-   * @param consistency the statement retrieval boundary tracker
    * @param mapper the object mapper
+   * @param consistency the statement retrieval boundary tracker
    */
   public StatementService(
       StatementRepository repository, ObjectMapper mapper, StatementConsistency consistency) {
