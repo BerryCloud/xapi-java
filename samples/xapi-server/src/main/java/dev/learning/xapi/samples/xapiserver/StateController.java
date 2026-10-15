@@ -4,6 +4,7 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
+import dev.learning.xapi.model.Agent;
 import java.net.URI;
 import java.time.Instant;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class StateController {
    * Retrieve a document or a JSON array of state ids.
    *
    * @param activityId the activity IRI
-   * @param agent the JSON agent
+   * @param agent the agent identifying the learner
    * @param registration the optional registration
    * @param stateId the optional document id
    * @param since the exclusive time filter for listing ids
@@ -54,7 +55,7 @@ public class StateController {
   @GetMapping
   public ResponseEntity<byte[]> get(
       @RequestParam URI activityId,
-      @RequestParam String agent,
+      @RequestParam Agent agent,
       @RequestParam(required = false) UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestParam(required = false) Instant since)
@@ -96,7 +97,7 @@ public class StateController {
    * Replace a state document with arbitrary bytes, or merge a JSON object using POST.
    *
    * @param activityId the activity IRI
-   * @param agent the JSON agent
+   * @param agent the agent identifying the learner
    * @param registration the optional registration
    * @param stateId the document id
    * @param contents document bytes
@@ -107,7 +108,7 @@ public class StateController {
   @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
   public ResponseEntity<Void> store(
       @RequestParam URI activityId,
-      @RequestParam String agent,
+      @RequestParam Agent agent,
       @RequestParam(required = false) UUID registration,
       @RequestParam String stateId,
       @RequestBody(required = false) byte[] contents,
@@ -131,7 +132,7 @@ public class StateController {
    * Delete a document or all state documents in the context.
    *
    * @param activityId the activity IRI
-   * @param agent the JSON agent
+   * @param agent the agent identifying the learner
    * @param registration the optional registration filter
    * @param stateId the optional document id
    * @param headers optional HTTP preconditions for single-document deletion
@@ -140,7 +141,7 @@ public class StateController {
   @DeleteMapping
   public ResponseEntity<Void> delete(
       @RequestParam URI activityId,
-      @RequestParam String agent,
+      @RequestParam Agent agent,
       @RequestParam(required = false) UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestHeader HttpHeaders headers) {

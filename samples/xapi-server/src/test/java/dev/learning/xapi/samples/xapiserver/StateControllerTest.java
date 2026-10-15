@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,6 +23,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import dev.learning.xapi.model.Agent;
 import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
@@ -33,10 +35,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.server.ResponseStatusException;
 
 /** State Resource integration tests using the sample's H2 persistence. */
 @SpringBootTest
@@ -411,9 +415,54 @@ class StateControllerTest {
   }
 
   @Test
+  void allStateMethodsRejectInvalidAgentParametersWithoutChangingDocuments() throws Exception {
+    putJson("{\"original\":true}");
+    for (String agent :
+        new String[] {
+          "{",
+          "null",
+          "[]",
+          "{\"objectType\":\"Group\",\"mbox\":\"mailto:a@example.com\"}",
+          "{}",
+          "{\"mbox\":\"mailto:a@example.com\",\"openid\":\"https://example.com\"}"
+        }) {
+      for (var request :
+          new MockHttpServletRequestBuilder[] {
+            get(ENDPOINT), put(ENDPOINT), post(ENDPOINT), delete(ENDPOINT)
+          }) {
+        mvc.perform(
+                request
+                    .param("activityId", ACTIVITY)
+                    .param("agent", agent)
+                    .param("stateId", "progress")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{}"))
+            .andExpect(status().isBadRequest());
+      }
+    }
+    mvc.perform(document(get(ENDPOINT))).andExpect(content().json("{\"original\":true}"));
+  }
+
+  @Test
   void serviceValidatesRegistrationAndAgentIdentity() {
-    String scope = service.scope(ACTIVITY, AGENT, UUID.fromString(REGISTRATION));
-    assertEquals(scope, service.scope(ACTIVITY, AGENT, null));
+    Agent agent = Agent.builder().mbox("mailto:learner@example.com").build();
+    String scope = service.scope(ACTIVITY, agent, UUID.fromString(REGISTRATION));
+    assertEquals(scope, service.scope(ACTIVITY, agent, null));
+    assertEquals(
+        HttpStatus.BAD_REQUEST,
+        assertThrows(ResponseStatusException.class, () -> service.scope(ACTIVITY, null, null))
+            .getStatusCode());
+    assertEquals(
+        HttpStatus.BAD_REQUEST,
+        assertThrows(
+                ResponseStatusException.class,
+                () -> service.scope(ACTIVITY, Agent.builder().build(), null))
+            .getStatusCode());
+    assertEquals(
+        HttpStatus.BAD_REQUEST,
+        assertThrows(
+                ResponseStatusException.class, () -> service.scope(ACTIVITY, agent, new UUID(0, 0)))
+            .getStatusCode());
   }
 
   @Test

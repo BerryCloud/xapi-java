@@ -53,16 +53,15 @@ public class StateService {
    * Validate the request context and resolve its activity and agent identity.
    *
    * @param activityId the activity IRI
-   * @param agentJson the JSON agent
+   * @param agent the agent identifying the learner
    * @param registration the optional registration
    * @return the context identity digest
    */
-  public String scope(String activityId, String agentJson, UUID registration) {
+  public String scope(String activityId, Agent agent, UUID registration) {
     try {
       if (activityId.isBlank() || !URI.create(activityId).isAbsolute()) {
         throw new IllegalArgumentException("activityId must be an absolute IRI");
       }
-      Agent agent = mapper.readValue(agentJson, Agent.class);
       ActivityState context =
           ActivityState.builder().agent(agent).registration(registration).build();
       if (agent == null || !validator.validate(context).isEmpty()) {
@@ -86,7 +85,7 @@ public class StateService {
             agent.getAccount().getName());
       }
       throw new IllegalArgumentException("Agent must have an identifier");
-    } catch (JacksonException | IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid state context", e);
     }
   }
