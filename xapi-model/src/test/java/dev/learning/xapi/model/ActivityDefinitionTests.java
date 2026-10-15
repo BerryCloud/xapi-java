@@ -419,7 +419,7 @@ class ActivityDefinitionTests {
   }
 
   @Test
-  void whenMergingActivityDefinitionsWithNamesThenMergedNameIsExpected() throws IOException {
+  void whenMergingActivityDefinitionsWithNamesThenMergedNameIsExpected() {
 
     final var activityDefinition1 =
         ActivityDefinition.builder().addName(Locale.UK, "Colour").build();
@@ -440,8 +440,7 @@ class ActivityDefinitionTests {
   }
 
   @Test
-  void whenMergingActivityDefinitionsWithDescriptionsThenMergedDescriptionIsExpected()
-      throws IOException {
+  void whenMergingActivityDefinitionsWithDescriptionsThenMergedDescriptionIsExpected() {
 
     final var activityDefinition1 =
         ActivityDefinition.builder().addDescription(Locale.UK, "flavour").build();
@@ -463,8 +462,7 @@ class ActivityDefinitionTests {
   }
 
   @Test
-  void whenMergingActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
-      throws IOException {
+  void whenMergingActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected() {
 
     final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
     extensions1.put(URI.create("https://example.com/extensions/1"), "1");
@@ -500,8 +498,7 @@ class ActivityDefinitionTests {
   }
 
   @Test
-  void whenMergingActivityDefinitionsWithNestedExtensionsThenMergedExtensionsAreExpected()
-      throws IOException {
+  void whenMergingActivityDefinitionsWithNestedExtensionsThenMergedExtensionsAreExpected() {
 
     final Map<@HasScheme URI, Object> extensions1 = new HashMap<>();
     extensions1.put(

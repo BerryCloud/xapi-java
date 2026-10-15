@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -67,7 +66,7 @@ class StatementResultTest {
   }
 
   @Test
-  void whenSerializingStatementResultThenResultIsEqualToExpectedJson() throws IOException {
+  void whenSerializingStatementResultThenResultIsEqualToExpectedJson() {
 
     final var statementResult =
         StatementResult.builder()

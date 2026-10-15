@@ -772,15 +772,13 @@ class StatementTests {
   void
       whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictTimestampModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "timestamp": "2015-11-18T12:17:00-00:00",
             "actor": {
@@ -804,22 +802,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithNegativeFourZerosTimestampOffsetThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictTimestampModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "timestamp":"2015-11-18T12:17:00-0000",
             "actor": {
@@ -843,22 +839,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithNegativeTwoZerosTimestampOffsetThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictTimestampModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "timestamp":"2015-11-18T12:17:00-00",
             "actor": {
@@ -882,7 +876,7 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
@@ -927,15 +921,13 @@ class StatementTests {
   @Test
   void whenDeserializingStatementNullTimestampThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictNullValuesModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictNullValuesModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "timestamp":null,
             "actor": {
@@ -959,22 +951,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithInvalidLocaleStringThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
         InvalidFormatException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictLocaleModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context":{
               "language": "grrrrr"
@@ -1000,22 +990,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithNonStringLocaleThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
         MismatchedInputException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictLocaleModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context":{
               "language": 23
@@ -1041,22 +1029,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithNullPropertyThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictNullValuesModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictNullValuesModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context": null,
             "actor": {
@@ -1080,22 +1066,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictObjectTypeModule()).build();
+
     Assertions.assertThrows(
         InvalidTypeIdException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictObjectTypeModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
               {
                 "actor":{
                   "objectType":"group",
@@ -1114,22 +1098,20 @@ class StatementTests {
                   "id":"http://www.example.com/meetings/occurances/34534"
                 }
               }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithLowercaseActivityObjectTypeThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictObjectTypeModule()).build();
+
     Assertions.assertThrows(
         InvalidTypeIdException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictObjectTypeModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
               {
                 "actor":{
                   "objectType":"Agent",
@@ -1148,7 +1130,7 @@ class StatementTests {
                   "id":"http://www.example.com/meetings/occurances/34534"
                 }
               }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
@@ -1181,8 +1163,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown() {
 
     final var statement =
         objectMapper
@@ -1226,8 +1207,7 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithTimestampWithoutOffsetThenResultisExpected()
-      throws IOException {
+  void whenDeserializingStatementWithTimestampWithoutOffsetThenResultisExpected() {
 
     final var statement =
         objectMapper
@@ -1267,15 +1247,13 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
         InvalidFormatException.class,
         () -> {
-          objectMapper
-              .rebuild()
-              .addModule(new XapiStrictLocaleModule())
-              .build()
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context":{
               "language": "a-b-c"
@@ -1301,7 +1279,7 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 

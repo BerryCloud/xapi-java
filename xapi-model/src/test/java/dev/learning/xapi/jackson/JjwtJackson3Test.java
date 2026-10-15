@@ -71,9 +71,8 @@ class JjwtJackson3Test {
     assertEquals(
         claims,
         deserializer.deserialize(new StringReader(new String(bytes, StandardCharsets.UTF_8))));
-    assertThrows(
-        DeserializationException.class,
-        () -> deserializer.deserialize("{} {}".getBytes(StandardCharsets.UTF_8)));
+    byte[] trailingJson = "{} {}".getBytes(StandardCharsets.UTF_8);
+    assertThrows(DeserializationException.class, () -> deserializer.deserialize(trailingJson));
   }
 
   @Test
@@ -106,7 +105,8 @@ class JjwtJackson3Test {
             .encodeToString(
                 "{\"actor\":{\"mbox\":\"mailto:attacker@example.com\"}}"
                     .getBytes(StandardCharsets.UTF_8));
-    assertThrows(SignatureException.class, () -> parser.parseSignedClaims(String.join(".", parts)));
+    String tamperedToken = String.join(".", parts);
+    assertThrows(SignatureException.class, () -> parser.parseSignedClaims(tamperedToken));
     var otherKeys = Jwts.SIG.RS512.keyPair().build();
     var wrongKeyParser =
         Jwts.parser().json(new JjwtDeserializer()).verifyWith(otherKeys.getPublic()).build();

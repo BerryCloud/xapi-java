@@ -109,7 +109,7 @@ class Jackson3AutoConfigurationTest {
               assertNotNull(mapper.readValue("{\"zz\":\"name\"}", LanguageMap.class));
               assertFalse(
                   mapper.registeredModules().stream()
-                      .anyMatch(module -> module instanceof XapiStrictObjectTypeModule));
+                      .anyMatch(XapiStrictObjectTypeModule.class::isInstance));
               // Opting out of the strict resolver retains the model's enum validation.
               assertThrows(
                   InvalidFormatException.class,

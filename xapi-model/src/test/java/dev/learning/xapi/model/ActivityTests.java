@@ -161,19 +161,14 @@ class ActivityTests {
     final var json =
         "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
-        InvalidFormatException.class,
-        () ->
-            objectMapper
-                .rebuild()
-                .addModule(new XapiStrictLocaleModule())
-                .build()
-                .readValue(json, Activity.class));
+        InvalidFormatException.class, () -> mapper.readValue(json, Activity.class));
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithNamesThenMergedNameIsExpected()
-      throws IOException {
+  void whenMergingActivitiesWithActivityDefinitionsWithNamesThenMergedNameIsExpected() {
 
     final var activity1 = Activity.builder().definition(d -> d.addName(Locale.US, "Color")).build();
 
@@ -193,8 +188,8 @@ class ActivityTests {
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithDescriptionsThenMergedDefinitionIsExpected()
-      throws IOException {
+  void
+      whenMergingActivitiesWithActivityDefinitionsWithDescriptionsThenMergedDefinitionIsExpected() {
 
     final var activity1 =
         Activity.builder().definition(d -> d.addDescription(Locale.US, "flavor")).build();
@@ -215,8 +210,7 @@ class ActivityTests {
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
-      throws IOException {
+  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected() {
 
     final var activity1 =
         Activity.builder()
