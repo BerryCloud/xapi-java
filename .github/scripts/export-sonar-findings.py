@@ -69,7 +69,7 @@ def main():
         for issue in result["issues"]:
             key = issue["rule"]
             if key not in rules:
-                rules[key] = request("rules/show", {"key": key})["rule"]
+                rules[key] = request("rules/show", {"key": key, "organization": "berrycloud"})["rule"]
     report = {
         "project": PROJECT,
         "generatedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(),
