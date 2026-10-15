@@ -7,6 +7,8 @@ package dev.learning.xapi.samples.xapiserver;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,10 +18,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -221,6 +229,44 @@ class StateControllerTest {
     mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[\"progress\"]"));
     mvc.perform(context(delete(ENDPOINT))).andExpect(status().isNoContent());
     mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[]"));
+  }
+
+  @Test
+  void listingDoesNotLoadDocumentContents() throws Exception {
+    byte[] contents = new byte[1024 * 1024];
+    mvc.perform(
+            document(put(ENDPOINT))
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .content(contents))
+        .andExpect(status().isNoContent());
+
+    Logger sqlLogger = (Logger) LoggerFactory.getLogger("org.hibernate.SQL");
+    Level previousLevel = sqlLogger.getLevel();
+    ListAppender<ILoggingEvent> statements = new ListAppender<>();
+    statements.start();
+    sqlLogger.addAppender(statements);
+    sqlLogger.setLevel(Level.DEBUG);
+    try {
+      mvc.perform(context(get(ENDPOINT)))
+          .andExpect(status().isOk())
+          .andExpect(content().json("[\"progress\"]"))
+          .andExpect(header().exists(HttpHeaders.ETAG))
+          .andExpect(header().exists(HttpHeaders.LAST_MODIFIED));
+    } finally {
+      sqlLogger.detachAppender(statements);
+      sqlLogger.setLevel(previousLevel);
+      statements.stop();
+    }
+
+    var selects =
+        statements.list.stream()
+            .map(event -> event.getFormattedMessage().toLowerCase(Locale.ROOT))
+            .filter(sql -> sql.contains("select"))
+            .toList();
+    assertFalse(selects.isEmpty(), "Listing must execute a database query");
+    assertTrue(
+        selects.stream().noneMatch(sql -> sql.contains("contents")),
+        "Listing must not select document contents or load full entities");
   }
 
   @Test

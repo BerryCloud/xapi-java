@@ -78,11 +78,15 @@ public class StateController {
     var documents = service.list(scope, registration, since);
     byte[] ids =
         mapper.writeValueAsBytes(
-            documents.stream().map(StateEntity::getStateId).distinct().sorted().toList());
+            documents.stream()
+                .map(StateRepository.StateMetadata::getStateId)
+                .distinct()
+                .sorted()
+                .toList());
     var response =
         ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).eTag(StateService.etag(ids));
     documents.stream()
-        .map(StateEntity::getUpdated)
+        .map(StateRepository.StateMetadata::getUpdated)
         .max(Instant::compareTo)
         .ifPresent(response::lastModified);
     return response.body(ids);

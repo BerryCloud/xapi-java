@@ -110,16 +110,12 @@ public class StateService {
    * @param scope the context digest
    * @param registration the optional registration filter
    * @param since the exclusive modification time filter
-   * @return the matching documents
+   * @return the matching document metadata
    */
   @Transactional(readOnly = true)
-  public List<StateEntity> list(String scope, UUID registration, Instant since) {
-    return repository.findByScope(scope).stream()
-        .filter(
-            state ->
-                registration == null || registration.toString().equals(state.getRegistration()))
-        .filter(state -> since == null || state.getUpdated().isAfter(since))
-        .toList();
+  public List<StateRepository.StateMetadata> list(String scope, UUID registration, Instant since) {
+    return repository.findMetadata(
+        scope, registration == null ? null : registration.toString(), since);
   }
 
   /**
@@ -184,7 +180,13 @@ public class StateService {
         throw new ResponseStatusException(
             HttpStatus.BAD_REQUEST, "Conditional deletion requires stateId");
       }
-      repository.deleteAll(list(scope, registration, null));
+      repository.deleteAll(
+          repository.findByScope(scope).stream()
+              .filter(
+                  state ->
+                      registration == null
+                          || registration.toString().equals(state.getRegistration()))
+              .toList());
     } else {
       StateEntity state = get(scope, registration, stateId).orElse(null);
       checkPreconditions(state, ifMatch, ifNoneMatch);
