@@ -180,13 +180,7 @@ public class StateService {
         throw new ResponseStatusException(
             HttpStatus.BAD_REQUEST, "Conditional deletion requires stateId");
       }
-      repository.deleteAll(
-          repository.findByScope(scope).stream()
-              .filter(
-                  state ->
-                      registration == null
-                          || registration.toString().equals(state.getRegistration()))
-              .toList());
+      repository.deleteInScope(scope, registration == null ? null : registration.toString());
     } else {
       StateEntity state = get(scope, registration, stateId).orElse(null);
       checkPreconditions(state, ifMatch, ifNoneMatch);
@@ -225,6 +219,9 @@ public class StateService {
   }
 
   private void checkPreconditions(StateEntity state, String ifMatch, String ifNoneMatch) {
+    if (ifMatch == null && ifNoneMatch == null) {
+      return;
+    }
     String tag = state == null ? null : etag(state.getContents());
     if (ifMatch != null && (tag == null || !matches(ifMatch, tag, false))
         || ifNoneMatch != null && tag != null && matches(ifNoneMatch, tag, true)) {

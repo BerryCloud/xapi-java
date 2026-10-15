@@ -7,6 +7,7 @@ package dev.learning.xapi.samples.xapiserver;
 import java.time.Instant;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,12 +15,19 @@ import org.springframework.data.repository.query.Param;
 public interface StateRepository extends JpaRepository<StateEntity, String> {
 
   /**
-   * Find all documents associated with an activity and agent.
+   * Delete documents directly without loading their contents.
    *
    * @param scope the activity and agent identity digest
-   * @return the state documents, including documents from all registrations
+   * @param registration the optional registration filter; null includes all registrations
    */
-  List<StateEntity> findByScope(String scope);
+  @Modifying(flushAutomatically = true, clearAutomatically = true)
+  @Query(
+      """
+      delete from StateEntity state
+      where state.scope = :scope
+        and (:registration is null or state.registration = :registration)
+      """)
+  void deleteInScope(@Param("scope") String scope, @Param("registration") String registration);
 
   /**
    * Find listing metadata without loading document contents.

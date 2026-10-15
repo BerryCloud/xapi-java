@@ -23,6 +23,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 /** State Resource integration tests using the sample's H2 persistence. */
@@ -240,33 +242,60 @@ class StateControllerTest {
                 .content(contents))
         .andExpect(status().isNoContent());
 
-    Logger sqlLogger = (Logger) LoggerFactory.getLogger("org.hibernate.SQL");
-    Level previousLevel = sqlLogger.getLevel();
-    ListAppender<ILoggingEvent> statements = new ListAppender<>();
-    statements.start();
-    sqlLogger.addAppender(statements);
-    sqlLogger.setLevel(Level.DEBUG);
-    try {
-      mvc.perform(context(get(ENDPOINT)))
-          .andExpect(status().isOk())
-          .andExpect(content().json("[\"progress\"]"))
-          .andExpect(header().exists(HttpHeaders.ETAG))
-          .andExpect(header().exists(HttpHeaders.LAST_MODIFIED));
-    } finally {
-      sqlLogger.detachAppender(statements);
-      sqlLogger.setLevel(previousLevel);
-      statements.stop();
-    }
-
     var selects =
-        statements.list.stream()
-            .map(event -> event.getFormattedMessage().toLowerCase(Locale.ROOT))
+        sqlFor(
+                context(get(ENDPOINT)),
+                status().isOk(),
+                content().json("[\"progress\"]"),
+                header().exists(HttpHeaders.ETAG),
+                header().exists(HttpHeaders.LAST_MODIFIED))
+            .stream()
             .filter(sql -> sql.contains("select"))
             .toList();
     assertFalse(selects.isEmpty(), "Listing must execute a database query");
     assertTrue(
         selects.stream().noneMatch(sql -> sql.contains("contents")),
         "Listing must not select document contents or load full entities");
+  }
+
+  @Test
+  void bulkDeleteUsesOneStatementWithoutReadingDocuments() throws Exception {
+    byte[] contents = new byte[1024 * 1024];
+    for (String stateId : new String[] {"first", "second"}) {
+      mvc.perform(
+              context(put(ENDPOINT))
+                  .param("stateId", stateId)
+                  .param("registration", REGISTRATION)
+                  .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                  .content(contents))
+          .andExpect(status().isNoContent());
+    }
+    putJson("{}");
+
+    var registeredDelete =
+        sqlFor(
+            context(delete(ENDPOINT)).param("registration", REGISTRATION), status().isNoContent());
+    assertEquals(1, registeredDelete.size(), "Bulk deletion must use a single database statement");
+    assertTrue(registeredDelete.getFirst().contains("delete"));
+    assertFalse(registeredDelete.getFirst().contains("select"));
+    mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[\"progress\"]"));
+
+    var allRegistrationsDelete = sqlFor(context(delete(ENDPOINT)), status().isNoContent());
+    assertEquals(1, allRegistrationsDelete.size());
+    assertTrue(allRegistrationsDelete.getFirst().contains("delete"));
+    assertFalse(allRegistrationsDelete.getFirst().contains("select"));
+    mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[]"));
+  }
+
+  @Test
+  void bulkDeleteRejectsPreconditionsWithoutTouchingTheDatabase() throws Exception {
+    putJson("{}");
+    for (String header : new String[] {HttpHeaders.IF_MATCH, HttpHeaders.IF_NONE_MATCH}) {
+      var statements =
+          sqlFor(context(delete(ENDPOINT)).header(header, "*"), status().isBadRequest());
+      assertTrue(statements.isEmpty(), "Invalid bulk deletion must not access stored documents");
+    }
+    mvc.perform(document(get(ENDPOINT))).andExpect(content().json("{}"));
   }
 
   @Test
@@ -280,8 +309,16 @@ class StateControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
         .andExpect(status().isNoContent());
+    mvc.perform(
+            put(ENDPOINT)
+                .param("activityId", ACTIVITY)
+                .param("agent", "{\"mbox\":\"mailto:other@example.com\"}")
+                .param("stateId", "progress")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+        .andExpect(status().isNoContent());
     mvc.perform(context(delete(ENDPOINT))).andExpect(status().isNoContent());
-    assertEquals(1, repository.count());
+    assertEquals(2, repository.count());
   }
 
   @Test
@@ -399,6 +436,26 @@ class StateControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(id)))
         .andExpect(jsonPath("$.actor.mbox", is("mailto:learner@example.com")));
+  }
+
+  private List<String> sqlFor(MockHttpServletRequestBuilder request, ResultMatcher... expectations)
+      throws Exception {
+    Logger sqlLogger = (Logger) LoggerFactory.getLogger("org.hibernate.SQL");
+    Level previousLevel = sqlLogger.getLevel();
+    ListAppender<ILoggingEvent> statements = new ListAppender<>();
+    statements.start();
+    sqlLogger.addAppender(statements);
+    sqlLogger.setLevel(Level.DEBUG);
+    try {
+      mvc.perform(request).andExpectAll(expectations);
+    } finally {
+      sqlLogger.detachAppender(statements);
+      sqlLogger.setLevel(previousLevel);
+      statements.stop();
+    }
+    return statements.list.stream()
+        .map(event -> event.getFormattedMessage().toLowerCase(Locale.ROOT))
+        .toList();
   }
 
   private MockHttpServletRequestBuilder context(MockHttpServletRequestBuilder request) {
