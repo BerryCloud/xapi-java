@@ -103,3 +103,11 @@ GET responses include a quoted SHA-1 ETag and Last-Modified metadata when docume
 Documents use the same H2/JPA storage as the statement sample. The default embedded H2 database is transient, so documents are lost when the application stops. Authentication, cross-instance creation conflicts and full xAPI conformance remain outside the scope of this example.
 
 State documents use a composite primary key of activity/agent scope, registration UUID and state id. All key columns are non-null. State ids use H2's unbounded `VARCHAR` rather than a LOB so they can participate in the key without imposing a 255-character limit. Other database engines may require a different mapping for long indexed identifiers.
+
+## Response headers
+
+A servlet filter adds `X-Experience-API-Version: 1.0.3` to responses under `/xapi`, including errors. Statement Resource responses also include `X-Experience-API-Consistent-Through`, an ISO 8601 timestamp before which all stored statements are available for retrieval.
+
+The consistency timestamp is a conservative snapshot taken before request handling. It can lag behind statements accepted or retrieved during that request. Statement writes are tracked from timestamp assignment until repository commit (or completion of an enclosing Spring transaction). Concurrent writes completing out of order cannot advance the boundary past an earlier pending write. When no writes are pending, the boundary advances with the clock; clock regression cannot backdate subsequently assigned stored timestamps.
+
+This tracker assumes a single application instance and synchronous repository writes. Multiple writers in separate instances or asynchronous persistence would require coordinated tracking of durable writes. Returning the version header does not imply full conformance; request version validation is not yet implemented.

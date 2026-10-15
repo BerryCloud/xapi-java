@@ -7,7 +7,6 @@ package dev.learning.xapi.samples.xapiserver;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.net.URI;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,17 +32,21 @@ public class StatementService {
 
   private final StatementRepository repository;
   private final ObjectMapper mapper;
+  private final StatementConsistency consistency;
 
   /**
    * StatementService Constructor.
    *
    * @param repository the statement repository
+   * @param consistency the statement retrieval boundary tracker
    * @param mapper the object mapper
    */
-  public StatementService(StatementRepository repository, ObjectMapper mapper) {
+  public StatementService(
+      StatementRepository repository, ObjectMapper mapper, StatementConsistency consistency) {
 
     this.repository = repository;
     this.mapper = mapper;
+    this.consistency = consistency;
   }
 
   /**
@@ -93,10 +96,12 @@ public class StatementService {
 
     // add custom logic here...
 
-    repository.save(
-        new StatementEntity(
-            statementId,
-            mapper.valueToTree(statement.withId(statementId).withStored(Instant.now()))));
+    consistency.write(
+        stored ->
+            repository.save(
+                new StatementEntity(
+                    statementId,
+                    mapper.valueToTree(statement.withId(statementId).withStored(stored)))));
   }
 
   /**
@@ -107,26 +112,23 @@ public class StatementService {
    */
   public Collection<UUID> processStatements(List<Statement> statements) {
 
-    final List<Statement> processedStatements = new ArrayList<>();
+    return consistency.write(
+        stored -> {
+          final List<Statement> processedStatements = new ArrayList<>();
 
-    for (final Statement statement : statements) {
-      log.info("processing statement: {}", statement);
+          for (final Statement statement : statements) {
+            log.info("processing statement: {}", statement);
+            final var id = statement.getId() == null ? UUID.randomUUID() : statement.getId();
+            processedStatements.add(statement.withId(id).withStored(stored));
+          }
 
-      if (statement.getId() == null) {
-        processedStatements.add(statement.withId(UUID.randomUUID()).withStored(Instant.now()));
-      } else {
-        processedStatements.add(statement.withStored(Instant.now()));
-      }
-    }
+          repository.saveAll(
+              processedStatements.stream()
+                  .map(s -> new StatementEntity(s.getId(), mapper.valueToTree(s)))
+                  .toList());
 
-    // add custom logic here...
-
-    repository.saveAll(
-        processedStatements.stream()
-            .map(s -> new StatementEntity(s.getId(), mapper.valueToTree(s)))
-            .toList());
-
-    return processedStatements.stream().map(s -> s.getId()).toList();
+          return processedStatements.stream().map(s -> s.getId()).toList();
+        });
   }
 
   private Statement convertToStatement(StatementEntity statementEntity) {
