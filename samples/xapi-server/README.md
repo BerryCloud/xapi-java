@@ -39,3 +39,10 @@ curl --location 'http://localhost:8080/xapi/statements' \
     }
 }'
 ```
+
+## JSON persistence
+
+The sample uses Spring Boot's auto-configured Jackson 3 mapper for HTTP and the
+xAPI validation modules. Statement documents are stored as Jackson 3 `JsonNode`
+values through Hypersistence Utils `hypersistence-utils-hibernate-73:3.16.0`,
+matching Boot's Hibernate 7.4 line. No separate Jackson 2 mapper is required.

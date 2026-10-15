@@ -6,13 +6,13 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Value;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * This class represents the xAPI Activity State object.

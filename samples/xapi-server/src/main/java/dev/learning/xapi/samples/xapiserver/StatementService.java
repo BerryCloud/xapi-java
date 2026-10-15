@@ -4,8 +4,6 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Statement;
 import dev.learning.xapi.model.StatementResult;
 import java.net.URI;
@@ -19,6 +17,8 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Sample Statement Service.
@@ -135,7 +135,7 @@ public class StatementService {
       final var statement = mapper.treeToValue(statementEntity.getStatement(), Statement.class);
 
       return statement;
-    } catch (final JsonProcessingException e) {
+    } catch (final JacksonException e) {
       log.error("Error processing stored Statement", e);
 
       return null;

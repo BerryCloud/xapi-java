@@ -15,12 +15,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import dev.learning.xapi.jackson.JjwtDeserializer;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
@@ -45,6 +40,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.exc.InvalidTypeIdException;
+import tools.jackson.databind.exc.MismatchedInputException;
+import tools.jackson.databind.exc.ValueInstantiationException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Statement Tests.
@@ -57,7 +59,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("Statement tests")
 class StatementTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -658,7 +660,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -694,7 +698,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -730,7 +736,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -768,7 +776,9 @@ class StatementTests {
         ValueInstantiationException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -805,7 +815,9 @@ class StatementTests {
         ValueInstantiationException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -842,7 +854,9 @@ class StatementTests {
         ValueInstantiationException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -878,7 +892,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -915,7 +931,9 @@ class StatementTests {
         ValueInstantiationException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictNullValuesModule())
+              .rebuild()
+              .addModule(new XapiStrictNullValuesModule())
+              .build()
               .readValue(
                   """
           {
@@ -952,7 +970,9 @@ class StatementTests {
         InvalidFormatException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictLocaleModule())
+              .rebuild()
+              .addModule(new XapiStrictLocaleModule())
+              .build()
               .readValue(
                   """
           {
@@ -991,7 +1011,9 @@ class StatementTests {
         MismatchedInputException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictLocaleModule())
+              .rebuild()
+              .addModule(new XapiStrictLocaleModule())
+              .build()
               .readValue(
                   """
           {
@@ -1030,7 +1052,9 @@ class StatementTests {
         ValueInstantiationException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictNullValuesModule())
+              .rebuild()
+              .addModule(new XapiStrictNullValuesModule())
+              .build()
               .readValue(
                   """
           {
@@ -1067,7 +1091,9 @@ class StatementTests {
         InvalidTypeIdException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictObjectTypeModule())
+              .rebuild()
+              .addModule(new XapiStrictObjectTypeModule())
+              .build()
               .readValue(
                   """
               {
@@ -1099,7 +1125,9 @@ class StatementTests {
         InvalidTypeIdException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictObjectTypeModule())
+              .rebuild()
+              .addModule(new XapiStrictObjectTypeModule())
+              .build()
               .readValue(
                   """
               {
@@ -1158,10 +1186,12 @@ class StatementTests {
 
     final var statement =
         objectMapper
-            .registerModule(new XapiStrictTimestampModule())
-            .registerModule(new XapiStrictNullValuesModule())
-            .registerModule(new XapiStrictLocaleModule())
-            .registerModule(new XapiStrictObjectTypeModule())
+            .rebuild()
+            .addModule(new XapiStrictTimestampModule())
+            .addModule(new XapiStrictNullValuesModule())
+            .addModule(new XapiStrictLocaleModule())
+            .addModule(new XapiStrictObjectTypeModule())
+            .build()
             .readValue(
                 """
             {
@@ -1201,7 +1231,9 @@ class StatementTests {
 
     final var statement =
         objectMapper
-            .registerModule(new XapiStrictTimestampModule())
+            .rebuild()
+            .addModule(new XapiStrictTimestampModule())
+            .build()
             .readValue(
                 """
         {
@@ -1239,7 +1271,9 @@ class StatementTests {
         InvalidFormatException.class,
         () -> {
           objectMapper
-              .registerModule(new XapiStrictLocaleModule())
+              .rebuild()
+              .addModule(new XapiStrictLocaleModule())
+              .build()
               .readValue(
                   """
           {
@@ -1277,10 +1311,12 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
-              .registerModule(new XapiStrictNullValuesModule())
-              .registerModule(new XapiStrictLocaleModule())
-              .registerModule(new XapiStrictObjectTypeModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .addModule(new XapiStrictNullValuesModule())
+              .addModule(new XapiStrictLocaleModule())
+              .addModule(new XapiStrictObjectTypeModule())
+              .build()
               .readValue(
                   """
                 {
@@ -1487,7 +1523,7 @@ class StatementTests {
 
   @Test
   void whenSigningStatementThenSignatureIsValid()
-      throws NoSuchAlgorithmException, JsonProcessingException {
+      throws NoSuchAlgorithmException, JacksonException {
 
     final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
@@ -1542,6 +1578,7 @@ class StatementTests {
     // Then Signature is Valid
     final var body =
         Jwts.parser()
+            .json(new JjwtDeserializer())
             .verifyWith(keyPair.getPublic())
             .build()
             .parseSignedClaims(

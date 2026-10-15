@@ -4,7 +4,7 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * Provides xAPI JSON module for setting strict deserializer modifier.

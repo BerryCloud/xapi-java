@@ -8,13 +8,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Person Tests.
@@ -25,7 +26,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("Person tests")
 class PersonTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   @Test
   void whenDeserializingPersonWhenDeserializedThenResultIsInstanceOfPerson() throws Exception {

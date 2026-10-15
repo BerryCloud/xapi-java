@@ -389,6 +389,70 @@ Statement statement = Statement.builder()
     .build();
 ```
 
+### Jackson 3 compatibility
+
+The model, client and Spring Boot starter use Spring Boot's managed Jackson 3
+version. Spring Boot configures the JSON mapper and HTTP codecs normally; do not
+add `spring-boot-jackson2` or select Jackson 2 HTTP converters. Existing xAPI JSON
+property names and validation properties (`xapi.model.*`) are unchanged.
+
+This is a Java API compatibility change for applications using the custom Jackson
+modules, serializers, mix-ins or Spring customisers. Use `tools.jackson.databind`
+and `tools.jackson.core` imports, `JsonMapper.builder()` and
+`JsonMapperBuilderCustomizer`. Jackson exceptions are now unchecked. Annotation
+imports from `com.fasterxml.jackson.annotation` remain unchanged, because Jackson
+3 deliberately shares the `jackson-annotations` artifact. No Jackson 2 core or
+databind dependency is required.
+
+Outside Spring Boot, build an immutable mapper and register the required strict
+modules before calling `build()`:
+
+```java
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.json.JsonMapper;
+
+JsonMapper objectMapper = JsonMapper.builder()
+    .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    .enable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+    .addModule(new XapiStrictLocaleModule())
+    .addModule(new XapiStrictNullValuesModule())
+    .addModule(new XapiStrictObjectTypeModule())
+    .addModule(new XapiStrictTimestampModule())
+    .build();
+```
+
+Use `objectMapper.rebuild()` to derive another mapper, rather than mutating an
+existing instance. Java time support is built in; a separate `JavaTimeModule` is
+unnecessary. The Spring Boot starter enables the strict modules by default and
+retains their individual validation switches, including
+`xapi.model.validateJson=false` to permit trailing JSON values when required.
+
+Signed statements still use JJWT 0.13.0 and RS512. Its `jjwt-jackson` module uses
+Jackson 2, so this project instead supplies `JjwtSerializer` and `JjwtDeserializer`
+through JJWT's supported serialisation interfaces. `signAndBuild` selects the
+serializer automatically; applications only need the optional `jjwt-impl`
+dependency to sign. When verifying signed claims, configure the parser explicitly:
+
+```java
+var claims = Jwts.parser()
+    .json(new JjwtDeserializer())
+    .verifyWith(publicKey)
+    .build()
+    .parseSignedClaims(token)
+    .getPayload();
+```
+
+The adapters are in `dev.learning.xapi.jackson` and also accept an application's
+configured mapper. Existing signed payloads remain verifiable without rewriting
+or reserialising their bytes. Signature attachment content, length and SHA-256
+metadata retain their existing representations.
+
+Migration references:
+[Jackson 3 migration guide](https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md),
+[Spring Boot migration guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide#upgrading-jackson),
+[JJWT custom JSON processors](https://github.com/jwtk/jjwt#custom-json-processor).
+
 ### Deserializing Statements
 
 The Jackson ObjectMapper can be used to deserialize statements into Java objects.

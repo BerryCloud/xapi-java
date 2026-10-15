@@ -9,13 +9,14 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * StatementResult Tests.
@@ -27,7 +28,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("StatementResult tests")
 class StatementResultTest {
 
-  final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   @Test
   void whenDeserializingStatementResultThenResultIsInstanceOfStatementResult() throws Exception {

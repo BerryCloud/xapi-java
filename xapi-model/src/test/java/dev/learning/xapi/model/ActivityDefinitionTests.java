@@ -11,7 +11,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -24,6 +23,8 @@ import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Activity Definition Tests.
@@ -35,7 +36,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("ActivityDefinition tests")
 class ActivityDefinitionTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 

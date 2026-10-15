@@ -8,10 +8,12 @@ import dev.learning.xapi.client.XapiClient;
 import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
+import tools.jackson.databind.MapperFeature;
 
 /**
  * Auto-configure {@link XapiClient}.
@@ -21,6 +23,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 @EnableConfigurationProperties(XapiClientProperties.class)
 public class XapiClientAutoConfiguration {
+
+  /**
+   * Preserve the property order used by existing xAPI client JSON requests.
+   *
+   * @return the JSON mapper customiser
+   */
+  @Bean
+  public JsonMapperBuilderCustomizer xapiPropertyOrderCustomizer() {
+    return builder -> builder.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
+  }
 
   /** Creates a default xAPI client bean. */
   @Bean

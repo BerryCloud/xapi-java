@@ -10,7 +10,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent.AgentObjectType;
 import java.io.IOException;
 import java.net.URI;
@@ -22,6 +21,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * SubStatement Tests.
@@ -33,7 +34,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("SubStatement tests")
 class SubStatementTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   @Test
   void whenDeserializingSubStatementThenResultIsInstanceOfSubStatement() throws IOException {

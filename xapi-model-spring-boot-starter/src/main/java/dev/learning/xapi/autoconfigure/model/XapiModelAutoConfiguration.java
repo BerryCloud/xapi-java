@@ -4,10 +4,6 @@
 
 package dev.learning.xapi.autoconfigure.model;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.cfg.CoercionAction;
-import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
-import com.fasterxml.jackson.databind.type.LogicalType;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
@@ -26,13 +22,19 @@ import dev.learning.xapi.model.validation.internal.validators.StatementRevisionV
 import dev.learning.xapi.model.validation.internal.validators.StatementVerbValidator;
 import dev.learning.xapi.model.validation.internal.validators.StatementsValidator;
 import dev.learning.xapi.model.validation.internal.validators.VariantValidatorForUuid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2Properties;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.cfg.CoercionAction;
+import tools.jackson.databind.cfg.CoercionInputShape;
+import tools.jackson.databind.type.LogicalType;
 
 /**
  * XapiModelAutoConfiguration.
@@ -40,7 +42,7 @@ import org.springframework.context.annotation.Configuration;
  * @author István Rátkai (Selindek)
  */
 @Configuration
-@AutoConfigureBefore(Jackson2Properties.class)
+@AutoConfigureBefore(JacksonAutoConfiguration.class)
 public class XapiModelAutoConfiguration {
 
   /**
@@ -49,11 +51,13 @@ public class XapiModelAutoConfiguration {
    * @return the customizer bean
    */
   @Bean
-  public Jackson2ObjectMapperBuilderCustomizer singleValueArrayCustomizer() {
+  public JsonMapperBuilderCustomizer singleValueArrayCustomizer() {
     return builder ->
-        builder.postConfigurer(
-            objectMapper ->
-                objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true));
+        builder
+            .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+            // The existing models have constant final objectType fields.
+            .enable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+            .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
   }
 
   /**
@@ -66,10 +70,8 @@ public class XapiModelAutoConfiguration {
       name = "xapi.model.validateObjectType",
       havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validateObjectTypeCustomizer() {
-    return builder ->
-        builder.postConfigurer(
-            objectMapper -> objectMapper.registerModule(new XapiStrictObjectTypeModule()));
+  public JsonMapperBuilderCustomizer validateObjectTypeCustomizer() {
+    return builder -> builder.addModule(new XapiStrictObjectTypeModule());
   }
 
   /**
@@ -82,10 +84,8 @@ public class XapiModelAutoConfiguration {
       name = "xapi.model.validateLocale",
       havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validateLocaleCustomizer() {
-    return builder ->
-        builder.postConfigurer(
-            objectMapper -> objectMapper.registerModule(new XapiStrictLocaleModule()));
+  public JsonMapperBuilderCustomizer validateLocaleCustomizer() {
+    return builder -> builder.addModule(new XapiStrictLocaleModule());
   }
 
   /**
@@ -98,10 +98,8 @@ public class XapiModelAutoConfiguration {
       name = "xapi.model.validateTimestamp",
       havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validateTimestampCustomizer() {
-    return builder ->
-        builder.postConfigurer(
-            objectMapper -> objectMapper.registerModule(new XapiStrictTimestampModule()));
+  public JsonMapperBuilderCustomizer validateTimestampCustomizer() {
+    return builder -> builder.addModule(new XapiStrictTimestampModule());
   }
 
   /**
@@ -114,10 +112,8 @@ public class XapiModelAutoConfiguration {
       name = "xapi.model.validateNullValues",
       havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validateNullValuesCustomizer() {
-    return builder ->
-        builder.postConfigurer(
-            objectMapper -> objectMapper.registerModule(new XapiStrictNullValuesModule()));
+  public JsonMapperBuilderCustomizer validateNullValuesCustomizer() {
+    return builder -> builder.addModule(new XapiStrictNullValuesModule());
   }
 
   /**
@@ -130,28 +126,21 @@ public class XapiModelAutoConfiguration {
       name = "xapi.model.validateProperties",
       havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validatePropertiesCustomizer() {
-    return builder ->
-        builder.postConfigurer(
-            objectMapper ->
-                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true));
+  public JsonMapperBuilderCustomizer validatePropertiesCustomizer() {
+    return builder -> builder.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
   }
 
   /**
    * ValidateJsonCustomizer.
    *
+   * @param validateJson whether trailing JSON tokens must be rejected
    * @return the customizer bean
    */
   @Bean
-  @ConditionalOnProperty(
-      name = "xapi.model.validateJson",
-      havingValue = "true",
-      matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validateJsonCustomizer() {
+  public JsonMapperBuilderCustomizer validateJsonCustomizer(
+      @Value("${xapi.model.validateJson:true}") boolean validateJson) {
     return builder ->
-        builder.postConfigurer(
-            objectMapper ->
-                objectMapper.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true));
+        builder.configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, validateJson);
   }
 
   /**
@@ -164,26 +153,21 @@ public class XapiModelAutoConfiguration {
       name = "xapi.model.validateLiterals",
       havingValue = "true",
       matchIfMissing = true)
-  public Jackson2ObjectMapperBuilderCustomizer validateLiteralsCustomizer() {
-    return builder ->
-        builder.postConfigurer(
-            objectMapper -> {
-              objectMapper
-                  .coercionConfigFor(LogicalType.Boolean)
-                  .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
-
-              objectMapper
-                  .coercionConfigFor(LogicalType.Textual)
-                  .setCoercion(CoercionInputShape.Integer, CoercionAction.Fail);
-
-              objectMapper
-                  .coercionConfigFor(LogicalType.Float)
-                  .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
-
-              objectMapper
-                  .coercionConfigFor(LogicalType.Integer)
-                  .setCoercion(CoercionInputShape.String, CoercionAction.Fail);
-            });
+  public JsonMapperBuilderCustomizer validateLiteralsCustomizer() {
+    return builder -> {
+      builder.withCoercionConfig(
+          LogicalType.Boolean,
+          config -> config.setCoercion(CoercionInputShape.String, CoercionAction.Fail));
+      builder.withCoercionConfig(
+          LogicalType.Textual,
+          config -> config.setCoercion(CoercionInputShape.Integer, CoercionAction.Fail));
+      builder.withCoercionConfig(
+          LogicalType.Float,
+          config -> config.setCoercion(CoercionInputShape.String, CoercionAction.Fail));
+      builder.withCoercionConfig(
+          LogicalType.Integer,
+          config -> config.setCoercion(CoercionInputShape.String, CoercionAction.Fail));
+    };
   }
 
   /**

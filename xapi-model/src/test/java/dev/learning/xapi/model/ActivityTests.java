@@ -9,8 +9,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.ConstraintViolation;
@@ -27,6 +25,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Activity Tests.
@@ -37,7 +38,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("Activity tests")
 class ActivityTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -164,7 +165,9 @@ class ActivityTests {
         InvalidFormatException.class,
         () ->
             objectMapper
-                .registerModule(new XapiStrictLocaleModule())
+                .rebuild()
+                .addModule(new XapiStrictLocaleModule())
+                .build()
                 .readValue(json, Activity.class));
   }
 
