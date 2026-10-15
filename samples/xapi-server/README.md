@@ -40,6 +40,18 @@ curl --location 'http://localhost:8080/xapi/statements' \
 }'
 ```
 
+## Statement query parameters
+
+Statement requests reject unknown or incorrectly capitalised parameter names with
+`400 Bad Request`. GET and HEAD requests using `statementId` or `voidedStatementId`
+may only combine that identifier with `format` and `attachments`; the two
+identifier parameters cannot be combined. PUT accepts only `statementId`, and
+statement POST requests accept no query parameters.
+
+This validates parameter names and combinations. Statement filtering and response
+formatting remain incomplete. Valid `since` and `voidedStatementId` requests return
+`501 Not Implemented` until those features are implemented.
+
 ## JSON persistence
 
 The sample uses Spring Boot's auto-configured Jackson 3 mapper for HTTP and the
