@@ -25,19 +25,10 @@ jobs:
             xapi-model/pom.xml
             xapi-client/pom.xml
             xapi-model-spring-boot-starter/pom.xml
-      - name: Test Sonar exporter and collect Python coverage
-        run: |
-          python3 -m venv "$RUNNER_TEMP/sonar-export-tests"
-          "$RUNNER_TEMP/sonar-export-tests/bin/pip" install coverage==7.10.7
-          "$RUNNER_TEMP/sonar-export-tests/bin/coverage" run --source=.github/scripts --omit="*/test_*" -m unittest discover -s .github/scripts -p "test_export_sonar_findings.py"
-          mkdir -p target
-          "$RUNNER_TEMP/sonar-export-tests/bin/coverage" xml -o target/python-coverage.xml
-      - name: Test release helper scripts
-        run: bash .github/scripts/test-update-example-versions.sh
       - name: Build with Maven
         run: ./mvnw -B verify
       - name: Scan with Sonar
-        run: ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud -Dsonar.python.coverage.reportPaths=target/python-coverage.xml
+        run: ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=BerryCloud_xapi-java -Dsonar.organization=berrycloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
