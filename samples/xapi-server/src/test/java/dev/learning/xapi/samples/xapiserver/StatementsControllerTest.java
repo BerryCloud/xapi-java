@@ -44,6 +44,15 @@ import org.springframework.test.web.servlet.MockMvc;
     properties = "spring.jackson.deserialization.ACCEPT_SINGLE_VALUE_AS_ARRAY = true")
 class StatementControllerTest {
 
+  private static final String VALID_STATEMENT =
+      """
+      {
+        "actor": {"mbox": "mailto:another@example.com"},
+        "verb": {"id": "https://example.com/verb"},
+        "object": {"id": "https://example.com/activity"}
+      }
+      """;
+
   @Autowired private MockMvc mvc;
 
   @MockitoBean private StatementService statementService;
@@ -240,7 +249,7 @@ class StatementControllerTest {
                 .param("statementId", "04417d92-2d51-4789-92b0-62b0a1b0127b")
                 .param("unknown", "value")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{}"))
+                .content(VALID_STATEMENT))
         .andExpect(status().isBadRequest());
     verifyNoInteractions(statementService);
   }
@@ -251,7 +260,7 @@ class StatementControllerTest {
             post("/xapi/statements")
                 .param("unknown", "value")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("[]"))
+                .content(VALID_STATEMENT))
         .andExpect(status().isBadRequest());
     verifyNoInteractions(statementService);
   }
