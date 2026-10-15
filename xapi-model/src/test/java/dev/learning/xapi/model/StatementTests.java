@@ -39,6 +39,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.util.ResourceUtils;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
@@ -768,19 +770,16 @@ class StatementTests {
         });
   }
 
-  @Test
-  void
-      whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown() {
+  @ParameterizedTest
+  @ValueSource(strings = {"-00:00", "-0000", "-00"})
+  void whenDeserializingStatementWithNegativeZeroTimestampOffsetThenExceptionIsThrown(
+      String offset) {
 
     final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
-
-    Assertions.assertThrows(
-        ValueInstantiationException.class,
-        () -> {
-          mapper.readValue(
-              """
+    final var json =
+        """
           {
-            "timestamp": "2015-11-18T12:17:00-00:00",
+            "timestamp": "2015-11-18T12:17:00%s",
             "actor": {
               "objectType": "Agent",
               "name": "A N Other",
@@ -801,83 +800,11 @@ class StatementTests {
                 }
               }
             }
-          }""",
-              Statement.class);
-        });
-  }
-
-  @Test
-  void whenDeserializingStatementWithNegativeFourZerosTimestampOffsetThenExceptionIsThrown() {
-
-    final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
+          }"""
+            .formatted(offset);
 
     Assertions.assertThrows(
-        ValueInstantiationException.class,
-        () -> {
-          mapper.readValue(
-              """
-          {
-            "timestamp":"2015-11-18T12:17:00-0000",
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""",
-              Statement.class);
-        });
-  }
-
-  @Test
-  void whenDeserializingStatementWithNegativeTwoZerosTimestampOffsetThenExceptionIsThrown() {
-
-    final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
-
-    Assertions.assertThrows(
-        ValueInstantiationException.class,
-        () -> {
-          mapper.readValue(
-              """
-          {
-            "timestamp":"2015-11-18T12:17:00-00",
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""",
-              Statement.class);
-        });
+        ValueInstantiationException.class, () -> mapper.readValue(json, Statement.class));
   }
 
   @Test
