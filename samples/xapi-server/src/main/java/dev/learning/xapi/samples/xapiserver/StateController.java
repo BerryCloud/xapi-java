@@ -4,8 +4,6 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.time.Instant;
 import java.util.UUID;
@@ -20,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /** Basic implementation of the xAPI State Resource. */
 @RestController
@@ -49,7 +49,7 @@ public class StateController {
    * @param stateId the optional document id
    * @param since the exclusive time filter for listing ids
    * @return the document or state ids
-   * @throws JsonProcessingException if the state id array cannot be serialized
+   * @throws JacksonException if the state id array cannot be serialized
    */
   @GetMapping
   public ResponseEntity<byte[]> get(
@@ -58,7 +58,7 @@ public class StateController {
       @RequestParam(required = false) UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestParam(required = false) Instant since)
-      throws JsonProcessingException {
+      throws JacksonException {
     String scope = service.scope(activityId.toString(), agent, registration);
     if (stateId != null) {
       if (since != null) {

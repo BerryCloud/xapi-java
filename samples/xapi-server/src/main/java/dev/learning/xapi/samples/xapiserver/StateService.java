@@ -4,14 +4,9 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.learning.xapi.model.ActivityState;
 import dev.learning.xapi.model.Agent;
 import jakarta.validation.Validator;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -27,6 +22,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 /** State document storage for the sample LRS. */
 @Service
@@ -87,7 +86,7 @@ public class StateService {
             agent.getAccount().getName());
       }
       throw new IllegalArgumentException("Agent must have an identifier");
-    } catch (JsonProcessingException | IllegalArgumentException e) {
+    } catch (JacksonException | IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid state context", e);
     }
   }
@@ -153,7 +152,7 @@ public class StateService {
         stored.setAll(posted);
         try {
           contents = mapper.writeValueAsBytes(stored);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
           throw new IllegalStateException("Cannot serialize merged state", e);
         }
       }
@@ -218,7 +217,7 @@ public class StateService {
         return object;
       }
       throw new IllegalArgumentException("POST requires JSON objects");
-    } catch (IOException | IllegalArgumentException e) {
+    } catch (JacksonException | IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot merge state document", e);
     }
   }
@@ -245,7 +244,7 @@ public class StateService {
   private String digest(String... parts) {
     try {
       return hash("SHA-256", mapper.writeValueAsString(parts).getBytes(StandardCharsets.UTF_8));
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       throw new IllegalStateException("Cannot serialize state identity", e);
     }
   }

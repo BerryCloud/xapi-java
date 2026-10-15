@@ -333,6 +333,28 @@ class StateControllerTest {
     assertEquals(scope, service.scope(ACTIVITY, AGENT, null));
   }
 
+  @Test
+  void statementStorageStillWorksAlongsideStateStorage() throws Exception {
+    String id = UUID.randomUUID().toString();
+    mvc.perform(
+            put("/xapi/statements")
+                .param("statementId", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {
+                      "actor": {"mbox": "mailto:learner@example.com"},
+                      "verb": {"id": "http://adlnet.gov/expapi/verbs/experienced"},
+                      "object": {"id": "https://example.com/activity"}
+                    }
+                    """))
+        .andExpect(status().isNoContent());
+    mvc.perform(get("/xapi/statements").param("statementId", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", is(id)))
+        .andExpect(jsonPath("$.actor.mbox", is("mailto:learner@example.com")));
+  }
+
   private MockHttpServletRequestBuilder context(MockHttpServletRequestBuilder request) {
     return request.param("activityId", ACTIVITY).param("agent", AGENT);
   }
