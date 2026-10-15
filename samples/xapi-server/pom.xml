@@ -8,7 +8,7 @@
   </parent>
   <artifactId>xapi-server</artifactId>
   <name>xAPI Server Sample</name>
-  <description>Basic xAPI Statement Resource implementation</description>
+  <description>Basic xAPI Statement and State Resource implementation</description>
   <dependencies>
     <dependency>
       <groupId>dev.learning.xapi</groupId>

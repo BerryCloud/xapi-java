@@ -26,8 +26,29 @@ class VariantValidatorForUuidTests {
   @Variant(2)
   private UUID variant2;
 
+  @Variant(allowNil = true)
+  private UUID variant2OrNil;
+
   @Variant(6)
   private UUID variant6;
+
+  @Test
+  void nilUuidIsRejectedByDefault() throws Exception {
+    constraintValidator.initialize(
+        getClass().getDeclaredField("variant2").getAnnotation(Variant.class));
+    assertFalse(constraintValidator.isValid(new UUID(0, 0), null));
+  }
+
+  @Test
+  void nilUuidCanBeAllowedWithoutAllowingOtherInvalidVariants() throws Exception {
+    constraintValidator.initialize(
+        getClass().getDeclaredField("variant2OrNil").getAnnotation(Variant.class));
+    assertTrue(constraintValidator.isValid(new UUID(0, 0), null));
+    assertTrue(constraintValidator.isValid(UUID.randomUUID(), null));
+    assertFalse(constraintValidator.isValid(new UUID(0, 1), null));
+    assertFalse(
+        constraintValidator.isValid(UUID.fromString("4c30eeb1-15ac-4833-cb0d-88613ba65267"), null));
+  }
 
   @Test
   void whenIsValidIsCalledWithNullUUIDThenValidIsTrue() {
