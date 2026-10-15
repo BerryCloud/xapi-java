@@ -19,11 +19,11 @@ jobs:
         id: release
         env:
           GH_TOKEN: ${{ github.token }}
+          TITLE_INPUT: ${{ inputs.title }}
         run: |
           set -euo pipefail
 
           REPO_FULL_NAME="${{ github.repository }}"
-          TITLE_INPUT="${{ inputs.title }}"
 
           echo "Resolving draft release by title in $REPO_FULL_NAME..."
           

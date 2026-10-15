@@ -36,10 +36,11 @@ public class Score {
 
   // **Warning** do not add fields that are not required by the xAPI specification.
 
-  /** Builder for Score. */
+  /** Builder for Score. Declared here so Javadoc can resolve the generated builder type. */
+  @SuppressWarnings("java:S2094")
   public static class Builder {
 
-    // This static class extends the lombok builder.
+    // Lombok generates the fields, constructor and fluent methods.
 
   }
 }

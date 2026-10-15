@@ -5,8 +5,8 @@ package dev.learning.xapi.client;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import dev.learning.xapi.client.GetStatesRequest.Builder;
 import java.net.URI;
@@ -61,7 +61,8 @@ class GetStatesRequestTests {
     final Builder<?, ?> builder =
         GetStatesRequest.builder()
             .activityId("https://example.com/activity/1")
-            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+            .since(Instant.now());
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
