@@ -93,7 +93,7 @@ class ExportTests(unittest.TestCase):
             self.assertEqual([issue, issue], report["analyses"]["main"]["issues"])
             self.assertEqual(hotspots, report["analyses"]["main"]["hotspots"])
             self.assertEqual("main", report["analyses"]["main"]["selector"]["branch"])
-            self.assertEqual("false", collect.call_args_list[0].args[1]["resolved"])
+            self.assertEqual("OPEN,CONFIRMED,ACCEPTED", collect.call_args_list[0].args[1]["issueStatuses"])
             self.assertNotIn("sinceLeakPeriod", collect.call_args_list[0].args[1])
             request.assert_called_once_with("rules/show", {"key": issue["rule"], "organization": "berrycloud"})
             self.assertIn("2 unresolved issues, 1 security hotspots", summary.read_text())

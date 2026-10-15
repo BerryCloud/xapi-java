@@ -165,3 +165,9 @@ buildNumber.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/java,macos,maven,eclipse,visualstudiocode
+
+# Python test artifacts and generated Sonar exports
+__pycache__/
+.coverage
+sonar-findings.json
+sonar-summary.md

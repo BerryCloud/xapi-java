@@ -1051,7 +1051,7 @@ public class XapiClient {
    */
   public Mono<StatementIterator> getStatementIterator(GetStatementsRequest request) {
 
-    return getStatements(request).map(result -> new StatementIterator(result));
+    return getStatements(request).map(StatementIterator::new);
   }
 
   /**

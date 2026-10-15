@@ -54,7 +54,7 @@ def analysis(selector):
     """Export open findings, including accepted issues, without a new-code filter."""
     issues = collect(
         "issues/search",
-        {"componentKeys": PROJECT, "resolved": "false", **selector},
+        {"componentKeys": PROJECT, "issueStatuses": "OPEN,CONFIRMED,ACCEPTED", **selector},
         "issues",
     )
     hotspots = collect(

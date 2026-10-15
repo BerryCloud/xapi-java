@@ -61,7 +61,8 @@ class GetStatesRequestTests {
     final Builder<?, ?> builder =
         GetStatesRequest.builder()
             .activityId("https://example.com/activity/1")
-            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"));
+            .agent(a -> a.name("A N Other").mbox("mailto:another@example.com"))
+            .since(Instant.now());
 
     // Then No Exception Is Thrown
     assertDoesNotThrow(builder::build);
