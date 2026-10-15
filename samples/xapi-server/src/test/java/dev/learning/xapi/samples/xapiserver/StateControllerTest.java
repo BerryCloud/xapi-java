@@ -225,16 +225,78 @@ class StateControllerTest {
                 .content("{}"))
         .andExpect(status().isNoContent());
     mvc.perform(context(get(ENDPOINT)))
-        .andExpect(content().json("[\"progress\",\"registered\"]"))
+        .andExpect(content().json("[\"progress\"]"))
         .andExpect(header().exists(HttpHeaders.ETAG))
         .andExpect(header().exists(HttpHeaders.LAST_MODIFIED));
     mvc.perform(context(get(ENDPOINT)).param("registration", REGISTRATION))
         .andExpect(content().json("[\"registered\"]"));
-    mvc.perform(context(delete(ENDPOINT)).param("registration", REGISTRATION))
-        .andExpect(status().isNoContent());
-    mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[\"progress\"]"));
     mvc.perform(context(delete(ENDPOINT))).andExpect(status().isNoContent());
     mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[]"));
+    mvc.perform(context(get(ENDPOINT)).param("registration", REGISTRATION))
+        .andExpect(content().json("[\"registered\"]"));
+    mvc.perform(context(delete(ENDPOINT)).param("registration", StateKey.DEFAULT_REGISTRATION))
+        .andExpect(status().isNoContent());
+    mvc.perform(context(get(ENDPOINT)).param("registration", REGISTRATION))
+        .andExpect(content().json("[\"registered\"]"));
+    mvc.perform(context(delete(ENDPOINT)).param("registration", REGISTRATION))
+        .andExpect(status().isNoContent());
+    mvc.perform(context(get(ENDPOINT)).param("registration", REGISTRATION))
+        .andExpect(content().json("[]"));
+  }
+
+  @Test
+  void omittedEmptyAndNilRegistrationsAddressTheSameDocument() throws Exception {
+    mvc.perform(
+            document(put(ENDPOINT))
+                .param("registration", "")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"original\":true}"))
+        .andExpect(status().isNoContent());
+    assertEquals(
+        StateKey.NIL_REGISTRATION, repository.findAll().getFirst().getId().getRegistration());
+    mvc.perform(document(get(ENDPOINT))).andExpect(content().json("{\"original\":true}"));
+    mvc.perform(document(get(ENDPOINT)).param("registration", StateKey.DEFAULT_REGISTRATION))
+        .andExpect(content().json("{\"original\":true}"));
+    mvc.perform(
+            document(post(ENDPOINT))
+                .param("registration", StateKey.DEFAULT_REGISTRATION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"merged\":true}"))
+        .andExpect(status().isNoContent());
+    mvc.perform(document(get(ENDPOINT)).param("registration", ""))
+        .andExpect(content().json("{\"original\":true,\"merged\":true}"));
+    mvc.perform(
+            document(put(ENDPOINT))
+                .param("registration", StateKey.DEFAULT_REGISTRATION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"replaced\":true}"))
+        .andExpect(status().isNoContent());
+    assertEquals(1, repository.count());
+    mvc.perform(context(get(ENDPOINT)).param("registration", StateKey.DEFAULT_REGISTRATION))
+        .andExpect(content().json("[\"progress\"]"));
+    mvc.perform(document(delete(ENDPOINT)).param("registration", StateKey.DEFAULT_REGISTRATION))
+        .andExpect(status().isNoContent());
+    mvc.perform(document(get(ENDPOINT))).andExpect(status().isNotFound());
+  }
+
+  @Test
+  void compositeKeyPreservesLongDistinctStateIds() throws Exception {
+    String prefix = "state".repeat(256);
+    for (String suffix : new String[] {"first", "second"}) {
+      mvc.perform(
+              context(put(ENDPOINT))
+                  .param("stateId", prefix + suffix)
+                  .contentType(MediaType.TEXT_PLAIN)
+                  .content(suffix))
+          .andExpect(status().isNoContent());
+    }
+    assertEquals(2, repository.count());
+    for (String suffix : new String[] {"first", "second"}) {
+      mvc.perform(context(get(ENDPOINT)).param("stateId", prefix + suffix))
+          .andExpect(status().isOk())
+          .andExpect(content().string(suffix));
+    }
+    mvc.perform(context(get(ENDPOINT))).andExpect(jsonPath("$", hasSize(2)));
   }
 
   @Test
@@ -284,10 +346,10 @@ class StateControllerTest {
     assertFalse(registeredDelete.getFirst().contains("select"));
     mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[\"progress\"]"));
 
-    var allRegistrationsDelete = sqlFor(context(delete(ENDPOINT)), status().isNoContent());
-    assertEquals(1, allRegistrationsDelete.size());
-    assertTrue(allRegistrationsDelete.getFirst().contains("delete"));
-    assertFalse(allRegistrationsDelete.getFirst().contains("select"));
+    var unregisteredDelete = sqlFor(context(delete(ENDPOINT)), status().isNoContent());
+    assertEquals(1, unregisteredDelete.size());
+    assertTrue(unregisteredDelete.getFirst().contains("delete"));
+    assertFalse(unregisteredDelete.getFirst().contains("select"));
     mvc.perform(context(get(ENDPOINT))).andExpect(content().json("[]"));
   }
 
@@ -448,6 +510,10 @@ class StateControllerTest {
     Agent agent = Agent.builder().mbox("mailto:learner@example.com").build();
     String scope = service.scope(ACTIVITY, agent, UUID.fromString(REGISTRATION));
     assertEquals(scope, service.scope(ACTIVITY, agent, null));
+    assertEquals(scope, service.scope(ACTIVITY, agent, StateKey.NIL_REGISTRATION));
+    assertEquals(
+        new StateKey(scope, null, "progress"),
+        new StateKey(scope, StateKey.NIL_REGISTRATION, "progress"));
     assertEquals(
         HttpStatus.BAD_REQUEST,
         assertThrows(ResponseStatusException.class, () -> service.scope(ACTIVITY, null, null))
@@ -461,7 +527,7 @@ class StateControllerTest {
     assertEquals(
         HttpStatus.BAD_REQUEST,
         assertThrows(
-                ResponseStatusException.class, () -> service.scope(ACTIVITY, agent, new UUID(0, 0)))
+                ResponseStatusException.class, () -> service.scope(ACTIVITY, agent, new UUID(0, 1)))
             .getStatusCode());
   }
 

@@ -54,7 +54,7 @@ public class StateService {
    *
    * @param activityId the activity IRI
    * @param agent the agent identifying the learner
-   * @param registration the optional registration
+   * @param registration the registration, or null for the unregistered context
    * @return the context identity digest
    */
   public String scope(String activityId, Agent agent, UUID registration) {
@@ -62,8 +62,12 @@ public class StateService {
       if (activityId.isBlank() || !URI.create(activityId).isAbsolute()) {
         throw new IllegalArgumentException("activityId must be an absolute IRI");
       }
+      // Nil is the sample's reserved unregistered context, not a normal xAPI registration.
       ActivityState context =
-          ActivityState.builder().agent(agent).registration(registration).build();
+          ActivityState.builder()
+              .agent(agent)
+              .registration(StateKey.NIL_REGISTRATION.equals(registration) ? null : registration)
+              .build();
       if (agent == null || !validator.validate(context).isEmpty()) {
         throw new IllegalArgumentException("Invalid agent or registration");
       }
@@ -94,34 +98,33 @@ public class StateService {
    * Retrieve a single state document.
    *
    * @param scope the context digest
-   * @param registration the optional registration
+   * @param registration the registration, or null for the unregistered context
    * @param stateId the document id
    * @return the document if present
    */
   @Transactional(readOnly = true)
   public Optional<StateEntity> get(String scope, UUID registration, String stateId) {
-    return repository.findById(key(scope, registration, stateId));
+    return repository.findById(new StateKey(scope, registration, stateId));
   }
 
   /**
-   * List documents, optionally limited to a registration and modification time.
+   * List documents in one registration context, optionally limited by modification time.
    *
    * @param scope the context digest
-   * @param registration the optional registration filter
+   * @param registration the registration, or null for the unregistered context
    * @param since the exclusive modification time filter
    * @return the matching document metadata
    */
   @Transactional(readOnly = true)
   public List<StateRepository.StateMetadata> list(String scope, UUID registration, Instant since) {
-    return repository.findMetadata(
-        scope, registration == null ? null : registration.toString(), since);
+    return repository.findMetadata(scope, registrationOrDefault(registration), since);
   }
 
   /**
    * Store or merge a document, checking optional HTTP preconditions.
    *
    * @param scope the context digest
-   * @param registration the optional registration
+   * @param registration the registration, or null for the unregistered context
    * @param stateId the document id
    * @param contents document bytes
    * @param contentType document media type
@@ -153,10 +156,7 @@ public class StateService {
       }
     }
     StateEntity state = existing == null ? new StateEntity() : existing;
-    state.setId(key(scope, registration, stateId));
-    state.setScope(scope);
-    state.setRegistration(registration == null ? null : registration.toString());
-    state.setStateId(stateId);
+    state.setId(new StateKey(scope, registration, stateId));
     state.setContents(contents);
     state.setContentType(contentType);
     state.setUpdated(Instant.now());
@@ -167,7 +167,7 @@ public class StateService {
    * Delete a single document or all documents in the supplied context.
    *
    * @param scope the context digest
-   * @param registration the optional registration
+   * @param registration the registration, or null for the unregistered context
    * @param stateId the optional document id
    * @param ifMatch the optional If-Match header for a single document
    * @param ifNoneMatch the optional If-None-Match header for a single document
@@ -179,7 +179,7 @@ public class StateService {
         throw new ResponseStatusException(
             HttpStatus.BAD_REQUEST, "Conditional deletion requires stateId");
       }
-      repository.deleteInScope(scope, registration == null ? null : registration.toString());
+      repository.deleteInScope(scope, registrationOrDefault(registration));
     } else {
       StateEntity state = get(scope, registration, stateId).orElse(null);
       checkPreconditions(state, ifMatch, ifNoneMatch);
@@ -235,8 +235,8 @@ public class StateService {
             value -> value.equals("*") || value.equals(tag) || weak && value.equals("W/" + tag));
   }
 
-  private String key(String scope, UUID registration, String stateId) {
-    return digest(scope, registration == null ? "" : registration.toString(), stateId);
+  private UUID registrationOrDefault(UUID registration) {
+    return registration == null ? StateKey.NIL_REGISTRATION : registration;
   }
 
   private String digest(String... parts) {

@@ -5,8 +5,8 @@
 package dev.learning.xapi.samples.xapiserver;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
@@ -24,16 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StateEntity {
 
-  @Id private String id;
-
-  @Column(nullable = false)
-  private String scope;
-
-  private String registration;
-
-  @Lob
-  @Column(nullable = false)
-  private String stateId;
+  @EmbeddedId private StateKey id;
 
   @Lob
   @Column(nullable = false)

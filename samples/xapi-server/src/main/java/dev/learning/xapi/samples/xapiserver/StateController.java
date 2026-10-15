@@ -46,7 +46,7 @@ public class StateController {
    *
    * @param activityId the activity IRI
    * @param agent the agent identifying the learner
-   * @param registration the optional registration
+   * @param registration the registration context, defaulting to the nil UUID
    * @param stateId the optional document id
    * @param since the exclusive time filter for listing ids
    * @return the document or state ids
@@ -56,7 +56,7 @@ public class StateController {
   public ResponseEntity<byte[]> get(
       @RequestParam URI activityId,
       @RequestParam Agent agent,
-      @RequestParam(required = false) UUID registration,
+      @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION) UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestParam(required = false) Instant since)
       throws JacksonException {
@@ -98,7 +98,7 @@ public class StateController {
    *
    * @param activityId the activity IRI
    * @param agent the agent identifying the learner
-   * @param registration the optional registration
+   * @param registration the registration context, defaulting to the nil UUID
    * @param stateId the document id
    * @param contents document bytes
    * @param headers request headers including content type and optional preconditions
@@ -109,7 +109,7 @@ public class StateController {
   public ResponseEntity<Void> store(
       @RequestParam URI activityId,
       @RequestParam Agent agent,
-      @RequestParam(required = false) UUID registration,
+      @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION) UUID registration,
       @RequestParam String stateId,
       @RequestBody(required = false) byte[] contents,
       @RequestHeader HttpHeaders headers,
@@ -133,7 +133,7 @@ public class StateController {
    *
    * @param activityId the activity IRI
    * @param agent the agent identifying the learner
-   * @param registration the optional registration filter
+   * @param registration the registration context, defaulting to the nil UUID
    * @param stateId the optional document id
    * @param headers optional HTTP preconditions for single-document deletion
    * @return no content on success, including when the document does not exist
@@ -142,7 +142,7 @@ public class StateController {
   public ResponseEntity<Void> delete(
       @RequestParam URI activityId,
       @RequestParam Agent agent,
-      @RequestParam(required = false) UUID registration,
+      @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION) UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestHeader HttpHeaders headers) {
     service.delete(
