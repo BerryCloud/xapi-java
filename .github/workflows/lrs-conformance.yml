@@ -1,0 +1,128 @@
+name: Example LRS conformance
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'pom.xml'
+      - 'mvnw'
+      - '.mvn/**'
+      - '**/lombok.config'
+      - 'xapi-model/**'
+      - 'xapi-model-spring-boot-starter/**'
+      - 'samples/pom.xml'
+      - 'samples/xapi-server/**'
+      - '.github/workflows/lrs-conformance.yml'
+      - '.github/scripts/lrs-conformance*'
+  push:
+    branches: [main]
+    paths:
+      - 'pom.xml'
+      - 'mvnw'
+      - '.mvn/**'
+      - '**/lombok.config'
+      - 'xapi-model/**'
+      - 'xapi-model-spring-boot-starter/**'
+      - 'samples/pom.xml'
+      - 'samples/xapi-server/**'
+      - '.github/workflows/lrs-conformance.yml'
+      - '.github/scripts/lrs-conformance*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lrs-conformance-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      XAPI_VERSION: '1.0.3'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        with:
+          persist-credentials: false
+      - name: Set up JDK 25
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          java-version: '25'
+          distribution: temurin
+          cache: maven
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - name: Test result reporting
+        run: node --test .github/scripts/lrs-conformance-summary.test.cjs
+      - name: Check out ADL conformance suite
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        with:
+          repository: adlnet/lrs-conformance-test-suite
+          ref: 5bc232d349c60faded8240da698f195106091638
+          path: target/lrs-conformance-suite
+          persist-credentials: false
+      - name: Install conformance suite
+        working-directory: target/lrs-conformance-suite
+        # Upstream has no lockfile. Pin the suite revision above; do not run install scripts.
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Build example LRS and its dependencies
+        run: |
+          ./mvnw -B -pl samples/xapi-server -am install -DskipTests
+          ./mvnw -B -pl samples/xapi-server spring-boot:repackage
+      - name: Run conformance suite and publish counts
+        shell: bash
+        run: |
+          mkdir -p target/lrs-conformance-results
+          java -jar samples/xapi-server/target/xapi-server-*.jar \
+            --server.address=127.0.0.1 \
+            '--spring.datasource.url=jdbc:h2:mem:conformance;DB_CLOSE_DELAY=-1' \
+            > target/lrs-conformance-results/server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true; wait "$server_pid" 2>/dev/null || true' EXIT
+
+          ready=false
+          for attempt in {1..90}; do
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo '::error::Example LRS exited during startup. See server.log.'
+              exit 1
+            fi
+            if curl --fail --silent --max-time 2 \
+              -H "X-Experience-API-Version: $XAPI_VERSION" \
+              http://127.0.0.1:8080/xapi/statements > /dev/null; then
+              ready=true
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" != true ]; then
+            echo '::error::Example LRS did not become ready. See server.log.'
+            exit 1
+          fi
+
+          # A nonzero suite exit code normally means conformance failures.
+          # Validate its completed JSON report before accepting that exit code.
+          suite_exit=0
+          timeout --kill-after=10s 20m node target/lrs-conformance-suite/bin/console_runner.js \
+            --endpoint http://127.0.0.1:8080/xapi \
+            --xapiVersion "$XAPI_VERSION" \
+            > target/lrs-conformance-results/runner.log 2>&1 || suite_exit=$?
+          node .github/scripts/lrs-conformance-summary.cjs \
+            target/lrs-conformance-suite/logs "$suite_exit" "$XAPI_VERSION"
+          if ! kill -0 "$server_pid" 2>/dev/null; then
+            echo '::error::Example LRS exited during the conformance run.'
+            exit 1
+          fi
+      - name: Upload detailed results
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: lrs-conformance-results
+          path: |
+            target/lrs-conformance-results/
+            target/lrs-conformance-suite/logs/
+          if-no-files-found: ignore
+          retention-days: 14
