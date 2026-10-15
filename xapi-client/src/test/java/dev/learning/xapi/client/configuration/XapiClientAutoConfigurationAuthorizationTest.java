@@ -9,6 +9,7 @@ import static org.hamcrest.core.Is.is;
 import dev.learning.xapi.client.XapiClient;
 import dev.learning.xapi.client.configuration.XapiClientAutoConfigurationAuthorizationTest.XapiTestClientConfiguration2;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -52,8 +53,8 @@ class XapiClientAutoConfigurationAuthorizationTest {
       mockWebServer = new MockWebServer();
       try {
         mockWebServer.start();
-      } catch (final IOException e) { // Named parameter required by Google Java Style
-        // Ignore - test will fail if server doesn't start
+      } catch (final IOException e) {
+        throw new UncheckedIOException("Could not start the test server", e);
       }
       builder.baseUrl(mockWebServer.url("").toString());
     }

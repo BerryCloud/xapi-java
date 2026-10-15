@@ -33,16 +33,17 @@ main() {
     echo "Updating example version numbers in documentation..."
     
     # Check if version was passed as argument
-    if [ $# -gt 0 ] && [ -n "$1" ]; then
+    local requested_version="${1:-}"
+    if [[ -n "$requested_version" ]]; then
         # Use version from command line argument
-        RELEASE_VERSION="$1"
+        RELEASE_VERSION="$requested_version"
         echo "Using version from argument: $RELEASE_VERSION"
     else
         # Get the current version from the root pom.xml
         CURRENT_VERSION=$(get_version_from_pom "pom.xml")
         
-        if [ -z "$CURRENT_VERSION" ]; then
-            echo "ERROR: Could not extract version from pom.xml"
+        if [[ -z "$CURRENT_VERSION" ]]; then
+            echo "ERROR: Could not extract version from pom.xml" >&2
             exit 1
         fi
         
@@ -62,7 +63,7 @@ main() {
     
     # Update version numbers in all specified files
     for file in "${FILES_TO_UPDATE[@]}"; do
-        if [ ! -f "$file" ]; then
+        if [[ ! -f "$file" ]]; then
             echo "WARNING: File not found: $file"
             continue
         fi

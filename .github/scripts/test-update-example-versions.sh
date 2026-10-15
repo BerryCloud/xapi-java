@@ -16,6 +16,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+SEPARATOR='=========================================='
 
 # Test counters
 TESTS_RUN=0
@@ -25,7 +26,7 @@ TESTS_FAILED=0
 # Cleanup function
 cleanup() {
     local exit_code=$?
-    if [ -d "$TEST_DIR" ]; then
+    if [[ -d "$TEST_DIR" ]]; then
         rm -rf "$TEST_DIR"
     fi
     return $exit_code
@@ -52,7 +53,9 @@ info() {
 
 # Setup test environment
 setup_test_env() {
-    mkdir -p "$TEST_DIR"
+    mkdir -p "$TEST_DIR/.github/scripts"
+    cp "$SCRIPT_UNDER_TEST" "$TEST_DIR/.github/scripts/update-example-versions.sh"
+    SCRIPT_UNDER_TEST="$TEST_DIR/.github/scripts/update-example-versions.sh"
     cd "$TEST_DIR"
     
     # Create a minimal pom.xml
@@ -131,7 +134,7 @@ test_version_extraction() {
         version=$(awk '/<parent>/,/<\/parent>/ {next} /<version>/ {print; exit}' "pom.xml" | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
     fi
     
-    if [ "$version" = "1.2.3-SNAPSHOT" ]; then
+    if [[ "$version" = "1.2.3-SNAPSHOT" ]]; then
         pass "Extracted correct version from pom.xml"
     else
         fail "Version extraction" "1.2.3-SNAPSHOT" "$version"
@@ -146,7 +149,7 @@ test_snapshot_stripping() {
     local version="1.2.3-SNAPSHOT"
     local release="${version%-SNAPSHOT}"
     
-    if [ "$release" = "1.2.3" ]; then
+    if [[ "$release" = "1.2.3" ]]; then
         pass "SNAPSHOT suffix correctly stripped"
     else
         fail "SNAPSHOT stripping" "1.2.3" "$release"
@@ -209,7 +212,7 @@ test_version_pattern_matching() {
     local result=$(echo "$sample" | sed '/<dependency>/,/<\/dependency>/ s|<version>[^<]*</version>|<version>NEW</version>|g')
     local expected='<dependency><version>NEW</version></dependency>'
     
-    if [ "$result" = "$expected" ]; then
+    if [[ "$result" = "$expected" ]]; then
         pass "Version pattern matching works correctly"
     else
         fail "Version pattern matching" "$expected" "$result"
@@ -243,7 +246,7 @@ EOF
     
     rm -f /tmp/test-selective-$$.md /tmp/test-result-$$.md
     
-    if [ "$dep_count" -eq 2 ] && [ "$unchanged" -eq 1 ]; then
+    if [[ "$dep_count" -eq 2 ]] && [[ "$unchanged" -eq 1 ]]; then
         pass "Selective replacement preserves non-dependency versions"
     else
         fail "Selective replacement" "2 replacements, 1 unchanged" "$dep_count replacements, $unchanged unchanged"
@@ -278,9 +281,9 @@ test_error_handling() {
 
 # Main test execution
 main() {
-    echo "=========================================="
+    echo "$SEPARATOR"
     echo "Testing update-example-versions.sh"
-    echo "=========================================="
+    echo "$SEPARATOR"
     echo ""
     
     info "Setting up test environment in $TEST_DIR"
@@ -298,20 +301,20 @@ main() {
     
     # Print summary
     echo ""
-    echo "=========================================="
+    echo "$SEPARATOR"
     echo "Test Summary"
-    echo "=========================================="
+    echo "$SEPARATOR"
     echo "Tests run: $TESTS_RUN"
     echo -e "${GREEN}Passed: $TESTS_PASSED${NC}"
-    if [ $TESTS_FAILED -gt 0 ]; then
+    if [[ $TESTS_FAILED -gt 0 ]]; then
         echo -e "${RED}Failed: $TESTS_FAILED${NC}"
     else
         echo "Failed: $TESTS_FAILED"
     fi
-    echo "=========================================="
+    echo "$SEPARATOR"
     
     # Exit with appropriate code
-    if [ $TESTS_FAILED -gt 0 ]; then
+    if [[ $TESTS_FAILED -gt 0 ]]; then
         exit 1
     else
         echo ""

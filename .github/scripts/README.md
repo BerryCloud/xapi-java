@@ -45,3 +45,23 @@ bash .github/scripts/test-update-example-versions.sh
 **Exit codes**:
 - `0`: All tests passed
 - `1`: One or more tests failed
+
+## export-sonar-findings.py
+
+Run the **Export Sonar findings** workflow manually to download the complete unresolved
+issue backlog on `main`, including accepted issues, security hotspots and rule descriptions.
+The workflow also runs when the exporter changes in a PR from this repository. It uses
+the existing `SONAR_TOKEN` secret and uploads a `sonar-findings` JSON artifact for seven
+days. Issue locations and messages are also printed in the job log.
+
+The exporter retrieves every page without a new-code filter and fails if the API
+returns an incomplete result. The report describes `main` at export time; fixes on an
+unmerged PR will only disappear from that backlog after merge and a new main analysis.
+
+Offline exporter regression tests run with:
+
+```bash
+python3 -m unittest discover -s .github/scripts -p 'test_export_sonar_findings.py'
+```
+
+Java CI runs these tests with coverage.py and sends the coverage report to Sonar.

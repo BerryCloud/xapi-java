@@ -35,11 +35,4 @@ public class Score {
   private Float max;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
-
-  /** Builder for Score. */
-  public static class Builder {
-
-    // This static class extends the lombok builder.
-
-  }
 }

@@ -40,6 +40,9 @@ import reactor.core.publisher.Mono;
  *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#20-resources">xAPI
  *     communication resources</a>
  */
+// A single public facade intentionally exposes all xAPI resource request types.
+// These typed entry points preserve the public API; request construction has dedicated classes.
+@SuppressWarnings("java:S6539")
 public class XapiClient {
 
   private final WebClient webClient;

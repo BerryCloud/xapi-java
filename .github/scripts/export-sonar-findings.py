@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Export unresolved Sonar issues and security hotspots for main."""
 
+# Copyright 2016-2025 Berry Cloud Ltd. All rights reserved.
+
 import base64
 import datetime
 import json
 import os
-from pathlib import Path
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -76,8 +77,9 @@ def main():
         "analyses": analyses,
         "rules": rules,
     }
-    output = Path("sonar-findings.json")
-    output.write_text(json.dumps(report, indent=2) + "\n")
+    with open("sonar-findings.json", "w", encoding="utf-8") as stream:
+        json.dump(report, stream, indent=2)
+        stream.write("\n")
     summary = ["## Sonar findings", "", f"Project: `{PROJECT}`", ""]
     for name, result in analyses.items():
         summary.append(
@@ -97,7 +99,7 @@ def main():
                 "message": issue["message"],
             }))
     summary.extend(["", "Full findings and rule descriptions are in the `sonar-findings` artifact."])
-    with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as stream:
+    with open("sonar-summary.md", "w", encoding="utf-8") as stream:
         stream.write("\n".join(summary) + "\n")
 
 

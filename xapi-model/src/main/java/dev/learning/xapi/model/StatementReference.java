@@ -30,11 +30,4 @@ public class StatementReference implements StatementObject, SubStatementObject {
   private UUID id;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
-
-  /** Builder for StatementReference. */
-  public static class Builder {
-
-    // This static class extends the lombok builder.
-
-  }
 }
