@@ -50,17 +50,18 @@ class StateControllerTest {
   @Test
   void putPreservesBinaryContentsAndMediaType() throws Exception {
     byte[] bytes = {0, 1, -1, 42};
+    String contentType = "application/octet-stream;charset=UTF-8";
     mvc.perform(
             context(put(ENDPOINT))
                 .param("stateId", "progress")
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(contentType)
                 .content(bytes))
         .andExpect(status().isNoContent());
 
     mvc.perform(document(get(ENDPOINT)))
         .andExpect(status().isOk())
         .andExpect(content().bytes(bytes))
-        .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM))
+        .andExpect(content().contentType(contentType))
         .andExpect(header().string(HttpHeaders.ETAG, StateService.etag(bytes)))
         .andExpect(header().exists(HttpHeaders.LAST_MODIFIED));
   }
