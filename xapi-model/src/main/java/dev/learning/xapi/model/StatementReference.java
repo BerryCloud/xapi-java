@@ -8,6 +8,7 @@ import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.Builder;
+import lombok.Generated;
 import lombok.Value;
 
 /**
@@ -30,4 +31,15 @@ public class StatementReference implements StatementObject, SubStatementObject {
   private UUID id;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
+
+  /**
+   * Builder for StatementReference. Declared here so Javadoc can resolve the generated builder
+   * type.
+   */
+  @Generated
+  public static class Builder {
+
+    // Lombok generates the fields, constructor and fluent methods.
+
+  }
 }

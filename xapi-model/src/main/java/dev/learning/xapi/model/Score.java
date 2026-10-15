@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.ScaledScore;
 import lombok.Builder;
+import lombok.Generated;
 import lombok.Value;
 
 /**
@@ -35,4 +36,12 @@ public class Score {
   private Float max;
 
   // **Warning** do not add fields that are not required by the xAPI specification.
+
+  /** Builder for Score. Declared here so Javadoc can resolve the generated builder type. */
+  @Generated
+  public static class Builder {
+
+    // Lombok generates the fields, constructor and fluent methods.
+
+  }
 }
