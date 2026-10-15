@@ -15,12 +15,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import dev.learning.xapi.jackson.JjwtDeserializer;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.jackson.XapiStrictNullValuesModule;
 import dev.learning.xapi.jackson.XapiStrictObjectTypeModule;
@@ -44,7 +39,16 @@ import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.exc.InvalidTypeIdException;
+import tools.jackson.databind.exc.MismatchedInputException;
+import tools.jackson.databind.exc.ValueInstantiationException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Statement Tests.
@@ -57,7 +61,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("Statement tests")
 class StatementTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -658,7 +662,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -694,7 +700,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -730,7 +738,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -760,19 +770,16 @@ class StatementTests {
         });
   }
 
-  @Test
-  void
-      whenDeserializingStatementWithNegativeZeroHoursAndMinutesTimestampOffsetThenExceptionIsThrown() {
+  @ParameterizedTest
+  @ValueSource(strings = {"-00:00", "-0000", "-00"})
+  void whenDeserializingStatementWithNegativeZeroTimestampOffsetThenExceptionIsThrown(
+      String offset) {
 
-    Assertions.assertThrows(
-        ValueInstantiationException.class,
-        () -> {
-          objectMapper
-              .registerModule(new XapiStrictTimestampModule())
-              .readValue(
-                  """
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictTimestampModule()).build();
+    final var json =
+        """
           {
-            "timestamp": "2015-11-18T12:17:00-00:00",
+            "timestamp": "2015-11-18T12:17:00%s",
             "actor": {
               "objectType": "Agent",
               "name": "A N Other",
@@ -793,83 +800,11 @@ class StatementTests {
                 }
               }
             }
-          }""",
-                  Statement.class);
-        });
-  }
-
-  @Test
-  void whenDeserializingStatementWithNegativeFourZerosTimestampOffsetThenExceptionIsThrown() {
+          }"""
+            .formatted(offset);
 
     Assertions.assertThrows(
-        ValueInstantiationException.class,
-        () -> {
-          objectMapper
-              .registerModule(new XapiStrictTimestampModule())
-              .readValue(
-                  """
-          {
-            "timestamp":"2015-11-18T12:17:00-0000",
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""",
-                  Statement.class);
-        });
-  }
-
-  @Test
-  void whenDeserializingStatementWithNegativeTwoZerosTimestampOffsetThenExceptionIsThrown() {
-
-    Assertions.assertThrows(
-        ValueInstantiationException.class,
-        () -> {
-          objectMapper
-              .registerModule(new XapiStrictTimestampModule())
-              .readValue(
-                  """
-          {
-            "timestamp":"2015-11-18T12:17:00-00",
-            "actor": {
-              "objectType": "Agent",
-              "name": "A N Other",
-              "mbox": "mailto:another@example.com"
-            },
-            "verb": {
-              "id": "http://adlnet.gov/expapi/verbs/attempted",
-              "display": {
-                "und": "attempted"
-              }
-            },
-            "object": {
-              "objectType": "Activity",
-              "id": "https://example.com/activity/simplestatement",
-              "definition": {
-                "name": {
-                  "en": "Simple Statement"
-                }
-              }
-            }
-          }""",
-                  Statement.class);
-        });
+        ValueInstantiationException.class, () -> mapper.readValue(json, Statement.class));
   }
 
   @Test
@@ -878,7 +813,9 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .build()
               .readValue(
                   """
           {
@@ -911,13 +848,13 @@ class StatementTests {
   @Test
   void whenDeserializingStatementNullTimestampThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictNullValuesModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictNullValuesModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "timestamp":null,
             "actor": {
@@ -941,20 +878,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithInvalidLocaleStringThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
         InvalidFormatException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictLocaleModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context":{
               "language": "grrrrr"
@@ -980,20 +917,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithNonStringLocaleThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
         MismatchedInputException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictLocaleModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context":{
               "language": 23
@@ -1019,20 +956,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithNullPropertyThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictNullValuesModule()).build();
+
     Assertions.assertThrows(
         ValueInstantiationException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictNullValuesModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context": null,
             "actor": {
@@ -1056,20 +993,20 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithInvalidActorObjectTypeThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictObjectTypeModule()).build();
+
     Assertions.assertThrows(
         InvalidTypeIdException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictObjectTypeModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
               {
                 "actor":{
                   "objectType":"group",
@@ -1088,20 +1025,20 @@ class StatementTests {
                   "id":"http://www.example.com/meetings/occurances/34534"
                 }
               }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
   @Test
   void whenDeserializingStatementWithLowercaseActivityObjectTypeThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictObjectTypeModule()).build();
+
     Assertions.assertThrows(
         InvalidTypeIdException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictObjectTypeModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
               {
                 "actor":{
                   "objectType":"Agent",
@@ -1120,7 +1057,7 @@ class StatementTests {
                   "id":"http://www.example.com/meetings/occurances/34534"
                 }
               }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
@@ -1153,15 +1090,16 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown()
-      throws IOException {
+  void whenDeserializingValidStatementWithAllTheModulesThenNoExceptionIsThrown() {
 
     final var statement =
         objectMapper
-            .registerModule(new XapiStrictTimestampModule())
-            .registerModule(new XapiStrictNullValuesModule())
-            .registerModule(new XapiStrictLocaleModule())
-            .registerModule(new XapiStrictObjectTypeModule())
+            .rebuild()
+            .addModule(new XapiStrictTimestampModule())
+            .addModule(new XapiStrictNullValuesModule())
+            .addModule(new XapiStrictLocaleModule())
+            .addModule(new XapiStrictObjectTypeModule())
+            .build()
             .readValue(
                 """
             {
@@ -1196,12 +1134,13 @@ class StatementTests {
   }
 
   @Test
-  void whenDeserializingStatementWithTimestampWithoutOffsetThenResultisExpected()
-      throws IOException {
+  void whenDeserializingStatementWithTimestampWithoutOffsetThenResultisExpected() {
 
     final var statement =
         objectMapper
-            .registerModule(new XapiStrictTimestampModule())
+            .rebuild()
+            .addModule(new XapiStrictTimestampModule())
+            .build()
             .readValue(
                 """
         {
@@ -1235,13 +1174,13 @@ class StatementTests {
   @Test
   void whenDeserializingStatementWithInvalidLocaleThenExceptionIsThrown() {
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
         InvalidFormatException.class,
         () -> {
-          objectMapper
-              .registerModule(new XapiStrictLocaleModule())
-              .readValue(
-                  """
+          mapper.readValue(
+              """
           {
             "context":{
               "language": "a-b-c"
@@ -1267,7 +1206,7 @@ class StatementTests {
               }
             }
           }""",
-                  Statement.class);
+              Statement.class);
         });
   }
 
@@ -1277,10 +1216,12 @@ class StatementTests {
     Assertions.assertDoesNotThrow(
         () -> {
           objectMapper
-              .registerModule(new XapiStrictTimestampModule())
-              .registerModule(new XapiStrictNullValuesModule())
-              .registerModule(new XapiStrictLocaleModule())
-              .registerModule(new XapiStrictObjectTypeModule())
+              .rebuild()
+              .addModule(new XapiStrictTimestampModule())
+              .addModule(new XapiStrictNullValuesModule())
+              .addModule(new XapiStrictLocaleModule())
+              .addModule(new XapiStrictObjectTypeModule())
+              .build()
               .readValue(
                   """
                 {
@@ -1487,7 +1428,7 @@ class StatementTests {
 
   @Test
   void whenSigningStatementThenSignatureIsValid()
-      throws NoSuchAlgorithmException, JsonProcessingException {
+      throws NoSuchAlgorithmException, JacksonException {
 
     final var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
@@ -1542,6 +1483,7 @@ class StatementTests {
     // Then Signature is Valid
     final var body =
         Jwts.parser()
+            .json(new JjwtDeserializer())
             .verifyWith(keyPair.getPublic())
             .build()
             .parseSignedClaims(

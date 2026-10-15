@@ -4,13 +4,13 @@
 
 package dev.learning.xapi.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Locale.LanguageRange;
 import java.util.Map;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * A language map is a dictionary where the key is a RFC 5646 Language Tag, and the value is a

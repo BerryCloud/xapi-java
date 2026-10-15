@@ -229,7 +229,7 @@ Custom Jackson modules ensure strict xAPI compliance:
 ```java
 @Test
 @DisplayName("When Statement Has All Properties Then Serialization Works")
-void testStatementSerialization() throws JsonProcessingException {
+void testStatementSerialization() throws JacksonException {
     Statement statement = Statement.builder()
         .agentActor(a -> a.name("Test User").mbox("mailto:test@example.com"))
         .verb(Verb.COMPLETED)

@@ -4,16 +4,15 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
  * Strict Locale deserializer.
@@ -31,9 +30,8 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
 
   /** {@inheritDoc} */
   @Override
-  public Locale deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-      throws IOException {
-    if (jsonParser.getCurrentToken() != JsonToken.VALUE_STRING) {
+  public Locale deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
+    if (jsonParser.currentToken() != JsonToken.VALUE_STRING) {
       throw deserializationContext.wrongTokenException(
           jsonParser,
           (JavaType) null,
@@ -41,11 +39,11 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
           "Attempted to parse non-String value to Locale");
     }
 
-    return validateLocale(jsonParser.getValueAsString(), deserializationContext);
+    return validateLocale(jsonParser.getString(), deserializationContext);
   }
 
   static Locale validateLocale(String localeString, DeserializationContext deserializationContext)
-      throws JsonMappingException {
+      throws DatabindException {
 
     var locale = Locale.forLanguageTag(localeString);
 
@@ -73,8 +71,7 @@ public class StrictLocaleDeserializer extends StdDeserializer<Locale> {
 
     /** {@inheritDoc} */
     @Override
-    public Object deserializeKey(String key, DeserializationContext deserializationContext)
-        throws IOException {
+    public Object deserializeKey(String key, DeserializationContext deserializationContext) {
 
       return validateLocale(key, deserializationContext);
     }

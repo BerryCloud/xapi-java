@@ -4,8 +4,8 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.time.Instant;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * Provides xAPI JSON module for registering custom deserializer {@link Instant} objects.

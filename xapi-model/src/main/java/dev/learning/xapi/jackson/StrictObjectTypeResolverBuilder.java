@@ -5,22 +5,20 @@
 package dev.learning.xapi.jackson;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
-import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer;
-import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
-import com.fasterxml.jackson.databind.util.TokenBuffer;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.exc.InvalidTypeIdException;
+import tools.jackson.databind.jsontype.NamedType;
+import tools.jackson.databind.jsontype.TypeDeserializer;
+import tools.jackson.databind.jsontype.TypeIdResolver;
+import tools.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer;
+import tools.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
+import tools.jackson.databind.util.TokenBuffer;
 
 /**
  * Custom TypeResolverBuilder which accepts only valid strings as type identifiers.
@@ -31,7 +29,7 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
   @Override
   public TypeDeserializer buildTypeDeserializer(
-      DeserializationConfig config, JavaType baseType, Collection<NamedType> subtypes) {
+      DeserializationContext config, JavaType baseType, Collection<NamedType> subtypes) {
     final var subTypeValidator = verifyBaseTypeValidity(config, baseType);
     final var idRes = idResolver(config, baseType, subTypeValidator, subtypes, false, true);
     final var defaultImpl = defineDefaultImpl(config, baseType);
@@ -90,8 +88,7 @@ public class StrictObjectTypeResolverBuilder extends StdTypeResolverBuilder {
 
     @Override
     protected Object _deserializeTypedForId(
-        JsonParser p, DeserializationContext ctxt, TokenBuffer tb, String typeId)
-        throws IOException {
+        JsonParser p, DeserializationContext ctxt, TokenBuffer tb, String typeId) {
 
       // This is the actual custom logic.
       if (!validObjectTypes.contains(typeId)) {

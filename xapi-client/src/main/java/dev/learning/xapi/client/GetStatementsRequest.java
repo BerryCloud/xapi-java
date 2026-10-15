@@ -4,7 +4,6 @@
 
 package dev.learning.xapi.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.learning.xapi.model.Agent;
 import dev.learning.xapi.model.StatementFormat;
 import dev.learning.xapi.model.Verb;
@@ -19,6 +18,9 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Request for getting multiple Statements.
@@ -32,7 +34,8 @@ import org.springframework.web.util.UriBuilder;
 @Getter
 public class GetStatementsRequest implements Request {
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper =
+      JsonMapper.builder().disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY).build();
 
   private final Agent agent;
 

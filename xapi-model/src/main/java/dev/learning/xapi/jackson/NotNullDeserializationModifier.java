@@ -4,73 +4,63 @@
 
 package dev.learning.xapi.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import java.io.IOException;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationConfig;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.ValueDeserializerModifier;
+import tools.jackson.databind.deser.std.DelegatingDeserializer;
+import tools.jackson.databind.util.AccessPattern;
 
 /**
  * Deserialization Modifier for restricting <code>null</code> literals in Statements.
  *
  * @author István Rátkai (Selindek)
  */
-public class NotNullDeserializationModifier extends BeanDeserializerModifier {
+public class NotNullDeserializationModifier extends ValueDeserializerModifier {
 
   /** {@inheritDoc} */
   @Override
-  public JsonDeserializer<?> modifyDeserializer(
-      DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+  public ValueDeserializer<?> modifyDeserializer(
+      DeserializationConfig config,
+      BeanDescription.Supplier beanDescRef,
+      ValueDeserializer<?> deserializer) {
 
+    final var beanDesc = beanDescRef.get();
     // Use standard deserializer on explicit Object class. it happens only in Extensions
     if (beanDesc.getBeanClass() == Object.class) {
       return deserializer;
     }
-    return new NotNullDeserializer<>(deserializer, beanDesc.getBeanClass());
+    return new NotNullDeserializer(deserializer);
   }
 
-  private static class NotNullDeserializer<T> extends StdDeserializer<T>
-      implements ResolvableDeserializer {
+  private static class NotNullDeserializer extends DelegatingDeserializer {
 
     private static final long serialVersionUID = -3153072039006440049L;
-    // This field is not Serializable, but this class is never serialized.
-    private final JsonDeserializer<T> defaultDeserializer; // NOSONAR
 
-    private NotNullDeserializer(JsonDeserializer<T> defaultDeserializer, Class<?> vc) {
-      super(vc);
-      this.defaultDeserializer = defaultDeserializer;
+    private NotNullDeserializer(ValueDeserializer<?> delegate) {
+      super(delegate);
     }
 
-    /** {@inheritDoc} */
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-      return defaultDeserializer.deserialize(p, ctxt);
+    protected ValueDeserializer<?> newDelegatingInstance(ValueDeserializer<?> delegate) {
+      return new NotNullDeserializer(delegate);
     }
 
-    /** {@inheritDoc} */
     @Override
-    public T getNullValue(DeserializationContext ctxt) throws JsonMappingException {
-      throw ctxt.instantiationException(
-          defaultDeserializer.handledType(), "null literal is not allowed");
+    public AccessPattern getNullAccessPattern() {
+      return AccessPattern.DYNAMIC;
     }
 
-    /** {@inheritDoc} */
     @Override
-    public T getAbsentValue(DeserializationContext ctxt) throws JsonMappingException {
+    public Object getNullValue(DeserializationContext ctxt) throws DatabindException {
+      throw ctxt.instantiationException(handledType(), "null literal is not allowed");
+    }
+
+    @Override
+    public Object getAbsentValue(DeserializationContext ctxt) {
       return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-      if (defaultDeserializer instanceof final ResolvableDeserializer resolvableDeserializer) {
-        resolvableDeserializer.resolve(ctxt);
-      }
     }
   }
 }

@@ -4,21 +4,11 @@
 
 package dev.learning.xapi.client.configuration;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.webclient.autoconfigure.WebClientAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
 
-/**
- * Test configuration to provide WebClient.Builder bean for tests.
- *
- * <p>In Spring Boot 4.0, WebClient.Builder autoconfiguration was moved/removed. This configuration
- * provides the bean for testing purposes.
- */
+/** Use Boot's configured WebClient builder so tests exercise the application JSON codecs. */
 @Configuration
-public class WebClientTestConfiguration {
-
-  @Bean
-  public WebClient.Builder webClientBuilder() {
-    return WebClient.builder();
-  }
-}
+@ImportAutoConfiguration(WebClientAutoConfiguration.class)
+public class WebClientTestConfiguration {}

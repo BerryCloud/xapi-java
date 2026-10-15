@@ -6,7 +6,6 @@ package dev.learning.xapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dev.learning.xapi.jackson.LocaleSerializer;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import dev.learning.xapi.model.validation.constraints.NotUndetermined;
@@ -20,6 +19,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.Value;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * This class represents the xAPI Context object.

@@ -9,8 +9,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.integration.test.matcher.MapContentMatchers.hasAllEntries;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.learning.xapi.jackson.XapiStrictLocaleModule;
 import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.ConstraintViolation;
@@ -27,6 +25,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Activity Tests.
@@ -37,7 +38,7 @@ import org.springframework.util.ResourceUtils;
 @DisplayName("Activity tests")
 class ActivityTests {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -160,17 +161,14 @@ class ActivityTests {
     final var json =
         "{\"objectType\":\"Activity\",\"id\":\"https://example.com/activity/simplestatement\",\"definition\":{\"name\":{\"a12345678\":\"Simple Statement\"}}}";
 
+    final var mapper = objectMapper.rebuild().addModule(new XapiStrictLocaleModule()).build();
+
     Assertions.assertThrows(
-        InvalidFormatException.class,
-        () ->
-            objectMapper
-                .registerModule(new XapiStrictLocaleModule())
-                .readValue(json, Activity.class));
+        InvalidFormatException.class, () -> mapper.readValue(json, Activity.class));
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithNamesThenMergedNameIsExpected()
-      throws IOException {
+  void whenMergingActivitiesWithActivityDefinitionsWithNamesThenMergedNameIsExpected() {
 
     final var activity1 = Activity.builder().definition(d -> d.addName(Locale.US, "Color")).build();
 
@@ -190,8 +188,8 @@ class ActivityTests {
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithDescriptionsThenMergedDefinitionIsExpected()
-      throws IOException {
+  void
+      whenMergingActivitiesWithActivityDefinitionsWithDescriptionsThenMergedDefinitionIsExpected() {
 
     final var activity1 =
         Activity.builder().definition(d -> d.addDescription(Locale.US, "flavor")).build();
@@ -212,8 +210,7 @@ class ActivityTests {
   }
 
   @Test
-  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected()
-      throws IOException {
+  void whenMergingActivitiesWithActivityDefinitionsWithExtensionsThenMergedExtensionsAreExpected() {
 
     final var activity1 =
         Activity.builder()

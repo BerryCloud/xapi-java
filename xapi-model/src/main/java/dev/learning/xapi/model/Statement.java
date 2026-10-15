@@ -7,6 +7,7 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import dev.learning.xapi.jackson.JjwtSerializer;
 import dev.learning.xapi.model.Agent.AgentObjectType;
 import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.ValidAuthority;
@@ -121,7 +122,11 @@ public class Statement implements CoreStatement {
 
       try {
         final var token =
-            Jwts.builder().claims(claims).signWith(privateKey, Jwts.SIG.RS512).compact();
+            Jwts.builder()
+                .json(new JjwtSerializer<>())
+                .claims(claims)
+                .signWith(privateKey, Jwts.SIG.RS512)
+                .compact();
 
         addAttachment(
             a ->
@@ -141,10 +146,6 @@ public class Statement implements CoreStatement {
             <dependency>
               <groupId>io.jsonwebtoken</groupId>
               <artifactId>jjwt-impl</artifactId>
-            </dependency>
-            <dependency>
-              <groupId>io.jsonwebtoken</groupId>
-              <artifactId>jjwt-jackson</artifactId>
             </dependency>
             """,
             e);
