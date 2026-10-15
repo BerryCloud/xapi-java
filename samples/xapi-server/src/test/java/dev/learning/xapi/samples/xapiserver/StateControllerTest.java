@@ -8,12 +8,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,7 +23,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-import dev.learning.xapi.model.Agent;
 import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
@@ -35,12 +34,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.web.server.ResponseStatusException;
 
 /** State Resource integration tests using the sample's H2 persistence. */
 @SpringBootTest
@@ -54,7 +52,6 @@ class StateControllerTest {
 
   @Autowired private MockMvc mvc;
   @Autowired private StateRepository repository;
-  @Autowired private StateService service;
 
   @BeforeEach
   void clearStates() {
@@ -486,6 +483,7 @@ class StateControllerTest {
           "[]",
           "{\"objectType\":\"Group\",\"mbox\":\"mailto:a@example.com\"}",
           "{}",
+          "{\"mbox\":\"invalid\"}",
           "{\"mbox\":\"mailto:a@example.com\",\"openid\":\"https://example.com\"}"
         }) {
       for (var request :
@@ -506,29 +504,32 @@ class StateControllerTest {
   }
 
   @Test
-  void serviceValidatesRegistrationAndAgentIdentity() {
-    Agent agent = Agent.builder().mbox("mailto:learner@example.com").build();
-    String scope = service.scope(ACTIVITY, agent, UUID.fromString(REGISTRATION));
-    assertEquals(scope, service.scope(ACTIVITY, agent, null));
-    assertEquals(scope, service.scope(ACTIVITY, agent, StateKey.NIL_REGISTRATION));
-    assertEquals(
-        new StateKey(scope, null, "progress"),
-        new StateKey(scope, StateKey.NIL_REGISTRATION, "progress"));
-    assertEquals(
-        HttpStatus.BAD_REQUEST,
-        assertThrows(ResponseStatusException.class, () -> service.scope(ACTIVITY, null, null))
-            .getStatusCode());
-    assertEquals(
-        HttpStatus.BAD_REQUEST,
-        assertThrows(
-                ResponseStatusException.class,
-                () -> service.scope(ACTIVITY, Agent.builder().build(), null))
-            .getStatusCode());
-    assertEquals(
-        HttpStatus.BAD_REQUEST,
-        assertThrows(
-                ResponseStatusException.class, () -> service.scope(ACTIVITY, agent, new UUID(0, 1)))
-            .getStatusCode());
+  void allStateMethodsRejectInvalidRegistrationAndActivityIds() throws Exception {
+    putJson("{\"original\":true}");
+    for (String method : new String[] {"GET", "PUT", "POST", "DELETE"}) {
+      for (String registration :
+          new String[] {
+            "not-a-uuid",
+            "00000000-0000-0000-0000-000000000001",
+            "4c30eeb1-15ac-4833-cb0d-88613ba65267"
+          }) {
+        mvc.perform(
+                document(request(HttpMethod.valueOf(method), ENDPOINT))
+                    .param("registration", registration)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{}"))
+            .andExpect(status().isBadRequest());
+      }
+      mvc.perform(
+              request(HttpMethod.valueOf(method), ENDPOINT)
+                  .param("activityId", "relative")
+                  .param("agent", AGENT)
+                  .param("stateId", "progress")
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .content("{}"))
+          .andExpect(status().isBadRequest());
+    }
+    mvc.perform(document(get(ENDPOINT))).andExpect(content().json("{\"original\":true}"));
   }
 
   @Test

@@ -39,15 +39,15 @@ public class StateKey implements Serializable {
   private String stateId;
 
   /**
-   * Create a document key, treating an absent registration as the nil UUID.
+   * Create a document key from a validated request.
    *
    * @param scope the activity and agent identity digest
-   * @param registration the registration, or null for the unregistered context
+   * @param registration the non-null registration context
    * @param stateId the document id
    */
   public StateKey(String scope, UUID registration, String stateId) {
     this.scope = scope;
-    this.registration = registration == null ? NIL_REGISTRATION : registration;
+    this.registration = registration;
     this.stateId = stateId;
   }
 }

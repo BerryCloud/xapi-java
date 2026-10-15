@@ -4,10 +4,7 @@
 
 package dev.learning.xapi.samples.xapiserver;
 
-import dev.learning.xapi.model.ActivityState;
 import dev.learning.xapi.model.Agent;
-import jakarta.validation.Validator;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,71 +31,48 @@ public class StateService {
 
   private final StateRepository repository;
   private final ObjectMapper mapper;
-  private final Validator validator;
 
   /**
    * Create the state service.
    *
    * @param repository state persistence
    * @param mapper the configured xAPI mapper
-   * @param validator the configured xAPI validator
    */
-  public StateService(StateRepository repository, ObjectMapper mapper, Validator validator) {
+  public StateService(StateRepository repository, ObjectMapper mapper) {
     this.repository = repository;
     this.mapper = mapper;
-    this.validator = validator;
   }
 
   /**
-   * Validate the request context and resolve its activity and agent identity.
+   * Resolve the activity and agent identity from a validated request.
    *
-   * @param activityId the activity IRI
-   * @param agent the agent identifying the learner
-   * @param registration the registration, or null for the unregistered context
+   * @param activityId the validated activity IRI
+   * @param agent the validated agent identifying the learner
    * @return the context identity digest
    */
-  public String scope(String activityId, Agent agent, UUID registration) {
-    try {
-      if (activityId.isBlank() || !URI.create(activityId).isAbsolute()) {
-        throw new IllegalArgumentException("activityId must be an absolute IRI");
-      }
-      // Nil is the sample's reserved unregistered context, not a normal xAPI registration.
-      ActivityState context =
-          ActivityState.builder()
-              .agent(agent)
-              .registration(StateKey.NIL_REGISTRATION.equals(registration) ? null : registration)
-              .build();
-      if (agent == null || !validator.validate(context).isEmpty()) {
-        throw new IllegalArgumentException("Invalid agent or registration");
-      }
-      // Names and optional objectType do not form part of an agent's identity.
-      if (agent.getMbox() != null) {
-        return digest(activityId, "mbox", agent.getMbox());
-      }
-      if (agent.getMboxSha1sum() != null) {
-        return digest(activityId, "mbox_sha1sum", agent.getMboxSha1sum());
-      }
-      if (agent.getOpenid() != null) {
-        return digest(activityId, "openid", agent.getOpenid().toString());
-      }
-      if (agent.getAccount() != null) {
-        return digest(
-            activityId,
-            "account",
-            agent.getAccount().getHomePage().toString(),
-            agent.getAccount().getName());
-      }
-      throw new IllegalArgumentException("Agent must have an identifier");
-    } catch (IllegalArgumentException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid state context", e);
+  public String scope(String activityId, Agent agent) {
+    // Names and optional objectType do not form part of an agent's identity.
+    if (agent.getMbox() != null) {
+      return digest(activityId, "mbox", agent.getMbox());
     }
+    if (agent.getMboxSha1sum() != null) {
+      return digest(activityId, "mbox_sha1sum", agent.getMboxSha1sum());
+    }
+    if (agent.getOpenid() != null) {
+      return digest(activityId, "openid", agent.getOpenid().toString());
+    }
+    return digest(
+        activityId,
+        "account",
+        agent.getAccount().getHomePage().toString(),
+        agent.getAccount().getName());
   }
 
   /**
    * Retrieve a single state document.
    *
    * @param scope the context digest
-   * @param registration the registration, or null for the unregistered context
+   * @param registration the validated registration context
    * @param stateId the document id
    * @return the document if present
    */
@@ -111,20 +85,20 @@ public class StateService {
    * List documents in one registration context, optionally limited by modification time.
    *
    * @param scope the context digest
-   * @param registration the registration, or null for the unregistered context
+   * @param registration the validated registration context
    * @param since the exclusive modification time filter
    * @return the matching document metadata
    */
   @Transactional(readOnly = true)
   public List<StateRepository.StateMetadata> list(String scope, UUID registration, Instant since) {
-    return repository.findMetadata(scope, registrationOrDefault(registration), since);
+    return repository.findMetadata(scope, registration, since);
   }
 
   /**
    * Store or merge a document, checking optional HTTP preconditions.
    *
    * @param scope the context digest
-   * @param registration the registration, or null for the unregistered context
+   * @param registration the validated registration context
    * @param stateId the document id
    * @param contents document bytes
    * @param contentType document media type
@@ -167,7 +141,7 @@ public class StateService {
    * Delete a single document or all documents in the supplied context.
    *
    * @param scope the context digest
-   * @param registration the registration, or null for the unregistered context
+   * @param registration the validated registration context
    * @param stateId the optional document id
    * @param ifMatch the optional If-Match header for a single document
    * @param ifNoneMatch the optional If-None-Match header for a single document
@@ -179,7 +153,7 @@ public class StateService {
         throw new ResponseStatusException(
             HttpStatus.BAD_REQUEST, "Conditional deletion requires stateId");
       }
-      repository.deleteInScope(scope, registrationOrDefault(registration));
+      repository.deleteInScope(scope, registration);
     } else {
       StateEntity state = get(scope, registration, stateId).orElse(null);
       checkPreconditions(state, ifMatch, ifNoneMatch);
@@ -233,10 +207,6 @@ public class StateService {
         .map(String::trim)
         .anyMatch(
             value -> value.equals("*") || value.equals(tag) || weak && value.equals("W/" + tag));
-  }
-
-  private UUID registrationOrDefault(UUID registration) {
-    return registration == null ? StateKey.NIL_REGISTRATION : registration;
   }
 
   private String digest(String... parts) {

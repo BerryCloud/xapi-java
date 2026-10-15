@@ -18,11 +18,13 @@ import java.util.UUID;
 public class VariantValidatorForUuid extends DisableableValidator<Variant, UUID> {
 
   private int variant;
+  private boolean allowNil;
 
   @Override
   public void initialize(Variant constraintAnnotation) {
 
     variant = constraintAnnotation.value();
+    allowNil = constraintAnnotation.allowNil();
   }
 
   @Override
@@ -32,6 +34,7 @@ public class VariantValidatorForUuid extends DisableableValidator<Variant, UUID>
       return true;
     }
 
-    return value.variant() == variant;
+    return value.variant() == variant
+        || allowNil && value.getMostSignificantBits() == 0 && value.getLeastSignificantBits() == 0;
   }
 }

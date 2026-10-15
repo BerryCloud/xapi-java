@@ -42,4 +42,11 @@ public @interface Variant {
 
   /** The valid variant, defaults to 2. */
   int value() default 2;
+
+  /**
+   * Whether the nil UUID is also allowed.
+   *
+   * @return true to accept the all-zero UUID regardless of the configured variant
+   */
+  boolean allowNil() default false;
 }

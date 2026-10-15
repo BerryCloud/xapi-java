@@ -5,6 +5,10 @@
 package dev.learning.xapi.samples.xapiserver;
 
 import dev.learning.xapi.model.Agent;
+import dev.learning.xapi.model.validation.constraints.HasScheme;
+import dev.learning.xapi.model.validation.constraints.ValidActor;
+import dev.learning.xapi.model.validation.constraints.Variant;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
 import java.util.UUID;
@@ -54,13 +58,14 @@ public class StateController {
    */
   @GetMapping
   public ResponseEntity<byte[]> get(
-      @RequestParam URI activityId,
-      @RequestParam Agent agent,
-      @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION) UUID registration,
+      @HasScheme @RequestParam URI activityId,
+      @Valid @ValidActor @RequestParam Agent agent,
+      @Variant(allowNil = true) @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION)
+          UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestParam(required = false) Instant since)
       throws JacksonException {
-    String scope = service.scope(activityId.toString(), agent, registration);
+    String scope = service.scope(activityId.toString(), agent);
     if (stateId != null) {
       if (since != null) {
         return ResponseEntity.badRequest().build();
@@ -107,14 +112,15 @@ public class StateController {
    */
   @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
   public ResponseEntity<Void> store(
-      @RequestParam URI activityId,
-      @RequestParam Agent agent,
-      @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION) UUID registration,
+      @HasScheme @RequestParam URI activityId,
+      @Valid @ValidActor @RequestParam Agent agent,
+      @Variant(allowNil = true) @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION)
+          UUID registration,
       @RequestParam String stateId,
       @RequestBody(required = false) byte[] contents,
       @RequestHeader HttpHeaders headers,
       jakarta.servlet.http.HttpServletRequest request) {
-    String scope = service.scope(activityId.toString(), agent, registration);
+    String scope = service.scope(activityId.toString(), agent);
     MediaType type = headers.getContentType();
     service.store(
         scope,
@@ -140,13 +146,14 @@ public class StateController {
    */
   @DeleteMapping
   public ResponseEntity<Void> delete(
-      @RequestParam URI activityId,
-      @RequestParam Agent agent,
-      @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION) UUID registration,
+      @HasScheme @RequestParam URI activityId,
+      @Valid @ValidActor @RequestParam Agent agent,
+      @Variant(allowNil = true) @RequestParam(defaultValue = StateKey.DEFAULT_REGISTRATION)
+          UUID registration,
       @RequestParam(required = false) String stateId,
       @RequestHeader HttpHeaders headers) {
     service.delete(
-        service.scope(activityId.toString(), agent, registration),
+        service.scope(activityId.toString(), agent),
         registration,
         stateId,
         headers.getFirst(HttpHeaders.IF_MATCH),
