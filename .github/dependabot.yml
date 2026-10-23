@@ -26,3 +26,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      codeql-action-dependencies:
+        patterns:
+          - "github/codeql-action*"
