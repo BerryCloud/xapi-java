@@ -8,7 +8,6 @@ import dev.learning.xapi.model.Agent;
 import java.time.Instant;
 import java.util.Map;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -27,7 +26,7 @@ import tools.jackson.databind.json.JsonMapper;
  * @author Thomas Turrell-Croft
  */
 @Getter
-@Builder
+@lombok.Builder
 public class GetAgentProfilesRequest implements Request {
 
   private static final ObjectMapper objectMapper =

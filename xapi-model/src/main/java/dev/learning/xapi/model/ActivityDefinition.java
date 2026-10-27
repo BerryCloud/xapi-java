@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -35,7 +34,7 @@ import lombok.Value;
  *     Requirements</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class ActivityDefinition {
 

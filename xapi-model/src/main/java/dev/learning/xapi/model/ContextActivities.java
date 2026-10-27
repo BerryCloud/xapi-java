@@ -11,7 +11,6 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -23,7 +22,7 @@ import lombok.Value;
  *     Context Activities</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class ContextActivities {
 

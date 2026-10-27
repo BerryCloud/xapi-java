@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
 import java.util.Locale;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -21,7 +20,7 @@ import lombok.Value;
  *     Interaction Components</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = "id")
 public class InteractionComponent {

@@ -7,7 +7,6 @@ package dev.learning.xapi.client;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
-import lombok.Builder;
 import lombok.NonNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
@@ -22,7 +21,7 @@ import org.springframework.web.util.UriBuilder;
  *     Document GET</a>
  * @author Thomas Turrell-Croft
  */
-@Builder
+@lombok.Builder
 public class GetActivityProfilesRequest implements Request {
 
   /** The Activity id associated with these Profile documents. */
