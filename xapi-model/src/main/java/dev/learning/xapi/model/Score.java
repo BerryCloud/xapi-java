@@ -7,7 +7,6 @@ package dev.learning.xapi.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import dev.learning.xapi.model.validation.constraints.ScaledScore;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -18,7 +17,7 @@ import lombok.Value;
  *     Score</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Score {
 

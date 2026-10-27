@@ -6,7 +6,6 @@ package dev.learning.xapi.client;
 
 import java.net.URI;
 import java.util.Map;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.http.HttpMethod;
@@ -22,7 +21,7 @@ import org.springframework.web.util.UriBuilder;
  * @author István Rátkai (Selindek)
  */
 @Getter
-@Builder
+@lombok.Builder
 public class GetActivityRequest implements Request {
 
   @NonNull private final URI activityId;

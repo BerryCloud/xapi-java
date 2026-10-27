@@ -12,7 +12,6 @@ import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.Locale;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.With;
@@ -27,7 +26,7 @@ import lombok.With;
  */
 @With
 @Value
-@Builder
+@lombok.Builder
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @JsonInclude(Include.NON_EMPTY)

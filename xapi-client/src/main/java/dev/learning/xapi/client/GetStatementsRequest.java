@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
@@ -30,7 +29,7 @@ import tools.jackson.databind.json.JsonMapper;
  *     Statements</a>
  * @author Thomas Turrell-Croft
  */
-@Builder
+@lombok.Builder
 @Getter
 public class GetStatementsRequest implements Request {
 

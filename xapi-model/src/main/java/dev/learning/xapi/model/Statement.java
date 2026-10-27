@@ -30,7 +30,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.With;
@@ -49,7 +48,7 @@ import lombok.With;
 @ValidStatementPlatform
 @ValidStatementRevision
 @ValidStatementVerb
-@Builder(toBuilder = true)
+@lombok.Builder(toBuilder = true)
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = {"actor", "verb", "object", "result", "context"})
 public class Statement implements CoreStatement {

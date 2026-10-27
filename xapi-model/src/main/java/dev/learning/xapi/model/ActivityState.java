@@ -10,7 +10,6 @@ import dev.learning.xapi.model.validation.constraints.ValidActor;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.Valid;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.Value;
 import tools.jackson.databind.node.ObjectNode;
 
@@ -23,7 +22,7 @@ import tools.jackson.databind.node.ObjectNode;
  *     Activity State</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class ActivityState {
 

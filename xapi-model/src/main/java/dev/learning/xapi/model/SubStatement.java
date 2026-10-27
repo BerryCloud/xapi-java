@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -26,7 +25,7 @@ import lombok.Value;
  *     SubStatement</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @ValidStatementPlatform
 @ValidStatementRevision
 @EqualsAndHashCode(exclude = {"timestamp", "attachments"})

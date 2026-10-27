@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -26,7 +25,7 @@ import lombok.Value;
  *     Activity</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "definition")
 public class Activity implements StatementObject, SubStatementObject {

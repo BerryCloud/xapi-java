@@ -6,7 +6,6 @@ package dev.learning.xapi.client;
 
 import java.net.URI;
 import java.util.Map;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.http.HttpMethod;
@@ -21,7 +20,7 @@ import org.springframework.web.util.UriBuilder;
  * @author Thomas Turrell-Croft
  * @author István Rátkai (Selindek)
  */
-@Builder
+@lombok.Builder
 @Getter
 public class GetMoreStatementsRequest implements Request {
 
