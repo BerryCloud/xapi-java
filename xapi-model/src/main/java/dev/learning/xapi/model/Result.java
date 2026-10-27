@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -24,7 +23,7 @@ import lombok.Value;
  *     Result</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Result {
 

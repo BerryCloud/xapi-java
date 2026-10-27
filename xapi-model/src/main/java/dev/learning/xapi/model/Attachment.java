@@ -14,7 +14,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Locale;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.Value;
@@ -28,7 +27,7 @@ import lombok.With;
  *     Attachment</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 @EqualsAndHashCode(of = "sha2")
 public class Attachment {

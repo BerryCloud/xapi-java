@@ -10,7 +10,6 @@ import dev.learning.xapi.model.validation.constraints.HasScheme;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -22,7 +21,7 @@ import lombok.Value;
  *     Account</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Account {
 

@@ -14,7 +14,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -26,7 +25,7 @@ import lombok.Value;
  *     Person</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 @JsonIgnoreProperties(value = {"firstName", "lastName"})
 public class Person {

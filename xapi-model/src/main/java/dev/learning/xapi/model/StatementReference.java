@@ -7,7 +7,6 @@ package dev.learning.xapi.model;
 import dev.learning.xapi.model.validation.constraints.Variant;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.Value;
 
 /**
@@ -19,7 +18,7 @@ import lombok.Value;
  *     Statement Reference</a>
  */
 @Value
-@Builder
+@lombok.Builder
 public class StatementReference implements StatementObject, SubStatementObject {
 
   private final String objectType = "StatementRef"; // NOSONAR

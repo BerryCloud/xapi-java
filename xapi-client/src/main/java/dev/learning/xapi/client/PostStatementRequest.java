@@ -8,7 +8,6 @@ import dev.learning.xapi.model.Statement;
 import java.security.PrivateKey;
 import java.util.Map;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriBuilder;
@@ -21,7 +20,7 @@ import org.springframework.web.util.UriBuilder;
  *     Statements</a>
  * @author Thomas Turrell-Croft
  */
-@Builder
+@lombok.Builder
 @Getter
 public class PostStatementRequest implements Request {
 

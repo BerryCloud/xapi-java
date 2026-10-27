@@ -7,7 +7,6 @@ package dev.learning.xapi.client;
 import dev.learning.xapi.model.Agent;
 import java.util.Map;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
@@ -26,7 +25,7 @@ import tools.jackson.databind.json.JsonMapper;
  *     Resource</a>
  * @author Thomas Turrell-Croft
  */
-@Builder
+@lombok.Builder
 public class GetAgentsRequest implements Request {
 
   private static final ObjectMapper objectMapper =

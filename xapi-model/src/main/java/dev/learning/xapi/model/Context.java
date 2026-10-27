@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Consumer;
-import lombok.Builder;
 import lombok.Value;
 import tools.jackson.databind.annotation.JsonSerialize;
 
@@ -29,7 +28,7 @@ import tools.jackson.databind.annotation.JsonSerialize;
  *     Context</a>
  */
 @Value
-@Builder
+@lombok.Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Context {
 
