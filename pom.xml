@@ -19,11 +19,11 @@
     <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-    <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
+    <central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
     <checkstyle.version>14.3.0</checkstyle.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <jjwt.version>0.13.0</jjwt.version>
-    <okhttp.version>5.5.0</okhttp.version>
+    <okhttp.version>5.5.1</okhttp.version>
     <assertj.version>3.27.7</assertj.version>
     <!-- Default empty argLine property - required for @{argLine} late replacement -->
     <argLine />
