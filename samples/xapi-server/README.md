@@ -111,3 +111,24 @@ A servlet filter adds `X-Experience-API-Version: 1.0.3` to responses under `/xap
 The consistency timestamp is a conservative snapshot taken before request handling. It can lag behind statements accepted or retrieved during that request. Statement writes are tracked from timestamp assignment until repository commit (or completion of an enclosing Spring transaction). Concurrent writes completing out of order cannot advance the boundary past an earlier pending write. When no writes are pending, the boundary advances with the clock; clock regression cannot backdate subsequently assigned stored timestamps.
 
 This tracker assumes a single application instance and synchronous repository writes. Multiple writers in separate instances or asynchronous persistence would require coordinated tracking of durable writes. Returning the version header does not imply full conformance; request version validation is not yet implemented.
+
+## Alternate request syntax
+
+The xAPI 1.0 alternate syntax is translated by `AlternateRequestSyntaxFilter`
+before controller handling. Send an HTTP POST with only `method` in the query
+string. Put the resource parameters in the URL-encoded form body, and supply any
+request content in the `content` field as a UTF-8 string:
+
+```bash
+curl 'http://localhost:8080/xapi/statements?method=GET' \
+  --data-urlencode 'statementId=da415905-dcd8-4421-b4ba-bc885dfbf28c' \
+  --data-urlencode 'X-Experience-API-Version=1.0.3'
+```
+
+The form fields `Authorization`, `X-Experience-API-Version`, `Content-Type`,
+`Content-Length`, `If-Match` and `If-None-Match` become request headers. The inner
+content type defaults to JSON; the decoded content length is calculated in UTF-8
+bytes and a supplied inner length must match. Other form fields become resource
+parameters. The existing controllers handle the translated method, content and
+validation. Binary attachments are not supported by this syntax. Authentication
+and request version validation retain the limitations described above.
