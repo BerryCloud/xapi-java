@@ -54,6 +54,17 @@ public class StatementController {
   }
 
   /**
+   * Handles voided statement retrieval until voiding support is implemented.
+   *
+   * @param voidedStatementId the id of the voided statement
+   * @return a not implemented response
+   */
+  @GetMapping(params = {"voidedStatementId", "!statementId"})
+  public ResponseEntity<Void> getVoidedStatement(@RequestParam UUID voidedStatementId) {
+    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+  }
+
+  /**
    * Get a single Statement.
    *
    * @param statementId the id of the statement to get.
@@ -62,21 +73,7 @@ public class StatementController {
    *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
    *     Statements</a>
    */
-  @GetMapping(
-      params = {
-        "statementId",
-        "!voidedStatementId",
-        "!agent",
-        "!verb",
-        "!activity",
-        "!registration",
-        "!related_activities",
-        "!related_agents",
-        "!since",
-        "!until",
-        "!limit",
-        "!ascending"
-      })
+  @GetMapping(params = "statementId")
   public ResponseEntity<Statement> getStatement(@RequestParam(required = true) UUID statementId) {
 
     log.debug("GET statement");
@@ -95,7 +92,7 @@ public class StatementController {
    *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
    *     Statements</a>
    */
-  @GetMapping(params = "since")
+  @GetMapping(params = {"since", "!statementId", "!voidedStatementId"})
   public ResponseEntity<Void> getStatementsSince(@RequestParam Instant since) {
 
     log.debug("GET statements since");
@@ -111,7 +108,7 @@ public class StatementController {
    *     "https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Communication.md#213-get-statements">GET
    *     Statements</a>
    */
-  @GetMapping(params = {"!statementId, !voidedStatementId", "!since"})
+  @GetMapping(params = {"!statementId", "!voidedStatementId", "!since"})
   public ResponseEntity<StatementResult> getStatements() {
 
     log.debug("GET statements");
