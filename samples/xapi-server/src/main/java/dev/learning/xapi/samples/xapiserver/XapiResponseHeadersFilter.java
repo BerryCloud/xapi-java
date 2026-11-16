@@ -9,11 +9,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /** Adds xAPI response headers before controllers can commit a response, including errors. */
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class XapiResponseHeadersFilter extends OncePerRequestFilter {
 
   private final StatementConsistency consistency;
